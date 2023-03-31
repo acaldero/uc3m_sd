@@ -18,106 +18,107 @@ Pasamos dicho servicio de tabla hash diseñado como aplicación distribuida:
 
 ### Servicio centralizado monolítico
 
-#### Compilar
+* Compilar
 
-Hay que introducir:
-```
-cd centralizado-monolitico
-make
-```
+  Hay que introducir:
+  ```
+  cd centralizado-monolitico
+  make
+  ```
 
-Y la salida debería ser similar a:
-```
-gcc -g -Wall -c app-c.c
-gcc -g -Wall app-c.o  -o app-c
-```
+  Y la salida debería ser similar a:
+  ```
+  gcc -g -Wall -c app-c.c
+  gcc -g -Wall app-c.o  -o app-c
+  ```
 
-#### Ejecutar
+* Ejecutar
 
-Hay que introducir:
-```
-./app-c
-```
+  Hay que introducir:
+  ```
+  ./app-c
+  ```
 
-Y la salida debería ser similar a:
-```
-set("nombre", 100, 0x0)
-set("nombre", 101, 0x1)
-set("nombre", 102, 0x2)
-...
-get("nombre", 107) -> 0x7
-get("nombre", 108) -> 0x8
-get("nombre", 109) -> 0x9
-```
+  Y la salida debería ser similar a:
+  ```
+  set("nombre", 100, 0x0)
+  set("nombre", 101, 0x1)
+  set("nombre", 102, 0x2)
+  ...
+  get("nombre", 107) -> 0x7
+  get("nombre", 108) -> 0x8
+  get("nombre", 109) -> 0x9
+  ```
 
-#### Arquitectura
+* Arquitectura
 
 ```mermaid
-sequenceDiagram
-    app-c   ->> app-c: request lib.h API and return result of API call
+stateDiagram
+    direction LR
+    app_c --> app_c
 ```
 
 
 ### Servicio centralizado con librería
 
-#### Compilar
+* Compilar
 
-Hay que introducir:
-```
-cd centralizado-librería
-make
-```
+  Hay que introducir:
+  ```
+  cd centralizado-librería
+  make
+  ```
 
-Y la salida debería ser similar a:
-```
-gcc -g -Wall -c app-c.c
-gcc -g -Wall -c lib.c
-gcc -g -Wall app-c.o lib.o  -o app-c
-```
+  Y la salida debería ser similar a:
+  ```
+  gcc -g -Wall -c app-c.c
+  gcc -g -Wall -c lib.c
+  gcc -g -Wall app-c.o lib.o  -o app-c
+  ```
 
-#### Ejecutar
+* Ejecutar
 
-Hay que introducir:
-```
-./app-c
-```
+  Hay que introducir:
+  ```
+  ./app-c
+  ```
 
-Y la salida debería ser similar a:
-```
-set("nombre", 1, 0x123)
-get("nombre", 1) -> 0x123
-```
+  Y la salida debería ser similar a:
+  ```
+  set("nombre", 1, 0x123)
+  get("nombre", 1) -> 0x123
+  ```
 
-#### Arquitectura
+* Arquitectura
 
-```mermaid
-sequenceDiagram
-    app-c   ->> lib.c: request lib.h API
-    lib.c   ->> app-c: return result of API call
-```
+  ```mermaid
+  sequenceDiagram
+      app-c   ->> lib.c: request lib.h API
+      lib.c   ->> app-c: return result of API call
+  ```
 
 
 ### Servicio distribuido basado en colas POSIX
 
-#### Compilar
+* Compilar
 
-Hay que introducir:
-```
-cd distribuido-mqueue
-make
-```
+  Hay que introducir:
+  ```
+  cd distribuido-mqueue
+  make
+  ```
 
-Y la salida debería ser similar a:
-```
-gcc -g -Wall -c app-d.c
-gcc -g -Wall -c lib-client.c
-gcc -g -Wall -c lib.c
-gcc -g -Wall -lrt app-d.o lib.o lib-client.o       -o app-d  -lrt
-gcc -g -Wall -c lib-server.c
-gcc -g -Wall            lib.o lib-client.o lib-server.o  -o lib-server  -lrt
-```
+  Y la salida debería ser similar a:
+  ```
+  gcc -g -Wall -c app-d.c
+  gcc -g -Wall -c lib-client.c
+  gcc -g -Wall -c lib.c
+  gcc -g -Wall -lrt app-d.o lib.o lib-client.o       -o app-d  -lrt
+  gcc -g -Wall -c lib-server.c
+  gcc -g -Wall            lib.o lib-client.o lib-server.o  -o lib-server  -lrt
+  ```
 
-#### Ejecutar
+* Ejecutar
 
 *TIP: Las colas POSIX se utilizan para comunicar procesos en la misma máquina*
 
@@ -181,7 +182,7 @@ sudo mount -t mqueue none /dev/mqueue
 ls -las /dev/mqueue
 ```
 
-#### Arquitectura
+* Arquitectura
 
 ```mermaid
 sequenceDiagram
@@ -198,20 +199,20 @@ sequenceDiagram
 
 *TIP: Before execute in two different machine please update the server IP address in lib-client.c*
 
-### Compilar
+* Compilar
 
-```
-$ cd distribuido-sockets
-$ make
-gcc -g -Wall -c app-d.c
-gcc -g -Wall -c lib-client.c
-gcc -g -Wall -c lib.c
-gcc -g -Wall  app-d.o lib.o lib-client.o       -o app-d
-gcc -g -Wall -c lib-server.c
-gcc -g -Wall            lib.o lib-client.o lib-server.o  -o lib-server
-```
+  ```
+  $ cd distribuido-sockets
+  $ make
+  gcc -g -Wall -c app-d.c
+  gcc -g -Wall -c lib-client.c
+  gcc -g -Wall -c lib.c
+  gcc -g -Wall  app-d.o lib.o lib-client.o       -o app-d
+  gcc -g -Wall -c lib-server.c
+  gcc -g -Wall            lib.o lib-client.o lib-server.o  -o lib-server
+  ```
 
-### Ejecutar
+* Ejecutar
 
 <html>
 <table>
@@ -265,7 +266,7 @@ d_get("nombre", 1) -> 0x123
 </table>
 </html>
 
-### Arquitectura
+* Arquitectura
 
 ```mermaid
 sequenceDiagram
@@ -287,27 +288,27 @@ sequenceDiagram
 
 ### Servicio distribuido basado en RPC
 
-#### Compilar
+* Compilar
 
-Hay que introducir:
-```
-cd distribuido-rpc
-make
-```
+  Hay que introducir:
+  ```
+  cd distribuido-rpc
+  make
+  ```
 
-Y la salida debería ser similar a:
-```
-gcc -g -Wall -c app-d.c
-gcc -g -Wall -c message_clnt.c
-gcc -g -Wall -c message_xdr.c
-gcc -g -Wall    app-d.o message_clnt.o message_xdr.o  -o app-d 
-gcc -g -Wall -c lib.c
-gcc -g -Wall -c lib-server.c
-gcc -g -Wall -c message_svc.c
-gcc -g -Wall    lib-server.o lib.o  message_svc.o  message_xdr.o  -o lib-server 
-```
+  Y la salida debería ser similar a:
+  ```
+  gcc -g -Wall -c app-d.c
+  gcc -g -Wall -c message_clnt.c
+  gcc -g -Wall -c message_xdr.c
+  gcc -g -Wall    app-d.o message_clnt.o message_xdr.o  -o app-d 
+  gcc -g -Wall -c lib.c
+  gcc -g -Wall -c lib-server.c
+  gcc -g -Wall -c message_svc.c
+  gcc -g -Wall    lib-server.o lib.o  message_svc.o  message_xdr.o  -o lib-server 
+  ```
 
-#### Ejecutar
+* Ejecutar
 
 <html>
 <table>
@@ -362,7 +363,7 @@ d_get("nombre", 1) -> 0x123
 </html>
 
 
-#### Arquitectura
+* Arquitectura
 
 ```mermaid
 sequenceDiagram
