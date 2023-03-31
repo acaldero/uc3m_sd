@@ -1,9 +1,7 @@
 ## Materiales usados en ARCOS.INF.UC3M.ES con Licencia GPLv3.0
   * Felix García Carballeira y Alejandro Calderón Mateos
 
-## Sistemas Distribuidos
-
-### Servicio distribuido basado en sockets
+## Servicio distribuido basado en sockets
 
 *TIP: Before execute in two different machine please update the server IP address in lib-client.c*
 

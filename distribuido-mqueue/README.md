@@ -1,9 +1,7 @@
 ## Materiales usados en ARCOS.INF.UC3M.ES con Licencia GPLv3.0
   * Felix García Carballeira y Alejandro Calderón Mateos
 
-## Sistemas Distribuidos
-
-### Servicio distribuido basado en colas POSIX
+## Servicio distribuido basado en colas POSIX
 
 #### Compilar
 
