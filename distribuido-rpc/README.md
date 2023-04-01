@@ -90,3 +90,50 @@ sequenceDiagram
     lib-client.c   ->> app-d: return result of the distributed API call
 ```
 
+
+#### Uso de RPC en Ubuntu 22.04 (o compatible)
+
+Pasos generales al empezar:
+
+1) Instalar pre-requisitos:
+
+apt-get install libtirpc-common libtirpc-dev libtirpc3  rpcsvc-proto  rpcbind build-essential
+
+2) Configurar pre-requisitos:
+
+sudo mkdir -p /run/sendsigs.omit.d/
+sudo /etc/init.d/rpcbind restart
+
+
+Pasos en cada aplicación que use RPC:
+
+1) Crear el archivo IDL.
+
+Por ejemplo, "suma.x":
+
+program SUMAR {
+   version SUMAVER {
+      int  SUMA(int a, int b) = 1;
+      int RESTA(int a, int b) = 2;
+   } = 1;
+} = 99;
+
+2) Uso de rpcgen con archivo de IDL:
+
+rpcgen -NMa suma.x
+
+3) Habría que editar Makefile.suma y cambiar:
+
+...
+CFLAGS += -g -I/usr/include/tirpc
+LDLIBS += -lnsl -lpthread -ldl -ltirpc
+...
+
+4) Hay que añadir el código en el servidor (suma_server.c) y cambiar el código del cliente (suma_client.c)
+
+5) Habría que compilar con make:
+
+make -f Makefile.suma
+
+
+
