@@ -1,6 +1,6 @@
 
 ## Materiales Sistemas Distribuidos
-+ Felix García Carballeira y Alejandro Calderón Mateos
++ **Felix García Carballeira y Alejandro Calderón Mateos**
 + Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
@@ -22,21 +22,21 @@ Y tenemos la siguiente función que usa dicha abstracción:
 ```
 int main ( int argc, char *argv[] )
 {
-    int   ret, val ;
     int   N = 10 ;
     char *A = "nombre" ;
+    int   val ;
 
     // init
-    ret = init(A, N) ;
+    init(A, N) ;
 
     // set
     for (int i=0; i<N; i++) {
-	 ret = set (A, 100+i, i) ;
+	 set (A, 100+i, i) ;
     }
 
     // get
     for (int i=0; i<N; i++) {
-	 ret = get (A, 100+i, &val) ;
+	 get (A, 100+i, &val) ;
     }
 
     return 0 ;
@@ -56,7 +56,7 @@ Para transformar a un servicio distribuidos, se aconseja seguir los siguientes p
 El [patrón proxy](https://es.wikipedia.org/wiki/Proxy_(patr%C3%B3n_de_dise%C3%B1o)) es importante para que el programa principal crea estar trabajando con una librería cuya implementación será remota.
 
 
-### Servicio centralizado monolítico
+## Servicio centralizado monolítico
 
 Dicha abstracción se diseña e implementa inicialmente:
   * En ún único fichero fuente (monolítico) y 
@@ -73,7 +73,7 @@ stateDiagram
 ```
 
 
-### Servicio centralizado con librería
+## Servicio centralizado con librería
 
 Dicha abstracción se diseña e implementa inicialmente:
   * En varios fichero fuente (librería + aplicación) y
@@ -90,7 +90,7 @@ La arquitectura se puede resumir como:
   ```
 
 
-### Servicio distribuido basado en colas POSIX
+## Servicio distribuido basado en colas POSIX
 
 Dicha abstracción se diseña e implementa inicialmente:
   * En varios fichero fuente (librería y ejecutables) y
@@ -111,7 +111,7 @@ sequenceDiagram
 ```
 
 
-### Servicio distribuido basado en sockets
+## Servicio distribuido basado en sockets
 
 Dicha abstracción se diseña e implementa inicialmente:
   * En varios fichero fuente (librería y ejecutables) y
@@ -132,14 +132,7 @@ sequenceDiagram
 ```
 
 
-## Información adicional
-
- * [Introducción al lab 1](https://www.youtube.com/watch?v=LWeuoihcKyI)
- * [Introducción al lab 2](https://www.youtube.com/watch?v=tmFu_JenEi0)
-
-
-
-### Servicio distribuido basado en RPC
+## Servicio distribuido basado en RPC
 
 Dicha abstracción se diseña e implementa inicialmente:
   * En varios fichero fuente (librería y ejecutables) y
@@ -158,4 +151,10 @@ sequenceDiagram
     lib-server.c   ->> lib-client.c: return remote result
     lib-client.c   ->> app-d: return result of the distributed API call
 ```
+
+
+## Información adicional
+
+ * [Introducción al lab 1](https://www.youtube.com/watch?v=LWeuoihcKyI)
+ * [Introducción al lab 2](https://www.youtube.com/watch?v=tmFu_JenEi0)
 
