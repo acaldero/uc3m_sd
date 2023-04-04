@@ -3,7 +3,7 @@
 
 ## Servicio distribuido basado en sockets
 
-*TIP: Before execute in two different machine please update the server IP address in lib-client.c*
+*NOTA: Antes de ejecutar en dos máquinas diferentes por favor actualice la dirección IP del servidor en el archivo lib-client.c*
 
 ### Compilar
 
@@ -15,7 +15,7 @@ gcc -g -Wall -c lib-client.c
 gcc -g -Wall -c lib.c
 gcc -g -Wall  app-d.o lib.o lib-client.o       -o app-d
 gcc -g -Wall -c lib-server.c
-gcc -g -Wall            lib.o lib-client.o lib-server.o  -o lib-server
+gcc -g -Wall  lib.o lib-client.o lib-server.o  -o lib-server
 ```
 
 ### Ejecutar

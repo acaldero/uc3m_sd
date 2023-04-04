@@ -1,57 +1,71 @@
-## Materiales usados en ARCOS.INF.UC3M.ES con Licencia GPLv3.0
-  * Felix García Carballeira y Alejandro Calderón Mateos
 
-## Sistemas Distribuidos
+## Materiales Sistemas Distribuidos
++ Felix García Carballeira y Alejandro Calderón Mateos
++ Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
-### Ejemplo de transformación a aplicación distribuida
 
-Partimos del servicio de una tabla hash diseñada como único ejecutable (centralizado) en ún único fichero fuente (monolítico):
-  * [Servicio centralizado monolítico](#servicio-centralizado-monolitico)
+### Ejemplo de transformación de aplicación monolítica a aplicación distribuida
 
-Pasamos al servicio de dicha tabla hash diseñada como ejecutable único (centralizada) pero usando librería (librería):
-  * [Servicio centralizado con librería](#servicio-centralizado-con-libreria)
+Partimos de una abstracción de una tabla hash con la siguiente interfaz:
+```
+  // Inicializar un array distribuido de N números enteros.
+  int init ( char  *nombre,  int  N ) ;
 
-Pasamos dicho servicio de tabla hash diseñado como aplicación distribuida:
-  * [Servicio distribuido basado en colas POSIX](#servicio-distribuido-basado-en-colas-posix)
-  * [Servicio distribuido basado en sockets](#servicio-distribuido-basado-en-sockets)
+  // Inserta el valor en la posición i del array nombre.
+  int set ( char *nombre, int i, int valor ) ;
+
+  // Recuperar el valor del elemento i del array nombre. 
+  int get ( char *nombre, int i, int *valor ) ;
+```
+
+Y tenemos la siguiente función que usa dicha abstracción:
+```
+int main ( int argc, char *argv[] )
+{
+    int   ret, val ;
+    int   N = 10 ;
+    char *A = "nombre" ;
+
+    // init
+    ret = init(A, N) ;
+
+    // set
+    for (int i=0; i<N; i++) {
+	 ret = set (A, 100+i, i) ;
+    }
+
+    // get
+    for (int i=0; i<N; i++) {
+	 ret = get (A, 100+i, &val) ;
+    }
+
+    return 0 ;
+}
+```
+
+Para transformar a un servicio distribuidos, se aconseja seguir los siguientes pasos:
+ ```mermaid
+  flowchart LR
+    A[monolítico] --> B[librería]
+    B[librería]   --> C{Patrón proxy y <br>mecanismo...}
+    C -- mqueue   --> D[colas POSIX]
+    C -- sockets  --> E[sockets]
+    C -- RPC      --> F[RPC]
+  ```
+
+El [patrón proxy](https://es.wikipedia.org/wiki/Proxy_(patr%C3%B3n_de_dise%C3%B1o)) es importante para que el programa principal crea estar trabajando con una librería cuya implementación será remota.
 
 
 ### Servicio centralizado monolítico
 
-* Compilar
+Dicha abstracción se diseña e implementa inicialmente:
+  * En ún único fichero fuente (monolítico) y 
+  * Se despliega como único ejecutable (centralizado)
 
-  Hay que introducir:
-  ```
-  cd centralizado-monolitico
-  make
-  ```
+El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
+  * [Servicio centralizado monolítico](centralizado-monolitico/README.md#servicio-centralizado-monol%C3%ADtico)
 
-  Y la salida debería ser similar a:
-  ```
-  gcc -g -Wall -c app-c.c
-  gcc -g -Wall app-c.o  -o app-c
-  ```
-
-* Ejecutar
-
-  Hay que introducir:
-  ```
-  ./app-c
-  ```
-
-  Y la salida debería ser similar a:
-  ```
-  set("nombre", 100, 0x0)
-  set("nombre", 101, 0x1)
-  set("nombre", 102, 0x2)
-  ...
-  get("nombre", 107) -> 0x7
-  get("nombre", 108) -> 0x8
-  get("nombre", 109) -> 0x9
-  ```
-
-* Arquitectura
-
+La arquitectura inicial se puede resumir como:
 ```mermaid
 stateDiagram
     direction LR
@@ -61,36 +75,14 @@ stateDiagram
 
 ### Servicio centralizado con librería
 
-* Compilar
+Dicha abstracción se diseña e implementa inicialmente:
+  * En varios fichero fuente (librería + aplicación) y
+  * Se despliega como único ejecutable (centralizado)
 
-  Hay que introducir:
-  ```
-  cd centralizado-librería
-  make
-  ```
+El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
+  * [Servicio centralizado con librería](#centralizado-libreria/README.md#servicio-centralizado-con-librer%C3%ADa)
 
-  Y la salida debería ser similar a:
-  ```
-  gcc -g -Wall -c app-c.c
-  gcc -g -Wall -c lib.c
-  gcc -g -Wall app-c.o lib.o  -o app-c
-  ```
-
-* Ejecutar
-
-  Hay que introducir:
-  ```
-  ./app-c
-  ```
-
-  Y la salida debería ser similar a:
-  ```
-  set("nombre", 1, 0x123)
-  get("nombre", 1) -> 0x123
-  ```
-
-* Arquitectura
-
+La arquitectura se puede resumir como:
   ```mermaid
   sequenceDiagram
       app-c   ->> lib.c: request lib.h API
@@ -100,90 +92,14 @@ stateDiagram
 
 ### Servicio distribuido basado en colas POSIX
 
-* Compilar
+Dicha abstracción se diseña e implementa inicialmente:
+  * En varios fichero fuente (librería y ejecutables) y
+  * Se despliega como varios ejecutables (distribuidos) usando colas POSIX
 
-  Hay que introducir:
-  ```
-  cd distribuido-mqueue
-  make
-  ```
+El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
+  * [Servicio distribuido basado en colas POSIX](distribuido-mqueue/README.md#servicio-distribuido-basado-en-colas-posix)
 
-  Y la salida debería ser similar a:
-  ```
-  gcc -g -Wall -c app-d.c
-  gcc -g -Wall -c lib-client.c
-  gcc -g -Wall -c lib.c
-  gcc -g -Wall -lrt app-d.o lib.o lib-client.o       -o app-d  -lrt
-  gcc -g -Wall -c lib-server.c
-  gcc -g -Wall            lib.o lib-client.o lib-server.o  -o lib-server  -lrt
-  ```
-
-* Ejecutar
-
-*TIP: Las colas POSIX se utilizan para comunicar procesos en la misma máquina*
-
-<html>
-<table>
-<tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
-<tr>
-<td>1</td>
-<td></td>
-<td>
-
-```
-$ ./lib-server
-```
-
-</td>
-</tr>
-
-<tr>
-<td>2</td>
-<td>
-
-```
-$ ./app-d
-d_set("nombre", 1, 0x123)
-d_get("nombre", 1) -> 0x123
-```
-
-</td>
-<td>
-
-```
-
- 1 = init(nombre, 10);
- 1 = set(nombre, 1, 0x123);
- 1 = get(nombre, 1, 0x123);
-```
-
-</td>
-</tr>
-
-<tr>
-<td>3</td>
-<td></td>
-<td>
-
-```
-^Caccept: Interrupted system call
-```
-
-</td>
-</tr>
-</table>
-</html>
-
-*TIP: Las colas POSIX pueden ser visibles desde la línea de comando:*
-
-``` bash
-sudo mkdir /dev/mqueue
-sudo mount -t mqueue none /dev/mqueue
-ls -las /dev/mqueue
-```
-
-* Arquitectura
-
+La arquitectura se puede resumir como:
 ```mermaid
 sequenceDiagram
     app-d          ->> lib-client.c: request lib.h API in a distributed way
@@ -197,77 +113,14 @@ sequenceDiagram
 
 ### Servicio distribuido basado en sockets
 
-*TIP: Before execute in two different machine please update the server IP address in lib-client.c*
+Dicha abstracción se diseña e implementa inicialmente:
+  * En varios fichero fuente (librería y ejecutables) y
+  * Se despliega como varios ejecutables (distribuidos) usando sockets
 
-* Compilar
+El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
+  * [Servicio distribuido basado en sockets](distribuido-sockets/README.md#servicio-distribuido-basado-en-sockets)
 
-  ```
-  $ cd distribuido-sockets
-  $ make
-  gcc -g -Wall -c app-d.c
-  gcc -g -Wall -c lib-client.c
-  gcc -g -Wall -c lib.c
-  gcc -g -Wall  app-d.o lib.o lib-client.o       -o app-d
-  gcc -g -Wall -c lib-server.c
-  gcc -g -Wall            lib.o lib-client.o lib-server.o  -o lib-server
-  ```
-
-* Ejecutar
-
-<html>
-<table>
-<tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
-<tr>
-<td>1</td>
-<td></td>
-<td>
-
-```
-$ ./lib-server
-```
-
-</td>
-</tr>
-
-<tr>
-<td>2</td>
-<td>
-
-```
-$ ./app-d
-d_set("nombre", 1, 0x123)
-d_get("nombre", 1) -> 0x123
-```
-
-</td>
-<td>
-
-```
-
- 1 = init(nombre, 10);
- 1 = set(nombre, 1, 0x123);
- 1 = get(nombre, 1, 0x123);
-```
-
-</td>
-</tr>
-
-<tr>
-<td>3</td>
-<td></td>
-<td>
-
-```
-^Caccept: Interrupted system call
-```
-
-</td>
-</tr>
-</table>
-</html>
-
-* Arquitectura
-
+La arquitectura se puede resumir como:
 ```mermaid
 sequenceDiagram
     app-d          ->> lib-client.c: request lib.h API in a distributed way
@@ -288,83 +141,14 @@ sequenceDiagram
 
 ### Servicio distribuido basado en RPC
 
-* Compilar
+Dicha abstracción se diseña e implementa inicialmente:
+  * En varios fichero fuente (librería y ejecutables) y
+  * Se despliega como varios ejecutables (distribuidos) usando RPC
 
-  Hay que introducir:
-  ```
-  cd distribuido-rpc
-  make
-  ```
+El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
+  * [Servicio distribuido basado en RPC](distribuido-rpc/README.md#servicio-distribuido-basado-en-rpc)
 
-  Y la salida debería ser similar a:
-  ```
-  gcc -g -Wall -c app-d.c
-  gcc -g -Wall -c message_clnt.c
-  gcc -g -Wall -c message_xdr.c
-  gcc -g -Wall    app-d.o message_clnt.o message_xdr.o  -o app-d 
-  gcc -g -Wall -c lib.c
-  gcc -g -Wall -c lib-server.c
-  gcc -g -Wall -c message_svc.c
-  gcc -g -Wall    lib-server.o lib.o  message_svc.o  message_xdr.o  -o lib-server 
-  ```
-
-* Ejecutar
-
-<html>
-<table>
-<tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
-<tr>
-<td>1</td>
-<td></td>
-<td>
-
-```
-$ ./lib-server
-```
-
-</td>
-</tr>
-
-<tr>
-<td>2</td>
-<td>
-
-```
-$ ./app-d localhost
-d_set("nombre", 1, 0x123)
-d_get("nombre", 1) -> 0x123
-```
-
-</td>
-<td>
-
-```
-
- 1 = init(nombre, 10);
- 1 = set(nombre, 1, 0x123);
- 1 = get(nombre, 1, 0x123);
-```
-
-</td>
-</tr>
-
-<tr>
-<td>3</td>
-<td></td>
-<td>
-
-```
-^Caccept: Interrupted system call
-```
-
-</td>
-</tr>
-</table>
-</html>
-
-
-* Arquitectura
-
+La arquitectura se puede resumir como:
 ```mermaid
 sequenceDiagram
     app-d          ->> lib-client.c: request lib.h API in a distributed way
