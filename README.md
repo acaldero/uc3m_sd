@@ -43,7 +43,15 @@ int main ( int argc, char *argv[] )
 }
 ```
 
-Para transformar a un servicio distribuidos, se aconseja seguir los siguientes pasos:
+Dicha abstracción se diseña e implementa inicialmente:
+  * En ún único fichero fuente (monolítico) y 
+  * Se despliega como único ejecutable (centralizado)
+
+El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
+  * [Servicio centralizado monolítico](centralizado-monolitico/README.md#servicio-centralizado-monol%C3%ADtico)
+
+Partiendo de esta versión inicial monolítica centralizada, 
+para transformar a un servicio distribuidos, se aconseja seguir los siguientes pasos:
  ```mermaid
   flowchart LR
     A[monolítico] --> B[librería]
@@ -53,24 +61,10 @@ Para transformar a un servicio distribuidos, se aconseja seguir los siguientes p
     C -- RPC      --> F[RPC]
   ```
 
-El [patrón proxy](https://es.wikipedia.org/wiki/Proxy_(patr%C3%B3n_de_dise%C3%B1o)) es importante para que el programa principal crea estar trabajando con una librería cuya implementación será remota.
+La primera transformación consiste en que la abstracción esté en una librería y el programa principal haga uso de esta librería.
 
-
-## Servicio centralizado monolítico
-
-Dicha abstracción se diseña e implementa inicialmente:
-  * En ún único fichero fuente (monolítico) y 
-  * Se despliega como único ejecutable (centralizado)
-
-El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio centralizado monolítico](centralizado-monolitico/README.md#servicio-centralizado-monol%C3%ADtico)
-
-La arquitectura inicial se puede resumir como:
-```mermaid
-stateDiagram
-    direction LR
-    app_c --> app_c
-```
+Para la siguiente transformacion, el [patrón proxy](https://es.wikipedia.org/wiki/Proxy_(patr%C3%B3n_de_dise%C3%B1o)) es importante para que el programa principal crea estar trabajando con una librería local cuando realmente la implementación será remota. 
+La librería local realmente es un suplente (*stub*) que se comunica con la implementación remota utilizando algún mecanismo de comunicación de entre los disponibles (colas POSIX, sockets, etc.) 
 
 
 ## Servicio centralizado con librería
@@ -80,7 +74,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como único ejecutable (centralizado)
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio centralizado con librería](#centralizado-libreria/README.md#servicio-centralizado-con-librer%C3%ADa)
+  * [Servicio centralizado con librería](centralizado-libreria/README.md)
 
 La arquitectura se puede resumir como:
   ```mermaid
@@ -97,7 +91,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como varios ejecutables (distribuidos) usando colas POSIX
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio distribuido basado en colas POSIX](distribuido-mqueue/README.md#servicio-distribuido-basado-en-colas-posix)
+  * [Servicio distribuido basado en colas POSIX](distribuido-mqueue/README.md)
 
 La arquitectura se puede resumir como:
 ```mermaid
@@ -118,7 +112,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como varios ejecutables (distribuidos) usando sockets
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio distribuido basado en sockets](distribuido-sockets/README.md#servicio-distribuido-basado-en-sockets)
+  * [Servicio distribuido basado en sockets](distribuido-sockets/README.md)
 
 La arquitectura se puede resumir como:
 ```mermaid
@@ -139,7 +133,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como varios ejecutables (distribuidos) usando RPC
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio distribuido basado en RPC](distribuido-rpc/README.md#servicio-distribuido-basado-en-rpc)
+  * [Servicio distribuido basado en RPC](distribuido-rpc/README.md)
 
 La arquitectura se puede resumir como:
 ```mermaid
