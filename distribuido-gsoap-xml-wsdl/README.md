@@ -89,8 +89,25 @@ gcc -o app-d  -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cell
 <td>
 
 ```
-$ ./app-d 
-Sum = 5.79
+```
+
+</td>
+<td>
+
+```
+$ ./lib-server 12345
+```
+
+</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>
+
+```
+$ ./app-d a 2 3
+result = 5
 ```
 
 </td>
@@ -104,6 +121,7 @@ Sum = 5.79
 
 </table>
 </html>
+
 
 
 #### Arquitectura
