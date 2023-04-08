@@ -75,12 +75,7 @@ curl -i http://127.0.0.1:5000/ddaa  -X POST \
 
 ```mermaid
 sequenceDiagram
-    app-d          ->> web-service: request lib.h API in a distributed way
-    web-service    ->> app-d: return result of the distributed API call
+    curl           ->> flask run: request REST API in a distributed way
+    flask run      ->> curl: return result of the distributed API call
 ```
-
-
-https://www.genivia.com/dev.html#client-c
-![flow chart of gsoap](https://www.genivia.com/images/flowchart.png)
-
 
