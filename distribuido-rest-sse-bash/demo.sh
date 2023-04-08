@@ -9,6 +9,8 @@ echo ""
 
 while [ 1 ]; do
   T=$(date +%H:%M:%S)
-  echo "data: {'timestamp': $T}\n\n"
+  echo "data: {'timestamp': $T}"
+  echo ""
+  echo ""
   sleep 1
 done

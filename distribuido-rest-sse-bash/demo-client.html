@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head> <meta charset="utf-8" /> </head>
+  <body>
+  <div id="msg1"></div>
+  <br>
+  <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div>
+  <br>
+  <script>
+    var s = new EventSource('http://localhost:8080');
+        s.onmessage = function(e) {
+            document.getElementById("msg1").innerHTML = e.data ;
+            var old_msg2 = document.getElementById("msg2").innerHTML ;
+            document.getElementById("msg2").innerHTML = e.data + '<br>' + old_msg2 ;
+        };
+  </script>
+  </body>
+</html>

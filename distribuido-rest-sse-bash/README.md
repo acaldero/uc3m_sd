@@ -33,7 +33,7 @@ $ ./demo-server
 <td>
 
 ```
-$ open demo.html
+$ open demo-client.html
 ```
 
 </td>
@@ -66,10 +66,10 @@ $ open demo.html
 
 ```mermaid
 sequenceDiagram
-    demo.html      ->> demo-server.sh: request API get (event stream)
-    demo-server.sh ->> demo.sh: request timestamp
-    demo.sh        ->> demo-server.sh: return timestamp
-    demo-server.sh ->> demo.html: return API get
+    demo-client.html  ->> demo-server.sh: request API get (event stream)
+    demo-server.sh    ->> demo.sh: request timestamp
+    demo.sh           ->> demo-server.sh: return timestamp
+    demo-server.sh    ->> demo-client.html: return API get
 ```
 
 
