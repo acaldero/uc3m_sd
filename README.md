@@ -154,17 +154,10 @@ sequenceDiagram
 
 
 
-### Ejemplo de Servicio Web
+# Ejemplo de Servicio Web
 
->> Qué es un servicio web
-
-Inicialmente los servidores Web se han usado para enviar el contenido estático guardado en ficheros.
-La siguiente generación, el contenido se generaba parcialmente o totalmente de forma dinámica (en el servidor con tecnologías como servlets, JSP, PHP, etc. así en el cliente con tecnologías como Applets, JavaScript, etc.)
-Era posible usar el método POST para enviar información útil (argumentos) para la generación dinámica.
-Hay un paso adicional interesante, ¿y si detrás de un fichero dinámico no hay un fichero sino un programa al que enviar los argumentos y que nos responda con el resultado?
-De esta forma se puede usar un servicio web, facilitando el despliegue de una nueva generación de aplicaciones distribuidas.
-
-En la WWW se usa una arquitectura cliente (ejemplo: navegador web) y servidor (ejemplo: servidor web Apache), con un protocolo HTTP basado en texto.
+En la WWW se usa una arquitectura cliente (ejemplo: navegador web) y servidor (ejemplo: servidor web Apache), con un protocolo HTTP basado en texto. \
+Inicialmente los servidores Web se han usado para enviar el contenido estático guardado en ficheros. \
 Por ejemplo, es posible pedir una página web a mano:
 * Ejecutamos:
   ```
@@ -182,46 +175,58 @@ Por ejemplo, es posible pedir una página web a mano:
   accept: */*
   ```
   Y la salida es:
-  ```
-HTTP/1.1 301 Moved Permanently
-Date: Fri, 28 Apr 2023 11:18:58 GMT
-Server: Apache
-Location: https:///
-Content-Length: 217
-Connection: close
-Content-Type: text/html; charset=iso-8859-1
+  ```html
+  HTTP/1.1 301 Moved Permanently
+  Date: Fri, 28 Apr 2023 11:18:58 GMT
+  Server: Apache
+  Location: https:///
+  Content-Length: 217
+  Connection: close
+  Content-Type: text/html; charset=iso-8859-1
 
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<html><head>
-<title>301 Moved Permanently</title>
-</head><body>
-<h1>Moved Permanently</h1>
-<p>The document has moved <a href="https:///">here</a>.</p>
-</body></html>
-Connection closed by foreign host.
+  <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+  <html><head>
+  <title>301 Moved Permanently</title>
+  </head><body>
+  <h1>Moved Permanently</h1>
+  <p>The document has moved <a href="https:///">here</a>.</p>
+  </body></html>
+  Connection closed by foreign host.
   ```
 
 La salida tiene dos partes:
 * Una cabecera con los metadatos de la respuesta.
 * El contenido de la página pedida (index.html) en formato texto HTML.
 
-Por tanto tenemos el potencial de escribir:
+La siguiente generación, el contenido se generaba parcialmente o totalmente de forma dinámica (en el servidor con tecnologías como servlets, JSP, PHP, etc. así en el cliente con tecnologías como Applets, JavaScript, etc.)
+Era posible usar el método POST para enviar información útil (argumentos) para la generación dinámica. \
+Hay un paso adicional interesante, ¿y si detrás de un fichero dinámico no hay un fichero sino un programa al que enviar los argumentos y que nos responda con el resultado? \
+Por tanto tenemos el potencial de:
+* Al escribir:
   ```
   GET /calculadora,sumar,2,3 HTTP/1.0
   accept: */*
   ```
-Y que la salida cambie el texto HTML por:
-  ```
+* Tener la salida siguiente en lugar del texto HTML:
+  ```html
+  HTTP/1.1 200 OK
+  Date: Fri, 28 Apr 2023 11:18:58 GMT
+  Server: Apache
+  Location: https:///
+  Content-Length: 1
+  Connection: close
+  Content-Type: text/html; charset=iso-8859-1
+
   5
   ```
-Y de esta forma podemos tener un posible servicio web... afortunadamente hay distintos estándares que nos permiten construir servicios web en los que se evite en lo posible incompatibilidades.
+
+Y de esta forma podemos tener un posible servicio web... afortunadamente hay distintos estándares que nos permiten construir servicios web en los que se evite en lo posible incompatibilidades. \
+De esta forma se puede usar un servicio web, facilitando el despliegue de una nueva generación de aplicaciones distribuidas.
 
 
-#### Usar un servicio distribuido basado en gSOAP/XML (cliente solo)
+## Usar un servicio distribuido basado en gSOAP/XML (cliente solo)
 
-Usaremos el ejemplo disponible en:
-  * [ws-rest-sse-bash](ws-rest-sse-bash/README.md)
-
+Usaremos el ejemplo disponible en [ws-rest-sse-bash](ws-rest-sse-bash/README.md)
 
 Los pasos para la ejecución típica son:
  * Ejecutar el servidor:
@@ -233,24 +238,20 @@ Los pasos para la ejecución típica son:
    firefox demo-client.html
    ```
 
-Como puede observarse, demo-server.sh manda la salida del script "demo.sh" a un net-cat que está escuchando en el puerto 8080.
-El script "demo.sh" se encarga de mandar las cabeceras de respuesta de un servidor web, junto a cada segundo el instante de tiempo dentro de un JSON.
+Como puede observarse, demo-server.sh manda la salida del script "demo.sh" a un net-cat que está escuchando en el puerto 8080. \
+El script "demo.sh" se encarga de mandar las cabeceras de respuesta de un servidor web, junto a cada segundo el instante de tiempo dentro de un JSON. \
 La página web "demo-client.html" se encarga de mostrar la información que va llegando en tiempo real.
 
-Se usa en este ejemplo el [Server Side Events](https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events).
+Se usa en este ejemplo el [Server Side Events](https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events). \
 Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).
 
 
 
-#### Usar un servicio distribuido basado en gSOAP/XML (cliente solo)
+## Usar un servicio distribuido basado en gSOAP/XML (cliente solo)
 
-Usaremos el ejemplo disponible en:
-  * [ws-gsoap-xml-wsdl](ws-gsoap-xml-wsdl/README.md)
+Usaremos el ejemplo disponible en [ws-gsoap-xml-wsdl](ws-gsoap-xml-wsdl/README.md)
 
-Dicho ejemplo se basa en el servicio de calculadora que está en:
-```
-http://www.genivia.com/calc.wsdl
-```
+Dicho ejemplo se basa en el servicio de calculadora que está en: http://www.genivia.com/calc.wsdl
 
 Los pasos a seguir habitualmente son los siguientes:
 * Primero hay que generar el archivo de cabecera calc.h con la interfaz del servicio a partir de la descripción del servicio dada en WSDL:
@@ -296,15 +297,11 @@ Los pasos a seguir habitualmente son los siguientes:
   ```
 
 
-#### Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor)
+## Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor)
 
-Usaremos el ejemplo disponible en:
-  * [ws-gsoap-xml-standalone](ws-gsoap-xml-standalone/README.md)
+Usaremos el ejemplo disponible en [ws-gsoap-xml-standalone](ws-gsoap-xml-standalone/README.md)
 
-Dicho ejemplo es el ejemplo de calculadora disponible en:
-```
-https://www.genivia.com/dev.html#client-c
-```
+Dicho ejemplo es el ejemplo de calculadora disponible en: https://www.genivia.com/dev.html#client-c
 
 Los pasos a seguir habitualmente son los siguientes:
 * Primero hay que generar el archivo de cabecera calc.h con la interfaz del servicio a partir de la descripción del servicio dada en WSDL:
