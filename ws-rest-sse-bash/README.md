@@ -22,7 +22,7 @@ cd distribuido-rest-sse-bash
 <td>
 
 ```
-$ ./demo-server
+$ ./demo-server.sh
 ```
 
 </td>
@@ -33,7 +33,7 @@ $ ./demo-server
 <td>
 
 ```
-$ open demo-client.html
+$ firefox demo-client.html
 ```
 
 </td>

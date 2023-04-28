@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 
 echo "HTTP/1.1 200 OK"
 echo "Access-Control-Allow-Origin: *"
