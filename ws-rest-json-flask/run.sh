@@ -2,8 +2,7 @@
 set -x
 
 echo "Initialize flask..."
-FLASK_PATH=$HOME/miniforge3/bin/
-FLASK_APP=app.py FLASK_DEBUG=true  $FLASK_PATH/flask run &
+FLASK_APP=app.py FLASK_DEBUG=true  flask run &
 
 sleep 2
 

@@ -247,7 +247,7 @@ Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar
 
 
 
-## Usar un servicio distribuido basado en gSOAP/XML (cliente solo)
+## Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)
 
 Usaremos el ejemplo disponible en [ws-gsoap-xml-wsdl](ws-gsoap-xml-wsdl/README.md)
 
@@ -297,7 +297,7 @@ Los pasos a seguir habitualmente son los siguientes:
   ```
 
 
-## Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor)
+## Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)
 
 Usaremos el ejemplo disponible en [ws-gsoap-xml-standalone](ws-gsoap-xml-standalone/README.md)
 
@@ -375,10 +375,14 @@ Los pasos a seguir habitualmente son los siguientes:
       -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
       lib-server.c soapC.c soapClient.c -lgsoap
   ```
-* Es posible ejecutar por un lado el servidor (lib-server) y por otro el cliente (app-d) de manera
+* Es posible ejecutar por un lado el servidor (lib-server) y por otro el cliente (app-d) de la siguiente manera:
+```
+$ ./lib-server &
+$ ./app-d
+```
 
 
-Gracias al mandato soapcpp2 se han generado gran parte del trabajo:
+Gracias al mandato soapcpp2 se han generado gran parte del trabajo, como se puede ver en la siguiente figura:
 ![flow chart of gsoap](https://www.genivia.com/images/flowchart.png)
 
 

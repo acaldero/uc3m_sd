@@ -3,7 +3,7 @@
 
 ## Servicio distribuido basado en REST con Python Flask
 
-#### Compilar
+#### Preparación
 
 Hay que introducir:
 ```
@@ -40,8 +40,7 @@ Si no se tiene instalado gsoap, se puede instalar con:
 <td>
 
 ```
-FLASK_PATH=$HOME/miniforge3/bin/
-FLASK_APP=app.py FLASK_DEBUG=true  $FLASK_PATH/flask run &
+FLASK_APP=app.py FLASK_DEBUG=true  flask run &
 ```
 
 </td>

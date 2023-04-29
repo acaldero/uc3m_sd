@@ -97,7 +97,7 @@ Pasos generales al empezar:
 
 1) Instalar pre-requisitos:
    ```
-   apt-get install libtirpc-common libtirpc-dev libtirpc3  rpcsvc-proto  rpcbind build-essential
+   sudo apt-get install libtirpc-common libtirpc-dev libtirpc3  rpcbind build-essential
    ```
 
 2) Configurar pre-requisitos:

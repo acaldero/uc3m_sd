@@ -8,11 +8,11 @@ app = Flask(__name__)
 
 ddaa = [ ]
 
-@app.get("/ddaa")
+@app.route('/ddaa', methods=["GET"])
 def get_ddaa():
     return jsonify(ddaa)
 
-@app.post("/ddaa")
+@app.route('/ddaa', methods=["POST"])
 def add_ddaa():
     if request.is_json:
         da = request.get_json()
@@ -20,7 +20,7 @@ def add_ddaa():
         return da, 201
     return {"error": "Request must be JSON"}, 415
 
-@app.put("/ddaa")
+@app.route('/ddaa', methods=["PUT"])
 def update_da():
     if request.is_json:
         da = request.get_json()
@@ -32,7 +32,7 @@ def update_da():
         return da, 201
     return {"error": "Request must be JSON"}, 415
 
-@app.get("/ddaa/<name>/<key>")
+@app.route('/ddaa/<name>/<key>', methods=["GET"])
 def get_da(name, key):
     found = 0
     for dai in ddaa:
@@ -42,7 +42,7 @@ def get_da(name, key):
        return {"error": "name or key not found"}, 415
     return dai, 201
 
-@app.put("/ddaa/<name>/<key>/<value>")
+@app.route('/ddaa/<name>/<key>/<value>', methods=["PUT"])
 def set_da(name, key, value):
     found = 0
     for dai in ddaa:

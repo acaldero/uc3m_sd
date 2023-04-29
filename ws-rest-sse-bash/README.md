@@ -3,7 +3,7 @@
 
 ## Servicio distribuido basado en HTML5 Server-Sent Events
 
-#### Compilar
+#### Preparación
 
 Hay que introducir:
 ```
