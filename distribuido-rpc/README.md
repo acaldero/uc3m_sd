@@ -3,39 +3,80 @@
 
 ## Servicio distribuido basado en RPC
 
-#### Compilar
+### (0) Pasos iniciales para Ubuntu 22.04 o compatible:
 
-Los ficheros necesarios son:
-* message.x: definición de la interfaz en lenguaje XDR
-* Makefile.rpc: archivo para compilar todo
-* app-d.c: implementación de programa cliente que usa la interfaz
-* lib-server.c: implementación de servidor que sirve la interfaz
-* lib.c: implementación de la interfaz a ser usada en el lado del servidor
-* lib.h: interfaz a ser usada en el lado del servidor
+  1) Instalar pre-requisitos:
+     ```
+     sudo apt-get install libtirpc-common libtirpc-dev libtirpc3  rpcbind build-essential  
+     ```
+  2) Configurar pre-requisitos:
+     ```
+     sudo mkdir -p /run/sendsigs.omit.d/
+     sudo /etc/init.d/rpcbind restart
+     ```
 
-El primer paso es generar los suplentes o stubs con rpcgen:
-```
-rpcgen -a -N -M message.x
-```
+### (1) Pasos para crear una aplicación distribuida con las RPC:
 
-A continuación hay que compilar:
-```
-make -f Makefile.rpc
-```
+  1) Crear el archivo IDL usando lenguaje XDR (que es parecido a C pero no exactamente C). \
+     Por ejemplo, "message.x":
+     ```
+     struct get_res 
+     {
+       int value ;
+       int status ;
+     } ;
+     program NANODT
+     {
+      	version NANODT_VERSION
+       {
+		        int            d_init ( string name, int N )            = 1 ;
+		        int            d_set  ( string name, int i, int value ) = 2 ;
+		        struct get_res d_get  ( string name, int i )            = 3 ;
+	      } = 1 ;
+     } = 55555 ;
+     ```
 
-Y la salida debería ser similar a:
-```
-gcc -g -Wall -c app-d.c
-gcc -g -Wall -c message_clnt.c
-gcc -g -Wall -c message_xdr.c
-gcc -g -Wall    app-d.o message_clnt.o message_xdr.o  -o app-d 
-gcc -g -Wall -c lib.c
-gcc -g -Wall -c lib-server.c
-gcc -g -Wall -c message_svc.c
-gcc -g -Wall    lib-server.o lib.o  message_svc.o  message_xdr.o  -o lib-server 
-```
+  2) Uso de rpcgen con archivo de IDL:
+     ```
+     rpcgen -a -N -M suma.x
+     ```
 
-#### Ejecutar
+  3) Solo en el caso de usar Ubuntu 22.04 o compatible, habría que editar Makefile.suma y revisar que CFLAGS y LDLIBS usan tirpc:
+     ```
+     ...
+     CFLAGS += -g -I/usr/include/tirpc
+     LDLIBS += -lnsl -lpthread -ldl -ltirpc
+     ...
+     ```
+
+  4) Hay que añadir el código en el lado del servidor (lib-server.c + lib.c + lib.h) y el código del cliente (app-d.c), junto con el Makefile.rpc para compilar:
+     * **Makefile.rpc**: archivo para compilar todo
+     * **app-d.c**: implementación de programa cliente que usa la interfaz
+     * **lib-server.c**: implementación de servidor que sirve la interfaz
+     * **lib.c**: implementación de la interfaz a ser usada en el lado del servidor
+     * **lib.h**: interfaz a ser usada en el lado del servidor
+
+
+### (2) Compilar
+
+* A continuación hay que compilar:
+  ```
+  make -f Makefile.rpc
+  ```
+
+* Y la salida debería ser similar a:
+  ```
+  gcc -g -Wall -c app-d.c
+  gcc -g -Wall -c message_clnt.c
+  gcc -g -Wall -c message_xdr.c
+  gcc -g -Wall    app-d.o message_clnt.o message_xdr.o  -o app-d 
+  gcc -g -Wall -c lib.c
+  gcc -g -Wall -c lib-server.c
+  gcc -g -Wall -c message_svc.c
+  gcc -g -Wall    lib-server.o lib.o  message_svc.o  message_xdr.o  -o lib-server 
+  ```
+
+#### (3) Ejecutar
 
 <html>
 <table>
@@ -103,53 +144,4 @@ sequenceDiagram
     lib-server.c   ->> lib-client.c: return remote result
     lib-client.c   ->> app-d: return result of the distributed API call
 ```
-
-
-## Uso de RPC en Ubuntu 22.04 (o compatible)
-
-Pasos generales al empezar:
-
-1) Instalar pre-requisitos:
-   ```
-   sudo apt-get install libtirpc-common libtirpc-dev libtirpc3  rpcbind build-essential
-   ```
-
-2) Configurar pre-requisitos:
-   ```
-   sudo mkdir -p /run/sendsigs.omit.d/
-   sudo /etc/init.d/rpcbind restart
-   ```
-
-Pasos en cada aplicación que use RPC:
-
-1) Crear el archivo IDL.
-   Por ejemplo, "suma.x":
-   ```
-   program SUMAR {
-      version SUMAVER {
-         int  SUMA(int a, int b) = 1;
-         int RESTA(int a, int b) = 2;
-      } = 1;
-   } = 99;
-   ```
-
-2) Uso de rpcgen con archivo de IDL:
-   ```
-   rpcgen -NMa suma.x
-   ```
-
-3) Habría que editar Makefile.suma y cambiar:
-   ```
-   ...
-   CFLAGS += -g -I/usr/include/tirpc
-   LDLIBS += -lnsl -lpthread -ldl -ltirpc
-   ...
-   ```
-
-4) Hay que añadir el código en el servidor (suma_server.c) y cambiar el código del cliente (suma_client.c)
-
-5) Habría que compilar con make:
-   ```
-   make -f Makefile.suma
-   ```
 
