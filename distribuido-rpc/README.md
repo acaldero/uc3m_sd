@@ -54,19 +54,25 @@
      ...
      ```
 
-  4) Hay que añadir el código en el lado del servidor, el código del cliente y modificar Makefile para compilar. \
-     En nuestro ejemplo, hay que añadir en el lado del servidor (lib-server.c + lib.c + lib.h), en el lado del cliente (app-d.c) y el Makefile.rpc para compilar:
-     * **[app-d.c](app-d.c)**: implementación de programa cliente que usa la interfaz
-     * **[lib-server.c](lib-server.c)**: implementación de la interfaz RPC
-     * **[lib.c](lib.c)**: implementación de la interfaz a ser usada en el lado del servidor
-     * **[lib.h](lib.h)**: interfaz a ser usada en el lado del servidor
-     * **[Makefile.rpc](Makefile.rpc)**: archivo para compilar todo
-     
+  4) Hay que completar el código que rpcgen genera, para ello hay que:
+     * Añadir el código en el lado del servidor, que implementa el servicio RPC.
+     * Añadir el código en el lado del cliente, que usa el API del servicio RPC.
+     * Modificar Makefile para compilar nuestro proyecto.
+
      NOTA: el mandato rpcgen nos ayuda en gran parte del trabajo al generar unos archivos que nos pueden servir de plantilla y que hay que modificar para nuestro proyecto:
-     * **Makefile.message**: plantilla para archivo de compilación, hay que añadir los archivos extras que tenga el proyecto
-     * **message_client.c**: ejemplo de programa cliente que hace llamadas RPC
      * **message_server.c**: plantilla para el archivo lib-server.c que implementa la interfaz en el servidor.
-     Además es posible que haya que añadir archivos que nuestro proyecto pueda necesitar.
+     * **message_client.c**: ejemplo de programa cliente que hace llamadas RPC
+     * **Makefile.message**: plantilla para archivo de compilación, hay que añadir los archivos extras que tenga el proyecto
+
+     En nuestro ejemplo usaremos los siguientes archivos en lugar de los generados por rpcgen:
+     * En el lado del servidor (lib-server.c + lib.c + lib.h):
+       * **[lib-server.c](lib-server.c)**: implementación de la interfaz RPC
+       * **[lib.c](lib.c)**: implementación de la interfaz a ser usada en el lado del servidor
+       * **[lib.h](lib.h)**: interfaz a ser usada en el lado del servidor
+     * En el lado del cliente (app-d.c):
+       * **[app-d.c](app-d.c)**: implementación de programa cliente que usa la interfaz
+     * El Makefile.rpc para compilar:
+       * **[Makefile.rpc](Makefile.rpc)**: archivo para compilar todo
 
 
 ### (2) Compilar
