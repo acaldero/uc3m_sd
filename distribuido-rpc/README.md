@@ -46,11 +46,11 @@
      * **message_svc.c**
      * **message_xdr.c**
 
-  3) Solo en el caso de usar Ubuntu 22.04 o compatible, habría que editar Makefile.rpc y revisar que CFLAGS y LDLIBS usan tirpc:
+  3) Solo en el caso de usar Ubuntu 22.04 o compatible, habría que editar Makefile.rpc y revisar que CFLAGS y LDFLAGS usan tirpc:
      ```
      ...
-     CFLAGS += -g -I/usr/include/tirpc
-     LDLIBS += -lnsl -lpthread -ldl -ltirpc
+     CFLAGS  += -g -I/usr/include/tirpc
+     LDFLAGS += -lnsl -lpthread -ldl -ltirpc
      ...
      ```
 
@@ -70,7 +70,8 @@
        * **[lib.c](lib.c)**: implementación de la interfaz a ser usada en el lado del servidor
        * **[lib.h](lib.h)**: interfaz a ser usada en el lado del servidor
      * En el lado del cliente (app-d.c):
-       * **[app-d.c](app-d.c)**: implementación de programa cliente que usa la interfaz
+       * **[lib-client.c](lib-client.c)**: implementación del proxy que usa la interfaz RPC
+       * **[app-d.c](app-d.c)**: implementación de programa cliente que usa la interfaz de lib-client.c (la de lib.h en el cliente)
      * El Makefile.rpc para compilar:
        * **[Makefile.rpc](Makefile.rpc)**: archivo para compilar todo
 
@@ -85,13 +86,14 @@
 * Y la salida debería ser similar a:
   ```
   gcc -g -Wall -c app-d.c
+  gcc -g -Wall -c lib-client.c
   gcc -g -Wall -c message_clnt.c
   gcc -g -Wall -c message_xdr.c
-  gcc -g -Wall    app-d.o message_clnt.o message_xdr.o  -o app-d 
+  gcc -g -Wall    app-d.o lib-client.o message_clnt.o message_xdr.o  -o app-d 
   gcc -g -Wall -c lib.c
   gcc -g -Wall -c lib-server.c
   gcc -g -Wall -c message_svc.c
-  gcc -g -Wall    lib-server.o lib.o  message_svc.o  message_xdr.o  -o lib-server 
+  gcc -g -Wall    lib-server.o  lib.o  message_svc.o  message_xdr.o  -o lib-server 
   ```
 
 #### (3) Ejecutar
