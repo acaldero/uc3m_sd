@@ -4,7 +4,7 @@
 + Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
-### Ejemplo de transformación de aplicación monolítica a aplicación distribuida
+# Ejemplo de transformación de aplicación monolítica a aplicación distribuida
 
 Partimos de una abstracción de una tabla hash con la siguiente interfaz:
 ```
@@ -224,7 +224,7 @@ Y de esta forma podemos tener un posible servicio web... afortunadamente hay dis
 De esta forma se puede usar un servicio web, facilitando el despliegue de una nueva generación de aplicaciones distribuidas.
 
 
-## Usar un servicio distribuido basado en gSOAP/XML (cliente solo)
+## Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)
 
 Usaremos el ejemplo disponible en [ws-rest-sse-bash](ws-rest-sse-bash/README.md)
 
@@ -237,7 +237,7 @@ Los pasos para la ejecución típica son:
    ```
    firefox demo-client.html
    ```
-
+   
 Como puede observarse, demo-server.sh manda la salida del script "demo.sh" a un net-cat que está escuchando en el puerto 8080. \
 El script "demo.sh" se encarga de mandar las cabeceras de respuesta de un servidor web, junto a cada segundo el instante de tiempo dentro de un JSON. \
 La página web "demo-client.html" se encarga de mostrar la información que va llegando en tiempo real.
@@ -383,6 +383,6 @@ $ ./app-d
 
 
 Gracias al mandato soapcpp2 se han generado gran parte del trabajo, como se puede ver en la siguiente figura:
-![flow chart of gsoap](https://www.genivia.com/images/flowchart.png)
+<img src="https://www.genivia.com/images/flowchart.png" style="max-height:512" />
 
 
