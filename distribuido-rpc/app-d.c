@@ -1,6 +1,6 @@
 
 /*
- *  Copyright 2020-2021 Felix Garcia Carballeira, Alejandro Calderon Mateos,
+ *  Copyright 2020-2023 Felix Garcia Carballeira, Alejandro Calderon Mateos,
  *
  *  This file is part of nanodt proyect.
  *
@@ -22,7 +22,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "message.h"
+#include "lib-client.h"
 
 
 int   N = 10 ;
@@ -31,57 +31,39 @@ char *A = "nombre" ;
 
 int main ( int argc, char *argv[] )
 {
-    CLIENT *clnt;
-    enum clnt_stat retval;
     int ret ;
+    int valor ;
 
     if (argc < 2)
     {
         printf("Usage: %s <server_ip>\n", argv[0]) ;
         exit(-1) ;
     }
-
-    // Inicializar sesi'on RPC
-    char *host = argv[1] ;
-    clnt = clnt_create(host, NANODT, NANODT_VERSION, "tcp") ;
-    if (clnt == NULL) {
-        clnt_pcreateerror(host) ;
-        exit(-1) ;
-    }
+    setenv("SERVER_IP", argv[1], 1) ;
 
     // init
-    retval = d_init_1(A, N, &ret, clnt) ;
-    if (retval != RPC_SUCCESS) {
-        clnt_perror(clnt, "d_init_1: ") ;
-        exit(-1) ;
-    }
+    ret = init(A, N) ;
+    if (ret < 0) { exit(-1) ; }
     printf("d_init(\"%s\", %d) -> %d\n", A, N, ret) ;
 
     for (int i=0; i<N; i++)
     {
 	    // set
-	    retval = d_set_1(A, 100+i, i, &ret, clnt) ;
-	    if (retval != RPC_SUCCESS) {
-		clnt_perror(clnt, "d_set_1: ") ;
-		exit(-1) ;
-	    }
+            ret = set(A, 100+i, i) ;
+	    if (ret < 0) { exit(-1) ; }
 	    printf("d_set(\"%s\", %d, 0x%x) -> %d\n", A, 100+i, i, ret) ;
     }
 
     for (int i=0; i<N; i++)
     {
 	    // get
-	    struct get_res getarg ;
-	    retval = d_get_1(A, 100+i, &getarg, clnt) ;
-	    if (retval != RPC_SUCCESS) {
-		clnt_perror(clnt, "d_get_1: ") ;
-		exit(-1) ;
-	    }
-	    printf("d_get(\"%s\", %d) -> 0x%x\n", A, 100+i, getarg.value) ;
+            ret = get(A, 100+i, &valor) ;
+	    if (ret < 0) { exit(-1) ; }
+	    printf("d_get(\"%s\", %d) -> 0x%x\n", A, 100+i, valor) ;
     }
 
     /* Finalizar sesi'on RPC */
-    clnt_destroy(clnt) ;
+    finalize(A, N) ;
     return 0 ;
 }
 
