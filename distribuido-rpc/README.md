@@ -5,10 +5,22 @@
 
 #### Compilar
 
-Hay que introducir:
+Los ficheros necesarios son:
+* message.x: definición de la interfaz en lenguaje XDR
+* Makefile.rpc: archivo para compilar todo
+* app-d.c: implementación de programa cliente que usa la interfaz
+* lib-server.c: implementación de servidor que sirve la interfaz
+* lib.c: implementación de la interfaz a ser usada en el lado del servidor
+* lib.h: interfaz a ser usada en el lado del servidor
+
+El primer paso es generar los suplentes o stubs con rpcgen:
 ```
-cd distribuido-rpc
-make
+rpcgen -a -N -M message.x
+```
+
+A continuación hay que compilar:
+```
+make -f Makefile.rpc
 ```
 
 Y la salida debería ser similar a:
@@ -67,6 +79,8 @@ d_get("nombre", 1) -> 0x123
 <td>3</td>
 <td></td>
 <td>
+
+Para parar el servidor hay que presionar Control-C:
 
 ```
 ^Caccept: Interrupted system call
