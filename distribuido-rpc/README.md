@@ -38,10 +38,15 @@
 
   2) Uso de rpcgen con archivo de IDL:
      ```
-     rpcgen -a -N -M suma.x
+     rpcgen -a -N -M message.x
      ```
+     NOTA: este mandato genera distintos ficheros, los stubs o suplentes de RPC no han de modificarse:
+     * **message.h**
+     * **message_clnt.c**
+     * **message_svc.c**
+     * **message_xdr.c**
 
-  3) Solo en el caso de usar Ubuntu 22.04 o compatible, habría que editar Makefile.suma y revisar que CFLAGS y LDLIBS usan tirpc:
+  3) Solo en el caso de usar Ubuntu 22.04 o compatible, habría que editar Makefile.rpc y revisar que CFLAGS y LDLIBS usan tirpc:
      ```
      ...
      CFLAGS += -g -I/usr/include/tirpc
@@ -49,12 +54,17 @@
      ...
      ```
 
-  4) Hay que añadir el código en el lado del servidor (lib-server.c + lib.c + lib.h) y el código del cliente (app-d.c), junto con el Makefile.rpc para compilar:
-     * **Makefile.rpc**: archivo para compilar todo
+  4) Hay que añadir el código en el lado del servidor, el código del cliente y modificar Makefile para compilar. \
+     En nuestro ejemplo, hay que añadir en el lado del servidor (lib-server.c + lib.c + lib.h), en el lado del cliente (app-d.c) y el Makefile.rpc para compilar:
      * **app-d.c**: implementación de programa cliente que usa la interfaz
-     * **lib-server.c**: implementación de servidor que sirve la interfaz
+     * **lib-server.c**: implementación de la interfaz RPC
      * **lib.c**: implementación de la interfaz a ser usada en el lado del servidor
      * **lib.h**: interfaz a ser usada en el lado del servidor
+     * **Makefile.rpc**: archivo para compilar todo
+     NOTA: el mandato rpcgen nos ayuda en gran parte del trabajo al generar unos archivos que nos pueden servir de plantilla:
+     * **Makefile.message**: plantilla para archivo de compilación, hay que añadir los archivos extras que tenga el proyecto
+     * **message_client.c**: ejemplo de programa cliente que hace llamadas RPC
+     * **message_server.c**: plantilla para el archivo lib-server.c que implementa la interfaz en el servidor.
 
 
 ### (2) Compilar
