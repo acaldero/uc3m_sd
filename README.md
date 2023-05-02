@@ -39,6 +39,16 @@
       <td>...</td>
   </tr>
 
+  <tr><td>8</td>
+      <td>Servicios Web</td>
+      <td><ul>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t8_web-services.pdf">t8_web-services.pdf</a></li>
+      </ul></td>
+      <td>
+      <ul type="1">
+      </ul>
+      </td>
+  </tr>
   <tr><td>9</td>
       <td>Tolerancia a fallos</td>
       <td><ul>
@@ -65,7 +75,7 @@ Partimos de una abstracción de una tabla hash con la siguiente interfaz:
   // Inserta el valor en la posición i del array nombre.
   int set ( char *nombre, int i, int valor ) ;
 
-  // Recuperar el valor del elemento i del array nombre. 
+  // Recuperar el valor del elemento i del array nombre.
   int get ( char *nombre, int i, int *valor ) ;
 ```
 
@@ -95,13 +105,13 @@ int main ( int argc, char *argv[] )
 ```
 
 Dicha abstracción se diseña e implementa inicialmente:
-  * En ún único fichero fuente (monolítico) y 
+  * En ún único fichero fuente (monolítico) y
   * Se despliega como único ejecutable (centralizado)
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
   * [Servicio centralizado monolítico](centralizado-monolitico/README.md#servicio-centralizado-monol%C3%ADtico)
 
-Partiendo de esta versión inicial monolítica centralizada, 
+Partiendo de esta versión inicial monolítica centralizada,
 para transformar a un servicio distribuidos, se aconseja seguir los siguientes pasos:
  ```mermaid
   flowchart LR
@@ -114,8 +124,8 @@ para transformar a un servicio distribuidos, se aconseja seguir los siguientes p
 
 La primera transformación consiste en que la abstracción esté en una librería y el programa principal haga uso de esta librería.
 
-Para la siguiente transformacion, el [patrón proxy](https://es.wikipedia.org/wiki/Proxy_(patr%C3%B3n_de_dise%C3%B1o)) es importante para que el programa principal crea estar trabajando con una librería local cuando realmente la implementación será remota. 
-La librería local realmente es un suplente (*stub*) que se comunica con la implementación remota utilizando algún mecanismo de comunicación de entre los disponibles (colas POSIX, sockets, etc.) 
+Para la siguiente transformacion, el [patrón proxy](https://es.wikipedia.org/wiki/Proxy_(patr%C3%B3n_de_dise%C3%B1o)) es importante para que el programa principal crea estar trabajando con una librería local cuando realmente la implementación será remota.
+La librería local realmente es un suplente (*stub*) que se comunica con la implementación remota utilizando algún mecanismo de comunicación de entre los disponibles (colas POSIX, sockets, etc.)
 
 
 ## Servicio centralizado con librería
@@ -288,7 +298,7 @@ Los pasos para la ejecución típica son:
    ```
    firefox demo-client.html
    ```
-   
+
 Como puede observarse, demo-server.sh manda la salida del script "demo.sh" a un net-cat que está escuchando en el puerto 8080. \
 El script "demo.sh" se encarga de mandar las cabeceras de respuesta de un servidor web, junto a cada segundo el instante de tiempo dentro de un JSON. \
 La página web "demo-client.html" se encarga de mostrar la información que va llegando en tiempo real.
@@ -388,29 +398,29 @@ Los pasos a seguir habitualmente son los siguientes:
   ```
   #include "soapH.h"
   #include "calc.nsmap"
-   
+
   int main(int argc, char **argv)
   {
       struct soap soap;
-   
+
       soap_init(&soap);
       soap_bind(&soap,NULL,atoi(argv[1]), 100);
       while(1)
-      { 
+      {
         soap_accept(&soap);
         soap_serve(&soap);
         soap_end(&soap);
       }
-   
+
       return 0;
   }
-   
+
   int ns__add (struct soap *soap, double a, double b, double *result)
   {
       *result = a + b;
       return SOAP_OK;
   }
-   
+
   int ns__sub (struct soap *soap, double a, double b, double *result)
   {
        *result = a - b;
