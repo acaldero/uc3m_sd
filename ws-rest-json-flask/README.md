@@ -57,6 +57,8 @@ curl -i http://127.0.0.1:5000/ddaa  -X POST \
      -d '{"name":"first", "array": {}}'
 ```
 
+Ver NOTA(1)
+
 </td>
 <td>
 
@@ -68,6 +70,12 @@ curl -i http://127.0.0.1:5000/ddaa  -X POST \
 
 </table>
 </html>
+
+* NOTA(1): Es posible usar una herramienta como swagger que de forma visual permite trabajar con un API REST:
+```
+https://swagger.io/tools/swagger-ui/
+```
+
 
 
 #### Arquitectura
