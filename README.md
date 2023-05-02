@@ -42,7 +42,7 @@
   <tr><td>9</td>
       <td>Tolerancia a fallos</td>
       <td><ul>
-        <li> <a href="https://acaldero.github.io/uc3m_sd/transparencias/t9_tolerancia-a-fallos.pdf">t9_tolerancia-a-fallos.pdf</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t9_tolerancia-a-fallos.pdf">t9_tolerancia-a-fallos.pdf</a></li>
       </ul></td>
       <td>
       <ul type="1">
