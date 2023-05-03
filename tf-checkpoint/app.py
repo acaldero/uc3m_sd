@@ -36,7 +36,7 @@ state = chkpnt_load()
 if state == None:
    state = {"iter": 0}
 
-while True:
+while state['iter'] < 50:
    # save checkpoint
    print('iter: ', state['iter'])
    chkpnt_save(state) 
@@ -50,4 +50,7 @@ while True:
 
    # next iteration
    state['iter'] = state['iter'] + 1
+
+# remove checkpoint
+chkpnt_remove()
 
