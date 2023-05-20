@@ -13,6 +13,10 @@ class Calculadora(ServiceBase):
     def sub(ctx, a, b):
          return a-b
 
+    @rpc(Unicode, _returns=Unicode)
+    def inc(ctx, a):
+         return str(int(a) + 1)
+
 application = Application(
   services=[Calculadora],
   tns='http://tests.python-zeep.org/',
