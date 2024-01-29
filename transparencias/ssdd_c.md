@@ -397,10 +397,10 @@ Como ejemplo inicial de qué representa un puntero en C, usaremos el siguiente a
 A recordar:
 * El uso de los operadores "&" y "*" depende del contexto:
 
-  | contexto/operador    |   *                |   &                  |
-  |:--------------------:|:------------------:|:--------------------:|
-  | definición variable  | (1) puntero a...   | (2) referencia a...  |
-  | uso de variable      | (3) acceder a...   | (4) dirección de...  |
+  | contexto/operador        |   *                |   &                       |
+  |:------------------------:|:------------------:|:-------------------------:|
+  | al definir una variable  | (1) puntero a...   | (2) referencia a... (C++) |
+  | uso de variable          | (3) acceder a...   | (4) la dirección de...    |
 
 **Información recomendada**:
 * [Introducción a punteros  I (youtube)](http://www.youtube.com/watch?embed=no&v=iQF-2vUNEJk&feature=related)
@@ -527,7 +527,7 @@ A recordar en C:
 
 
 
-## 5.- Paso de parámetros a funciones
+## 5.- Uso de punteros III (paso de parámetros a funciones)
 
 Es importante tener presente que en lenguaje C:
 * Los valores con los que se llama a una función se llaman **argumentos reales**:
@@ -575,6 +575,21 @@ Como ejemplo de paso por parámetros, usaremos el siguiente archivo:
       return 1 ; // convenio aquí: 1 OK y 0 KO
   }
 
+  int copiar_string ( char * dest, char * orig )
+  {
+      // comprobar argumentos: programación "defensiva"...
+      if (NULL == dest) return 0 ;
+      if (NULL == orig) return 0 ;
+
+      // copiar caracter a caracter...
+      for (int i=0; orig[i] != '\0'; i++) {
+           dest[i] = orig[i] ;
+       // *dest = *orig ; orig++; dest++ ;
+      }
+
+      return 1 ; // convenio aquí: 1 OK y 0 KO
+  }
+
   int main ( int argc, char *argv[] )
   {
       int ret ;
@@ -590,26 +605,21 @@ Como ejemplo de paso por parámetros, usaremos el siguiente archivo:
          ret = imprimir_char('x') ;
          if (ret != 1) return -1 ;
 
-
       /* Cadena de caracteres (string) */
 
-         ret = imprimir_string(s1) ; // a recordar: s1 es la dirección del primer caracter en la cadena guardada en s1
+         ret = imprimir_string(s1) ;  // a recordar: s1 == &(s1[0])
          if (ret != 1) return -1 ;
 
-         ret = imprimir_char(s1[3]) ;
+         ret = imprimir_char(s1[3]) ; // a recordar: s1[3] == *(s1+3)
          if (ret != 1) return -1 ;
 
-         ret = imprimir_char(*(s1+3)) ;
+         ret = copiar_string(s2, "Adios") ;
+         if (ret != 1) return -1 ;
+  
+         ret = imprimir_string(s2) ;  // a recordar: s2 == &(s2[0])
          if (ret != 1) return -1 ;
 
-         strcpy(s2, "Adios") ;
-         ret = imprimir_string(s2) ; // a recordar: s2 es la dirección del primer caracter en la cadena guardada en s2
-         if (ret != 1) return -1 ;
-
-         ret = imprimir_char(s2[3]) ;
-         if (ret != 1) return -1 ;
-
-         ret = imprimir_char(*(s2+3)) ;
+         ret = imprimir_char(s2[3]) ; // a recordar: s2[3] == *(s2+3)
          if (ret != 1) return -1 ;
 
       return 0 ; // convenio aquí: 0 OK, negativos KO
@@ -626,6 +636,7 @@ Como ejemplo de paso por parámetros de punteros, usaremos el siguiente archivo:
   #include <stdio.h>
   #include <stdlib.h>
 
+  // el parámetro long size es un entero largo pasado por valor
   void * mi_malloc ( long size )
   {
       // comprobar argumentos...
@@ -634,19 +645,47 @@ Como ejemplo de paso por parámetros de punteros, usaremos el siguiente archivo:
       return (void *)malloc(size) ;
   }
 
+  // el parámetro ptr es un puntero a void pasado por referencia
   int mi_free ( void **ptr )
   {
       // comprobar argumentos...
-      if (NULL == ptr) return -1 ;
+      if (NULL == ptr) return -1 ; // error
 
       // si ya es NULL, ignorar
-      if (NULL == *ptr) return 0 ;
+      if (NULL == *ptr) return 0 ; // ignorar
 
       // liberar y poner a NULL
       free(*ptr) ;
       *ptr = NULL ;
 
-      return 1 ;
+      return 1 ; // OK
+  }
+
+  // el parámetro ptr es un puntero a void pasado por referencia
+  int  mi_remalloc ( void **ptr,  long new_size )
+  {
+      void * ptr_aux ;
+
+      // comprobar argumentos...
+      if (NULL == ptr) { // (NULL != ptr) vs (ptr != NULL)
+          return -1 ; // error
+      }
+
+      // new_size == 0 -> free(...)
+      if (0 == new_size) {
+          if (*ptr) free(*ptr) ;
+          *ptr = NULL ;
+          return 1 ;
+      }
+
+      // new_size != 0 -> realloc(...)
+      ptr_aux = realloc(*ptr, new_size);
+      if (NULL != ptr_aux) {
+         *ptr = ptr_aux;
+         return 1 ;
+      }
+  
+      return -1 ;
   }
 
   int main ( int argc, char *argv[] )
@@ -654,11 +693,19 @@ Como ejemplo de paso por parámetros de punteros, usaremos el siguiente archivo:
       int ret ;
       char *s1 ;
 
-      s1 = mi_malloc(128) ;
+      s1 = mi_malloc(128 * sizeof(char)) ;
 
-   // ...
+         // imprimir string "a"
+         s1[0] = 'a' ;
+         s1[1] = '\0' ;
+         printf("%s\n", s1) ;
 
-      mi_free(&s1) ;
+      // mantener mismo contenido en s1 pero pedir más espacio asignado
+      ret = mi_remalloc( &s1, 256 * sizeof(char)) ;
+
+         // ... 
+
+      ret = mi_free(&s1) ;
 
       return 0 ;
   }
