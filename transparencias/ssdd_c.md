@@ -233,42 +233,6 @@ Recordatorios:
 </details>
 
 
-NOTA: gracias a José Antonio por el siguiente ejercicio:
-* Iterar de 1 a 100 y si el número es múltiplo de 3, escribir "Fizz"; si es múltiplo de 5, "Buzz"; y si es múltiplo de 3 y 5, "FizzBuzz".
-
-* <details>
-  <summary>Posible implementación... (hacer click)</summary>
-
-  ```c
-  #include <stdio.h>
-
-  int main ( int argc, char *argv[] )
-  {
-     int i ;
-
-     for (i=0; i<100; i++)
-     {
-        printf("%d -> ", i) ;
-
-        if ((i % 3) == 0)
-        {
-            printf("Fizz") ;
-        }
-        if ((i % 5) == 0)
-        {
-            printf("Buzz") ;
-        }
-
-        printf("\n") ;
-     }
-
-     return 0 ;
-  }
-  ```
-
-  </details>
-
-
 **Información recomendada**:
   * [Sentencias de control (youtube)](http://www.youtube.com/watch?embed=no&v=ux_J98WmjPA&feature=related)
 
@@ -550,7 +514,7 @@ Es importante tener presente que en lenguaje C:
   ```
 
 
-Como ejemplo de paso por parámetros, usaremos el siguiente archivo:
+Como ejemplo de paso por parámetros por valor, usaremos el siguiente archivo:
 * main.c
   ```c
   #include <stdio.h>
@@ -630,7 +594,7 @@ Como ejemplo de paso por parámetros, usaremos el siguiente archivo:
 * [Paso de parámetros a funciones (youtube)](https://youtu.be/mS0gnJ-su_Y&t=7m33s)
 
 
-Como ejemplo de paso por parámetros de punteros, usaremos el siguiente archivo:
+Como ejemplo de paso por parámetros de punteros por referencia, usaremos el siguiente archivo:
 * main.c
   ```c
   #include <stdio.h>
@@ -726,6 +690,8 @@ Como ejemplo usaremos estos tres archivos:
   #ifndef LIB_HOLA
   #define LIB_HOLA
 
+      #include <stdio.h>
+
       // NOTA: solo "declaraciones" (e.g.: external int err_code;) y no "definiciones" (e.g.: int err_code = 0;)
       void di_hola ( void ) ;
 
@@ -750,7 +716,7 @@ Como ejemplo usaremos estos tres archivos:
   // NOTA: usar #include <fichero> solo busca en las cabeceras del sistema,
   //       #include "fichero" busca además en directorios definidos por programador(a)
   //       con el argumento -Idirectorio al compilar
-  #include <stdio.h>
+  #include <stdlib.h>
 
   int main ( int argc, char *argv[] )
   {
@@ -761,7 +727,7 @@ Como ejemplo usaremos estos tres archivos:
   ```
 
 
-Para compilar los anteriores archivos hay que ejecutar:
+(1/3) Ejemplo de compilación de los anteriores archivos:
 
 ```bash
 gcc -g -Wall -c lib_hola.c -o lib_hola.o
@@ -769,14 +735,37 @@ gcc -g -Wall -c main.c     -o main.o      -I./
 gcc -g -Wall -o main main.o lib_hola.o
 ```
 
-Donde:
-* "-c ... -o ..." genera el archivo binario asociado a un fichero fuente:
+<details>
+  <summary>Donde... (hacer click)</summary>
+
+  * "-c ... -o ..." genera el archivo binario asociado a un fichero fuente:
+    ```bash
+    gcc -g -Wall -c fichero.c -o fichero.o
+    ```
+  * "-o ... libs..." genera el archivo ejecutable combinando todos los binarios (incluidas bibliotecas como libc.a con -lc):
+    ```bash
+    gcc -g -Wall -o fichero fichero.o lib_hola.o -lc
+    ```
+  </details>
+  
+
+(2/3) Ejemplo de compilación con librería estática:
+
   ```bash
-  gcc -g -Wall -c fichero.c -o fichero.o
+  gcc -g -Wall -c lib_hola.c -o lib_hola.o
+  ar rcs libestatica.a lib_hola.o
+  gcc -g -Wall -o main main.c -lestatica -L.
+  ./main
   ```
-* "-o ... libs..." genera el archivo ejecutable combinando todos los binarios (incluidas bibliotecas como libc.a con -lc):
+
+(3/3) Ejemplo de compilación con librería dinámica:
+
   ```bash
-  gcc -g -Wall -o fichero fichero.o lib_hola.o -lc
+  gcc -g -Wall -fPIC -c lib_hola.c -o lib_hola.o
+  gcc -shared -Wl,-soname,libdinamica.so -o libdinamica.so.1.0 lib_hola.o
+  ln -s libdinamica.so.1.0 libdinamica.so
+  gcc -g -Wall -o main main.c -ldinamica -L.
+  env LD_LIBRARY_PATH=$LD_LIBRARY_PATH:. ./main
   ```
 
 
