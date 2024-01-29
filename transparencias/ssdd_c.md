@@ -286,6 +286,7 @@ Como ejemplo de (array de) structs, usaremos el siguiente archivo:
 
   struct dni {
      int  id ;
+     char letra ;
      char nombre[128] ;
   } ;
 
@@ -298,7 +299,8 @@ Como ejemplo de (array de) structs, usaremos el siguiente archivo:
      /* Rellenar personas con valores por defecto (persona 0,1...) */
      for (i=0; i<N_PERSONAS; i++)
      {
-        personas[i].id = i ;
+        personas[i].id    = i ;
+        personas[i].letra = 'A' ; 
         sprintf(personas[i].nombre,  /* cadena destino */
                "persona %d",         /* formato */
                personas[i].id) ;     /* %d */
@@ -307,10 +309,16 @@ Como ejemplo de (array de) structs, usaremos el siguiente archivo:
      /* Imprimir personas */
      for (i=0; i<N_PERSONAS; i++)
      {
-        printf(" * Persona '%s' que tiene un id '%d'.\n",
+        printf(" * Persona '%s' que tiene un id '%d' y letra '%c'.\n",
                personas[i].nombre,
-               personas[i].id) ;
+               personas[i].id,
+               personas[i].letra) ;
      }
+
+     /* El tamaño de un struct puede no ser la suma del tamaño de los campos que la componen: puede haber rellenos */
+     printf(" * Tamaño en bytes del tipo DNI: %ld\n", sizeof(struct dni)) ;
+     printf(" * Tamaño en bytes de los campos del tipo DNI: %ld, %ld, %ld\n",
+                sizeof(personas[0].nombre), sizeof(personas[0].letra), sizeof(personas[0].id)) ;
 
      return 0 ;
   }
