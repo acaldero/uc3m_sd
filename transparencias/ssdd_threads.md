@@ -266,6 +266,6 @@ Para compilar y ejecutar hay que usar:
   * <a href="https://www.youtube.com/watch?v=EupaagvNpR0&t=807s">Funcionamiento de los mutex y conditions</a>
 
 
-**Información adicional**:
+## Información adicional
   * [Ejemplos para Sistemas Operativos (github)](https://github.com/acaldero/uc3m_so/blob/main/ejemplos/README.md)
 
