@@ -15,25 +15,27 @@ Los principales requisitos son:
 
 ## 1.- <ins>Qué son y cómo se crean los hilos o threads</ins>
 
-Como ejemplo, este programa tiene una función main que crea 5 hilos y espera a que todos los hilos terminen. Cada hilo imprime "Hello world from thread &lt;id. del hilo&gt;!\n":
-* main.c
+Como ejemplo, este programa tiene una función main que crea 5 hilos y espera a que todos los hilos terminen.
+
+Cada hilo imprime "Hello world from thread &lt;id. del hilo&gt;!\n":
+* ths_creatjoin.c
   ```c
-#include <stdlib.h>
-#include <stdio.h>
-#include <pthread.h>
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <pthread.h>
 
-#define NUM_THREADS     5
+  #define NUM_THREADS     5
 
-pthread_t threads[NUM_THREADS];
+  pthread_t threads[NUM_THREADS];
 
-void *th_function ( void *arg )
-{
-    printf("Hello world from thread #%ld!\n", (long)arg) ;
-    pthread_exit(NULL) ;
-}
+  void *th_function ( void *arg )
+  {
+      printf("Hello world from thread #%ld!\n", (long)arg) ;
+      pthread_exit(NULL) ;
+  }
 
-int main ( int argc, char *argv[] )
-{
+  int main ( int argc, char *argv[] )
+  {
     for (int t=0; t<NUM_THREADS; t++)
     {
            int rc = pthread_create(&(threads[t]), NULL, th_function, (void *)(long)t) ;
@@ -55,7 +57,7 @@ int main ( int argc, char *argv[] )
     }
 
     pthread_exit(NULL) ;
-}
+  }
   ```
   
 Para compilar y ejecutar hay que usar:
@@ -70,21 +72,21 @@ gcc -Wall -g -o ths_creatjoin ths_creatjoin.c -lpthread
 
 
 
-## 2.- <ins>Qué son y como se usan los **mutex** para cuando (1) dos o más hilos (2) comparten una variable (3) al menos uno modifica la variable (4) y se hace de forma no atómica</ins>
+## 2.- <ins>Qué son y como se usan los **mutex**: para cuando (1) dos o más hilos (2) comparten una variable (3) al menos uno modifica la variable (4) y se hace de forma no atómica</ins>
 
 Como ejemplo, este programa soluciona una condición de carrera entre dos hilos:
-* main.c
+* race_sol.c
   ```c
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <pthread.h>
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <unistd.h>
+  #include <pthread.h>
 
-long acc ;
-pthread_mutex_t mutex_1; // MUTEX
+  long acc ;
+  pthread_mutex_t mutex_1; // MUTEX
 
-void *th_main_1 ( void *arg )
-{
+  void *th_main_1 ( void *arg )
+  {
     register int a1 ;
 
     pthread_mutex_lock(&mutex_1) ; // LOCK
@@ -100,10 +102,10 @@ void *th_main_1 ( void *arg )
     pthread_mutex_unlock(&mutex_1) ; // UNLOCK
 
     pthread_exit(NULL) ;
-}
+  }
 
-void *th_main_2 ( void *arg )
-{
+  void *th_main_2 ( void *arg )
+  {
     register int a2 ;
 
     pthread_mutex_lock(&mutex_1) ; // LOCK
@@ -119,10 +121,10 @@ void *th_main_2 ( void *arg )
     pthread_mutex_unlock(&mutex_1) ; // UNLOCK
 
     pthread_exit(NULL) ;
-}
+  }
 
-int main ( int argc, char *argv[] )
-{
+  int main ( int argc, char *argv[] )
+  {
     int rc ;
     pthread_t threads[2];
 
@@ -133,25 +135,25 @@ int main ( int argc, char *argv[] )
     // Create threads...
     rc = pthread_create(&(threads[0]), NULL, th_main_1, NULL) ;
     if (rc) {
-	printf("ERROR from pthread_create(): %d\n", rc) ;
-	exit(-1) ;
+        printf("ERROR from pthread_create(): %d\n", rc) ;
+        exit(-1) ;
     }
     rc = pthread_create(&(threads[1]), NULL, th_main_2, NULL) ;
     if (rc) {
-	printf("ERROR from pthread_create(): %d\n", rc) ;
-	exit(-1) ;
+        printf("ERROR from pthread_create(): %d\n", rc) ;
+        exit(-1) ;
     }
 
     // Join threads...
     rc = pthread_join(threads[0], NULL) ;
     if (rc) {
-	printf("ERROR from pthread_join(): %d\n", rc) ;
-	exit(-1) ;
+        printf("ERROR from pthread_join(): %d\n", rc) ;
+        exit(-1) ;
     }
     rc = pthread_join(threads[1], NULL) ;
     if (rc) {
-	printf("ERROR from pthread_join(): %d\n", rc) ;
-	exit(-1) ;
+        printf("ERROR from pthread_join(): %d\n", rc) ;
+        exit(-1) ;
     }
 
     printf(" >>>>> acc = %ld\n", acc) ;
@@ -160,7 +162,7 @@ int main ( int argc, char *argv[] )
     pthread_mutex_destroy(&mutex_1) ; // DESTROY-MUTEX
 
     pthread_exit(NULL) ;
-}
+  }
   ```
 
 Para compilar y ejecutar hay que usar:
@@ -175,21 +177,21 @@ Para compilar y ejecutar hay que usar:
 
 
 
-## 3.- <ins>Qué son y cuando usar las **conditions** para hacer que la ejecución de un hilo se espere hasta que se ejecute un código de otro hilo</ins>
+## 3.- <ins>Qué son y cuando usar las **conditions**: hacer que la ejecución de un hilo se espere hasta que se ejecute un código de otro hilo</ins>
 
-Como ejemplo, este programa sincroniza el hilo main y los hilos creados con pthread_create.
-* main.c
+Como ejemplo, este programa sincroniza el hilo main y los hilos creados con pthread_create:
+* sync_child_mnc_sol.c
   ```c
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <pthread.h>
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <unistd.h>
+  #include <pthread.h>
 
-long acc ;
-pthread_mutex_t mutex_1; // MUTEX
+  long acc ;
+  pthread_mutex_t mutex_1; // MUTEX
 
-void *th_main_1 ( void *arg )
-{
+  void *th_main_1 ( void *arg )
+  {
     register int a1 ;
 
     pthread_mutex_lock(&mutex_1) ; // LOCK
@@ -205,10 +207,10 @@ void *th_main_1 ( void *arg )
     pthread_mutex_unlock(&mutex_1) ; // UNLOCK
 
     pthread_exit(NULL) ;
-}
+  }
 
-void *th_main_2 ( void *arg )
-{
+  void *th_main_2 ( void *arg )
+  {
     register int a2 ;
 
     pthread_mutex_lock(&mutex_1) ; // LOCK
@@ -224,10 +226,10 @@ void *th_main_2 ( void *arg )
     pthread_mutex_unlock(&mutex_1) ; // UNLOCK
 
     pthread_exit(NULL) ;
-}
+  }
 
-int main ( int argc, char *argv[] )
-{
+  int main ( int argc, char *argv[] )
+  {
     int rc ;
     pthread_t threads[2];
 
@@ -238,25 +240,25 @@ int main ( int argc, char *argv[] )
     // Create threads...
     rc = pthread_create(&(threads[0]), NULL, th_main_1, NULL) ;
     if (rc) {
-	printf("ERROR from pthread_create(): %d\n", rc) ;
-	exit(-1) ;
+        printf("ERROR from pthread_create(): %d\n", rc) ;
+        exit(-1) ;
     }
     rc = pthread_create(&(threads[1]), NULL, th_main_2, NULL) ;
     if (rc) {
-	printf("ERROR from pthread_create(): %d\n", rc) ;
-	exit(-1) ;
+        printf("ERROR from pthread_create(): %d\n", rc) ;
+        exit(-1) ;
     }
 
     // Join threads...
     rc = pthread_join(threads[0], NULL) ;
     if (rc) {
-	printf("ERROR from pthread_join(): %d\n", rc) ;
-	exit(-1) ;
+        printf("ERROR from pthread_join(): %d\n", rc) ;
+        exit(-1) ;
     }
     rc = pthread_join(threads[1], NULL) ;
     if (rc) {
-	printf("ERROR from pthread_join(): %d\n", rc) ;
-	exit(-1) ;
+        printf("ERROR from pthread_join(): %d\n", rc) ;
+        exit(-1) ;
     }
 
     printf(" >>>>> acc = %ld\n", acc) ;
@@ -265,7 +267,7 @@ int main ( int argc, char *argv[] )
     pthread_mutex_destroy(&mutex_1) ; // DESTROY-MUTEX
 
     pthread_exit(NULL) ;
-}
+  }
   ```
 
 Para compilar y ejecutar hay que usar:
@@ -277,5 +279,4 @@ Para compilar y ejecutar hay que usar:
 
 **Información recomendada**:
   * <a href="https://www.youtube.com/watch?v=EupaagvNpR0&t=807s">Funcionamiento de los mutex y conditions</a>
-
 
