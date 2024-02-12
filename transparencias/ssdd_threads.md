@@ -428,7 +428,7 @@ De cara a que el hilo en el servidor que atiende la petición del cliente se cre
     int delay2 = rand() % 10;
     sleep(delay2);
 
-    fprintf(stderr, "Petición %ld enviada después de %d segundos\n",  p->id, delay);
+    fprintf(stderr, "Petición %ld enviada después de %d segundos\n",  p->id, delay1 + delay2);
   }
 
 
