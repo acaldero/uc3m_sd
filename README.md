@@ -11,7 +11,7 @@
  <table>
   <tr><th>Sesión</th><th>Tema</th><th>:notebook: Transparencias</th><th>:clapper: Videos</th></tr>
   <tr><td rowspan="2">1</td>
-      <td>Repaso de Linux/Ubuntu 18.04 LTS</td>
+      <td>Repaso Linux/Ubuntu</td>
       <td><ul>
         <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w0-ubuntu-instalacion.pdf">instalacion.pdf</a></li>
         <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w0-ubuntu-fichydirs.pdf">ficheros-y-directorios.pdf</a></li>
@@ -23,7 +23,7 @@
         <li><a href="https://youtu.be/ym3BeppIE8I">Gestión de trabajos y procesos en línea de mandatos</a></li>
       </ul></td>
   </tr>
-  <tr><td>Repaso de lenguaje C </td>
+  <tr><td>Repaso lenguaje C</td>
       <td><ul>
         <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w1-introduccionc.pdf">introduccion-a-c.pdf</a></li>
       </ul></td>
@@ -33,6 +33,43 @@
       </ul>
       </td>
   </tr>
+
+  <tr><td rowspan="3">2</td>
+      <td>Hilos</td>
+      <td><ul>
+        <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w6-hilos.pdf">hilos.pdf</a></li>
+      </ul></td>
+      <td>
+      <ul type="1">
+        <li><a href="https://youtu.be/n5qrEotEWfI">Introducción a hilos</a></li>
+        <li><a href="https://youtu.be/akf9UG7Z5Go">Principales servicios de hilos</a></li>
+      </ul>
+      </td>
+  </tr>
+  <tr><td>Repaso de concurrencia</td>
+      <td><ul>
+        <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w9-concurrencia-introduccion.pdf">concurrencia-introduccion.pdf</a> </li>
+        <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w10-concurrencia-servicios.pdf">concurrencia-servicios.pdf</a> </li>
+      </ul></td>
+      <td>
+      <ul type="1">
+        <li><a href="https://youtu.be/PxjgVYgpGkk">Introducción</a></li>
+        <li><a href="https://youtu.be/EupaagvNpR0">Mecanismos sincronización POSIX</a></li>
+        <li><a href="https://youtu.be/8fdum4cvlvI">Ejemplo simple de productor-consumidor con mecanismos POSIX</a></li>
+      </ul>
+      </td>
+  </tr>
+  <tr><td>Servidores concurrentes</td>
+      <td><ul>
+        <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w11-concurrencia-servidores.pdf">concurrencia-servidores.pdf</a> </li>
+      </ul></td>
+      <td>
+      <ul type="1">
+        <li><a href="https://youtu.be/nDyYrpFYG-4">Servidores concurrentes</a></li>
+      </ul>
+      </td>
+  </tr>
+
   <tr><td>...</td>
       <td>...</td>
       <td>...</td>
