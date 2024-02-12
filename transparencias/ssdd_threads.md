@@ -7,10 +7,18 @@
 
 Los principales requisitos son:
 * Tener conexión a Internet para consultar documentación.
-* Tener acceso a una máquina con Linux. 
-  * -> se recuerda que el Laboratorio del Departamento de Informática ofrece unas Aulas Virtuales en: ["https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/](https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/)
-* Tener instalado el software para desarrollo que sea preciso en la máquina con Linux:
-  * sudo apt-get install build-essential gdb ddd
+* Tener acceso a una máquina con Linux con software de desarrollo instalado:
+  * Puede usar las Aulas Virtuales del Laboratorio del Departamento de Informática:
+    * ["https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/](https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/)
+  * Puede usar su Debian/Ubuntu con: sudo apt-get install build-essential gdb ddd
+
+## Contenidos
+
+  1. [Qué son y cómo se crean los hilos o threads](#1--qu--son-y-c-mo-se-crean-los-hilos-o-threads)
+  2. [Qué son y como se usan los **mutex**: dos o más hilos comparten una variable y al menos uno la modifica de forma no atómica](#2---ins-qu--son-y-como-se-usan-los---mutex----para-cuando--1--dos-o-m-s-hilos--2--comparten-una-variable--3--al-menos-uno-modifica-la-variable--4--y-se-hace-de-forma-no-at-mica--ins-)
+  3. [Qué son y cuando usar las **conditions**: la ejecución de un hilo espera a la ejecución de código de otro](#3---ins-qu--son-y-cuando-usar-las---conditions----hacer-que-la-ejecuci-n-de-un-hilo-se-espere-hasta-que-se-ejecute-un-c-digo-de-otro-hilo--ins-)
+  4. [Información adicional](#informaci-n-adicional)
+    
 
 
 ## 1.- <ins>Qué son y cómo se crean los hilos o threads</ins>
