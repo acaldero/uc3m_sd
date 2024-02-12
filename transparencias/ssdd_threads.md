@@ -17,7 +17,8 @@ Los principales requisitos son:
   1. [Qué son y cómo se crean los hilos o threads](#1--qué-son-y-cómo-se-crean-los-hilos-o-threads)
   2. [Qué son y como se usan los **mutex**: dos o más hilos comparten una variable y al menos uno la modifica de forma no atómica](#2--qué-son-y-como-se-usan-los-mutex-para-cuando-1-dos-o-más-hilos-2-comparten-una-variable-3-al-menos-uno-modifica-la-variable-4-y-se-hace-de-forma-no-atómica)
   3. [Qué son y cuando usar las **conditions**: la ejecución de un hilo espera a la ejecución de código de otro](#3--qué-son-y-cuando-usar-las-conditions-hacer-que-la-ejecución-de-un-hilo-se-espere-hasta-que-se-ejecute-un-código-de-otro-hilo)
-  4. [Información adicional](#4--información-adicional)
+  4. [Servidor de peticiones basado en hilos bajo demanda](#4--servidor-de-peticiones-basado-en-hilos-bajo-demanda)
+  5. [Información adicional](#5--información-adicional)
     
 
 
@@ -84,7 +85,7 @@ Recordatorios
   * No depender una ejecución correcta de un orden particular sino de cualquier orden posible.
   </details>
 
-**Información recomendada**:
+**Videos suplementarios**:
   * <a href="https://www.youtube.com/watch?v=n5qrEotEWfI">Repaso a los conceptos en hilos</a>
   * <a href="https://www.youtube.com/watch?v=akf9UG7Z5Go">Principales llamadas POSIX de hilos con ejemplos</a>
 
@@ -279,7 +280,7 @@ Recordatorios
   ```
   </details>
 
-**Información recomendada**:
+**Videos suplementarios**:
   * <a href="https://www.youtube.com/watch?v=PxjgVYgpGkk&t=471s">Condiciones de carrera</a>
   * <a href="https://www.youtube.com/watch?v=PxjgVYgpGkk&t=924s">Condiciones de interbloqueo</a>   
 
@@ -372,11 +373,155 @@ Para compilar y ejecutar hay que usar:
   ./sync_child_mnc_sol
 ```
 
-**Información recomendada**:
+**Video suplementario**:
   * <a href="https://www.youtube.com/watch?v=EupaagvNpR0&t=807s">Funcionamiento de los mutex y conditions</a>
 
 
 
-## 4.- Información adicional
+## 4.- <ins>Servidor de peticiones basado en hilos bajo demanda</ins>
+
+Como ejemplo, este programa simula un servidor de peticiones basado en hilos bajo demanda.
+De cara a que el hilo en el servidor que atiende la petición del cliente se crea lo antes posible, la función de servicio espera hasta que se haya creado el hilo hijo y dicho hilo haya copiado los parámetros.
+
+### threads_ondemand.c
+  ```c
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <sys/time.h>
+  #include <pthread.h>
+  #include <unistd.h>
+
+  // Peticiones //////////////////////////////
+
+   struct peticion {
+      long id;
+      int tipo;
+      /* ... */
+   };
+   typedef struct peticion peticion_t;
+
+  static long petid = 0;
+
+  void recibir_peticion (peticion_t * p)
+  {
+     fprintf(stderr, "Recibiendo petición\n");
+
+     /* Simulación de tiempo de E/S */
+     int delay = rand() % 10;
+     sleep(delay);
+
+     p->id = petid++;
+
+     fprintf(stderr,"Petición %ld recibida después de %d segundos\n", p->id, delay);
+  }
+
+  void responder_peticion (peticion_t * p)
+  {
+    fprintf(stderr, "Enviando petición %ld\n", p->id);
+
+    /* Simulación de tiempo de procesamiento */
+    int delay1 = rand() % 5;
+    sleep(delay1);
+
+    /* Simulación de tiempo de E/S */
+    int delay2 = rand() % 10;
+    sleep(delay2);
+
+    fprintf(stderr, "Petición %ld enviada después de %d segundos\n",  p->id, delay);
+  }
+
+
+  // Hilos bajo demanda //////////////////////
+
+  pthread_mutex_t mutex;
+  pthread_cond_t  copied;
+  int             is_copied;
+
+  const int MAX_PETICIONES = 5;
+
+  void * servicio ( void * p )
+  {
+        peticion_t  pet;
+
+        // copy parameters...
+        memmove(&pet,(peticion_t*)p, sizeof(peticion_t));
+
+        // signal data is copied
+        pthread_mutex_lock(&mutex) ;
+        is_copied = 1 ;
+        pthread_cond_signal(&copied) ;
+        pthread_mutex_unlock(&mutex) ;
+
+        // process and response
+        fprintf(stderr, "Iniciando servicio\n");
+        responder_peticion(&pet);
+        fprintf(stderr, "Terminando servicio\n");
+
+        pthread_exit(0);
+        return NULL;
+  }
+
+  void receptor ( void )
+  {
+       int i;
+       peticion_t  p;
+       pthread_t   th_hijo[MAX_PETICIONES];
+
+       // for each request, a new thread...
+       for (i=0; i<MAX_PETICIONES; i++)
+       {
+            // receive request and new thread treat it
+            recibir_peticion(&p);
+            pthread_create(&(th_hijo[i]), NULL, servicio, &p);
+
+            // wait data is copied
+            pthread_mutex_lock(&mutex) ;
+            while (!is_copied) {
+                   pthread_cond_wait(&copied, &mutex) ;
+            }
+            is_copied = 0 ;
+            pthread_mutex_unlock(&mutex) ;
+       }
+
+       // wait for each thread ends
+       for (i=0; i<MAX_PETICIONES; i++) {
+            pthread_join(th_hijo[i], NULL) ;
+       }
+  }
+
+  int main ( int argc, char *argv[] )
+  {
+      struct timeval timenow;
+
+      // t1
+      gettimeofday(&timenow, NULL) ;
+      long t1 = (long)timenow.tv_sec * 1000 + (long)timenow.tv_usec / 1000 ;
+
+      // Dispacher de peticiones...
+      receptor() ;
+
+      // t2
+      gettimeofday(&timenow, NULL) ;
+      long t2 = (long)timenow.tv_sec * 1000 + (long)timenow.tv_usec / 1000 ;
+
+      // imprimir t2-t1...
+      printf("Tiempo total: %lf\n", (t2-t1)/1000.0);
+      return 0;
+  }
+  ```
+
+Para compilar y ejecutar hay que usar:
+```bash
+gcc -Wall -g -o threads_ondemand  threads_ondemand.c -lpthread
+./threads_ondemand
+```
+
+**Video suplementario**:
+  * <a href="https://www.youtube.com/watch?v=nDyYrpFYG-4&t=551s">Ejemplo de servidor de peticiones basado en hilos</a>
+
+
+
+## 5.- Información adicional
   * [Ejemplos para Sistemas Operativos (github)](https://github.com/acaldero/uc3m_so/blob/main/ejemplos/README.md)
 
