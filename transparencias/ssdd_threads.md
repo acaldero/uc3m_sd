@@ -14,10 +14,10 @@ Los principales requisitos son:
 
 ## Contenidos
 
-  1. [Qué son y cómo se crean los hilos o threads](#1--qu--son-y-c-mo-se-crean-los-hilos-o-threads)
-  2. [Qué son y como se usan los **mutex**: dos o más hilos comparten una variable y al menos uno la modifica de forma no atómica](#2---ins-qu--son-y-como-se-usan-los---mutex----para-cuando--1--dos-o-m-s-hilos--2--comparten-una-variable--3--al-menos-uno-modifica-la-variable--4--y-se-hace-de-forma-no-at-mica--ins-)
-  3. [Qué son y cuando usar las **conditions**: la ejecución de un hilo espera a la ejecución de código de otro](#3---ins-qu--son-y-cuando-usar-las---conditions----hacer-que-la-ejecuci-n-de-un-hilo-se-espere-hasta-que-se-ejecute-un-c-digo-de-otro-hilo--ins-)
-  4. [Información adicional](#informaci-n-adicional)
+  1. [Qué son y cómo se crean los hilos o threads](#1--qué-son-y-cómo-se-crean-los-hilos-o-threads)
+  2. [Qué son y como se usan los **mutex**: dos o más hilos comparten una variable y al menos uno la modifica de forma no atómica](#2--qué-son-y-como-se-usan-los-mutex-para-cuando-1-dos-o-más-hilos-2-comparten-una-variable-3-al-menos-uno-modifica-la-variable-4-y-se-hace-de-forma-no-atómica)
+  3. [Qué son y cuando usar las **conditions**: la ejecución de un hilo espera a la ejecución de código de otro](#3--qué-son-y-cuando-usar-las-conditions-hacer-que-la-ejecución-de-un-hilo-se-espere-hasta-que-se-ejecute-un-código-de-otro-hilo)
+  4. [Información adicional](#4--información-adicional)
     
 
 
@@ -372,6 +372,7 @@ Para compilar y ejecutar hay que usar:
   * <a href="https://www.youtube.com/watch?v=EupaagvNpR0&t=807s">Funcionamiento de los mutex y conditions</a>
 
 
-## Información adicional
+
+## 4.- Información adicional
   * [Ejemplos para Sistemas Operativos (github)](https://github.com/acaldero/uc3m_so/blob/main/ejemplos/README.md)
 
