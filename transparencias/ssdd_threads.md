@@ -37,6 +37,7 @@ Como ejemplo, este programa tiene:
 
   pthread_t threads[NUM_THREADS];
 
+  // La función th_function tiene el código que ejecutarán los hilos
   void *th_function ( void *arg )
   {
       printf("Hello world from thread #%ld!\n", (long)arg) ;
@@ -45,27 +46,28 @@ Como ejemplo, este programa tiene:
 
   int main ( int argc, char *argv[] )
   {
+    // Crear NUM_THREADS hilos con función th_function y argumento el valor de t
     for (int t=0; t<NUM_THREADS; t++)
     {
            int rc = pthread_create(&(threads[t]), NULL, th_function, (void *)(long)t) ;
-           if (rc)
-           {
-	       printf("ERROR from pthread_create(): %d\n", rc) ;
-	       exit(-1) ;
-	   }
+           if (rc) {
+              printf("ERROR from pthread_create(): %d\n", rc) ;
+              exit(-1) ;
+           }
     }
 
+    // Esperar a que terminen los NUM_THREADS hilos
     for (int t=0; t<NUM_THREADS; t++)
     {
            int rc = pthread_join(threads[t], NULL) ;
-           if (rc)
-           {
-	       printf("ERROR from pthread_join(): %d\n", rc) ;
-	       exit(-1) ;
-	   }
+           if (rc) {
+              printf("ERROR from pthread_join(): %d\n", rc) ;
+              exit(-1) ;
+           }
     }
 
-    pthread_exit(NULL) ;
+    // pthread_exit(NULL) ; // main es el hilo principal
+    return 0 ;
   }
   ```
   
@@ -306,10 +308,12 @@ Como ejemplo, este programa sincroniza el hilo main y los hilos creados con pthr
 
     p_thid = (int *)arg ;
 
+    /// Avisa que se ha copiado ///
     pthread_mutex_lock(&mutex_1) ;
     is_copied = 1 ;
     pthread_cond_signal(&cond_cp) ;
     pthread_mutex_unlock(&mutex_1) ;
+    ///////////////////////////////
 
     printf("Hello world from thread #%d!\n", *p_thid) ;
     pthread_exit(NULL) ;
@@ -324,34 +328,34 @@ Como ejemplo, este programa sincroniza el hilo main y los hilos creados con pthr
     pthread_mutex_init(&mutex_1, NULL) ;
     pthread_cond_init(&cond_cp, NULL) ;
 
-    // Create threads...
+    // Crear hilos...
+    is_copied = 0;
     for (t=0; t<NUM_THREADS; t++)
     {
-           is_copied = 0;
-
            rc = pthread_create(&(threads[t]), NULL, th_function, (void *)&t) ;
-           if (rc)
-           {
-	       printf("ERROR from pthread_create(): %d\n", rc) ;
-	       exit(-1) ;
-	   }
-	   
-	   pthread_mutex_lock(&mutex_1) ;
+           if (rc) {
+               printf("ERROR from pthread_create(): %d\n", rc) ;
+               exit(-1) ;
+           }
+
+           /// Espera al aviso de que se ha copiado ///
+           pthread_mutex_lock(&mutex_1) ;
            while (0 == is_copied) {
                   pthread_cond_wait(&cond_cp, &mutex_1) ;
            }
-	   pthread_mutex_unlock(&mutex_1) ;
+           is_copied = 0;
+           pthread_mutex_unlock(&mutex_1) ;
+           ////////////////////////////////////////////
     }
 
-    // Join threads...
+    // Esperar a los hilos...
     for (t=0; t<NUM_THREADS; t++)
     {
            rc = pthread_join(threads[t], NULL) ;
-           if (rc)
-           {
-	       printf("ERROR from pthread_join(): %d\n", rc) ;
-	       exit(-1) ;
-	   }
+           if (rc) {
+               printf("ERROR from pthread_join(): %d\n", rc) ;
+               exit(-1) ;
+           }
     }
 
     // Destroy...
