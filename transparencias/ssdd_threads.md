@@ -87,6 +87,46 @@ Recordatorios
 
   * No depender una ejecución correcta de un orden particular sino de cualquier orden posible.
   </details>
+* <details>
+  <summary>Al hilo se pasa un único parámetro... (hacer click)</summary>
+
+  * En el diseño de la API se pensó en pasar un único parámetro que fuera un puntero a la dirección de memoria de una estructura de C (struct) en la cuál se guarda todos los argumentos de trabajo del hilo. 
+  * (1/2) Antes de crear el hilo hay que reservar memoria y rellenar los valores de trabajo:
+    ```
+           th_args = (struct thread_arguments *)malloc(sizeof(struct thread_arguments)) ;
+           if (NULL == th_args) {
+              printf("ERROR from malloc\n") ;
+              exit(-1) ;
+           }
+
+           th_args.arg1 = 'a' ;
+           th_args.arg2 = 33  ;
+           th_args.arg3 = j  ;
+           ...
+
+           int rc = pthread_create(&(threads[t]), NULL, th_function, (void *)th_args) ;
+           if (rc) {
+              printf("ERROR from pthread_create(): %d\n", rc) ;
+              exit(-1) ;
+           }
+
+           ...
+  * (2/2) en el hilo se usa esta estructura y antes de terminar se libera la memoria asociada:
+    ```
+    void *th_function ( void *arg )
+    {
+        struct thread_arguments *th_args = (struct thread_arguments *) arg ;
+
+        ...
+        printf("Hello world from thread #%d!\n", th_args.arg3) ;
+        ...
+
+        free(th_args) ;
+        th_args = NULL ;
+        pthread_exit(NULL) ;
+    }
+    ```
+  </details>
 
 **Videos suplementarios**:
   * <a href="https://www.youtube.com/watch?v=n5qrEotEWfI">Repaso a los conceptos en hilos</a>
@@ -96,7 +136,11 @@ Recordatorios
 
 ## 2.- <ins>Qué son y como se usan los **mutex**: para cuando (1) dos o más hilos (2) comparten una variable (3) al menos uno modifica la variable (4) y se hace de forma no atómica</ins>
 
-Como ejemplo, este programa soluciona una condición de carrera entre dos hilos.
+
+Cuando (1) dos o más hilos (2) comparten una variable (3) al menos uno modifica la variable (4) y se hace de forma no atómica se presenta el problema llamado "condición de carrera".
+La zona de código en la que cada hilo accede a la variable compartida (ya sea para consultar o para modificar) se llama "sección crítica".
+
+Como ejemplo, este programa soluciona una condición de carrera entre dos hilos mediante el uso de un mutex "mutex_1".
 
 ### race_sol.c
   ```c
@@ -291,7 +335,7 @@ Recordatorios
 
 ## 3.- <ins>Qué son y cuándo usar las **conditions**: hacer que la ejecución de un hilo se espere hasta que se ejecute un código de otro hilo</ins>
 
-Como ejemplo, este programa sincroniza el hilo main y los hilos creados con pthread_create.
+Como ejemplo, este programa sincroniza el hilo main y los hilos creados con pthread_create para que "main" espere hasta que se haya creado el hilo y también copiado los argumentos.
 
 ### sync_child_mnc_sol.c
   ```c
@@ -301,10 +345,12 @@ Como ejemplo, este programa sincroniza el hilo main y los hilos creados con pthr
 
   #define NUM_THREADS  5
 
-  int             is_copied; // boolean to say "is copied"
-  pthread_mutex_t mutex_1;   // protect the is_copied global variable:
-                             // it is shared by thread, modified, but might be not atomically modified
-  pthread_cond_t  cond_cp;   // condition to wait if boolean said we need to wait
+    /// var + mutex + condition /////
+    int             is_copied = 0; // boleano que indica "se ha copiado"
+    pthread_mutex_t mutex_1;       // mutex que protege la variable global "is_copied":
+                                   // compartida por 2 o más hilos, modificada por alguno y no de forma atómica.
+    pthread_cond_t  cond_cp;       // condition para esperar si el boleano dice que hay que esperar
+    /////////////////////////////////
 
   void *th_function ( void *arg )
   {
@@ -320,6 +366,7 @@ Como ejemplo, este programa sincroniza el hilo main y los hilos creados con pthr
     ///////////////////////////////
 
     printf("Hello world from thread #%d!\n", *p_thid) ;
+
     pthread_exit(NULL) ;
   }
 
@@ -333,7 +380,6 @@ Como ejemplo, este programa sincroniza el hilo main y los hilos creados con pthr
     pthread_cond_init(&cond_cp, NULL) ;
 
     // Crear hilos...
-    is_copied = 0;
     for (t=0; t<NUM_THREADS; t++)
     {
            rc = pthread_create(&(threads[t]), NULL, th_function, (void *)&t) ;
@@ -342,7 +388,7 @@ Como ejemplo, este programa sincroniza el hilo main y los hilos creados con pthr
                exit(-1) ;
            }
 
-           /// Espera al aviso de que se ha copiado ///
+           /// Si no se ha copiado, espera al aviso de copiado ///
            pthread_mutex_lock(&mutex_1) ;
            while (0 == is_copied) {
                   pthread_cond_wait(&cond_cp, &mutex_1) ;
@@ -375,6 +421,20 @@ Para compilar y ejecutar hay que usar:
   gcc -Wall -g -o sync_child_mnc_sol sync_child_mnc_sol.c -lpthread
   ./sync_child_mnc_sol
 ```
+
+Recordatorios
+* <details>
+  <summary>signal vs broadcast... (hacer click)</summary>
+
+  * Para despertar a solo un hilo esperando en la condition:
+    ```
+    pthread_cond_signal(&cond_cp) ;
+    ```
+  * Para despertar a todos los hilos esperando en la condition:
+    ```
+    pthread_cond_broadcast(&cond_cp) ;
+    ```
+  </details>
 
 **Video suplementario**:
   * <a href="https://www.youtube.com/watch?v=EupaagvNpR0&t=807s">Funcionamiento de los mutex y conditions</a>
