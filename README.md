@@ -4,14 +4,31 @@
 + Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
-# Transparencias
+# Materiales
 
-<html>
+ <html>
  <small>
  <table>
+  <tr><th>Sesión</th><th>Tema</th><th>:notebook: Materiales</th></tr>
+  <tr>
+      <td rowspan="1">1</td>
+      <td>Repaso de C</td>
+      <td><ul>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_c.md">ssdd_c.md</a></li>
+      </ul></td>
+  </tr>
+  </table>
+  </small>
+  </html>
+
+* <details>
+  <summary>Transparencias y videos adicionales... (hacer click)</summary>
+  <html>
+  <small>
+  <table>
   <tr><th>Sesión</th><th>Tema</th><th>:notebook: Transparencias</th><th>:clapper: Videos</th></tr>
   <tr><td rowspan="2">1</td>
-      <td>Repaso Linux/Ubuntu</td>
+      <td>Introducción a <br>Linux/Ubuntu</td>
       <td><ul>
         <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w0-ubuntu-instalacion.pdf">instalacion.pdf</a></li>
         <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w0-ubuntu-fichydirs.pdf">ficheros-y-directorios.pdf</a></li>
@@ -23,7 +40,7 @@
         <li><a href="https://youtu.be/ym3BeppIE8I">Gestión de trabajos y procesos en línea de mandatos</a></li>
       </ul></td>
   </tr>
-  <tr><td>Repaso lenguaje C</td>
+  <tr><td>Introducción a <br>lenguaje C</td>
       <td><ul>
         <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w1-introduccionc.pdf">introduccion-a-c.pdf</a></li>
       </ul></td>
@@ -33,7 +50,33 @@
       </ul>
       </td>
   </tr>
+  </table>
+  </small>
+  </html>
+  </details>
 
+
+ <html>
+ <small>
+ <table>
+  <tr><th>Sesión</th><th>Tema</th><th>:notebook: Materiales</th></tr>
+  <tr>
+      <td rowspan="1">2</td>
+      <td>Repaso de <br>concurrencia</td>
+      <td><ul>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_threads.md">ssdd_threads.md</a></li>
+      </ul></td>
+  </tr>
+  </table>
+  </small>
+  </html>
+
+* <details>
+  <summary>Transparencias y videos adicionales... (hacer click)</summary>
+  <html>
+  <small>
+  <table>
+  <tr><th>Sesión</th><th>Tema</th><th>:notebook: Transparencias</th><th>:clapper: Videos</th></tr>
   <tr><td rowspan="3">2</td>
       <td>Hilos</td>
       <td><ul>
@@ -69,32 +112,36 @@
       </ul>
       </td>
   </tr>
+  </table>
+  </small>
+  </html>
+  </details>
 
-  <tr><td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-  </tr>
 
+<html>
+ <small>
+ <table>
+  <tr><th>Sesión</th><th>Tema</th><th>:notebook: Transparencias</th></tr>
   <tr><td>8</td>
       <td>Servicios Web</td>
       <td><ul>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t8_web-services.pdf">t8_web-services.pdf</a></li>
       </ul></td>
-      <td>
-      <ul type="1">
-      </ul>
-      </td>
   </tr>
+ </table>
+ </small>
+</html>
+
+
+<html>
+ <small>
+ <table>
+  <tr><th>Sesión</th><th>Tema</th><th>:notebook: Transparencias</th></tr>
   <tr><td>9</td>
       <td>Tolerancia a fallos</td>
       <td><ul>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t9_tolerancia-a-fallos.pdf">t9_tolerancia-a-fallos.pdf</a></li>
       </ul></td>
-      <td>
-      <ul type="1">
-      </ul>
-      </td>
   </tr>
  </table>
  </small>
