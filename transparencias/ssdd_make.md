@@ -1,6 +1,7 @@
-# Resumen de los principales aspectos del uso de Make para Sistemas Distribuidos
 
-### Materiales usados en ARCOS.INF.UC3M.ES con Licencia [CC BY-NC 4.0](http://creativecommons.org/licenses/by-nc/4.0/) 
+# Resumen de los principales aspectos del uso de Make para Sistemas Distribuidos
++ **Felix García Carballeira y Alejandro Calderón Mateos**
++ Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
 ## Requisitos

@@ -85,3 +85,8 @@ sequenceDiagram
 ```
 
 
+
+**Material adicional**:
+  * <a href="https://beej.us/guide/bgnet/html/index-wide.html">Beej's Guide to Network Programming</a>
+  * <a href="https://beej.us/guide/bgnet0/html/index-wide.html">Beej's Guide to Network Concepts (más teoría)</a>
+

@@ -1,6 +1,7 @@
-# Resumen de los principales aspectos del lenguaje C para Sistemas Distribuidos
 
-### Materiales usados en ARCOS.INF.UC3M.ES con Licencia [CC BY-NC 4.0](http://creativecommons.org/licenses/by-nc/4.0/)
+# Resumen de los principales aspectos del lenguaje C para Sistemas Distribuidos
++ **Felix García Carballeira y Alejandro Calderón Mateos**
++ Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
 ## Requisitos
@@ -774,4 +775,38 @@ gcc -g -Wall -o main main.o lib_hola.o
   * [Solucionar las multiples inclusiones (youtube)](https://youtu.be/B_7jBxe_VOQ&t=5m04s)
   * [Ejemplo de bibliotecas estática (youtube)](https://youtu.be/B_7jBxe_VOQ&t=7m42s)
   * [Ejemplo de bibliotecas dinámica (youtube)](https://youtu.be/B_7jBxe_VOQ&t=10m05s)
+  * [Beej's Guide to C Programming](https://beej.us/guide/bgc/)
+* <details>
+  <summary>Transparencias y videos adicionales... (hacer click)</summary>
+  <html>
+  <small>
+  <table>
+  <tr><th>Sesión</th><th>Tema</th><th>:notebook: Transparencias</th><th>:clapper: Videos</th></tr>
+  <tr><td rowspan="2">1</td>
+      <td>Introducción a <br>Linux/Ubuntu</td>
+      <td><ul>
+        <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w0-ubuntu-instalacion.pdf">instalacion.pdf</a></li>
+        <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w0-ubuntu-fichydirs.pdf">ficheros-y-directorios.pdf</a></li>
+        <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w0-ubuntu-procesos.pdf">gestion-procesos.pdf</a></li>
+      </ul></td>
+      <td><ul type="1">
+        <li><a href="https://www.youtube.com/watch?v=MwfB9lnB0_A">Instalación de Ubuntu</a></li>
+        <li><a href="https://youtu.be/2U5bJKUX_6s">Ficheros y directorios en línea de mandatos</a></li>
+        <li><a href="https://youtu.be/ym3BeppIE8I">Gestión de trabajos y procesos en línea de mandatos</a></li>
+      </ul></td>
+  </tr>
+  <tr><td>Introducción a <br>lenguaje C</td>
+      <td><ul>
+        <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w1-introduccionc.pdf">introduccion-a-c.pdf</a></li>
+      </ul></td>
+      <td>
+      <ul type="1">
+        <li><a href="https://www.youtube.com/watch?v=EFEj13YU7I0&list=PLEIHi6crVts7HIrUr88SSJsFJC3scIKlA">Introducción a C</a></li>
+      </ul>
+      </td>
+  </tr>
+  </table>
+  </small>
+  </html>
+  </details>
 

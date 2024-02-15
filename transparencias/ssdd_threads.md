@@ -1,16 +1,8 @@
+
 # Resumen de los principales aspectos del uso de hilos para Sistemas Distribuidos
++ **Felix García Carballeira y Alejandro Calderón Mateos**
++ Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
-### Materiales usados en ARCOS.INF.UC3M.ES con Licencia [CC BY-NC 4.0](http://creativecommons.org/licenses/by-nc/4.0/)
-
-
-## Requisitos
-
-Los principales requisitos son:
-* Tener conexión a Internet para consultar documentación.
-* Tener acceso a una máquina con Linux con software de desarrollo instalado:
-  * Puede usar las Aulas Virtuales del Laboratorio del Departamento de Informática:
-    * ["https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/](https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/)
-  * Puede usar su Debian/Ubuntu con: sudo apt-get install build-essential gdb ddd
 
 ## Contenidos
 
@@ -820,4 +812,47 @@ gcc -Wall -g -o threads_pool  threads_pool.c -lpthread
 
 ## 6.- Información adicional
   * [Ejemplos para Sistemas Operativos (github)](https://github.com/acaldero/uc3m_so/blob/main/ejemplos/README.md)
+
+  <html>
+  <small>
+  <table>
+  <tr><th>Sesión</th><th>Tema</th><th>:notebook: Transparencias</th><th>:clapper: Videos</th></tr>
+  <tr><td rowspan="3">2</td>
+      <td>Hilos</td>
+      <td><ul>
+        <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w6-hilos.pdf">hilos.pdf</a></li>
+      </ul></td>
+      <td>
+      <ul type="1">
+        <li><a href="https://youtu.be/n5qrEotEWfI">Introducción a hilos</a></li>
+        <li><a href="https://youtu.be/akf9UG7Z5Go">Principales servicios de hilos</a></li>
+      </ul>
+      </td>
+  </tr>
+  <tr><td>Repaso de concurrencia</td>
+      <td><ul>
+        <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w9-concurrencia-introduccion.pdf">concurrencia-introduccion.pdf</a> </li>
+        <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w10-concurrencia-servicios.pdf">concurrencia-servicios.pdf</a> </li>
+      </ul></td>
+      <td>
+      <ul type="1">
+        <li><a href="https://youtu.be/PxjgVYgpGkk">Introducción</a></li>
+        <li><a href="https://youtu.be/EupaagvNpR0">Mecanismos sincronización POSIX</a></li>
+        <li><a href="https://youtu.be/8fdum4cvlvI">Ejemplo simple de productor-consumidor con mecanismos POSIX</a></li>
+      </ul>
+      </td>
+  </tr>
+  <tr><td>Servidores concurrentes</td>
+      <td><ul>
+        <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w11-concurrencia-servidores.pdf">concurrencia-servidores.pdf</a> </li>
+      </ul></td>
+      <td>
+      <ul type="1">
+        <li><a href="https://youtu.be/nDyYrpFYG-4">Servidores concurrentes</a></li>
+      </ul>
+      </td>
+  </tr>
+  </table>
+  </small>
+  </html>
 
