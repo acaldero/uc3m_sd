@@ -6,45 +6,38 @@
 
 # Materiales de apoyo
 
-## Ejercicios prácticos
-
-  * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/tutorial_centralizado_a_distribuido.md)
-
-
-## Tutoriales
-
  <html>
  <small>
  <table>
-  <tr><th>Sesión</th><th>Tema</th><th>:notebook: Materiales</th></tr>
+  <tr><th>Laboratorio</th><th>Tema</th><th>:notebook: Materiales</th></tr>
   <tr>
       <td rowspan="1">1</td>
       <td>Repaso de C</td>
       <td><ul>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_c.md">ssdd_c.md</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_c.md">Aspectos de C para sistemas distribuidos</a></li>
       </ul></td>
   </tr>
   <tr>
       <td rowspan="1">2</td>
       <td>Repaso de concurrencia</td>
       <td><ul>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_threads.md">ssdd_threads.md</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_threads.md">Concurrencia en sistemas distribuidos</a></li>
       </ul></td>
   </tr>
   <tr>
-      <td rowspan="1">4</td>
+      <td rowspan="1">3</td>
       <td>Sockets</td>
       <td><ul>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_sockets.md">ssdd_sockets.md</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_sockets.md">Sockets en C</a></li>
       </ul></td>
   </tr>
-  <tr><td>8</td>
+  <tr><td>5</td>
       <td>Servicios Web</td>
       <td><ul>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_web-services.md">ssdd_web-services.md</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_web-services.md">Introducción a servicios web</a></li>
       </ul></td>
   </tr>
-  <tr><td>9</td>
+  <tr><td>6</td>
       <td>Tolerancia a fallos</td>
       <td><ul>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t9_tolerancia-a-fallos.pdf">t9_tolerancia-a-fallos.pdf</a></li>
@@ -54,4 +47,8 @@
  </small>
 </html>
 
+
+## Casos prácticos
+
+  * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/tutorial_centralizado_a_distribuido.md)
 
