@@ -144,6 +144,7 @@ Donde:
  * IP-remoto: dirección IP remota (destino)
  * P-remoto:  puerto remoto (destino
 
+---
 
 ## Direcciones
 
@@ -160,6 +161,7 @@ Donde:
    * Se utiliza la estructura genérica ``struct sockaddr`` en el API
    * Es necesario la conversión de tipos (casting) en las llamadas
 
+---
 
 ## Puertos
 
@@ -245,13 +247,13 @@ a2.sin_addr.s_addr = inet_addr("10.12.110.57");
 
 ```mermaid
 flowchart TD
-    D{{nombre de máquina}} --> |=A= obtener nombre local| A
+    D{{nombre de máquina}} --> |"(A) obtener nombre local"| A
     D -.-> A
     D -.-> B
     B -->|resolución inversa| A
-    A(dominio-punto:<br> www.uc3m.es) -->|=D= resolución| B(decimal-punto:<br> 176.58.10.138)
-    B -->|=B= transformación DP2B| C
-    C(binario:<br> 10110...) -->|=C= transformación B2DP| B
+    A(dominio-punto:<br> www.uc3m.es) -->|"(D) resolución"| B(decimal-punto:<br> 176.58.10.138)
+    B -->|"(B) transformación DP2B"| C
+    C(binario:<br> 10110...) -->|"(C) transformación B2DP"| B
 
     subgraph " "
     A
@@ -262,7 +264,7 @@ flowchart TD
 ```
 ---
 
-## Servicios sobre direcciones: =A= obtener el nombre local
+## Servicios sobre direcciones: (A) obtener el nombre local
 
 Función que facilita el nombre de la máquina (formato dominio punto) en la que se ejecuta:
 ```c
@@ -291,7 +293,7 @@ int main ()
 
 ---
 
-## Servicios sobre direcciones: =B= decimal-punto -> binario
+## Servicios sobre direcciones: (B) decimal-punto -> binario
 
 ```c
 struct sockaddr_in  a4;
@@ -328,7 +330,7 @@ memset(&a6, 0, sizeof(struct sockaddr_in6)); // inicializar todo a cero
 
 ---
 
-## Servicios sobre direcciones: =C= binario -> decimal-punto
+## Servicios sobre direcciones: (C ) binario -> decimal-punto
 
 ```c
 struct sockaddr_in  a4;
@@ -406,7 +408,7 @@ int main(int argc, char **argv)
 
 ---
 
-## Obtener la información de una máquina: =D= resolver nombres
+## Obtener la información de una máquina: (D) resolver nombres
 
   * La información de una máquina se representa mediante la estructura ``struct hostent``:
     ```c
@@ -432,8 +434,6 @@ int main(int argc, char **argv)
                                   int type);         // type: AF_INET
     ```
     
-
-
 ---
 
 ## Ejemplos
@@ -569,71 +569,735 @@ int main(int argc, char **argv)
 | En computador A       |             |  Red           |                | En computador B       |
 |                       |             |                |                |                       |
 
-
+---
 
 ## Modelos de comunicación: orientado a conexión
 
-* Sockets stream (SOCK_STREAM) que usa TCP
+* Uso de TCP mediante sockets stream (SOCK_STREAM) 
 
-* Pasos:
 <html>
 <table>
-<tr><th>Receptor</th><th>Enviador</th></tr>
+<tr><th>Servidor</th><th>Cliente</th></tr>
 <tr>
 <td valign=top>
 <ul>
-   <li> Creación de un socket (**socket**) </li>
-   <li> Asignación de direcciones (**bind**)</li>
-   <li> Preparar para aceptar conexiones (**listen**)</li>
-   <li> Aceptar una conexión (**accept**)</li>
-   <li> Obtener la dirección de un socket</li>
-   <li> Transferencia de datos (**read** y **write**)</li>
-   <li> Cerrar un socket (**close**)</li>
+   <li> 1.- Creación de un socket (<b>socket</b>) </li>
+   <li> 2.- Obtener la dirección</li>
+   <li> 3.- Asignación de direcciones (<b>bind</b>)</li>
+   <li> 4.- Preparar para aceptar conexiones (<b>listen</b>)</li>
+   <li> Por cada cliente:</li>
+   <ul>
+   <li> 5.- Aceptar una conexión (<b>accept</b>)</li>
+   <li> 6.- Transferencia de datos (<b>read</b> y <b>write</b>)</li>
+   <li> 7.- Cerrar socket conectado (<b>close</b>)</li>
+   </ul>
+   <li> 8.- Cerrar socket servicio (<b>close</b>)</li>
 </ul>
 </td>
 <td valign=top>
 <ul>
-   <li> Creación de un socket (**socket**)</li>
-   <li> Obtener la dirección de un socket</li>
-   <li> Solicitud de conexión (**connect**)</li>
-   <li> Transferencia de datos (**write** y **read**)</li>
-   <li> Cerrar un socket (**close**)</li>
+   <li> (1) Creación de un socket (<b>socket</b>)</li>
+   <li> (2) Obtener la dirección</li>
+   <li></li>
+   <li></li>
+   <li></li>
+   <li> (3) Solicitud de conexión (<b>connect</b>)</li>
+   <li> (4) Transferencia de datos (<b>write</b> y <b>read</b>)</li>
+   <li> (5) Cerrar un socket (<b>close</b>)</li>
 </ul>
 </td>
 </tr>
 </table>
 </html>
 
+```mermaid
+graph LR;
+    CA("socket()") --> CB("connect()")
+    CB --> CC("write()")
+    CC --> CD("read()")
+    CD --> CE("close()")
+
+    SA("socket()") --> SB("bind()")
+    SB --> SC("listen()")
+    SC --> SD("accept()")
+    SD --> SE("read()")
+    SE --> SF("write()")
+    SF --> SG("close()")
+    SG --> SD
+
+    CB -.->|conexión| SD
+    CC -.->|petición| SE
+    SF -.->|respuesta| CD     
+
+    subgraph "Proceso cliente"
+    CA
+    CB
+    CC
+    CD
+    CE
+    end
+
+    subgraph "Proceso servidor"
+    SA
+    SB
+    SC
+    SD
+    SE
+    SF
+    SG
+    subgraph "servicio"
+      SD
+      SE
+      SF
+      SG
+    end
+    end
+```
+
+---
+
+## Ejemplo de uso de sockets orientados a conexión
+
+**servidor-base-tcp.c**
+   ```c
+    #include <stdio.h>
+    #include <string.h>
+    #include <unistd.h>
+    #include <netinet/in.h>
+    #include <sys/types.h>
+    #include <arpa/inet.h>
+    #include <sys/socket.h>
+
+    int main ( int argc, char **argv )
+    {
+         int sd, newsd, ret;
+         socklen_t size;
+         struct sockaddr_in server_addr, client_addr;
+
+         // (1) creación de un socket
+         // * NO tiene dirección asignada aquí
+         sd = socket(AF_INET, SOCK_STREAM, 0) ;
+         if (-1 == sd) {
+             printf("Error en la creación del socket");
+             return -1;
+         }
+
+         // (2) obtener la dirección
+         bzero((char *)&server_addr, sizeof(server_addr));
+         server_addr.sin_family = AF_INET;
+         server_addr.sin_port = htons(4200);
+         server_addr.sin_addr.s_addr = INADDR_ANY;
+
+         // (3) asigna dirección a un socket
+         // * host = INADDR_ANY -> cualquier dirección del host
+         // * port = 0 -> el sistema selecciona el primer puerto libre
+         // * port = 0...1023 -> puertos reservados (puede necesitar ser root la ejecución)
+         ret = bind(sd,(struct sockaddr *)& server_addr, sizeof(server_addr)) ;
+         if (ret < 0) {
+             printf("Error en el bind\n") ;
+             return -1 ;
+         }
+
+         // (4) preparar para aceptar conexiones
+         // * listen permite definir el número máximo de peticiones pendientes a encolar
+         // * SOMAXCONN está en sys/socket.h
+         listen(sd, SOMAXCONN);
+
+         while (1)
+         {
+            // (5) aceptar nueva conexión (newsd) desde socket servidor (sd)
+            // * bloquea al servidor hasta que se produce la conexión
+            // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
+            newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
+            if (newsd < 0) {
+                printf("Error en el accept");
+                return(-1);
+            }
+
+            // Para ayudar a la depuración,
+            // se imprime la IP y puerto del cliente que se conecta
+            // client_addr almacena la IP y el puerto del proceso cliente
+            printf("conexión aceptada de IP:%s y puerto:%d\n",
+                    inet_ntoa(client_addr.sin_addr),
+                        ntohs(client_addr.sin_port));
+
+            // Preparar el mensaje a enviar: 1024 bytes con "hola mundo"
+            char buffer[1024] ;
+            strcpy(buffer, "Hola mundo") ;
+
+            // (6) transferir datos sobre newsd
+            size_t total    = sizeof(buffer) ;
+            size_t escritos = 0 ;
+            ssize_t result  = 0 ;
+            while (escritos != total) // queda por escribir
+            {
+               result = write(newsd, buffer+escritos, total-escritos) ;
+               // puede que write NO escriba todos los datos solicitados
+               if (-1 == result) { break; }
+               escritos = escritos + result ;
+            }
+            if (escritos != total) { // error, no se ha escrito todo
+                printf("Error al escribir buffer") ;
+            }
+
+            // (7) cerrar socket conectado
+            close(newsd);
+         }
+
+         // (8) cerrar socket de servicio
+         close(sd);
+
+    } /* fin main */
+   ```
+
+**cliente-base-tcp.c**
+   ```c
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include <unistd.h>
+    #include <string.h>
+    #include <netdb.h>
+    #include <sys/socket.h>
+    #include <arpa/inet.h>
+    #include <arpa/inet.h>
+
+    int main ( int argc, char **argv )
+    {
+        char *maquina; short puerto;
+        struct sockaddr_in server_addr;
+        struct hostent *hp;
+        int sd, ret;
+
+        if (argc != 3) {
+            printf("Uso: %s <IP máquina> <puerto>\n", argv[0]);
+            return 0;
+        }
+        maquina = argv[1] ;
+        puerto = (short) atoi(argv[2]);
+
+        // (1) creación del socket (NO tiene dirección asignada aquí)
+        sd = socket(AF_INET, SOCK_STREAM, 0);
+        if (sd < 0) {
+            printf("ERROR en socket\n") ;
+            return -1 ;
+        }
+
+         // (2) obtener la dirección
+        bzero((char *)&server_addr, sizeof(server_addr));
+        hp = gethostbyname(maquina);
+        memcpy (&(server_addr.sin_addr), hp->h_addr, hp->h_length);
+        server_addr.sin_family = AF_INET;
+        server_addr.sin_port = htons(puerto);
+
+        // (3) Solicitud de conexión (con socket remoto)
+        // * si el socket local no tiene dirección asignada
+        //   entonces se le asigna una automáticamente con puerto temporal
+        ret = connect(sd, (struct sockaddr *) &server_addr, sizeof(server_addr)) ;
+        if (ret < 0) {
+            printf("ERROR en la conexión\n");
+            return -1;
+        }
+
+        // Preparar el espacio para recepción del mensaje
+        char buffer[1024] ;
+        strcpy(buffer, "") ;
+
+        // (4) transferir datos sobre sd
+        size_t total  = sizeof(buffer) ;
+        size_t leidos = 0 ;
+        ssize_t result = 0 ;
+        while (leidos != total) // queda por escribir
+        {
+           result = read(sd, buffer+leidos , total-leidos ) ;
+           // puede que read NO lea todos los datos solicitados
+           if (-1 == result) { break; }
+           leidos = leidos + result ;
+        }
+        if (leidos != total) { // error, no se ha leído todo
+            printf("Error al leer buffer") ;
+        }
+
+        // Imprimir el mensaje recibido
+        printf("mensaje del servidor: %s\n", buffer) ;
+
+        // (5) Cerrar socket
+        close(sd);
+
+        return 0;
+    }
+   ```
+
+* Para compilar, se puede usar:
+   ```bash
+   gcc -Wall -g  -o servidor-base-tcp servidor-base-tcp.c
+   gcc -Wall -g  -o cliente-base-tcp  cliente-base-tcp.c
+  ```
+
+* Para ejecutar, se puede usar:
+   ```bash
+   user$ ./servidor-base-tcp &
+   user$ ./cliente-base-tcp localhost 4200
+   conexión aceptada de IP:127.0.0.1 y puerto:57422
+   mensaje del servidor: Hola mundo
+   user$  kill -9 %1
+  ```
+
+---
 
 ## Modelos de comunicación: NO orientado a conexión
 
-* Sockets datagrama (SOCK_DGRAM) que usa UCP
+* Uso de UDP mediante sockets datagrama (SOCK_DGRAM) 
 
-* Pasos:
 <html>
 <table>
-<tr><th>Receptor</th><th>Enviador</th></tr>
+<tr><th>Servidor</th><th>Cliente</th></tr>
 <tr>
 <td valign=top>
 <ul>
-   <li> Creación de un socket (**socket**) </li>
-   <li> Obtener la dirección de un socket</li>
-   <li> Asignación de direcciones (**bind**)</li>
-   <li> Transferencia de datos (**recvfrom** y **sendto**)</li>
-   <li> Cerrar un socket (**close**)</li>
+   <li> (1) Creación de un socket (<b>socket</b>) </li>
+   <li> (2) Obtener la dirección de un socket</li>
+   <li> (3) Asignación de direcciones (<b>bind</b>)</li>
+   <li>Bucle:</li>
+   <ul>
+   <li> (4) Transferencia de datos (<b>recvfrom</b> y <b>sendto</b>)</li>
+   </ul>
+   <li> (5) Cerrar socket (<b>close</b>)</li>
 </ul>
 </td>
 <td valign=top>
 <ul>
-   <li> Creación de un socket (**socket**)</li>
-   <li> Obtener la dirección de un socket</li>
-   <li> Transferencia de datos (**sendto** y **recvfrom**)</li>
-   <li> Cerrar un socket (**close**)</li>
+   <li> (1) Creación de un socket (<b>socket</b>)</li>
+   <li> (2) Obtener la dirección de un socket</li>
+   <li></li>
+   <li></li>
+   <li> (3) Transferencia de datos (<b>sendto</b> y <b>recvfrom</b>)</li>
+   <li> (4) Cerrar un socket (<b>close</b>)</li>
 </ul>
 </td>
 </tr>
 </table>
 </html>
+
+```mermaid
+graph LR;
+    CA("socket()") --> CC("sendto()")
+    CC --> CD("recvfrom()")
+    CD --> CE("close()")
+
+    SA("socket()") --> SB("bind()")
+    SB --> SE("recvfrom()")
+    SE --> SF("sendto()")
+    SF --> SG("close()")
+    SF --> SE
+
+    CC -.->|petición| SE
+    SF -.->|respuesta| CD
+    
+    subgraph "Proceso servidor"
+    SA
+    SB
+    SE
+    SF
+    SG
+    subgraph "servicio"
+      SE
+      SF
+    end
+    end
+
+    subgraph "Proceso cliente"
+    CA
+    CC
+    CD
+    CE
+    end
+```
+
+---
+
+## Ejemplo de uso de sockets NO orientados a conexión
+
+**servidor-secuencial-udp.c**
+   ```c
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+    int main ( int argc, char *argv[] )
+    {
+        int sock, ret;
+
+        // (1) Creación del socket
+        sock = socket(PF_INET, SOCK_DGRAM, 0) ;
+        if (sock < 0) {
+            printf("Error al crear el socket\n") ;
+            return -1;
+        }
+
+        // (2) Obtener la dirección del socket
+        struct sockaddr_in server_address;
+        memset(&server_address, 0, sizeof(server_address));
+        server_address.sin_family      = AF_INET;
+        server_address.sin_port        = htons(4200);
+        server_address.sin_addr.s_addr = htonl(INADDR_ANY);
+
+        // (3) Asignación de dirección
+        ret = bind(sock, (struct sockaddr *)&server_address, sizeof(server_address)) ;
+        if (ret < 0) {
+            printf("Error en el bind\n");
+            return -1;
+        }
+
+        // Buffer de recepción de mensajes y
+        // estructura donde guardar la dirección del cliente
+        struct sockaddr_in client_address;
+        unsigned int client_address_len = 0;
+        char buffer[1024];
+
+        // Bucle
+        while (true)
+        {
+                // borrar memoria del mensaje anterior
+                memset(buffer, 0, 1024) ;
+
+                // (4) Transferencia de datos
+                ret = recvfrom(sock,
+                               buffer, 1024, 0,
+                               (struct sockaddr *)&client_address,
+                               &client_address_len);
+                if (ret < 0) {
+                    printf("Error en recvfrom") ;
+                }
+
+                // Imprimir mensaje
+                printf("mensaje: '%s' desde %s\n",
+                       buffer,
+                       inet_ntoa(client_address.sin_addr));
+        }
+
+        // (5) Cerrar socket
+        close(sock) ;
+
+        return 0;
+}
+   ```
+
+**cliente-secuencial-udp.c**
+   ```c
+    #include <arpa/inet.h>
+    #include <stdio.h>
+    #include <string.h>
+    #include <sys/socket.h>
+    #include <unistd.h>
+
+    int main ( int argc, char *argv[] )
+    {
+        int sock, ret;
+
+        // (1) Creación del socket
+        sock = socket(PF_INET, SOCK_DGRAM, 0) ;
+        if (sock < 0) {
+            printf("Error al crear el socket\n") ;
+            return -1;
+        }
+
+        // (2) Obtener la dirección del socket
+        struct sockaddr_in server_address;
+        memset(&server_address, 0, sizeof(server_address));
+        server_address.sin_family      = AF_INET;
+        server_address.sin_port        = htons(4200);
+        inet_pton(AF_INET, "localhost", &server_address.sin_addr);
+
+
+        // Mensaje a ser enviado
+        char buffer[1024];
+        strcpy(buffer, "Hola mundo...") ;
+
+        // (3) Transferencia de datos
+        ret = sendto(sock,
+                     buffer, 1024, 0,
+                     (struct sockaddr*)&server_address,
+                     sizeof(server_address));
+        if (ret < 0) {
+            printf("Error en sendto") ;
+        }
+
+        // Imprimir mensaje
+        printf("mensaje: '%s'\n", buffer);
+
+        // (4) Cerrar socket
+        // * close(sock) equivale a shutdown(sock, SHUT_RDWR) ;
+        // SHUT_RD: cierra canal de lectura
+        // SHUT_WR: cierra el canal de escritura,
+        //          al terminar los datos read devolverá 0
+        // SHUT_RDWR: cierra ambos canales
+        close(sock);
+
+        return 0;
+    }
+   ```
+
+
+* Para compilar, se puede usar:
+   ```bash
+   gcc -Wall -g  -o servidor-base-udp servidor-base-udp.c
+   gcc -Wall -g  -o cliente-base-udp  cliente-base-udp.c
+  ```
+
+* Para ejecutar, se puede usar:
+   ```bash
+   user$ ./servidor-base-udp &
+   user$ ./cliente-base-udp 
+   mensaje: 'Hola mundo...' desde 127.0.0.1
+   mensaje: 'Hola mundo...'
+   user$  kill -9 %1
+  ```
+
+
+---
+
+## Opciones importantes asociadas a un socket
+
+Las funciones setsockopt y getsockopt permiten establecer y consultar (respectivamente) las opciones asociadas a un socket:
+
+   ```c
+  #include <sys/types.h>
+  #include <sys/socket.h>
+  int getsockopt (int sd, int nivel, int opcion,       void *valor, socklen_t *len);
+  int setsockopt (int sd, int nivel, int opcion, const void *valor, socklen_t  len);
+   ```
+
+Las opciones más importantes son:
+
+* SO_REUSEADDR: para poder volver a usar la dirección de inmediato asociada con bind.
+
+   ```c
+   int val = 1;
+   setsockopt(sd, SOL_SOCKET, SO_REUSEADDR, (void*) &val, sizeof(val));
+   ```
+
+   Por defecto cuando se cierra un socket hay que esperar un tiempo (constante TIME_WAIT, normalmente unos 20 segundos) hasta poder volver a hacer bind para utilizar la misma dirección. Si se ejecuta antes normalmente aparece el error **"Address already in use"** que esta opción soluciona.
+
+* TCP_NODELAY: envío inmediato (sin intentar agrupar mensajes relativamente juntos en el tiempo)
+
+   ```c
+  int option = 1 ;
+  rc = setsockopt(s, IPPROTO_TCP, TCP_NODELAY, &option, sizeof(option)) ;
+   ```
+
+   Por defecto espera un poco de tiempo antes de enviar pocos bytes por si puede agrupar varias pequeñas peticiones. El problema es que la latencia de cada petición particular es mayor. Por eso se recomienda el envío inmediato.
+
+* SO_RCVBUF, SO_SNDBUF: 
+  * Fijar el tamaño del buffer de envío/recepción
+       ```c
+       int size = 16*1024;
+       err = setsockopt(s, SOL_SOCKET, SO_SNDBUF, (char *)&size, sizeof(size));
+    ```
+  * Conocer el tamaño del buffer de envío/recepción
+    ```c
+    int size ;
+    err = getsockopt(s, SOL_SOCKET, SO_SNDBUF, (char *)&size, sizeof(size)) ;
+    printf("%d\n", size) ;
+    ```
+
+---
+
+## Servidor secuencial vs procesos pesados vs hilos
+
+* El servidor base es secuencial: una vez se conecta un cliente, hasta que no termina de atender no acepta conexiones de otros clientes (lo que reduce el rendimiento)
+
+**Esqueleto de servidor-base-tcp.c**
+   ```c
+
+    ...
+    int main ( int argc, char **argv )
+    {
+         ...
+         while (1)
+         {
+            // (5) aceptar nueva conexión (newsd) desde socket servidor (sd)
+            // * bloquea al servidor hasta que se produce la conexión
+            // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
+            newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
+            if (newsd < 0) {
+                printf("Error en el accept");
+                return(-1);
+            }
+
+            ...
+
+            // (6) transferir datos sobre newsd
+            size_t total    = sizeof(buffer) ;
+            size_t escritos = 0 ;
+            ssize_t result  = 0 ;
+            while (escritos != total) // queda por escribir
+            {
+               result = write(newsd, buffer+escritos, total-escritos) ;
+               // puede que write NO escriba todos los datos solicitados
+               if (-1 == result) { break; }
+               escritos = escritos + result ;
+            }
+            if (escritos != total) { // error, no se ha escrito todo
+                printf("Error al escribir buffer") ;
+            }
+
+            // (7) cerrar socket conectado
+            close(newsd);
+         }
+
+         ...
+    } /* fin main */
+   ```
+
+* El servidor puede ser concurrente usando procesos pesados: una vez se conecta un cliente, se crea un proceso pesado que se encargue de atenderle.
+
+**Esqueleto de servidor-fork-tcp.c**
+   ```c
+
+    ...
+    int main ( int argc, char **argv )
+    {
+         ...
+         while (1)
+         {
+            // (5) aceptar nueva conexión (newsd) desde socket servidor (sd)
+            // * bloquea al servidor hasta que se produce la conexión
+            // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
+            newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
+            if (newsd < 0) {
+                printf("Error en el accept");
+                return -1;
+            }
+
+            ...
+
+            pid_t pid = fork() ;
+            if (pid < 0) {
+                printf("Error en fork()\n") ;
+                return -1;
+            } 
+            if (0 == pid) // el proceso hijo atiende al cliente
+            {
+                // (6) transferir datos sobre newsd
+                size_t total    = sizeof(buffer) ;
+                size_t escritos = 0 ;
+                ssize_t result  = 0 ;
+                while (escritos != total) // queda por escribir
+                {
+                   result = write(newsd, buffer+escritos, total-escritos) ;
+                   // puede que write NO escriba todos los datos solicitados
+                   if (-1 == result) { break; }
+                   escritos = escritos + result ;
+                }
+                if (escritos != total) { // error, no se ha escrito todo
+                    printf("Error al escribir buffer") ;
+                }
+
+                // (7) cerrar socket conectado
+                close(newsd);
+            }
+         }
+
+         ...
+    } /* fin main */
+   ```
+
+* El servidor puede ser concurrente usando procesos ligeros: una vez se conecta un cliente, se crea un hilo que se encargue de atenderle.
+
+**Esqueleto de servidor-thread-tcp.c**
+   ```c
+
+    ...
+    int busy = 0 ;
+    pthread_mutex_t     m = PTHREAD_MUTEX_INITIALIZER ;
+    pthread_condition_t c = PTHREAD_COND_INITIALIZER ;
+
+    void *tratar_peticion ( void * arg )
+    {
+         int s_local;
+         
+         /// avisar copiado argumentos ////
+         pthread_mutex_lock(&m);
+         s_local = (* (int *) arg);
+         busy = 0;
+         pthread_cond_signal(&c);
+         pthread_mutex_unlock(&m);
+         /////////////////////
+         
+         // (6) transferir datos sobre newsd
+         size_t total    = sizeof(buffer) ;
+         size_t escritos = 0 ;
+         ssize_t result  = 0 ;
+         while (escritos != total) // queda por escribir
+         {
+             result = write(newsd, buffer+escritos, total-escritos) ;
+             // puede que write NO escriba todos los datos solicitados
+             if (-1 == result) { break; }
+                 escritos = escritos + result ;
+             }
+             if (escritos != total) { // error, no se ha escrito todo
+                 printf("Error al escribir buffer") ;
+         }
+         
+         // (7) cerrar socket conectado
+         close(s_local);
+     
+         pthread_exit(NULL);
+         return NULL ;
+    }
+
+    int main ( int argc, char **argv )
+    {
+         pthread_attr_init(&attr);
+         pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+         
+         ...
+         while (1)
+         {
+            // (5) aceptar nueva conexión (newsd) desde socket servidor (sd)
+            // * bloquea al servidor hasta que se produce la conexión
+            // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
+            newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
+            if (newsd < 0) {
+                printf("Error en el accept");
+                return -1;
+            }
+
+            ...
+            pthread_create(&thid, &attr, tratar_peticion, (void *)&newsd);
+            
+            /// Esperar copia de argumentos ///
+            pthread_mutex_lock(&m);
+            while (busy == 1)
+                   pthread_cond_wait(&c, &m);
+            busy = 1;
+            pthread_mutex_unlock(&m);
+            /////////////////////
+         }
+
+         ...
+    } /* fin main */
+   ```
+
+---
+
+## Guía de desarrollo de aplicaciones cliente-servidor con paso de mensajes
+
+ * Identificar el cliente y el servidor
+     * Cliente: elemento activo, varios
+     * Servidor: elemento pasivo
+ * 2. Protocolo del servicio
+     * Identificar los tipos mensajes y la secuencia de intercambios de mensajes (peticiones y respuestas)
+ * 3. Elegir el tipo de servidor
+     * UDP sin conexión
+     * TCP:
+        * Una conexión por sesión
+        * Una conexión por petición
+ * 4. Identificar el formato de los mensajes (representación de los datos)
+    * Independencia (lenguaje, arquitectura, implementación, …)
 
 
 **Material adicional**:
