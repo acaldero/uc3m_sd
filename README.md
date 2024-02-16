@@ -8,7 +8,7 @@
 
 ## Ejercicios prácticos
 
-  * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_ej_centralizado_a_distribuido.md)
+  * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/tutorial_centralizado_a_distribuido.md)
 
 
 ## Tutoriales

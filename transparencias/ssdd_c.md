@@ -8,7 +8,7 @@
 
 Los principales requisitos son:
 * Tener conexión a Internet para consultar documentación.
-* Tener acceso a una máquina con Linux. 
+* Tener acceso a una máquina con Linux.
   * -> se recuerda que el Laboratorio del Departamento de Informática ofrece unas Aulas Virtuales en: ["https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/](https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/)
 * Tener instalado el software para desarrollo que sea preciso en la máquina con Linux:
   * sudo apt-get install build-essential gdb ddd
@@ -96,7 +96,7 @@ Los problemas habituales aparecen:
         * Mensaje de los puntos por dónde pasa la ejecución: ```printf("Aquí 1\n"); ... printf("Aquí 2\n"); ...```
         * Mensaje de qué estado tienen las variables entre dos puntos anteriores: ```printf("variable: %d\n", valor_int); ....```
       * El uso de algún depurador (kdbg, ddd, gdb, ...)
-      * Realizar programación "defensiva": desde el principio añadir todas las comprobaciones y mensajes de impresión posibles 
+      * Realizar programación "defensiva": desde el principio añadir todas las comprobaciones y mensajes de impresión posibles
     </details>
 
 El proceso de trabajo en general incluyendo el tratamiento de problemas sería en general:
@@ -134,18 +134,18 @@ El proceso de trabajo en general incluyendo el tratamiento de problemas sería e
    ```bash
    sudo apt-get install ddd
    ```
- 
+
 </details>
 
 
 <details>
   <summary>Depurar con seer... (hacer click)</summary>
 <br>
- 
+
  * NOTA: aprovecho para agradecer a Adolfo la información de seer así como recomendar su uso
- 
+
  * Seer está disponible en:
-   https://github.com/epasveer/seer 
+   https://github.com/epasveer/seer
 
  * Seer es una interfaz gráfica para gdb en Linux:
    ![seer | main](https://raw.githubusercontent.com/epasveer/seer/main/images/mainview.png)
@@ -176,7 +176,7 @@ Como ejemplo de uso de sentencias de control de flujo en C, usaremos el siguient
      return 0 ;
   }
   ```
-  
+
 Este ejemplo permite imprimir los argumentos con los que se invoca un programa.
 
 ```bash
@@ -265,7 +265,7 @@ Como ejemplo de (array de) structs, usaremos el siguiente archivo:
      for (i=0; i<N_PERSONAS; i++)
      {
         personas[i].id    = i ;
-        personas[i].letra = 'A' ; 
+        personas[i].letra = 'A' ;
         sprintf(personas[i].nombre,  /* cadena destino */
                "persona %d",         /* formato */
                personas[i].id) ;     /* %d */
@@ -580,7 +580,7 @@ Como ejemplo de paso por parámetros por valor, usaremos el siguiente archivo:
 
          ret = copiar_string(s2, "Adios") ;
          if (ret != 1) return -1 ;
-  
+
          ret = imprimir_string(s2) ;  // a recordar: s2 == &(s2[0])
          if (ret != 1) return -1 ;
 
@@ -649,7 +649,7 @@ Como ejemplo de paso por parámetros de punteros por referencia, usaremos el sig
          *ptr = ptr_aux;
          return 1 ;
       }
-  
+
       return -1 ;
   }
 
@@ -668,7 +668,7 @@ Como ejemplo de paso por parámetros de punteros por referencia, usaremos el sig
       // mantener mismo contenido en s1 pero pedir más espacio asignado
       ret = mi_remalloc( &s1, 256 * sizeof(char)) ;
 
-         // ... 
+         // ...
 
       ret = mi_free(&s1) ;
 
@@ -748,7 +748,7 @@ gcc -g -Wall -o main main.o lib_hola.o
     gcc -g -Wall -o fichero fichero.o lib_hola.o -lc
     ```
   </details>
-  
+
 
 (2/3) Ejemplo de compilación con librería estática:
 

@@ -14,7 +14,7 @@
     * [4. Basado en hilos bajo demanda](#4--servidor-de-peticiones-basado-en-hilos-bajo-demanda)
     * [5. Basado en pool de hilos](#5--servidor-de-peticiones-basado-en-pool-de-hilos)
   * [Información adicional](#6--información-adicional)
-    
+
 
 
 ## 1.- <ins>Qué son y cómo se crean los hilos o threads</ins>
@@ -22,7 +22,7 @@
 Como ejemplo, este programa tiene:
 * Una función main que crea 5 hilos y espera a que todos los hilos terminen.
 * Cada hilo imprime "Hello world from thread &lt;id. del hilo&gt;!\n"
-  
+
 ### ths_creatjoin.c
   ```c
   #include <stdlib.h>
@@ -66,7 +66,7 @@ Como ejemplo, este programa tiene:
     return 0 ;
   }
   ```
-  
+
 Para compilar y ejecutar hay que usar:
 ```bash
 gcc -Wall -g -o ths_creatjoin ths_creatjoin.c -lpthread
@@ -82,7 +82,7 @@ Recordatorios
 * <details>
   <summary>Al hilo se pasa un único parámetro... (hacer click)</summary>
 
-  * En el diseño de la API se pensó en pasar un único parámetro que fuera un puntero a la dirección de memoria de una estructura de C (struct) en la cuál se guarda todos los argumentos de trabajo del hilo. 
+  * En el diseño de la API se pensó en pasar un único parámetro que fuera un puntero a la dirección de memoria de una estructura de C (struct) en la cuál se guarda todos los argumentos de trabajo del hilo.
   * (1/2) Antes de crear el hilo hay que reservar memoria y rellenar los valores de trabajo:
     ```
            th_args = (struct thread_arguments *)malloc(sizeof(struct thread_arguments)) ;
@@ -311,7 +311,7 @@ Recordatorios
     pthread_exit(NULL) ;
   }
   ```
-  
+
   Para compilar y ejecutar hay que usar:
   ```bash
   gcc -Wall -g -o interlock_sol interlock_sol.c -lpthread
@@ -321,7 +321,7 @@ Recordatorios
 
 **Videos suplementarios**:
   * <a href="https://www.youtube.com/watch?v=PxjgVYgpGkk&t=471s">Condiciones de carrera</a>
-  * <a href="https://www.youtube.com/watch?v=PxjgVYgpGkk&t=924s">Condiciones de interbloqueo</a>   
+  * <a href="https://www.youtube.com/watch?v=PxjgVYgpGkk&t=924s">Condiciones de interbloqueo</a>
 
 
 

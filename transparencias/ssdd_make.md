@@ -25,7 +25,7 @@ Usaremos tres archivos:
 
 * lib_hola.c
   ```c
-  void di_hola ( void ) 
+  void di_hola ( void )
   {
      printf("Hola Mundo...") ;
   }
@@ -34,7 +34,7 @@ Usaremos tres archivos:
 * main.c
   ```c
   #include <lib_hola.h>
-  
+
   int main ( int argc, char *argv[] )
   {
      di_hola() ;
@@ -108,10 +108,10 @@ make
 
   all: $(OBJS)
   	$(CC) $(CFLAGS) -o main $(OBJS)
-  
+
   lib_hola.o: lib_hola.c
   	$(CC) $(CFLAGS) -c lib_hola.c -o lib_hola.o
-  
+
   main.o: main.c
   	$(CC) $(CFLAGS) -c main.c     -o main.o
 	
@@ -139,7 +139,7 @@ make clean; make
   	$(CC) $(CFLAGS) -o main $(OBJS)
 
   %.o: %.c
-  	@echo "Compiling... $<" 
+  	@echo "Compiling... $<"
   	$(CC) $(CFLAGS) -c $< -o $@
 
   clean: $(OBJS)
@@ -160,7 +160,7 @@ Hay dos reglas especiales:
 * Usar una única regla para indicar que cada archivo .o (%.o) precisa un archivo .c asociado (%.c) y se compila con ```-c $< -o $@``` donde ```$<``` es el nombre del archivo .c y ```$@``` es el nombre del archivo .o:
   ```bash
     %.o: %.c
-    	@echo "Compiling... $<" 
+    	@echo "Compiling... $<"
   	$(CC) $(CFLAGS) -c $< -o $@
   ```
 
@@ -169,5 +169,5 @@ Hay dos reglas especiales:
 ## Material recomendado
   * https://makefiletutorial.com/
   * https://www3.nd.edu/~zxu2/acms60212-40212/Makefile.pdf
-  
+
 

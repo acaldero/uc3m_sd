@@ -10,7 +10,7 @@
   * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-eventos-enviados-por-servidor--sse-)
   * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gSOAP-XML--cliente-solo,-en-C-)
   * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gSOAP/XML--cliente-y-servidor--en-C-)
-    
+
 
 
 ## Por qué usar un Servicio Web

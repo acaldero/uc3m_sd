@@ -91,7 +91,7 @@
 
   * Protocolo
     * 0: valor por defecto (ver /etc/protocols para otros)
- 
+
 ---
 
 ## Sockets: protocolo
@@ -111,7 +111,7 @@
 
   * **Protocolo**
     * 0: valor por defecto (ver /etc/protocols para otros)
-    
+
 ---
 
 ## Socket **stream** vs **datagram**
@@ -151,7 +151,7 @@ Donde:
  * Las direcciones se usan para:
    * Asignar una dirección local a un socket (bind)
    * Especificar una dirección remota (connect o sendto)
-   
+
  * Las direcciones son dependientes del dominio
     * Cada dominio usa una estructura específica
       * Direcciones en AF_UNIX (``struct sockaddr_un``)
@@ -219,7 +219,7 @@ struct sockaddr_in
 struct sockaddr_in a2;
 memset(&a2, 0, sizeof(struct sockaddr_in)); // inicializar todo a cero
 a2.sin_family      = AF_INET ;
-a2.sin_port        = htons(8080) ; 
+a2.sin_port        = htons(8080) ;
 a2.sin_addr.s_addr = inet_addr("10.12.110.57");
 ```
  * **TIP:** Al usar ```struct sockaddr_in``` que hay que inicializar a 0 todos los campos para limpiar lo que tenga antes.
@@ -305,9 +305,9 @@ memset(&a6, 0, sizeof(struct sockaddr_in6)); // inicializar todo a cero
   * **inet_addr** -> PROBLEMA: el error devuelto se confunde con un valor válido
     ```c
     // (opción 1) in_addr_t inet_addr(const char *cp);
-    a4.sin_addr.s_addr = inet_addr("10.10.10.57"); 
+    a4.sin_addr.s_addr = inet_addr("10.10.10.57");
     if (INADDR_NONE == a4.sin_addr.s_addr) {
-        // INADDR_NONE: dirección con todos los bits a uno 
+        // INADDR_NONE: dirección con todos los bits a uno
         printf("ERROR en inet_addr\n") ;
     }
     ```
@@ -322,10 +322,10 @@ memset(&a6, 0, sizeof(struct sockaddr_in6)); // inicializar todo a cero
   * **inet_pton** -> vale para IPv4 y para IPv6
     ```c
     // (opción 3) int inet_pton(int family, const char *strptr, void *addrptr);
-    int ret = inet_pton(AF_INET6, "2024:db8:8722:3a92::15", &(a6.sin6_addr)); 
+    int ret = inet_pton(AF_INET6, "2024:db8:8722:3a92::15", &(a6.sin6_addr));
     if (0 == ret) {
         printf("ERROR en inet_pton\n") ;
-    } 
+    }
     ```
 
 ---
@@ -353,7 +353,7 @@ memset(&a4, 0, sizeof(struct sockaddr_in));  // inicializar todo a cero
     ptr = inet_ntop(AF_INET, &(a4.sin_addr.s_addr), str4, sizeof(str4));
     if (0 == ret) {
         printf("ERROR en inet_ntop\n") ;
-    } 
+    }
     ```
 
 ---
@@ -421,7 +421,7 @@ int main(int argc, char **argv)
        char  **h_addr_list ;
     }
     ```
-    
+
   * Obtiene la información de un host a partir de una dirección en formato dominio-punto (getaddrinfo para IPv4 e IPv6)
     ```c
     struct hostent *gethostbyname(char *str);  // str: nombre de la máquina
@@ -433,14 +433,14 @@ int main(int argc, char **argv)
                                   int len,           // len:  tamaño de la estructura
                                   int type);         // type: AF_INET
     ```
-    
+
 ---
 
 ## Ejemplos
 
 * <details>
     <summary>Ejemplo de conversión dominio-punto a decimal-punto...</summary>
-    
+
    **dns.c**
    ```c
     #include <stdio.h>
@@ -471,7 +471,7 @@ int main(int argc, char **argv)
 
 * <details>
     <summary>Ejemplo de conversión decimal-punto a dominio-punto...</summary>
-    
+
    **obtener-dominio.c**
   ```c
   #include <netdb.h>
@@ -523,7 +523,7 @@ int main(int argc, char **argv)
 
  * Hay dos órdenes de los bytes de una palabra en memoria:
     * Big-endian
-       * Motorola 
+       * Motorola
     * Little-endian
        * Intel, AMD
 
@@ -537,15 +537,15 @@ int main(int argc, char **argv)
 
  * Big-endian es el estándar para el ordenamiento de los bytes usado en TCP/IP
     * También llamado *Network Byte Order*
-    
+
   * En computadores que no utilicen Big-endian es necesario emplear funciones para traducir números entre el formato que utiliza TCP/IP (Big-endian) y el empleado por el propio computador (Little-endian)
-    * Host (Little-Endian) -> Network (Big-Endian): 
+    * Host (Little-Endian) -> Network (Big-Endian):
          ```c
        #include <arpa/inet.h>
       u_long  htonl(u_long hostlong);   // traducir número de 32 bits del formato host al de net
       u_short htons(u_short hostshort); // traducir número de 16 bits del formato host al de net
       ```
-    * Network (Big-Endian) -> host (Little-Endian): 
+    * Network (Big-Endian) -> host (Little-Endian):
          ```c
        #include <arpa/inet.h>
        u_long ntohl(u_long netlong);     // traducir número de 32 bits del formato net a host
@@ -573,7 +573,7 @@ int main(int argc, char **argv)
 
 ## Modelos de comunicación: orientado a conexión
 
-* Uso de TCP mediante sockets stream (SOCK_STREAM) 
+* Uso de TCP mediante sockets stream (SOCK_STREAM)
 
 <html>
 <table>
@@ -627,7 +627,7 @@ graph LR;
 
     CB -.->|conexión| SD
     CC -.->|petición| SE
-    SF -.->|respuesta| CD     
+    SF -.->|respuesta| CD
 
     subgraph "Proceso cliente"
     CA
@@ -846,7 +846,7 @@ graph LR;
 
 ## Modelos de comunicación: NO orientado a conexión
 
-* Uso de UDP mediante sockets datagrama (SOCK_DGRAM) 
+* Uso de UDP mediante sockets datagrama (SOCK_DGRAM)
 
 <html>
 <table>
@@ -892,7 +892,7 @@ graph LR;
 
     CC -.->|petición| SE
     SF -.->|respuesta| CD
-    
+
     subgraph "Proceso servidor"
     SA
     SB
@@ -1050,7 +1050,7 @@ graph LR;
 * Para ejecutar, se puede usar:
    ```bash
    user$ ./servidor-base-udp &
-   user$ ./cliente-base-udp 
+   user$ ./cliente-base-udp
    mensaje: 'Hola mundo...' desde 127.0.0.1
    mensaje: 'Hola mundo...'
    user$  kill -9 %1
@@ -1090,7 +1090,7 @@ Las opciones más importantes son:
 
    Por defecto espera un poco de tiempo antes de enviar pocos bytes por si puede agrupar varias pequeñas peticiones. El problema es que la latencia de cada petición particular es mayor. Por eso se recomienda el envío inmediato.
 
-* SO_RCVBUF, SO_SNDBUF: 
+* SO_RCVBUF, SO_SNDBUF:
   * Fijar el tamaño del buffer de envío/recepción
        ```c
        int size = 16*1024;
@@ -1178,7 +1178,7 @@ Las opciones más importantes son:
             if (pid < 0) {
                 printf("Error en fork()\n") ;
                 return -1;
-            } 
+            }
             if (0 == pid) // el proceso hijo atiende al cliente
             {
                 // (6) transferir datos sobre newsd
@@ -1218,7 +1218,7 @@ Las opciones más importantes son:
     void *tratar_peticion ( void * arg )
     {
          int s_local;
-         
+
          /// avisar copiado argumentos ////
          pthread_mutex_lock(&m);
          s_local = (* (int *) arg);
@@ -1226,7 +1226,7 @@ Las opciones más importantes son:
          pthread_cond_signal(&c);
          pthread_mutex_unlock(&m);
          /////////////////////
-         
+
          // (6) transferir datos sobre newsd
          size_t total    = sizeof(buffer) ;
          size_t escritos = 0 ;
@@ -1241,10 +1241,10 @@ Las opciones más importantes son:
              if (escritos != total) { // error, no se ha escrito todo
                  printf("Error al escribir buffer") ;
          }
-         
+
          // (7) cerrar socket conectado
          close(s_local);
-     
+
          pthread_exit(NULL);
          return NULL ;
     }
@@ -1253,7 +1253,7 @@ Las opciones más importantes son:
     {
          pthread_attr_init(&attr);
          pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-         
+
          ...
          while (1)
          {
@@ -1268,7 +1268,7 @@ Las opciones más importantes son:
 
             ...
             pthread_create(&thid, &attr, tratar_peticion, (void *)&newsd);
-            
+
             /// Esperar copia de argumentos ///
             pthread_mutex_lock(&m);
             while (busy == 1)
