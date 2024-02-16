@@ -7,15 +7,17 @@
 ## Contenidos
 
  * Introducción a sockets
-   * Motivación
-   * Dominios y tipos
-   * Direcciones y puertos
-   * Representación de datos
- * Ejemplo con sockets
-   * Datagram
-   * Stream
+   * [Motivación](#introducción-a-sockets)
+   * [Dominios y tipos](#sockets-dominios-de-comunicación)
+   * [Direcciones y puertos](#direcciones)
+   * [Representación de datos](#orden-de-los-bytes-big-endian-y-little-endian)
+ * Modelos de comunicación
+   * [Stream o orientado a conexión](#modelos-de-comunicación-orientado-a-conexión)
+   * [Datagram](#modelos-de-comunicación-no-orientado-a-conexión)
+ * Aspectos adicionales
+   * [Opciones más comunes de un socket](#opciones-importantes-asociadas-a-un-socket)
+   * [Servidor secuencial vs procesos pesados vs hilos](#servidor-secuencial-vs-procesos-pesados-vs-hilos)
 
----
 
 ## Introducción a sockets
 
@@ -31,7 +33,6 @@
     * Disponibles en prácticamente todos los sistemas operativos: Linux, Windows, MacOS, etc.
     * API en casi todos los lenguajes:  Java (como clase nativa), Python (como paquete socket), etc.
 
----
 
 ## Qué representa un socket
 
@@ -51,7 +52,6 @@
   * Tipo de sockets
   * Protocolo
 
----
 
 ## Sockets: dominios de comunicación
 
@@ -72,7 +72,6 @@
   * Tipo de sockets
   * Protocolo
 
----
 
 ## Sockets: tipo de socket
 
@@ -91,8 +90,7 @@
 
   * Protocolo
     * 0: valor por defecto (ver /etc/protocols para otros)
-
----
+ 
 
 ## Sockets: protocolo
 
@@ -111,8 +109,7 @@
 
   * **Protocolo**
     * 0: valor por defecto (ver /etc/protocols para otros)
-
----
+    
 
 ## Socket **stream** vs **datagram**
 
@@ -128,7 +125,19 @@
  * (1) Longitud máxima de un datagrama (datos y cabeceras) es 64 KB<br>Cabecera IP+cabecera UDP = 28 bytes
  * (2) Paquetes ordenados por secuencia, sin duplicación de paquetes, libre de errores, notifica errores
 
----
+
+## Comparación de protocolos
+
+| Característica           | IP  | UDP  | TCP  |
+|--------------------------|-----|------|------|
+| Orientado a conexión     | NO  | NO   | SI   |
+| Límite entre mensajes    | SI  | SI   | NO   |
+| Ack                      | NO  | NO   | SI   |
+| Timeout y retransmisión  | NO  | NO   | SI   |
+| Detección de duplicación | NO  | NO   | SI   |
+| Secuenciamiento          | NO  | NO   | SI   |
+| Flujo de control         | NO  | NO   | SI   |
+
 
 ## Información asociada a una comunicación
 
@@ -144,14 +153,13 @@ Donde:
  * IP-remoto: dirección IP remota (destino)
  * P-remoto:  puerto remoto (destino
 
----
 
 ## Direcciones
 
  * Las direcciones se usan para:
    * Asignar una dirección local a un socket (bind)
    * Especificar una dirección remota (connect o sendto)
-
+   
  * Las direcciones son dependientes del dominio
     * Cada dominio usa una estructura específica
       * Direcciones en AF_UNIX (``struct sockaddr_un``)
@@ -161,7 +169,6 @@ Donde:
    * Se utiliza la estructura genérica ``struct sockaddr`` en el API
    * Es necesario la conversión de tipos (casting) en las llamadas
 
----
 
 ## Puertos
 
@@ -180,7 +187,6 @@ Donde:
 
   * El espacio de puertos para streams y datagramas es independiente
 
----
 
 ## Dirección de host
 
@@ -199,7 +205,6 @@ struct in_addr a1 ;
 a.s_addr = inet_addr("10.12.110.57"); // a.s_addr es la dirección en binario
 ```
 
----
 
 ## Direcciones en AF_INET
 
@@ -219,12 +224,11 @@ struct sockaddr_in
 struct sockaddr_in a2;
 memset(&a2, 0, sizeof(struct sockaddr_in)); // inicializar todo a cero
 a2.sin_family      = AF_INET ;
-a2.sin_port        = htons(8080) ;
+a2.sin_port        = htons(8080) ; 
 a2.sin_addr.s_addr = inet_addr("10.12.110.57");
 ```
  * **TIP:** Al usar ```struct sockaddr_in``` que hay que inicializar a 0 todos los campos para limpiar lo que tenga antes.
 
----
 
 ## Servicios sobre direcciones (1/2)
 
@@ -241,7 +245,6 @@ a2.sin_addr.s_addr = inet_addr("10.12.110.57");
    * Obtener la dirección de un host (ej.: "nodo1.inf.uc3m.es" -> "10.1.2.3")
    * Transformar direcciones (ej.: "10.1.2.3" -> 0x12345678 / 0x12345678 -> "10.1.2.3")
 
----
 
 ## Servicios sobre direcciones (2/2)
 
@@ -262,7 +265,7 @@ flowchart TD
     D
     end
 ```
----
+
 
 ## Servicios sobre direcciones: (A) obtener el nombre local
 
@@ -291,7 +294,6 @@ int main ()
 }
 ```
 
----
 
 ## Servicios sobre direcciones: (B) decimal-punto -> binario
 
@@ -305,9 +307,9 @@ memset(&a6, 0, sizeof(struct sockaddr_in6)); // inicializar todo a cero
   * **inet_addr** -> PROBLEMA: el error devuelto se confunde con un valor válido
     ```c
     // (opción 1) in_addr_t inet_addr(const char *cp);
-    a4.sin_addr.s_addr = inet_addr("10.10.10.57");
+    a4.sin_addr.s_addr = inet_addr("10.10.10.57"); 
     if (INADDR_NONE == a4.sin_addr.s_addr) {
-        // INADDR_NONE: dirección con todos los bits a uno
+        // INADDR_NONE: dirección con todos los bits a uno 
         printf("ERROR en inet_addr\n") ;
     }
     ```
@@ -322,13 +324,12 @@ memset(&a6, 0, sizeof(struct sockaddr_in6)); // inicializar todo a cero
   * **inet_pton** -> vale para IPv4 y para IPv6
     ```c
     // (opción 3) int inet_pton(int family, const char *strptr, void *addrptr);
-    int ret = inet_pton(AF_INET6, "2024:db8:8722:3a92::15", &(a6.sin6_addr));
+    int ret = inet_pton(AF_INET6, "2024:db8:8722:3a92::15", &(a6.sin6_addr)); 
     if (0 == ret) {
         printf("ERROR en inet_pton\n") ;
-    }
+    } 
     ```
 
----
 
 ## Servicios sobre direcciones: (C ) binario -> decimal-punto
 
@@ -353,10 +354,9 @@ memset(&a4, 0, sizeof(struct sockaddr_in));  // inicializar todo a cero
     ptr = inet_ntop(AF_INET, &(a4.sin_addr.s_addr), str4, sizeof(str4));
     if (0 == ret) {
         printf("ERROR en inet_ntop\n") ;
-    }
+    } 
     ```
 
----
 
 ## Resumen de transformación de direcciones
 
@@ -406,7 +406,6 @@ int main(int argc, char **argv)
 }
 ```
 
----
 
 ## Obtener la información de una máquina: (D) resolver nombres
 
@@ -421,7 +420,7 @@ int main(int argc, char **argv)
        char  **h_addr_list ;
     }
     ```
-
+    
   * Obtiene la información de un host a partir de una dirección en formato dominio-punto (getaddrinfo para IPv4 e IPv6)
     ```c
     struct hostent *gethostbyname(char *str);  // str: nombre de la máquina
@@ -433,14 +432,13 @@ int main(int argc, char **argv)
                                   int len,           // len:  tamaño de la estructura
                                   int type);         // type: AF_INET
     ```
-
----
+    
 
 ## Ejemplos
 
 * <details>
     <summary>Ejemplo de conversión dominio-punto a decimal-punto...</summary>
-
+    
    **dns.c**
    ```c
     #include <stdio.h>
@@ -471,7 +469,7 @@ int main(int argc, char **argv)
 
 * <details>
     <summary>Ejemplo de conversión decimal-punto a dominio-punto...</summary>
-
+    
    **obtener-dominio.c**
   ```c
   #include <netdb.h>
@@ -517,13 +515,13 @@ int main(int argc, char **argv)
   ```
   </details>
 
----
+
 
 ## Orden de los bytes: big-endian y little-endian
 
  * Hay dos órdenes de los bytes de una palabra en memoria:
     * Big-endian
-       * Motorola
+       * Motorola 
     * Little-endian
        * Intel, AMD
 
@@ -531,28 +529,27 @@ int main(int argc, char **argv)
 
 ![wikipedia Endianess](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/32bit-Endianess.svg/880px-32bit-Endianess.svg.png)
 
----
 
 ## Orden de los bytes y el *Network Byte Order*
 
  * Big-endian es el estándar para el ordenamiento de los bytes usado en TCP/IP
     * También llamado *Network Byte Order*
-
+    
   * En computadores que no utilicen Big-endian es necesario emplear funciones para traducir números entre el formato que utiliza TCP/IP (Big-endian) y el empleado por el propio computador (Little-endian)
-    * Host (Little-Endian) -> Network (Big-Endian):
+    * Host (Little-Endian) -> Network (Big-Endian): 
          ```c
        #include <arpa/inet.h>
       u_long  htonl(u_long hostlong);   // traducir número de 32 bits del formato host al de net
       u_short htons(u_short hostshort); // traducir número de 16 bits del formato host al de net
       ```
-    * Network (Big-Endian) -> host (Little-Endian):
+    * Network (Big-Endian) -> host (Little-Endian): 
          ```c
        #include <arpa/inet.h>
        u_long ntohl(u_long netlong);     // traducir número de 32 bits del formato net a host
        u_short ntohs(u_short netshort);  // traducir número de 16 bits del formato net a host
       ```
 
----
+
 
 ## Representación de los datos: marshalling/unmarshalling
 
@@ -569,11 +566,11 @@ int main(int argc, char **argv)
 | En computador A       |             |  Red           |                | En computador B       |
 |                       |             |                |                |                       |
 
----
+
 
 ## Modelos de comunicación: orientado a conexión
 
-* Uso de TCP mediante sockets stream (SOCK_STREAM)
+* Uso de TCP mediante sockets stream (SOCK_STREAM) 
 
 <html>
 <table>
@@ -627,7 +624,7 @@ graph LR;
 
     CB -.->|conexión| SD
     CC -.->|petición| SE
-    SF -.->|respuesta| CD
+    SF -.->|respuesta| CD     
 
     subgraph "Proceso cliente"
     CA
@@ -654,7 +651,6 @@ graph LR;
     end
 ```
 
----
 
 ## Ejemplo de uso de sockets orientados a conexión
 
@@ -842,11 +838,10 @@ graph LR;
    user$  kill -9 %1
   ```
 
----
 
 ## Modelos de comunicación: NO orientado a conexión
 
-* Uso de UDP mediante sockets datagrama (SOCK_DGRAM)
+* Uso de UDP mediante sockets datagrama (SOCK_DGRAM) 
 
 <html>
 <table>
@@ -892,7 +887,7 @@ graph LR;
 
     CC -.->|petición| SE
     SF -.->|respuesta| CD
-
+    
     subgraph "Proceso servidor"
     SA
     SB
@@ -913,7 +908,6 @@ graph LR;
     end
 ```
 
----
 
 ## Ejemplo de uso de sockets NO orientados a conexión
 
@@ -1050,14 +1044,13 @@ graph LR;
 * Para ejecutar, se puede usar:
    ```bash
    user$ ./servidor-base-udp &
-   user$ ./cliente-base-udp
+   user$ ./cliente-base-udp 
    mensaje: 'Hola mundo...' desde 127.0.0.1
    mensaje: 'Hola mundo...'
    user$  kill -9 %1
   ```
 
 
----
 
 ## Opciones importantes asociadas a un socket
 
@@ -1090,7 +1083,7 @@ Las opciones más importantes son:
 
    Por defecto espera un poco de tiempo antes de enviar pocos bytes por si puede agrupar varias pequeñas peticiones. El problema es que la latencia de cada petición particular es mayor. Por eso se recomienda el envío inmediato.
 
-* SO_RCVBUF, SO_SNDBUF:
+* SO_RCVBUF, SO_SNDBUF: 
   * Fijar el tamaño del buffer de envío/recepción
        ```c
        int size = 16*1024;
@@ -1103,7 +1096,6 @@ Las opciones más importantes son:
     printf("%d\n", size) ;
     ```
 
----
 
 ## Servidor secuencial vs procesos pesados vs hilos
 
@@ -1178,7 +1170,7 @@ Las opciones más importantes son:
             if (pid < 0) {
                 printf("Error en fork()\n") ;
                 return -1;
-            }
+            } 
             if (0 == pid) // el proceso hijo atiende al cliente
             {
                 // (6) transferir datos sobre newsd
@@ -1218,7 +1210,7 @@ Las opciones más importantes son:
     void *tratar_peticion ( void * arg )
     {
          int s_local;
-
+         
          /// avisar copiado argumentos ////
          pthread_mutex_lock(&m);
          s_local = (* (int *) arg);
@@ -1226,7 +1218,7 @@ Las opciones más importantes son:
          pthread_cond_signal(&c);
          pthread_mutex_unlock(&m);
          /////////////////////
-
+         
          // (6) transferir datos sobre newsd
          size_t total    = sizeof(buffer) ;
          size_t escritos = 0 ;
@@ -1241,10 +1233,10 @@ Las opciones más importantes son:
              if (escritos != total) { // error, no se ha escrito todo
                  printf("Error al escribir buffer") ;
          }
-
+         
          // (7) cerrar socket conectado
          close(s_local);
-
+     
          pthread_exit(NULL);
          return NULL ;
     }
@@ -1253,7 +1245,7 @@ Las opciones más importantes son:
     {
          pthread_attr_init(&attr);
          pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-
+         
          ...
          while (1)
          {
@@ -1268,7 +1260,7 @@ Las opciones más importantes son:
 
             ...
             pthread_create(&thid, &attr, tratar_peticion, (void *)&newsd);
-
+            
             /// Esperar copia de argumentos ///
             pthread_mutex_lock(&m);
             while (busy == 1)
@@ -1282,22 +1274,6 @@ Las opciones más importantes son:
     } /* fin main */
    ```
 
----
-
-## Guía de desarrollo de aplicaciones cliente-servidor con paso de mensajes
-
- * Identificar el cliente y el servidor
-     * Cliente: elemento activo, varios
-     * Servidor: elemento pasivo
- * 2. Protocolo del servicio
-     * Identificar los tipos mensajes y la secuencia de intercambios de mensajes (peticiones y respuestas)
- * 3. Elegir el tipo de servidor
-     * UDP sin conexión
-     * TCP:
-        * Una conexión por sesión
-        * Una conexión por petición
- * 4. Identificar el formato de los mensajes (representación de los datos)
-    * Independencia (lenguaje, arquitectura, implementación, …)
 
 
 **Material adicional**:

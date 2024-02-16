@@ -1,0 +1,372 @@
+
+# Ejemplo de calculadora distribuida basada en Sockets
++ **Felix García Carballeira y Alejandro Calderón Mateos**
++ Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
+
+
+## Guía de desarrollo de aplicaciones cliente-servidor con paso de mensajes
+
+ * Identificar el cliente y el servidor
+     * Cliente: elemento activo, varios
+     * Servidor: elemento pasivo
+ * 2. Protocolo del servicio
+     * Identificar los tipos mensajes y la secuencia de intercambios de mensajes (peticiones y respuestas)
+ * 3. Elegir el tipo de servidor
+     * UDP sin conexión
+     * TCP:
+        * Una conexión por sesión
+        * Una conexión por petición
+ * 4. Identificar el formato de los mensajes (representación de los datos)
+    * Independencia (lenguaje, arquitectura, implementación, …)
+
+
+## Servicio de calculadora con TCP
+
+#### calc-servidor-tcp.c
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <strings.h>
+#include "comm.h"
+
+int servicio ( int sc )
+{
+        int ret ;
+        char op;
+        int32_t a, b, res;
+
+        ret = recvMessage(sc, (char *) &op, sizeof(char)); // operación
+        if (ret < 0) {
+            printf("Error en recepción op\n");
+            return -1 ;
+        }
+
+        ret = recvMessage(sc, (char *) &a, sizeof(int32_t)); // recibe a
+        if (ret == -1) {
+            printf("Error en recepción a\n");
+            return -1 ;
+        }
+
+        ret = recvMessage(sc, (char *) &b, sizeof(int32_t)); // recibe b
+        if (ret == -1) {
+            printf("Error en recepción b\n");
+            return -1 ;
+        }
+
+        a = ntohl(a);
+        b = ntohl(b);
+        if (op == 0)
+             res = a + b;
+        else res = a - b;
+        res = htonl(res);
+
+        ret = sendMessage(sc, (char *)&res, sizeof(int32_t));
+        if (ret == -1) {
+            printf("Error en envío\n");
+            return -1 ;
+        }
+
+        return 0 ;
+}
+
+int main ( int argc, char *argv[] )
+{
+        int sd, sc;
+
+        // crear socket
+        sd = serverSocket(INADDR_ANY, 4200) ;
+        if (sd < 0) {
+            printf ("SERVER: Error en serverSocket\n");
+            return 0;
+        }
+
+        while (1)
+        {
+                // aceptar cliente
+                sc = serverAccept(sd) ;
+                if (sc < 0) {
+                    printf("Error en serverAccept\n");
+                    continue ;
+                }
+
+                // procesar petición
+                servicio(sc) ;
+                close(sc);
+        }
+
+        close(sd);
+        return 0;
+}
+```
+
+#### calc-cliente-tcp.c
+```c
+#include <stdio.h>
+#include <netdb.h>
+#include <strings.h>
+#include <string.h>
+#include <unistd.h>
+#include "comm.h"
+
+int suma_remota ( int sd, int x, int y )
+{
+        int  ret;
+        char   op = 0; // suma
+        int32_t a = htonl(x);
+        int32_t b = htonl(y);
+        int32_t r ;
+
+        ret = sendMessage(sd, (char *) &op, sizeof(char));  // envía operacion
+        if (ret == -1) {
+            printf("Error envio op\n");
+            return -1;
+        }
+
+        ret = sendMessage(sd, (char *) &a, sizeof(int32_t)); // envía a
+        if (ret == -1) {
+            printf("Error envio a\n");
+            return -1;
+        }
+
+        ret = sendMessage(sd, (char *) &b, sizeof(int32_t)); // envía b
+        if (ret == -1) {
+            printf("Error envio b\n");
+            return -1;
+        }
+
+        ret = recvMessage(sd, (char *) &r, sizeof(int32_t)); // recibe la respuesta
+        if (ret == -1) {
+            printf("Error en recepcion\n");
+            return -1;
+        }
+
+        return ntohl(r) ;
+}
+
+int main ( int argc, char **argv )
+{
+        int sd, ret;
+
+        if (argc != 2) {
+            printf("Uso: ./%s <dirección servidor>\n", argv[0]);
+            return(0);
+        }
+
+        sd = clientSocket(argv[1], 4200) ;
+        if (sd < 0) {
+            printf("Error en clientSocket\n");
+            return -1;
+        }
+
+        ret = suma_remota(sd, 5, 2) ;
+        printf("Resultado de a+b es: %d\n", ret);
+
+        close(sd);
+        return 0;
+}
+```
+
+
+#### comm.c
+```c
+#include "comm.h"
+
+int serverSocket ( unsigned int addr, int port )
+{
+        struct sockaddr_in server_addr ;
+        int sd, ret;
+
+        // Crear socket
+        sd = socket(AF_INET, SOCK_STREAM, 0) ;
+        if (sd < 0) {
+            printf ("SERVER: Error en el socket\n");
+            return (0);
+        }
+
+        // Opción de reusar dirección
+        int val = 1;
+        setsockopt(sd, SOL_SOCKET, SO_REUSEADDR, (char *) &val, sizeof(int));
+
+        // Dirección
+        bzero((char *)&server_addr, sizeof(server_addr));
+        server_addr.sin_family      = AF_INET;
+        server_addr.sin_addr.s_addr = INADDR_ANY;
+        server_addr.sin_port        = htons(port);
+
+        // Bind
+        ret = bind(sd, (const struct sockaddr *)&server_addr, sizeof(server_addr));
+        if (ret == -1) {
+            printf("Error en bind\n");
+            return -1;
+        }
+
+        // Listen
+        ret = listen(sd, SOMAXCONN);
+        if (ret == -1) {
+            printf("Error en listen\n");
+            return -1;
+        }
+
+        return sd ;
+}
+
+int serverAccept ( int sd )
+{
+        int sc ;
+        struct sockaddr_in client_addr;
+        socklen_t size = sizeof(client_addr);
+
+        printf("esperando conexion...\n");
+
+        sc = accept(sd, (struct sockaddr *)&client_addr, (socklen_t *)&size);
+        if (sc < 0) {
+            printf("Error en accept\n");
+            return -1;
+        }
+
+        printf("conexión aceptada de IP: %s y puerto: %d\n",
+                inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
+
+        return sc ;
+}
+
+int clientSocket ( char *remote, int port )
+{
+        struct sockaddr_in server_addr ;
+        struct hostent *hp;
+        int sd, ret;
+
+        sd = socket(AF_INET, SOCK_STREAM, 0);
+        if (sd < 0) {
+            printf("Error en socket\n");
+            return -1;
+        }
+
+        hp = gethostbyname(remote) ;
+        if (hp == NULL) {
+            printf("Error en gethostbyname\n");
+            return -1;
+        }
+
+        bzero((char *)&server_addr, sizeof(server_addr));
+        memcpy (&(server_addr.sin_addr), hp->h_addr, hp->h_length);
+        server_addr.sin_family  = AF_INET;
+        server_addr.sin_port    = htons(port);
+
+        ret = connect(sd, (struct sockaddr *) &server_addr,  sizeof(server_addr));
+        if (ret < 0) {
+            printf("Error en connect\n");
+            return -1;
+        }
+
+        return sd ;
+}
+
+int sendMessage ( int socket, char * buffer, int len )
+{
+        int r;
+        int l = len;
+
+        do
+        {
+                r = write(socket, buffer, l);
+                if (r < 0)
+                    return (-1);   /* fail */
+
+                l = l -r;
+                buffer = buffer + r;
+
+        } while ((l>0) && (r>=0));
+
+        return 0;
+}
+
+int recvMessage ( int socket, char *buffer, int len )
+{
+        int r;
+        int l = len;
+
+        do {
+                r = read(socket, buffer, l);
+                if (r < 0)
+                    return (-1);   /* fail */
+
+                l = l -r ;
+                buffer = buffer + r;
+
+        } while ((l>0) && (r>=0));
+
+        return 0;
+}
+
+ssize_t readLine ( int fd, void *buffer, size_t n )
+{
+        ssize_t numRead;  /* num of bytes fetched by last read() */
+        size_t totRead;   /* total bytes read so far */
+        char *buf;
+        char ch;
+
+        if (n <= 0 || buffer == NULL) {
+                errno = EINVAL;
+                return -1;
+        }
+
+        buf = buffer;
+        totRead = 0;
+
+        for (;;)
+        {
+                numRead = read(fd, &ch, 1);     /* read a byte */
+
+                if (numRead == -1) {
+                        if (errno == EINTR)     /* interrupted -> restart read() */
+                                continue;
+                else
+                        return -1;              /* some other error */
+                } else if (numRead == 0) {      /* EOF */
+                        if (totRead == 0)       /* no byres read; return 0 */
+                                return 0;
+                        else
+                                break;
+                } else {                        /* numRead must be 1 if we get here*/
+                        if (ch == '\n')
+                                break;
+                        if (ch == '\0')
+                                break;
+                        if (totRead < n - 1) {          /* discard > (n-1) bytes */
+                                totRead++;
+                                *buf++ = ch;
+                        }
+                }
+        }
+
+        *buf = '\0';
+        return totRead;
+}
+```
+
+
+#### comm.h
+```c
+#ifndef _COMM_H_
+#define _COMM_H_
+
+   #include <sys/types.h>
+   #include <sys/socket.h>
+   #include <arpa/inet.h>
+   #include <netdb.h>
+   #include <unistd.h>
+   #include <stdio.h>
+   #include <string.h>
+   #include <errno.h>
+
+   int     serverSocket ( unsigned int addr, int port ) ;
+   int     serverAccept ( int sd ) ;
+   int     clientSocket ( char *remote, int port ) ;
+   int     sendMessage  ( int socket, char *buffer, int len );
+   int     recvMessage  ( int socket, char *buffer, int len );
+   ssize_t readLine     ( int fd,     void *buffer, size_t n );
+
+#endif
+```
+

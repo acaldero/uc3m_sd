@@ -50,5 +50,7 @@
 
 ## Casos prácticos
 
-  * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/tutorial_centralizado_a_distribuido.md)
+  * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/casopractico_centralizado_a_distribuido.md)
+  * [Ejemplo de calculadora distribuida basada en Sockets](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/casopractico_sockets_calculadora.md)
+
 
