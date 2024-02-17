@@ -1379,6 +1379,109 @@ Las opciones más importantes son:
    ```
 
 
+## Trabajar con heterogeneidad en el sistema distribuido
+
+* En general cuando se desarrolla una aplicación con sockets hay que plantear una solución que sea independiente de:
+   * Arquitectura (Little-endian, big-endian)
+   * Lenguaje de programación
+* Emplear soluciones que definan el tamaño de los enteros (por ejemplo: 32 bits) puede ser un problema
+   * Puede existir máquinas en el sistema distribuido que no puedan trabajar con el tamaño seleccionado
+* Posibles soluciones:
+   * **Protocolo con base binaria**: usar biblioteca que permita transformar de un formato binario de red a cualquier formato de host y viceversa.
+      * Ventaja: envío rápido y compacto
+      * Desventaja: tiempo de transformación, dificultad de depurar protocolos binarios, necesidad de biblioteca adicional.
+      * Protocolos de ejemplo: protobuf (opción binaria)
+   * **Protocolo basado en texto**: desarrollar aplicaciones que codifiquen los datos en cadenas de caracteres y envíen cadenas de caracteres
+      * Ventaja: normalmente no se precisa de bibliteca adicional y es fácil de depurar
+      * Desventaja: eficiencia
+      * Protocolos de ejemplo: HTTP, SMTP, etc.
+
+
+## Trabajar con heterogeneidad con protocolos basados en texto (1/2)
+
+ * Para la lectura de cadenas de caracteres con sockets stream
+    * Cuando una cadena de caracteres finaliza con el código ASCII ‘\0’ no se sabe a priori su longitud y no se puede usar la función recvMessage para leerla.
+    * En este caso hay que leer byte a byte hasta leer el el código ASCII ‘\0’, y se puede usar la función readLine para ello.
+    **lines.c**
+       ```c
+   
+        ssize_t readLine ( int fd, void *buffer, size_t n )
+        {
+            ssize_t numRead;  /* num of bytes fetched by last read() */
+            size_t totRead;   /* total bytes read so far */
+            char *buf;
+            char ch;
+
+            if (n <= 0 || buffer == NULL) {
+                errno = EINVAL;
+                return -1;
+            }
+
+            buf = buffer;
+            totRead = 0;
+            while (1)
+            {
+                numRead = read(fd, &ch, 1);     /* read a byte */
+
+                if (numRead == -1) {
+                     if (errno == EINTR)        /* interrupted -> restart read() */
+                         continue;
+                else return -1;                 /* some other error */
+                } else if (numRead == 0) {      /* EOF */
+                        if (totRead == 0)       /* no byres read; return 0 */
+                             return 0;
+                        else break;
+                } else {                        /* numRead must be 1 if we get here*/
+                        if (ch == '\n') break;
+                        if (ch == '\0') break;
+                        if (totRead < n - 1) {   /* discard > (n-1) bytes */
+                             totRead++;
+                            *buf++ = ch;
+                        }
+                }
+            }
+
+            *buf = '\0';
+            return totRead;
+        }
+       ```
+
+ * Para la escritura de cadenas de caracteres con sockets stream
+    * Para el envío se puede usar sendMessage PERO hay que indicar el número de caracteres incluido el fin de cadena:
+      ```c
+      char buffer[256];
+      strcpy(buffer, “Cadena a enviar”);
+      sendMessage(socket, buffer, strlen(buffer)+1);   
+      ```
+
+
+## Trabajar con heterogeneidad con protocolos basados en texto (2/2)
+
+ * Para recibir un número con sockets stream (como cadena)
+    * Usando readLine se lee la cadena de caracteres que lo representa.
+    * A continuación se transforma a número.
+       ```c
+      int n ;
+      char buffer[256];
+      char *endptr ;
+      
+      readLine(socket, buffer, 256) ;
+      n = strtol(buffer, &endptr, 10) ; // n = atoi(buffer) ;
+      if (endptr[0] != '\0') {
+          printf("Error: %s no es un número en base %d\n", buffer, 10) ;
+      }
+       ```
+
+ * Para enviar un número con sockets stream
+    * Para el envío se puede usar sendMessage PERO hay que indicar el número de caracteres incluido el fin de cadena:
+      ```c
+      int n = 1234;
+      char buffer[256];
+      sprintf(buffer, “%d”, n);
+      sendMessage(socket, buffer, strlen(buffer)+1);
+      ```
+
+    * Se puede transformar números en coma flotante, etc. de forma similar.
 
 **Material adicional**:
   * <a href="https://beej.us/guide/bgnet/html/index-wide.html">Beej's Guide to Network Programming</a>

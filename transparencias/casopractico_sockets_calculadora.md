@@ -93,7 +93,7 @@ sequenceDiagram
    #include <string.h>
    #include <errno.h>
 
-   int     serverSocket ( unsigned int addr, int port ) ;
+   int     serverSocket ( unsigned int addr, int port, int type ) ;
    int     serverAccept ( int sd ) ;
    int     clientSocket ( char *remote, int port ) ;
    int     sendMessage  ( int socket, char *buffer, int len );
@@ -156,7 +156,7 @@ int main ( int argc, char *argv[] )
         int sd, sc;
 
         // crear socket
-        sd = serverSocket(INADDR_ANY, 4200) ;
+        sd = serverSocket(INADDR_ANY, 4200, SOCK_STREAM) ;
         if (sd < 0) {
             printf ("SERVER: Error en serverSocket\n");
             return 0;
@@ -254,13 +254,13 @@ int main ( int argc, char **argv )
 ```c
 #include "comm.h"
 
-int serverSocket ( unsigned int addr, int port )
+int serverSocket ( unsigned int addr, int port, int type )
 {
         struct sockaddr_in server_addr ;
         int sd, ret;
 
         // Crear socket
-        sd = socket(AF_INET, SOCK_STREAM, 0) ;
+        sd = socket(AF_INET, type, 0) ;
         if (sd < 0) {
             printf ("SERVER: Error en el socket\n");
             return (0);
@@ -296,11 +296,12 @@ int serverSocket ( unsigned int addr, int port )
 int serverAccept ( int sd )
 {
         int sc ;
-        struct sockaddr_in client_addr;
-        socklen_t size = sizeof(client_addr);
+        struct sockaddr_in client_addr ;
+        socklen_t size ;
 
         printf("esperando conexion...\n");
 
+        size = sizeof(client_addr) ;
         sc = accept(sd, (struct sockaddr *)&client_addr, (socklen_t *)&size);
         if (sc < 0) {
             printf("Error en accept\n");
@@ -397,29 +398,25 @@ ssize_t readLine ( int fd, void *buffer, size_t n )
         buf = buffer;
         totRead = 0;
 
-        for (;;)
+        while (1)
         {
-                numRead = read(fd, &ch, 1);     /* read a byte */
+                numRead = read(fd, &ch, 1);  /* read a byte */
 
                 if (numRead == -1) {
-                        if (errno == EINTR)     /* interrupted -> restart read() */
-                                continue;
-                else
-                        return -1;              /* some other error */
-                } else if (numRead == 0) {      /* EOF */
-                        if (totRead == 0)       /* no byres read; return 0 */
-                                return 0;
-                        else
-                                break;
-                } else {                        /* numRead must be 1 if we get here*/
-                        if (ch == '\n')
-                                break;
-                        if (ch == '\0')
-                                break;
-                        if (totRead < n - 1) {          /* discard > (n-1) bytes */
-                                totRead++;
-                                *buf++ = ch;
-                        }
+                    if (errno == EINTR)      /* interrupted -> restart read() */
+                         continue;
+                    else return -1;          /* some other error */
+                } else if (numRead == 0) {   /* EOF */
+                    if (totRead == 0)        /* no byres read; return 0 */
+                         return 0;
+                    else break;
+                } else {                     /* numRead must be 1 if we get here*/
+                    if (ch == '\n') break;
+                    if (ch == '\0') break;
+                    if (totRead < n - 1) {   /* discard > (n-1) bytes */
+                        totRead++;
+                        *buf++ = ch;
+                    }
                 }
         }
 
@@ -516,7 +513,7 @@ int main ( int argc, char *argv[] )
                 peticion[0] = ntohl(peticion[0]);  // operacion
                 peticion[1] = ntohl(peticion[1]);
                 peticion[2] = ntohl(peticion[2]);
-                if (peticion[0]== 0)
+                if (peticion[0] == 0)
                      res = peticion[1] + peticion[2];
                 else res = peticion[1] - peticion[2];
                 res = htonl(res);
@@ -544,7 +541,6 @@ int main ( int argc, char *argv[] )
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
-#include "comm.h"
 
 int main ( int argc, char *argv[] )
 {
@@ -565,7 +561,7 @@ int main ( int argc, char *argv[] )
         }
 
         bzero((char *)&server_addr, sizeof(server_addr));
-        hp = gethostbyname (argv[1]);
+        hp = gethostbyname(argv[1]);
         if (NULL == hp) {
             printf("Error en gethostbyname\n");
             return -1;
@@ -614,10 +610,42 @@ int main ( int argc, char *argv[] )
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
-#include "comm.h"
+
+int clientSocket_ip4 ( char *remote, int port, int type )
+{
+        struct sockaddr_in server_addr ;
+        struct hostent *hp;
+        int sd, ret;
+
+        sd = socket(AF_INET, type, 0);
+        if (sd < 0) {
+            printf("Error en socket\n");
+            return -1;
+        }
+
+        hp = gethostbyname(remote) ;
+        if (hp == NULL) {
+            printf("Error en gethostbyname\n");
+            return -1;
+        }
+
+        bzero((char *)&server_addr, sizeof(server_addr));
+        memcpy (&(server_addr.sin_addr), hp->h_addr, hp->h_length);
+        server_addr.sin_family  = AF_INET;
+        server_addr.sin_port    = htons(port);
+
+        ret = connect(sd, (struct sockaddr *) &server_addr,  sizeof(server_addr));
+        if (ret < 0) {
+            printf("Error en connect\n");
+            return -1;
+        }
+
+        return sd ;
+}
 
 int suma_remota ( int sd, int x, int y )
 {
+        int ret ;
         int32_t peticion[3], res ;
 
         peticion[0] = htonl(0); // operación de sumar
@@ -643,9 +671,7 @@ int suma_remota ( int sd, int x, int y )
 
 int main ( int argc, char *argv[] )
 {
-        int sd, ret;
-        struct sockaddr_in server_addr;
-        struct hostent *hp;
+        int sd ;
         int32_t res ;
 
         if (argc != 2) {
@@ -653,31 +679,13 @@ int main ( int argc, char *argv[] )
             return 0;
         }
 
-        sd = socket(AF_INET, SOCK_DGRAM, 0);
+        sd = clientSocket_ip4(argv[1], 4200, SOCK_DGRAM) ;
         if (sd < 0) {
-            printf("Error en socket\n");
-            return -1;
-        }
-
-        bzero((char *)&server_addr, sizeof(server_addr));
-        hp = gethostbyname (argv[1]);
-        if (NULL == hp) {
-            printf("Error en gethostbyname\n");
-            return -1;
-        }
-
-        memcpy (&(server_addr.sin_addr), hp->h_addr, hp->h_length);
-        server_addr.sin_family  = AF_INET;
-        server_addr.sin_port    = htons(4200);
-
-        ret = connect(sd, (struct sockaddr *) &server_addr,  sizeof(server_addr));
-        if (ret < 0) {
-            printf("Error en connect\n");
+            printf("Error en clientSocket_ip4\n");
             return -1;
         }
 
         res = suma_remota(sd, 5, 2) ;
-
         printf("Resultado es %d \n", res);
 
         close (sd);
