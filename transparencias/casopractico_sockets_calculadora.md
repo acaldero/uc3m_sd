@@ -22,6 +22,65 @@
 
 ## Servicio de calculadora con TCP
 
+* Se precisan los siguientes ficheros:
+  * comm.h -> interfaz de la librería de comunicaciones
+  * comm.c -> implementación de la librería de comunicaciones
+  * calc-servidor-tcp.c -> implementación de un servicio de calculadora con sockets TCP
+  * calc-cliente-tcp.c  -> implementación de un cliente  de calculadora con sockets TCP
+
+* Para compilar, se puede usar:
+  ```bash
+  gcc -I./ -Wall -g -c comm.c
+  gcc -I./ -Wall -g -c calc-servidor-tcp.c
+  gcc -I./ -Wall -g -c calc-cliente-tcp.c
+  gcc  -o calc-cliente-tcp  calc-cliente-tcp.o  comm.o 
+  gcc  -o calc-servidor-tcp calc-servidor-tcp.o comm.o 
+  ```
+
+* Para ejecutar, se puede usar:
+  ```bash
+  $ ./calc-servidor-tcp &
+  esperando conexion...
+  $ ./calc-cliente-tcp
+  Uso: ./calc-cliente-tcp <dirección servidor>
+  $ ./calc-cliente-tcp localhost
+  $ ./calc-cliente-tcp localhost
+  conexión aceptada de IP: 127.0.0.1 y puerto: 41356
+  esperando conexion...
+  Resultado de a+b es: 7
+  $ ./calc-cliente-tcp localhost
+  conexión aceptada de IP: 127.0.0.1 y puerto: 41368
+  esperando conexion...
+  Resultado de a+b es: 7
+  $ kill -9 %1
+  ```
+
+
+#### comm.h
+```c
+#ifndef _COMM_H_
+#define _COMM_H_
+
+   #include <sys/types.h>
+   #include <sys/socket.h>
+   #include <arpa/inet.h>
+   #include <netdb.h>
+   #include <unistd.h>
+   #include <stdio.h>
+   #include <string.h>
+   #include <errno.h>
+
+   int     serverSocket ( unsigned int addr, int port ) ;
+   int     serverAccept ( int sd ) ;
+   int     clientSocket ( char *remote, int port ) ;
+   int     sendMessage  ( int socket, char *buffer, int len );
+   int     recvMessage  ( int socket, char *buffer, int len );
+   ssize_t readLine     ( int fd,     void *buffer, size_t n );
+
+#endif
+```
+
+
 #### calc-servidor-tcp.c
 ```c
 #include <stdio.h>
@@ -98,6 +157,7 @@ int main ( int argc, char *argv[] )
         return 0;
 }
 ```
+
 
 #### calc-cliente-tcp.c
 ```c
@@ -346,27 +406,177 @@ ssize_t readLine ( int fd, void *buffer, size_t n )
 ```
 
 
-#### comm.h
+## Servicio de calculadora con UDP
+
+* Se precisan los siguientes ficheros:
+  * calc-servidor-udp.c -> implementación de un servicio de calculadora con sockets UDP
+  * calc-cliente-udp.c  -> implementación de un cliente  de calculadora con sockets UDP
+
+* Para compilar, se puede usar:
+  ```bash
+  gcc -I./ -Wall -g -c calc-servidor-udp.c
+  gcc -I./ -Wall -g -c calc-cliente-udp.c
+  gcc  -o calc-cliente-udp  calc-cliente-udp.o
+  gcc  -o calc-servidor-udp calc-servidor-udp.o
+  ```
+
+* Para ejecutar, se puede usar:
+  ```bash
+  $ ./calc-servidor-udp &
+  $ ./calc-cliente-udp
+  Uso: ./calc-cliente-udp <dirección servidor>
+  $ ./calc-cliente-udp localhost
+  Datagrama recibido de IP: 127.0.0.1 y puerto: 52274
+  esperando peticion
+  Resultado es 7
+  $ ./calc-cliente-udp localhost
+  Datagrama recibido de IP: 127.0.0.1 y puerto: 52655
+  esperando peticion
+  Resultado es 7
+  $ kill -9 %1
+  ```
+
+
+#### calc-servidor-udp.c
 ```c
-#ifndef _COMM_H_
-#define _COMM_H_
+#include <stdio.h>
+#include <unistd.h>
+#include <strings.h>
+#include <sys/types.h>
+#include "comm.h"
 
-   #include <sys/types.h>
-   #include <sys/socket.h>
-   #include <arpa/inet.h>
-   #include <netdb.h>
-   #include <unistd.h>
-   #include <stdio.h>
-   #include <string.h>
-   #include <errno.h>
+int main ( int argc, char *argv[] )
+{
+        int sd, ret;
+        struct sockaddr_in server_addr, client_addr;
+        socklen_t size;
+        int val;
+        int32_t peticion[3], res;
 
-   int     serverSocket ( unsigned int addr, int port ) ;
-   int     serverAccept ( int sd ) ;
-   int     clientSocket ( char *remote, int port ) ;
-   int     sendMessage  ( int socket, char *buffer, int len );
-   int     recvMessage  ( int socket, char *buffer, int len );
-   ssize_t readLine     ( int fd,     void *buffer, size_t n );
+        sd = socket(AF_INET, SOCK_DGRAM, 0) ;
+        if (sd < 0) {
+            printf ("SERVER: Error en el socket\n");
+            return (0);
+        }
 
-#endif
+        val = 1;
+        setsockopt(sd, SOL_SOCKET, SO_REUSEADDR, (char *) &val, sizeof(int));
+
+        bzero((char *)&server_addr, sizeof(server_addr));
+        server_addr.sin_family      = AF_INET;
+        server_addr.sin_addr.s_addr = INADDR_ANY;
+        server_addr.sin_port        = htons(4200);
+
+        ret = bind(sd, (const struct sockaddr *)&server_addr, sizeof(server_addr));
+        if (ret < 0) {
+            printf("Error en bind\n");
+            return -1;
+        }
+
+        size = sizeof(client_addr);
+
+        while (1)
+        {
+                printf("esperando peticion\n");
+                ret = recvfrom(sd,
+                               (char *) peticion, 3*sizeof(int32_t), 0,
+                               (struct sockaddr *)&client_addr, &size);
+
+                if (ret < 0) {
+                    printf("Error en recvfrom\n");
+                    return -1;
+                }
+
+                printf("Datagrama recibido de IP: %s y puerto: %d\n",
+                        inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
+
+                peticion[0] = ntohl(peticion[0]);  // operacion
+                peticion[1] = ntohl(peticion[1]);
+                peticion[2] = ntohl(peticion[2]);
+                if (peticion[0]== 0)
+                     res = peticion[1] + peticion[2];
+                else res = peticion[1] - peticion[2];
+                res = htonl(res);
+
+                ret = sendto(sd,
+                             (char *)&res, sizeof(int32_t), 0,
+                             (struct sockaddr *)&client_addr, size);
+                if (ret < 0) {
+                    printf("Error en sendto\n");
+                    return -1;
+                }
+        }
+
+        close (sd);
+        return 0;
+}
+```
+
+#### calc-cliente-udp.c
+```c
+#include <stdio.h>
+#include <netdb.h>
+#include <strings.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include "comm.h"
+
+int main ( int argc, char *argv[] )
+{
+        int sd, ret;
+        struct sockaddr_in server_addr;
+        struct hostent *hp;
+        int32_t peticion[3], res ;
+
+        if (argc != 2){
+            printf("Uso: %s <dirección servidor>\n", argv[0]);
+            return 0;
+        }
+
+        sd = socket(AF_INET, SOCK_DGRAM, 0);
+        if (sd < 0) {
+            printf("Error en socket\n");
+            return -1;
+        }
+
+        bzero((char *)&server_addr, sizeof(server_addr));
+        hp = gethostbyname (argv[1]);
+        if (NULL == hp) {
+            printf("Error en gethostbyname\n");
+            return -1;
+        }
+
+        memcpy (&(server_addr.sin_addr), hp->h_addr, hp->h_length);
+        server_addr.sin_family  = AF_INET;
+        server_addr.sin_port    = htons(4200);
+
+        peticion[0] = htonl(0); // operación de sumar
+        peticion[1] = htonl(5);
+        peticion[2] = htonl(2);
+
+        ret = sendto(sd,
+                     (char *) peticion, 3 * sizeof(int32_t), 0,
+                     (struct sockaddr *) &server_addr, sizeof(server_addr));
+        if (ret < 0) {
+            printf("Error en sendto\n");
+            return -1;
+        }
+
+        ret = recvfrom(sd, (char *)&res, sizeof(int32_t), 0, NULL, NULL);
+        if (ret < 0) {
+            printf("Error en recvfrom\n");
+            return -1;
+        }
+
+        res = ntohl(res);
+
+        printf("Resultado es %d \n", res);
+
+        close (sd);
+
+        return 0;
+}
 ```
 
