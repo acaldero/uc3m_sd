@@ -6,18 +6,41 @@
 
 ## Guía de desarrollo de aplicaciones cliente-servidor con paso de mensajes
 
- * Identificar el cliente y el servidor
-     * Cliente: elemento activo, varios
-     * Servidor: elemento pasivo
- * 2. Protocolo del servicio
+ 1. Cliente(s) y servidor(es)
+     * Identificar cliente y servidor
+       * Cliente: elemento activo, puede haber varios
+       * Servidor: elemento pasivo
+ 2. Protocolo del servicio
      * Identificar los tipos mensajes y la secuencia de intercambios de mensajes (peticiones y respuestas)
- * 3. Elegir el tipo de servidor
+ 3. Elegir el tipo de servidor
      * UDP sin conexión
-     * TCP:
-        * Una conexión por sesión
-        * Una conexión por petición
- * 4. Identificar el formato de los mensajes (representación de los datos)
-    * Independencia (lenguaje, arquitectura, implementación, …)
+     * TCP con...:
+       * ... una conexión por sesión
+       * ... una conexión por petición
+ 4. Formato de los mensajes
+    * Identificar el formato de los mensajes (representación de los datos)
+      * Buscar en lo posible independencia (lenguaje, arquitectura, implementación, ...)
+
+
+##  Ejemplo de calculadora basada en Sockets
+
+ * Un programa cliente  que ejecuta en la máquina A envía  la petición "sumar(5,2)" por la red.
+ * Un programa servidor que ejecuta en la máquina B recibe la petición por la red, la procesa y responde con el resultado. 
+
+```mermaid
+sequenceDiagram
+    Cliente1  ->>+  Servidor: Código de operación (1 byte)
+    Cliente1  ->>   Servidor: Primer  operando (4 bytes, formato de red)
+    Cliente1  ->>   Servidor: Segundo operando (4 bytes, formato de red)
+    Note right of Servidor: Procesa petición
+    Servidor ->>-   Cliente1: Resultado (4 bytes, formato de red)
+
+    Cliente2  ->>+  Servidor: Código de operación (1 byte)
+    Cliente2  ->>   Servidor: Primer  operando (4 bytes, formato de red)
+    Cliente2  ->>   Servidor: Segundo operando (4 bytes, formato de red)
+    Note right of Servidor: Procesa petición
+    Servidor ->>-   Cliente2: Resultado (4 bytes, formato de red)
+```
 
 
 ## Servicio de calculadora con TCP
@@ -530,7 +553,7 @@ int main ( int argc, char *argv[] )
         struct hostent *hp;
         int32_t peticion[3], res ;
 
-        if (argc != 2){
+        if (argc != 2) {
             printf("Uso: %s <dirección servidor>\n", argv[0]);
             return 0;
         }
@@ -571,6 +594,89 @@ int main ( int argc, char *argv[] )
         }
 
         res = ntohl(res);
+
+        printf("Resultado es %d \n", res);
+
+        close (sd);
+
+        return 0;
+}
+```
+
+  * Una alternativa al calc-client-udp.c original podría ser hacer un connect() para asociar la dirección a usar por defecto en los envíos y recepciones (con write/read) en lugar de indicar la dirección en cada envío y recepción (con sendto/recvfrom):
+
+#### calc-cliente-udp-v2.c
+```c
+#include <stdio.h>
+#include <netdb.h>
+#include <strings.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include "comm.h"
+
+int suma_remota ( int sd, int x, int y )
+{
+        int32_t peticion[3], res ;
+
+        peticion[0] = htonl(0); // operación de sumar
+        peticion[1] = htonl(x);
+        peticion[2] = htonl(y);
+
+        ret = write(sd, (void *)peticion, 3 * sizeof(int32_t)) ;
+        if (ret < 0) {
+            printf("Error en write\n");
+            return -1;
+        }
+
+        ret = read(sd, (void *)&res, sizeof(int32_t)) ;
+        if (ret < 0) {
+            printf("Error en read\n");
+            return -1;
+        }
+
+        res = ntohl(res);
+
+        return res ;
+}
+
+int main ( int argc, char *argv[] )
+{
+        int sd, ret;
+        struct sockaddr_in server_addr;
+        struct hostent *hp;
+        int32_t res ;
+
+        if (argc != 2) {
+            printf("Uso: %s <dirección servidor>\n", argv[0]);
+            return 0;
+        }
+
+        sd = socket(AF_INET, SOCK_DGRAM, 0);
+        if (sd < 0) {
+            printf("Error en socket\n");
+            return -1;
+        }
+
+        bzero((char *)&server_addr, sizeof(server_addr));
+        hp = gethostbyname (argv[1]);
+        if (NULL == hp) {
+            printf("Error en gethostbyname\n");
+            return -1;
+        }
+
+        memcpy (&(server_addr.sin_addr), hp->h_addr, hp->h_length);
+        server_addr.sin_family  = AF_INET;
+        server_addr.sin_port    = htons(4200);
+
+        ret = connect(sd, (struct sockaddr *) &server_addr,  sizeof(server_addr));
+        if (ret < 0) {
+            printf("Error en connect\n");
+            return -1;
+        }
+
+        res = suma_remota(sd, 5, 2) ;
 
         printf("Resultado es %d \n", res);
 

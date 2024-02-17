@@ -420,19 +420,63 @@ int main(int argc, char **argv)
        char  **h_addr_list ;
     }
     ```
-    
-  * Obtiene la información de un host a partir de una dirección en formato dominio-punto (getaddrinfo para IPv4 e IPv6)
-    ```c
-    struct hostent *gethostbyname(char *str);  // str: nombre de la máquina
-    ```
 
-  * Obtiene la información de un host a partir de una dirección IP (getaddrinfo para IPv4 e IPv6)
+    * Obtiene la información de un host a partir de una dirección en formato dominio-punto 
+         ```c
+      struct hostent *gethostbyname(char *str);  // str: nombre de la máquina
+      ```
+
+    * Obtiene la información de un host a partir de una dirección IP 
+        ```c
+      struct hostent *gethostbyaddr(const void *addr,  // addr: puntero a struct in_addr
+                                      int len,           // len:  tamaño de la estructura
+                                      int type);         // type: AF_INET
+      ```
+
+    * Un ejemplo de  estructura  ``struct hostent`` rellena podría ser:
+
+<html>
+<p align="center">
+  <img src="http://www.cs.emory.edu/~cheung/Courses/455/Syllabus/9-netw-prog/FIGS/gethostbyaddr.gif" /><br>
+<small><b>Imagen de  http://www.cs.emory.edu/~cheung/Courses/455/Syllabus/9-netw-prog/netw-supp4.html</b></small>
+</p>
+</html>
+
+ 
+  * Para tanto IPv4 como IPv6 se recomienda usar la nueva estructura  ``struct addrinfo``:
     ```c
-    struct hostent *gethostbyaddr(const void *addr,  // addr: puntero a una estructura struct in_addr
-                                  int len,           // len:  tamaño de la estructura
-                                  int type);         // type: AF_INET
+    struct addrinfo {
+       int    ai_flags;    // AI_PASSIVE, AI_CANONNAME, AI_NUMERICHOST, etc.
+       int    ai_family;   // PF_UNSPEC, PF_INET, etc.
+       int    ai_socktype; // SOCK_STREAM, SOCK_DGRAM
+       int    ai_protocol; // IPPROTO_TCP, IPPROTO_UDP
+       size_t ai_addrlen;
+       char * ai_canonname;
+       struct sockaddr * ai_addr;
+       struct addrinfo * ai_next;
+    };
     ```
     
+    * El equivalente a ``gethostbyname`` para IPv4 e IPv6 es **getaddrinfo** + **freeaddrinfo**
+         ```c
+      int getaddrinfo ( const char *restrict node,
+                        const char *restrict service,
+                        const struct addrinfo *restrict hints,
+                        struct addrinfo **restrict res );
+      void freeaddrinfo ( struct addrinfo *res );
+      ```
+
+       Se aconseja ver ejemplo de [servidor simple de Beej](https://beej.us/guide/bgnet/html/#a-simple-stream-server) sobre el uso de getaddrinfo+freeaddrinfo puesto que su uso no es un simple cambio de gethostbyname por getaddrinfo. Sobre los resultados que getaddrinfo devuelve hay que iterar e intentar hacer socket+bind o socket+connect hasta el primer resultado que lo permita, que será el de trabajo.
+
+    * La función **getnameinfo** es la inversa de getaddrinfo: convierte una dirección de socket interna en el nombre legible y servicio correspondiente, de forma independiente del protocolo.
+      ```c
+      int getnameinfo ( const struct sockaddr *sa, 
+                        socklen_t salen,
+                        char *host, size_t hostlen,
+                        char *serv, size_t servlen, int flags );
+      ```
+
+
 
 ## Ejemplos
 
@@ -516,6 +560,59 @@ int main(int argc, char **argv)
   </details>
 
 
+* <details>
+    <summary>Ejemplo de conversión decimal-punto a dominio-punto...</summary>
+    
+   **obtener-dominio-6.c**
+  ```c
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <netdb.h>
+    #include <string.h>
+    #include <netinet/in.h>
+    #include <sys/socket.h>
+
+
+    int main ( int argc, char*argv[] )
+    {
+        int ret;
+        struct addrinfo *results;
+        struct addrinfo *res;
+        char hostname[1025] ;
+
+        // domain name -> lista de direcciones
+        ret = getaddrinfo("www.uc3m.es", NULL, NULL, &results);
+        if (ret < 0) {
+            printf("ERROR en getaddrinfo: %s\n", gai_strerror(ret));
+            return -1;
+        }
+
+        // recorrer todos los resultados y hacer búsqueda inversa
+        for (res = results; res != NULL; res = res->ai_next)
+        {
+            strcpy(hostname, "") ;
+            ret = getnameinfo(res->ai_addr, res->ai_addrlen,
+                          hostname, 1025,
+                          NULL, 0, 0);
+            if (ret < 0) {
+                printf("ERROR en getnameinfo: %s\n", gai_strerror(ret));
+                continue;
+            }
+
+            if (*hostname != '\0')
+                 printf("hostname: %s\n", hostname);
+            else printf("hostname: <empty>\n");
+        }
+
+        // liberar memoria de los resultados
+        freeaddrinfo(results);
+
+        return 0;
+    }
+  ```
+  </details>
+
+
 
 ## Orden de los bytes: big-endian y little-endian
 
@@ -559,14 +656,21 @@ int main(int argc, char **argv)
     * Un procedimiento de **marshalling** o empaquetamiento de datos: <br>transforma los valores de las estructuras de datos del formato de una máquina a un formato común para envío por la red (**representación externa**).
     * Un procedimiento de **unmarshalling** o de desempaquetamiento de datos: <br>transforma del formato común recibido por la red en el formato de la máquina al que llega los valores (**representación interna**).
 
-|                       |             |                |                |                       |
-|-----------------------|-------------|----------------|----------------|-----------------------|
-|                       | marshalling |                | unmarshalling  |                       |
-| “Cadena” 1.2 7.3 -1.5 | ----------> |  …10011…0110…  | ---------->    | “cadena” 1.2 7.3 -1.5 |
-| En computador A       |             |  Red           |                | En computador B       |
-|                       |             |                |                |                       |
+```mermaid
+   graph LR;
+    E1("'Cadena'", 1.2, 0x12, -1.5) -->|marshalling| E2
+    E2(...10011...0110...) -->|unmarshalling| E3("'Cadena'", 1.2, 0x12, -1.5)
 
-
+    subgraph "En computador A"
+    E1
+    end
+    subgraph "Red"
+    E2
+    end
+    subgraph "En computador B"
+    E3
+    end
+```
 
 ## Modelos de comunicación: orientado a conexión
 
