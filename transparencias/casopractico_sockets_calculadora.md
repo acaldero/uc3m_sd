@@ -22,6 +22,80 @@
       * Buscar en lo posible independencia (lenguaje, arquitectura, implementación, ...)
 
 
+## Guía para ayudar a la resolución de ejercicios de diseño de aplicaciones distribuidas
+
+<html>
+<table>
+<tr>
+<td>
+<ol type="1" start="1">
+<li>Identificar las partes cliente y servidor
+<li>Identificar peticiones/respuestas y secuencia de intercambio de mensajes
+</ol>
+</td>
+<td>
+Qué
+</td>
+</tr>
+
+<tr>
+<td>
+<ol type="1" start="3">
+<li>Elegir protocolo
+<ul>
+    <li> No orientado a conexión (UDP)
+    <li> Orientado a conexión (TCP)
+    <ul>
+      <li> Conexión por petición
+      <li> Conexión por sesión
+    </ul>
+</ul>
+</ol>
+</td>
+<td>
+Cómo (1/2)
+</td>
+</tr>
+
+<tr>
+<td>
+<ol type="1" start="4">
+<li>Definir el formato de los mensajes (independencia HW, SO, lenguajes, ...) <br>
+y la secuencia detallada de paso de mensajes
+</ol>
+</td>
+<td>
+Diseño inicial
+</td>
+</tr>
+
+<tr>
+<td>
+<ol type="1" start="5">
+ <li>Diseñar aspectos de concurrencia (secuencial, proceso pesado, proceso ligero bajo demanda, proceso ligero con pool)
+ <li>Nombrado (direccionamiento estático o dinámico)
+</ol>
+</td>
+<td>
+Cómo (2/2)
+</td>
+</tr>
+
+<tr>
+<td>
+<ol type="1" start="7">
+<li> Modificar el formato de los mensajes y modificar la secuencia detallada de paso de mensajes si fuera necesario 
+</ol>
+</td>
+<td>
+Diseño final
+</td>
+</tr>
+</table>
+</html>
+
+
+
 ##  Ejemplo de calculadora basada en Sockets
 
  * Un programa cliente  que ejecuta en la máquina A envía  la petición "sumar(5,2)" por la red.

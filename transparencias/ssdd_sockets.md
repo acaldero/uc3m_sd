@@ -17,7 +17,8 @@
  * Aspectos adicionales
    * [Opciones más comunes de un socket](#opciones-importantes-asociadas-a-un-socket)
    * [Servidor secuencial vs procesos pesados vs hilos](#servidor-secuencial-vs-procesos-pesados-vs-hilos)
-
+   * [Trabajar con heterogeneidad en el sistema distribuido](#trabajar-con-heterogeneidad-en-el-sistema-distribuido)
+   
 
 ## Introducción a sockets
 
