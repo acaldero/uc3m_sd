@@ -54,3 +54,8 @@
   * [Ejemplo de calculadora distribuida basada en Sockets](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/casopractico_sockets_calculadora.md)
 
 
+## Ejercicios
+
+  * [Paso de mensajes](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/e1-pasomensajes-v2a.pdf)
+
+
