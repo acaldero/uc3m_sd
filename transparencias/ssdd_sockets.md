@@ -1016,7 +1016,7 @@ graph LR;
 
 ## Ejemplo de uso de sockets NO orientados a conexión
 
-**servidor-secuencial-udp.c**
+**servidor-base-udp.c**
    ```c
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -1084,7 +1084,7 @@ graph LR;
 }
    ```
 
-**cliente-secuencial-udp.c**
+**cliente-base-udp.c**
    ```c
     #include <arpa/inet.h>
     #include <stdio.h>
