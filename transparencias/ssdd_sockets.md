@@ -792,7 +792,7 @@ graph LR;
          // (3) asigna dirección a un socket
          // * host = INADDR_ANY -> cualquier dirección del host
          // * port = 0 -> el sistema selecciona el primer puerto libre
-         // * port = 0...1023 -> puertos reservados (puede necesitar ser root la ejecución)
+         // * port = 1...1023 -> puertos reservados (puede necesitar ser root la ejecución)
          ret = bind(sd,(struct sockaddr *)& server_addr, sizeof(server_addr)) ;
          if (ret < 0) {
              printf("Error en el bind\n") ;
