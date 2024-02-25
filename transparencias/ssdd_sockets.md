@@ -391,7 +391,7 @@ memset(&a4, 0, sizeof(struct sockaddr_in));  // inicializar todo a cero
     ```
 
 
-## Resumen de transformación de direcciones
+## Resumen de transformación de direcciones y ejemplo
 
 ```mermaid
 flowchart TD
@@ -678,6 +678,21 @@ int main(int argc, char **argv)
      print(sys.argv[1] + ': ', addresses)
   except socket.error as msg:
      print('ERROR: ', msg)
+   ```
+  </details>
+
+* <details>
+  <summary>En Python, decimal-punto a binario...</summary>
+
+  ### addr_dot2bin.py
+  ```python
+  import socket
+  import struct
+
+  // Example from: https://pythontic.com/modules/socket/inet_aton
+  IPQuad  = "192.168.0.0"
+  IP32Bit = socket.inet_aton(IPQuad) 
+  print(IP32Bit)
    ```
   </details>
 
@@ -1512,6 +1527,38 @@ Las opciones más importantes son:
     } /* fin main */
    ```
 
+* <details>
+  <summary>En Python...</summary>
+
+  ### Esqueleto de servidor-thread-tcp.py
+  ```python
+  import threading
+  import socket
+  
+  def worker(sock):
+      try:
+          ...
+          sock.sendall(message.encode())
+          ...
+      finally:
+          sock.close()
+  
+  sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+ 
+  server_address = ('localhost', 12345)
+  sock.bind(server_address)  
+  sock.listen(5)
+  
+  while True:
+      connection, client_address = sock.accept()
+ 
+      t = threading.Thread(target=worker, name='Daemon', args=(connection,))
+      t.start()
+  ```
+  </details>
+
+
 
 ## Trabajar con heterogeneidad en el sistema distribuido
 
@@ -1562,7 +1609,7 @@ Las opciones más importantes son:
                          continue;
                 else return -1;                 /* some other error */
                 } else if (numRead == 0) {      /* EOF */
-                        if (totRead == 0)       /* no byres read; return 0 */
+                        if (totRead == 0)       /* no bytes read; return 0 */
                              return 0;
                         else break;
                 } else {                        /* numRead must be 1 if we get here*/
@@ -1583,11 +1630,28 @@ Las opciones más importantes son:
  * Para la escritura de cadenas de caracteres con sockets stream
     * Para el envío se puede usar sendMessage PERO hay que indicar el número de caracteres incluido el fin de cadena:
       ```c
-      char buffer[256];
-      strcpy(buffer, “Cadena a enviar”);
-      sendMessage(socket, buffer, strlen(buffer)+1);   
+      char buffer[256] ;
+      strcpy(buffer, "Cadena a enviar") ;
+      sendMessage(socket, buffer, strlen(buffer)+1) ;
       ```
 
+* <details>
+  <summary>En Python...</summary>
+
+  ```python
+  def read_string(sock):
+      str = ''
+      while True:
+         msg = sock.recv(1)
+         if (msg == b'\0'):
+             break;
+         str += msg.decode()
+         return str
+
+  def write_string(sock, str):
+         sock.sendall(str) 
+  ```
+  </details>
 
 ## Trabajar con heterogeneidad con protocolos basados en texto (2/2)
 
@@ -1611,11 +1675,39 @@ Las opciones más importantes son:
       ```c
       int n = 1234;
       char buffer[256];
-      sprintf(buffer, “%d”, n);
+      sprintf(buffer, "%d", n);
       sendMessage(socket, buffer, strlen(buffer)+1);
       ```
 
     * Se puede transformar números en coma flotante, etc. de forma similar.
+
+* <details>
+  <summary>En Python...</summary>
+
+  ```python
+  def read_string(sock):
+      a = ''
+      while True:
+         msg = sock.recv(1)
+         if (msg == b'\0'):
+             break;
+         a += msg.decode()
+         return a
+  
+  def read_number(sock):
+         a = read_string(sock)
+         return(int(a,10))
+
+  def write_string(sock, str):
+         sock.sendall(str) 
+
+  def write_number(sock, num):
+         a = str(num) + b'\0'
+         write_string(sock, a)
+  ```
+  </details>
+
+
 
 **Material adicional**:
   * <a href="https://beej.us/guide/bgnet/html/index-wide.html">Beej's Guide to Network Programming</a>
