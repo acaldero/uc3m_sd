@@ -13,7 +13,7 @@
    * [Representación de datos](#orden-de-los-bytes-big-endian-y-little-endian)
  * Modelos de comunicación
    * [Stream o orientado a conexión](#modelos-de-comunicación-orientado-a-conexión)
-   * [Datagram](#modelos-de-comunicación-no-orientado-a-conexión)
+   * [Datagram o no orientado a conexión](#modelos-de-comunicación-no-orientado-a-conexión)
  * Aspectos adicionales
    * [Opciones más comunes de un socket](#opciones-importantes-asociadas-a-un-socket)
    * [Servidor secuencial vs procesos pesados vs hilos](#servidor-secuencial-vs-procesos-pesados-vs-hilos)
@@ -445,7 +445,7 @@ int main(int argc, char **argv)
 ```
 
 
-## Obtener la información de una máquina: (D) resolver nombres (forma clásica)
+## Obtener la información de una máquina: (D, B y E) resolver nombres (forma clásica)
 
   * La información de una máquina se representa mediante la estructura ``struct hostent``:
     ```c
@@ -481,7 +481,7 @@ int main(int argc, char **argv)
 </html>
 
 
-## Obtener la información de una máquina: (D) resolver nombres (forma moderna)
+## Obtener la información de una máquina: (D, B y E) resolver nombres (forma moderna)
  
   * Para tanto IPv4 como IPv6 se recomienda usar la nueva estructura  ``struct addrinfo``:
     ```c
@@ -500,9 +500,9 @@ int main(int argc, char **argv)
     * El equivalente a ``gethostbyname`` para IPv4 e IPv6 es **getaddrinfo** + **freeaddrinfo**
          ```c
       int getaddrinfo ( const char *restrict node,
-                        const char *restrict service,
-                        const struct addrinfo *restrict hints,
-                        struct addrinfo **restrict res );
+                           const char *restrict service,
+                           const struct addrinfo *restrict hints,
+                           struct addrinfo **restrict res );
       void freeaddrinfo ( struct addrinfo *res );
       ```
 
@@ -520,7 +520,7 @@ int main(int argc, char **argv)
 ## Ejemplos de conversión
 
 * <details>
-    <summary>En C, ejemplo de conversión (D) dominio-punto a decimal-punto...</summary>
+    <summary>En C, ejemplo de gethostbyname + inet_ntoa...</summary>
     
    **dns.c**
    ```c
@@ -542,8 +542,8 @@ int main(int argc, char **argv)
             printf("Error en gethostbyname\n"); exit(0);
         }
 
-        memcpy(&in.s_addr, *(hp->h_addr_list), sizeof(in.s_addr));
-        printf("%s es %s\n", hp->h_name, inet_ntoa(in));
+        memcpy(&(in.s_addr), *(hp->h_addr_list), sizeof(in.s_addr));
+        printf("%s es %s (%ld)\n", hp->h_name, inet_ntoa(in), in.s_addr);
 
         return 0;
     }
@@ -552,7 +552,7 @@ int main(int argc, char **argv)
 
 
 * <details>
-    <summary>En C, ejemplo de conversión decimal-punto a dominio-punto (D y E clásico)...</summary>
+    <summary>En C, ejemplo de inet_aton + gethostbyaddr (D, B y E clásico)...</summary>
     
    **obtener-dominio.c**
   ```c
@@ -602,7 +602,7 @@ int main(int argc, char **argv)
 
 
 * <details>
-    <summary>En C, ejemplo de conversión decimal-punto <-> dominio-punto (D y E moderno)...</summary>
+    <summary>En C, ejemplo de getaddrinfo + getnameinfo + freeaddrinfo (D, B y E moderno)...</summary>
     
    **obtener-dominio-6.c**
   ```c
@@ -655,9 +655,9 @@ int main(int argc, char **argv)
 
 
 * <details>
-  <summary>En Python, conversión dominio-punto a decimal-punto...</summary>
+  <summary>En Python, ejemplo de gethostname + gethostbyname...</summary>
 
-  ### gethostname_2.py
+  ### gethostname.py
   ```python
   import socket
   name = socket.gethostname();
@@ -666,7 +666,7 @@ int main(int argc, char **argv)
   </details>
 
 * <details>
-  <summary>En Python, dominio-punto/decimal-punto a decimal-punto...</summary>
+  <summary>En Python, ejemplo de gethostbyaddr...</summary>
 
   ### dns.py
   ```python
@@ -688,7 +688,7 @@ int main(int argc, char **argv)
   </details>
 
 * <details>
-  <summary>En Python, decimal-punto a binario...</summary>
+  <summary>En Python, ejemplo de inet_aton...</summary>
 
   ### addr_dot2bin.py
   ```python
