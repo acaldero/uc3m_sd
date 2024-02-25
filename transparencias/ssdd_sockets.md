@@ -22,8 +22,8 @@
 
 ## Introducción a sockets
 
-* Mecanismo de IPC que proporciona comunicación entre procesos que ejecutan en máquinas distintas
-  * Otros mecanismos IPC: ficheros, Pipes con nombre, memoria remota, etc.
+* Mecanismo de IPC para poder comunicar procesos que ejecutan en distintas máquinas
+  * Otros posibles mecanismos IPC: ficheros, tuberías con nombre, etc.
 
 * Breve historia:
   * La primera implementación apareció en 1983 en UNIX BSD 4.2
@@ -37,18 +37,19 @@
 
 ## Qué representa un socket
 
-* Un **socket** es un descriptor de un punto final de comunicación (**dirección IP** y **puerto**)
+```c
+#include <sys/socket.h>
+int socket(int domain, int type, int protocol) ;
+...
+```
 
-* Abstracción que:
-  * Representa un extremo de una comunicación bidireccional con una dirección asociada
+* Un **socket** es una abstracción que:
+  * Representa un extremo de una comunicación bidireccional con una terna (protocolo, dirección, puerto) asociada
   * Ofrece interfaz de acceso a la capa de transporte del protocolo TCP/IP
 
-* Tres elementos asociados a un socket:
-  ```c
-  #include <sys/socket.h>
-  int socket(int domain, int type, int protocol) ;
-  ```
+* Un **socket** se representa como descriptor de un punto final de comunicación (**dirección IP** y **puerto**)
 
+* Tres elementos asociados a un socket en la creación:
   * Dominio de comunicación
   * Tipo de sockets
   * Protocolo
@@ -90,7 +91,6 @@
     * SOCK_RAW: Raw, sin protocolo de transporte (protocolo IP)
 
   * Protocolo
-    * 0: valor por defecto (ver /etc/protocols para otros)
  
 
 ## Sockets: protocolo
@@ -191,25 +191,45 @@ Donde:
 
 ## Dirección de host
 
-Una dirección IP de host se almacena en una estructura de tipo ```in_addr```:
-```c
-#include <netinet/in.h>
+ * En C, una dirección IP de host se almacena en una estructura de tipo ```in_addr```:
+   ```c
+   #include <netinet/in.h>
 
-typedef uint32_t in_addr_t;
+   typedef uint32_t in_addr_t;
 
-struct in_addr {
-  in_addr_t s_addr; /* entero sin signo de 32 bits */
-};
+   struct in_addr {
+     in_addr_t s_addr; /* entero sin signo de 32 bits */
+   };
 
-...
-struct in_addr a1 ;
-a.s_addr = inet_addr("10.12.110.57"); // a.s_addr es la dirección en binario
-```
+   ...
+   struct in_addr a1 ;
+   a.s_addr = inet_addr("10.12.110.57"); // a.s_addr es la dirección en binario
+   ```
+
+* <details>
+  <summary>En Python...</summary>
+  El módulo ipaddress incluye clases para trabajar con direcciones de red IPv4 y IPv6
+
+  ### ip_address.py
+  ```python
+  import binascii
+  import ipaddress
+
+  addr = ipaddress.ip_address('176.58.10.138')
+  print(addr)
+  
+  print(' IP version:',  addr.version)
+  print(' is private:',  addr.is_private)
+  print(' packed form:', binascii.hexlify(addr.packed))
+  print(' integer:',     int(addr))
+  print('')
+  ```
+  </details>
 
 
 ## Direcciones en AF_INET
 
- * Estructura ```struct sockaddr_in```:
+ * En C, una dirección incluye la dirección IP, puerto y familia en la estructura ```struct sockaddr_in```:
 ```c
 #include <netinet/in.h>
 
@@ -270,11 +290,11 @@ flowchart TD
 
 ## Servicios sobre direcciones: (A) obtener el nombre local
 
-Función que facilita el nombre de la máquina (formato dominio punto) en la que se ejecuta:
-```c
-int gethostname ( char *name,        // buffer donde se almacena el nombre
-                  size_t namelen );  // longitud del buffer
-```
+* En C, ```gethostname``` es la función que facilita el nombre de la máquina (formato dominio punto) en la que se ejecuta:
+  ```c
+  int gethostname ( char *name,        // buffer donde se almacena el nombre
+                    size_t namelen );  // longitud del buffer
+  ```
 
 #### gethostname.c
 ```c
@@ -294,6 +314,18 @@ int main ()
     exit(0);
 }
 ```
+
+* <details>
+  <summary>En Python...</summary>
+  El método gethostname de la clase socket se encarga.
+
+  ### gethostname_1.py
+  ```python
+  import socket
+  name = socket.gethostname();
+  print('host name: ' + name)
+  ```
+  </details>
 
 
 ## Servicios sobre direcciones: (B) decimal-punto -> binario
@@ -408,7 +440,7 @@ int main(int argc, char **argv)
 ```
 
 
-## Obtener la información de una máquina: (D) resolver nombres
+## Obtener la información de una máquina: (D) resolver nombres (forma clásica)
 
   * La información de una máquina se representa mediante la estructura ``struct hostent``:
     ```c
@@ -443,6 +475,8 @@ int main(int argc, char **argv)
 </p>
 </html>
 
+
+## Obtener la información de una máquina: (D) resolver nombres (forma moderna)
  
   * Para tanto IPv4 como IPv6 se recomienda usar la nueva estructura  ``struct addrinfo``:
     ```c
@@ -478,7 +512,6 @@ int main(int argc, char **argv)
       ```
 
 
-
 ## Ejemplos
 
 * <details>
@@ -511,6 +544,7 @@ int main(int argc, char **argv)
     }
     ```
   </details>
+
 
 * <details>
     <summary>Ejemplo de conversión decimal-punto a dominio-punto...</summary>
@@ -613,6 +647,39 @@ int main(int argc, char **argv)
   ```
   </details>
 
+
+* <details>
+  <summary>En Python, conversión dominio-punto a decimal-punto...</summary>
+
+  ### gethostname_2.py
+  ```python
+  import socket
+  name = socket.gethostname();
+  print(name + ': ' + socket.gethostbyname(name))
+  ```
+  </details>
+
+* <details>
+  <summary>En Python, dominio-punto/decimal-punto a decimal-punto...</summary>
+
+  ### dns.py
+  ```python
+  import socket
+  import sys
+
+  arguments = len(sys.argv)
+  if arguments < 2:
+     print('Uso: dns <host>')
+     exit()
+  try:
+     hostname, aliases, addresses = socket.gethostbyaddr(sys.argv[1])
+     print(sys.argv[1] + ': ', hostname)
+     print(sys.argv[1] + ': ', aliases)
+     print(sys.argv[1] + ': ', addresses)
+  except socket.error as msg:
+     print('ERROR: ', msg)
+   ```
+  </details>
 
 
 ## Orden de los bytes: big-endian y little-endian
