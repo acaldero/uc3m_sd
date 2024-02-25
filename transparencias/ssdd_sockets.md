@@ -127,7 +127,7 @@ int socket(int domain, int type, int protocol) ;
  * (2) Paquetes ordenados por secuencia, sin duplicación de paquetes, libre de errores, notifica errores
 
 
-## Comparación de protocolos
+## Comparación de los protocolos TCP, UDP y IP
 
 | Característica           | IP  | UDP  | TCP  |
 |--------------------------|-----|------|------|
@@ -189,7 +189,7 @@ Donde:
   * El espacio de puertos para streams y datagramas es independiente
 
 
-## Dirección de host
+## Dirección IP de host
 
  * En C, una dirección IP de host se almacena en una estructura de tipo ```in_addr```:
    ```c
@@ -254,11 +254,11 @@ a2.sin_addr.s_addr = inet_addr("10.12.110.57");
 ## Servicios sobre direcciones (1/2)
 
  * Hay distintas notaciones para una dirección:
-    | Notación      | Ejemplo         | Formato  | Entendible por |
-    |---------------|-----------------|----------|----------------|
-    | dominio-punto | "www.uc3m.es"   | Texto    | Humano         |
-    | decimal-punto | "176.58.10.138" | Texto    | Humano         |
-    | binario       | 10110...        | Binario  | Máquina        |
+    | Notación      | Ejemplo                           | Formato  | Entendible por |
+    |---------------|-----------------------------------|----------|----------------|
+    | dominio-punto | "www.uc3m.es"                     | Texto    | Humano         |
+    | decimal-punto | "176.58.10.138"                   | Texto    | Humano         |
+    | binario       | 10110000001110100000101010001010  | Binario  | Máquina        |
 
 
  * Servicios sobre direcciones:
@@ -271,19 +271,24 @@ a2.sin_addr.s_addr = inet_addr("10.12.110.57");
 
 ```mermaid
 flowchart TD
-    D{{nombre de máquina}} --> |"(A) obtener nombre local"| A
+    D>obtener nombre de máquina] --> |"(A) obtener nombre local"| A
     D -.-> A
     D -.-> B
-    B -->|resolución inversa| A
+    B -->|"(E) resolución inversa"| A
     A(dominio-punto:<br> www.uc3m.es) -->|"(D) resolución"| B(decimal-punto:<br> 176.58.10.138)
-    B -->|"(B) transformación DP2B"| C
-    C(binario:<br> 10110...) -->|"(C) transformación B2DP"| B
+    B -->|"(B) transformación<br> dec-punto a binario"| C
+    C(binario:<br> 10110000001110100000101010001010) -->|"(C) transformación<br> binario a dec-punto"| B
 
     subgraph " "
     A
+    subgraph " "
     B
     C
+    end
+    subgraph " "
+    C
     D
+    end
     end
 ```
 
@@ -319,7 +324,7 @@ int main ()
   <summary>En Python...</summary>
   El método gethostname de la clase socket se encarga.
 
-  ### gethostname_1.py
+  ### gethostname.py
   ```python
   import socket
   name = socket.gethostname();
@@ -358,7 +363,7 @@ memset(&a6, 0, sizeof(struct sockaddr_in6)); // inicializar todo a cero
     ```c
     // (opción 3) int inet_pton(int family, const char *strptr, void *addrptr);
     int ret = inet_pton(AF_INET6, "2024:db8:8722:3a92::15", &(a6.sin6_addr)); 
-    if (0 == ret) {
+    if (ret != 1) {
         printf("ERROR en inet_pton\n") ;
     } 
     ```
@@ -385,7 +390,7 @@ memset(&a4, 0, sizeof(struct sockaddr_in));  // inicializar todo a cero
     // (opción 2) const char *inet_ntop(int domain, const void *addrptr, char *dst_str, size_t len);
     char str4[INET_ADDRSTRLEN];
     ptr = inet_ntop(AF_INET, &(a4.sin_addr.s_addr), str4, sizeof(str4));
-    if (0 == ret) {
+    if (NULL == ret) {
         printf("ERROR en inet_ntop\n") ;
     } 
     ```
@@ -515,7 +520,7 @@ int main(int argc, char **argv)
 ## Ejemplos de conversión
 
 * <details>
-    <summary>En C, ejemplo de conversión dominio-punto a decimal-punto...</summary>
+    <summary>En C, ejemplo de conversión (D) dominio-punto a decimal-punto...</summary>
     
    **dns.c**
    ```c
@@ -547,7 +552,7 @@ int main(int argc, char **argv)
 
 
 * <details>
-    <summary>En C, ejemplo de conversión decimal-punto a dominio-punto (clásico)...</summary>
+    <summary>En C, ejemplo de conversión decimal-punto a dominio-punto (D y E clásico)...</summary>
     
    **obtener-dominio.c**
   ```c
@@ -575,18 +580,19 @@ int main(int argc, char **argv)
          return (2);
      }
 
-     hp=gethostbyaddr((char *) &addr, sizeof (addr), AF_INET);
+     hp=gethostbyaddr((char *) &addr, sizeof(addr), AF_INET);
      if (hp == NULL) {
         printf("Error en gethostbyaddr\n");
         return (3);
      }
 
-     for (p = hp->h_addr_list; *p!=0; p++)
+     for (p = hp->h_addr_list; *p != 0; p++)
      {
-         memcpy(&in.s_addr, *p, sizeof(in.s_addr));
-         printf("%s es \t%s \n", inet_ntoa(in), hp->h_name);
-         for (q=hp->h_aliases; *q != 0; q++)
+         memcpy(&(in.s_addr), *p, sizeof(in.s_addr));
+         printf("%s es \t%s (%ld)\n", inet_ntoa(in), hp->h_name, in.s_addr) ;
+         for (q=hp->h_aliases; *q != 0; q++) {
               printf("%s\n", *q);
+         }
      }
 
      return(0);
@@ -596,7 +602,7 @@ int main(int argc, char **argv)
 
 
 * <details>
-    <summary>En C, ejemplo de conversión decimal-punto a dominio-punto (moderno)...</summary>
+    <summary>En C, ejemplo de conversión decimal-punto <-> dominio-punto (D y E moderno)...</summary>
     
    **obtener-dominio-6.c**
   ```c
