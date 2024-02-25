@@ -512,10 +512,10 @@ int main(int argc, char **argv)
       ```
 
 
-## Ejemplos
+## Ejemplos de conversión
 
 * <details>
-    <summary>Ejemplo de conversión dominio-punto a decimal-punto...</summary>
+    <summary>En C, ejemplo de conversión dominio-punto a decimal-punto...</summary>
     
    **dns.c**
    ```c
@@ -547,7 +547,7 @@ int main(int argc, char **argv)
 
 
 * <details>
-    <summary>Ejemplo de conversión decimal-punto a dominio-punto...</summary>
+    <summary>En C, ejemplo de conversión decimal-punto a dominio-punto (clásico)...</summary>
     
    **obtener-dominio.c**
   ```c
@@ -596,7 +596,7 @@ int main(int argc, char **argv)
 
 
 * <details>
-    <summary>Ejemplo de conversión decimal-punto a dominio-punto...</summary>
+    <summary>En C, ejemplo de conversión decimal-punto a dominio-punto (moderno)...</summary>
     
    **obtener-dominio-6.c**
   ```c
@@ -1009,6 +1009,72 @@ graph LR;
    mensaje del servidor: Hola mundo
    user$  kill -9 %1
   ```
+
+
+* <details>
+  <summary>En Python...</summary>
+
+  ### server_base_tcp.py
+  ```python
+  import socket
+  import sys
+   
+  sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+   
+  server_address = ('localhost', 10009)
+  sock.bind(server_address)
+  sock.listen(5)
+   
+  while True:
+       connection, client_address = sock.accept()
+       try:
+           message = ''
+           while True:
+               msg = connection.recv(1)
+               if (msg == b'\0'):
+                   break;
+               message += msg.decode()
+           message = message + "\0"
+   
+           print('mensaje: ' + message)
+           connection.sendall(message.encode())
+       finally:
+           connection.close()
+  ```
+
+  ### client_base_tcp.py
+  ```python
+  import socket
+  import sys
+  
+  arguments = len(sys.argv)
+  if arguments < 3:
+      print('Uso: client_base_tcp  <host> <port>')
+      exit()
+  
+  sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  server_address = (sys.argv[1], int(sys.argv[2]))
+  print('conectando a {} y puerto {}'.format(*server_address))
+  sock.connect(server_address)
+  
+  try:
+      message = b'Esto es una cadena de prueba\0'
+      sock.sendall(message)
+  
+      message = ''
+      while True:
+          msg = sock.recv(1)
+          if (msg == b'\0'):
+              break;
+          message += msg.decode()
+      message = message + "\0"
+  
+      print('mensaje: ' + message)  
+  finally:
+      sock.close()
+  ```
+  </details>
 
 
 ## Modelos de comunicación: NO orientado a conexión
