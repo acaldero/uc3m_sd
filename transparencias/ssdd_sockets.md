@@ -203,7 +203,7 @@ Donde:
 
    ...
    struct in_addr a1 ;
-   a.s_addr = inet_addr("10.12.110.57"); // a.s_addr es la dirección en binario
+   a1.s_addr = inet_addr("10.12.110.57"); // a.s_addr es la dirección en binario
    ```
 
 * <details>
@@ -897,6 +897,7 @@ graph LR;
             // (5) aceptar nueva conexión (newsd) desde socket servidor (sd)
             // * bloquea al servidor hasta que se produce la conexión
             // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
+            size = sizeof(struct sockaddr_in) ;
             newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
             if (newsd < 0) {
                 printf("Error en el accept");
