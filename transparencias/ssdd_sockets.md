@@ -313,10 +313,13 @@ int main ()
     int err;
 
     err = gethostname(maquina, 256);
-    if (err != -1)
-        printf("Ejecuto en la maquina %s\n", maquina);
+    if (err < 0) {
+        perror("gethostname: ") ;
+        return -1;
+    }
 
-    exit(0);
+    printf("Ejecuto en la maquina %s\n", maquina) ;
+    return 0 ;
 }
 ```
 
@@ -580,7 +583,7 @@ int main(int argc, char **argv)
          return (2);
      }
 
-     hp=gethostbyaddr((char *) &addr, sizeof(addr), AF_INET);
+     hp = gethostbyaddr((char *) &addr, sizeof(addr), AF_INET);
      if (hp == NULL) {
         printf("Error en gethostbyaddr\n");
         return (3);
@@ -866,8 +869,8 @@ graph LR;
          // (1) creación de un socket
          // * NO tiene dirección asignada aquí
          sd = socket(AF_INET, SOCK_STREAM, 0) ;
-         if (-1 == sd) {
-             printf("Error en la creación del socket");
+         if (sd < 0) {
+             perror("Error en la creación del socket: ");
              return -1;
          }
 
@@ -883,14 +886,18 @@ graph LR;
          // * port = 1...1023 -> puertos reservados (puede necesitar ser root la ejecución)
          ret = bind(sd,(struct sockaddr *)& server_addr, sizeof(server_addr)) ;
          if (ret < 0) {
-             printf("Error en el bind\n") ;
+             perror("Error en bind: ") ;
              return -1 ;
          }
 
          // (4) preparar para aceptar conexiones
          // * listen permite definir el número máximo de peticiones pendientes a encolar
          // * SOMAXCONN está en sys/socket.h
-         listen(sd, SOMAXCONN);
+         ret = listen(sd, SOMAXCONN);
+         if (ret < 0) {
+             perror("Error en listen: ") ;
+             return -1 ;
+         }
 
          while (1)
          {
@@ -900,8 +907,8 @@ graph LR;
             size = sizeof(struct sockaddr_in) ;
             newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
             if (newsd < 0) {
-                printf("Error en el accept");
-                return(-1);
+                perror("Error en el accept");
+                return -1 ;
             }
 
             // Para ayudar a la depuración,
@@ -968,7 +975,7 @@ graph LR;
         // (1) creación del socket (NO tiene dirección asignada aquí)
         sd = socket(AF_INET, SOCK_STREAM, 0);
         if (sd < 0) {
-            printf("ERROR en socket\n") ;
+            perror("ERROR en socket: ") ;
             return -1 ;
         }
 
@@ -984,7 +991,7 @@ graph LR;
         //   entonces se le asigna una automáticamente con puerto temporal
         ret = connect(sd, (struct sockaddr *) &server_addr, sizeof(server_addr)) ;
         if (ret < 0) {
-            printf("ERROR en la conexión\n");
+            perror("ERROR en connect: ");
             return -1;
         }
 
@@ -1187,7 +1194,7 @@ graph LR;
         // (1) Creación del socket
         sock = socket(PF_INET, SOCK_DGRAM, 0) ;
         if (sock < 0) {
-            printf("Error al crear el socket\n") ;
+            perror("Error al crear el socket: ") ;
             return -1;
         }
 
@@ -1201,7 +1208,7 @@ graph LR;
         // (3) Asignación de dirección
         ret = bind(sock, (struct sockaddr *)&server_address, sizeof(server_address)) ;
         if (ret < 0) {
-            printf("Error en el bind\n");
+            perror("Error en bind: ");
             return -1;
         }
 
@@ -1223,11 +1230,11 @@ graph LR;
                                (struct sockaddr *)&client_address,
                                &client_address_len);
                 if (ret < 0) {
-                    printf("Error en recvfrom") ;
+                    printf("ERROR en recvfrom :-(\n") ;
                 }
 
                 // Imprimir mensaje
-                printf("mensaje: '%s' desde %s\n",
+                printf("mensaje: '%s' desde: %s\n",
                        buffer,
                        inet_ntoa(client_address.sin_addr));
         }
@@ -1254,7 +1261,7 @@ graph LR;
         // (1) Creación del socket
         sock = socket(PF_INET, SOCK_DGRAM, 0) ;
         if (sock < 0) {
-            printf("Error al crear el socket\n") ;
+            perror("Error al crear el socket: ") ;
             return -1;
         }
 
@@ -1276,7 +1283,7 @@ graph LR;
                      (struct sockaddr*)&server_address,
                      sizeof(server_address));
         if (ret < 0) {
-            printf("Error en sendto") ;
+            printf("Error en sendto\n") ;
         }
 
         // Imprimir mensaje
@@ -1375,7 +1382,7 @@ Las opciones más importantes son:
             // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
             newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
             if (newsd < 0) {
-                printf("Error en el accept");
+                perror("Error en accept: ");
                 return(-1);
             }
 
@@ -1388,12 +1395,14 @@ Las opciones más importantes son:
             while (escritos != total) // queda por escribir
             {
                result = write(newsd, buffer+escritos, total-escritos) ;
-               // puede que write NO escriba todos los datos solicitados
                if (-1 == result) { break; }
                escritos = escritos + result ;
+
+               // puede que write NO escriba todos los datos solicitados
+               // por ello el bucle hasta que se escriban todos
             }
             if (escritos != total) { // error, no se ha escrito todo
-                printf("Error al escribir buffer") ;
+                printf("ERROR al escribir buffer\n") ;
             }
 
             // (7) cerrar socket conectado
@@ -1420,7 +1429,7 @@ Las opciones más importantes son:
             // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
             newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
             if (newsd < 0) {
-                printf("Error en el accept");
+                perror("Error en el accept: ");
                 return -1;
             }
 
@@ -1428,7 +1437,7 @@ Las opciones más importantes son:
 
             pid_t pid = fork() ;
             if (pid < 0) {
-                printf("Error en fork()\n") ;
+                perror("Error en fork: ") ;
                 return -1;
             } 
             if (0 == pid) // el proceso hijo atiende al cliente
@@ -1440,12 +1449,14 @@ Las opciones más importantes son:
                 while (escritos != total) // queda por escribir
                 {
                    result = write(newsd, buffer+escritos, total-escritos) ;
-                   // puede que write NO escriba todos los datos solicitados
                    if (-1 == result) { break; }
                    escritos = escritos + result ;
+
+                   // puede que write NO escriba todos los datos solicitados
+                   // por ello el bucle hasta que se escriban todos
                 }
                 if (escritos != total) { // error, no se ha escrito todo
-                    printf("Error al escribir buffer") ;
+                    printf("Error al escribir buffer\n") ;
                 }
 
                 // (7) cerrar socket conectado
@@ -1486,7 +1497,6 @@ Las opciones más importantes son:
          while (escritos != total) // queda por escribir
          {
              result = write(newsd, buffer+escritos, total-escritos) ;
-             // puede que write NO escriba todos los datos solicitados
              if (-1 == result) { break; }
                  escritos = escritos + result ;
              }
@@ -1514,7 +1524,7 @@ Las opciones más importantes son:
             // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
             newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
             if (newsd < 0) {
-                printf("Error en el accept");
+                perror("Error en el accept: ");
                 return -1;
             }
 
@@ -1523,8 +1533,9 @@ Las opciones más importantes son:
             
             /// Esperar copia de argumentos ///
             pthread_mutex_lock(&m);
-            while (busy == 1)
+            while (busy == 1) {
                    pthread_cond_wait(&c, &m);
+            }
             busy = 1;
             pthread_mutex_unlock(&m);
             /////////////////////

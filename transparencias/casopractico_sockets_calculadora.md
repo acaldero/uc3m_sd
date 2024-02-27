@@ -4,24 +4,6 @@
 + Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
-## Guía de desarrollo de aplicaciones cliente-servidor con paso de mensajes
-
- 1. Cliente(s) y servidor(es)
-     * Identificar cliente y servidor
-       * Cliente: elemento activo, puede haber varios
-       * Servidor: elemento pasivo
- 2. Protocolo del servicio
-     * Identificar los tipos mensajes y la secuencia de intercambios de mensajes (peticiones y respuestas)
- 3. Elegir el tipo de servidor
-     * UDP sin conexión
-     * TCP con...:
-       * ... una conexión por sesión
-       * ... una conexión por petición
- 4. Formato de los mensajes
-    * Identificar el formato de los mensajes (representación de los datos)
-      * Buscar en lo posible independencia (lenguaje, arquitectura, implementación, ...)
-
-
 ## Guía para ayudar a la resolución de ejercicios de diseño de aplicaciones distribuidas
 
 <html>
@@ -30,7 +12,16 @@
 <td>
 <ol type="1" start="1">
 <li>Identificar las partes cliente y servidor
-<li>Identificar peticiones/respuestas y secuencia de intercambio de mensajes
+<ul>
+<li> Cliente: elemento activo, puede haber varios
+<li> Servidor: elemento pasivo
+</ul>
+<li>Indentificar el protocolo de servicio
+<ul>
+<li>Identificar peticiones/respuestas
+<li>Identificar los tipos mensajes
+<li>Identificar la secuencia de intercambio de mensajes
+</ul>
 </ol>
 </td>
 <td>
@@ -41,7 +32,7 @@ Qué
 <tr>
 <td>
 <ol type="1" start="3">
-<li>Elegir protocolo
+<li>Elegir el tipo de servidor:
 <ul>
     <li> No orientado a conexión (UDP)
     <li> Orientado a conexión (TCP)
@@ -60,8 +51,11 @@ Cómo (1/2)
 <tr>
 <td>
 <ol type="1" start="4">
-<li>Definir el formato de los mensajes (independencia HW, SO, lenguajes, ...) <br>
+<li>Definir el formato de los mensajes (representación de los datos) <br>
 y la secuencia detallada de paso de mensajes
+<ul>
+<li>Buscar en lo posible independencia (lenguaje, arquitectura, implementación, ...)
+</ul>
 </ol>
 </td>
 <td>
