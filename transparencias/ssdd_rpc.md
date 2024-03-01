@@ -36,7 +36,7 @@
  * Uno de los ingredientes es la transparencia de la invocación remota: se busca que código de invocación remota lo más transparente posible, de manera que se parezca a una invocación a una función local.
  
  * En el siguiente ejemplo a la izquierda se muestra los elementos de una aplicación no distribuida con llamada local a la función de sumar. A la izquierda se muestra la misma aplicación con una llamada remota a la función de sumar:
-       ![Alt text](./ssdd_rpc_drawio_10.svg)<img src="./transparencias/ssdd_rpc_drawio_10.svg">
+       ![Organización del código para invocación remota mediante colas POSIX](./ssdd_rpc_drawio_10.svg)<img src="./transparencias/ssdd_rpc_drawio_10.svg">
 
     * El código del stub_servidor y del stub_cliente oculta a la función "main(...)" los detalles de que la ejecución es remota.
     * El componente biblioteca de la aplicación pasa a estar en otro proceso, y se comunican en este ejemplo usando colas POSIX.
@@ -67,27 +67,28 @@
 
  * Las RPC ofrecen una interfaz sencilla para construir aplicaciones distribuidas sobre TCP/IP
 
-   ```mermaid
-   flowchart TD
-      A["Aplicaciones/Servicios"]
-      B["RMI y **RPC**"]
-      C["Aplanamiento (marshalling), representación externa de datos"]
-      D["Sockets"]
-      E["Protocolo de transporte<br>UDP y TCP"]
-      subgraph  
-      A --- B
-      B --- C
-      C --- D
-      D --- E
-      end
-   ```
+   ![Pila software con RPC y marshalling](./ssdd_rpc_drawio_10.svg)<img src="./transparencias/ssdd_rpc_drawio_13.svg">
 
   * De forma general, los elementos que participan son:
-       ![Alt text](./ssdd_rpc_drawio_16.svg)<img src="./transparencias/ssdd_rpc_drawio_16.svg">
+     * Un cliente **activo**, que realiza una RPC al servidor
+          * El stub_cliente realiza una comunicación cliente/servidor, enviando una petición al stub_servidor
+          * En la petición del cliente se envía un mensaje que contiene, al menos, el código de operación y los argumentos.
+     * Un servidor **pasivo**, que realiza el servicio y devuelve el resultado de la RPC al cliente
+          * El stub_servidor responde a la petición del cliente
+          * En la respuesta al cliente se envía un mensaje que contine, al menos, el resultado de la función invocada. 
 
-    * Entre el stub_cliente y stub_servidor se utiliza una comunicación cliente/servidor, donde el cliente hace una petición y el servidor responde a dicha petición.
-    * En la petición del cliente se envía un mensaje que contiene, al menos, el código de operación y los argumentos.
-    * En la respuesta al cliente se envía un mensaje que contine, al menos, el resultado de la función invocada.
+      ![Cliente, stub_cliente, stub_servidor y servidor](./ssdd_rpc_drawio_16.svg)<img src="./transparencias/ssdd_rpc_drawio_16.svg">
+
+  * Conceptos básicos:
+     * Un **servicio de red** es una colección de uno o más programas remotos
+     * Un **programa remoto** implementa uno o más procedimientos remotos 
+     * Un **procedimiento remoto**, sus parámetros y sus resultados se especifican en un fichero de especificación del protocolo escrito en un lenguaje de especificación de interfaces (IDL)
+     * Un servidor puede soportar más de una **versión de un programa remoto**
+        * Permite al servidor ser compatible con las actualizaciones del servicio
+     * Un **suplente** (stub o proxy) es responsable de convertir los parámetros y resultados durante el procedimiento remoto, además de enviar y recibir dichos valores mediante mensajes.
+        * Los suplentes (stub_cliente y stub_servidor) son independientes de la implementación que se haga del servidor.
+        * Son dependientes de la interfaz del servicio
+        * Se generan **automáticamente** por el software de RPC
 
 
 ## Desarrollando con las RPC
@@ -196,6 +197,20 @@
  * La interfaz es compartida por cliente y servidor.
    * Los compiladores pueden diseñarse para que los clientes y servidores se escriban en lenguajes diferentes
 
+      ![IDL, stubs y cliente/servidor](./ssdd_rpc_drawio_36.svg)<img src="./transparencias/ssdd_rpc_drawio_36.svg">
+
+ * Programación con un paquete de RPC:
+   * El programador debe proporcionar:
+      * La **definición de la interfaz** (IDL)
+         * Nombres de los procedimientos
+         * Parámetros que el cliente pasa al servidor
+         * Resultados que devuelve el servidor al cliente
+      * El **código del cliente**
+      * El **código del servidor**
+   * El compilador de IDL genera :
+      * El **suplente** (stub) **del cliente**
+      * El **suplente** (stub) **del servidor**
+
 
 ## Aplanamiento (marshalling)
 
@@ -210,53 +225,14 @@
    * **JSON** (**J**ava**S**cript **O**bject **N**otation) formato de texto ligero para el intercambio de datos.
 
  * Ejemplo:  'Smith', 'Paris', 1934
-    * XML
-      ```xml
-      <person>
-      <name>Smith</name>
-      <place>Paris</place>
-      <year>1934</year>
-      </person>
-      ```
-    * JSON
-      ```json
-      {"Name":"Smith", "Place":"Paris", "Year":1934}
-      ```
-   * XDR
-     <html>
-     <style>
-     table {
-       border-collapse: collapse;
-       border-spacing: 0;
-       border:2px solid #ff0000;
-     }
-     table, th, td {
-         border: 2px solid black;
-     }
-     </style>
-     <table>
-     <tr>
-     <td> <- 4 bytes -> </td>
-     <td></td>
-     </tr>
-     <tr><td>5            </td> <td> long. string</td></tr>
-     <tr><td> "Smit"   </td> <td> 'Smith'        </td></tr>
-     <tr><td> "h___"   </td> <td>                     </td></tr>
-     <tr><td> 6           </td> <td> long. string </td></tr>
-     <tr><td> "Pari"    </td> <td>Paris             </td></tr>
-     <tr><td> "s"         </td> <td>                     </td></tr>
-     <tr><td> 1934    </td> <td> cardinal       </td></tr>
-     </table>
-     </html>
+        ![Comparación entre XDR, CDR, XML y JSON](./ssdd_rpc_drawio_40.svg)<img src="./transparencias/ssdd_rpc_drawio_40.svg">
 
 
 ## Localización y enlazado (*binding*)
 
  * **Servicio de enlace**: servicio que permite establecer la asociación entre el cliente y el servidor:
-    * Implica **localizar al servidor** que ofrece un determinado
-servicio
-    * El servidor debe **registrar su dirección** en un servicio de
-nombres gestionado por un servidor de enlazado dinámico (*binder*)
+    * Implica **localizar al servidor** que ofrece un determinado servicio
+    * El servidor debe **registrar su dirección** en un servicio de nombres gestionado por un servidor de enlazado dinámico (*binder*)
 
  * El **enlazador dinámico (*binder*)** es el **servicio** que mantiene una **tabla de traducciones** entre **nombres de servicio** y **direcciones**.  Incluye funciones para:
     * Registrar un nombre de servicio
@@ -267,7 +243,30 @@ nombres gestionado por un servidor de enlazado dinámico (*binder*)
    2. El sistema operativo se encarga de indicar su dirección
    3. Difundiendo un mensaje (*broadcast*) cuando los procesos comienzan su ejecución.
 
+* Los pasos para el registro y enlace son:
+   1. Servidor obtiene dirección
+   2. Registra dirección
+   3. Busca servidor
+   4. Devuelve dirección
+   5. Petición
+   6. Respuesta
+   7. Borra dirección (fin del servicio)
 
+     ```mermaid
+   flowchart TD
+       subgraph id1 [ ]
+       A["Cliente"]
+       B["Servidor"]
+       C["Binder"]
+       end
+       B -.->|"(1)"| B
+       B -->|"(2)"| C
+       B -->|"(7)"| C
+       A -->|"(3)"| C
+       C -->|"(4)"| A
+       A -->|"(5)"| B
+       B -->|"(6)"| A
+     ```
 
 ## Tipos de fallos que pueden aparecer con las RPC
 
@@ -373,6 +372,8 @@ datos estándar
 
 ## RPC de Sun/ONC
 
+(58-59)
+
  * Breve historia:
    * Diseñado inicialmente para el sistema de ficheros NFS
    * Descrito en RFC 1831
@@ -385,12 +386,224 @@ datos estándar
     * Lenguaje de definición de interfaces **XDR**
     * **Tipado implícito**
     * **Representación de datos simétrica**
+    * Incluye:
+       * Un generador de suplentes (stubs) llamado rpcgen 
+       * Bibliotecas de funciones de soporte de las RPC (<rpc/rpc.h>)
+       * Servicio de registro de procedimientos (*portmapper* o *rpcbind*)
 
  * Soporte:
-   * Para C a través del compilador rpcgen en UNIX/Linux
+   * Para C en UNIX/Linux, Windows, etc.
    * Para Java
       * http://sourceforge.net/projects/remotetea/
-   * Para plataformas Windows
+
+
+## XDR 
+
+ * Principales características:
+   * Utiliza representación big-endian
+   * No utiliza protocolo de negociación
+   * Todos los elementos en XDR son múltiplos de 4 bytes
+   * La transmisión de mensajes utiliza tipado implícito (el tipo de datos no viaje con el valor)
+   * Utiliza conversión de datos simétrica
+   * Los datos se codifican en un flujo de bytes
+   * Gestión de memoria: las RPC no reservan memoria dinámica. 
+      * El servidor tiene que reservar memoria e implementarse xxx_freeresult(...) correspondiente.
+      * El cliente tiene que reservar memoria antes de invocar a la RPC y liberar luego con xdr_free(...)
+
+### Constantes
+
+ * Definición de **constantes**:
+    * En XDR:
+      ```c
+      const MAX_SIZE = 8192;
+      ```
+    * Traducción a C:
+       ```c
+      #define MAX_SIZE 8192
+      ```
+
+### Tipos básicos
+
+ * Definición de **entero con signo**:
+    * En XDR:
+      ```c
+      int a;
+      ```
+    * Traducción a C:
+       ```c
+      int a;
+      ```
+
+ * Definición de **entero sin signo**:
+    * En XDR:
+      ```c
+      unsigned a;
+      ```
+    * Traducción a C:
+       ```c
+      unsigned int a;
+      ```
+
+ * Definición de **coma flotante**:
+    * En XDR:
+      ```c
+      float a; double c;
+      ```
+    * Traducción a C:
+       ```c
+      float a; double c;
+      ```
+
+ * Definición de **cadena de longitud fija**:
+    * En XDR:
+      ```c
+      string a<37>;
+      ```
+    * Traducción a C:
+       ```c
+      char *a;
+      ```
+     * Al transmitir por red, se envía primero la longitud (37) y luego la secuencia de caracteres ASCII.
+
+ * Definición de **cadena de longitud variable**:
+    * En XDR:
+      ```c
+      string b<>;
+      ```
+    * Traducción a C:
+       ```c
+      struct {
+          u_int  b_len;
+          char  *b_val;
+      } b ;
+      ```
+
+ * Definición de **vectores de tamaño fijo**:
+    * En XDR:
+      ```c
+      int a[12];
+      ```
+    * Traducción a C:
+       ```c
+      int a[12];
+      ```
+
+ * Definición de **vectores de tamaño variable**:
+    * En XDR:
+      ```c
+      int d<>; int d<MAX>;
+      ```
+    * Traducción a C:
+       ```c
+      struct {
+          u_int  d_len;
+          char  *d_val;
+      } d ;
+      ```
+
+ * Definición de **cadena de bytes de tamaño fijo**:
+    * En XDR:
+      ```c
+      opaque a[20];
+      ```
+    * Traducción a C:
+       ```c
+      char a[20];
+      ```
+
+ * Definición de **cadena de bytes de tamaño variable**:
+    * En XDR:
+      ```c
+      opaque b<>;
+      ```
+    * Traducción a C:
+       ```c
+      struct {
+          u_int  a_len;
+          char  *a_val;
+      } a ;
+      ```
+
+### Tipos nuevos
+
+ * Definición de **tipos enumerados**:
+    * En XDR:
+      ```c
+      enum color {
+        ROJO = 0,
+        VERDE = 1,
+        AZUL = 2
+      };
+      ```
+    * Traducción a C:
+       ```c
+      enum color {
+        ROJO = 0,
+        VERDE = 1,
+        AZUL = 2
+      };
+      typedef enum color color;
+      bool_t xdr_color (XDR *, colortype*);
+      ```
+
+ * Definición de **estructuras**:
+    * En XDR:
+      ```c
+      struct punto {
+        int x;
+        int y;
+      };
+      ```
+    * Traducción a C:
+       ```c
+      struct punto {
+        int x;
+        int y;
+      };
+      typedef struct punto punto;
+      bool_t xdr_punto (XDR *, punto*);
+      ```
+
+ * Definición de **uniones**:
+    * En XDR:
+      ```c
+      union resultado switch (int error) {
+        case 0:
+           int n;
+        default:
+           void;
+      } ;
+      ```
+    * Traducción a C:
+       ```c
+      struct resultado {
+        int error;
+        union { 
+           int n;
+        } resultado_u ;
+      } ;
+      typedef struct resultado resultado;
+      bool_t xdr_resultado (XDR *, resultado*);
+      ```
+
+ * **Definición de tipos nuevos**:
+    * En XDR:
+      ```c
+      typedef punto puntos[2];
+      ```
+    * Traducción a C:
+       ```c
+      typedef punto puntos[2];
+      ```
+
+ * Definición de **lista enlazada**:
+    * En XDR:
+      ```c
+      struct lista {
+         int x;
+         lista *next;
+      }
+      ```
 
 
 ## Calculadora remota
