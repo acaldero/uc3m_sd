@@ -1,3 +1,4 @@
+
 # Comunicación con RPC
 + **Felix García Carballeira y Alejandro Calderón Mateos**
 + Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
@@ -13,7 +14,19 @@
    * [Desarrollando con las RPC: suma remota](#desarrollando-con-las-rpc)
    * [Calculadora remota](#calculadora-remota)
  * Aspectos adicionales
-   * [RPC en Ubuntu](#rpc-en-ubuntu)
+   * [Lenguaje IDL](#lenguaje-idl)
+   * [Aplanamiento (marshalling)](#aplanamiento-marshalling)
+   * [Localización y enlazado (*binding*)](#localización-y-enlazado-binding)
+   * [Tipos de fallos que pueden aparecer con las RPC](#tipos-de-fallos-que-pueden-aparecer-con-las-rpc)
+   * [Características que definen una RPC](#características-que-definen-una-rpc)
+   * [RPC de Sun/ONC](#rpc-de-sunonc)
+   * [XDR para Sun/ONC](#xdr-para-sunonc)
+   * [IDL: formato base](#idl-formato-base)
+   * [IDL: notación XDR usada](#id--notación-xdr-usada)
+   * [El proceso rpcbind/portmapper](#el-proceso-rpcbindportmapper)
+   * [Biblioteca de funciones rpc.h](#biblioteca-de-funciones-rpc.h)
+   * [Notación usada en el código generado por rpcgen](#notación-usada-en-el-código-generado-por-rpcgen)
+   * [RPC en Ubuntu](#prc-en-ubuntu)
    
 
 ## Llamadas a procedimientos remotos: objetivo
@@ -100,7 +113,7 @@
      ```c
      program SUMAR {  
         version SUMAVER {  
-           int SUMA(int a, int b) = 1;  
+           int SUMA ( int a, int b ) = 1;  
         } = 1;  
      } = 99;
     ```
@@ -108,10 +121,16 @@
  2. Compilación de la interfaz:
 	 * Se utiliza un compilador que a partir de la interfaz IDL genera los archivos que se encargan de las comunicaciones del lado del cliente y del servidor.
 
+
       ### Ejemplo: rpcgen
      ```bash 
      rpcgen -N -M -a suma.x  
      ```
+   	 * Opciones comunes son **-N** para procedimientos con múltiples argumentos, **-M** para codigo multithread y **-a** para que genere todos los ficheros (incluido un Makefile de plantilla para la compilación)
+   	 * Generación automática de archivos (salvo servidor.c y cliente.c):
+     	 * Archivos en el lado del servidor: suma_svc.c y servidor.c 
+    	 * Archivos en el lado del cliente: suma_clnt.c y cliente.c 
+    	 * Archivos comunes: suma_xdr.c y suma.h
 
  3. Se implementa el servicio en el lado del servidor.
 
@@ -396,9 +415,13 @@ datos estándar
       * http://sourceforge.net/projects/remotetea/
 
 
-## XDR 
+## XDR para Sun/ONC
 
- * Principales características:
+ * XDR (eXternal Data Representation) es un estándar que define la representación de tipos de datos (RFC 1832)
+    * Utilizado inicialmente para representaciones externas de datos
+    * Se extendió a lenguajes de definición de interfaces
+    
+ * Principales características de XDR:
    * Utiliza representación big-endian
    * No utiliza protocolo de negociación
    * Todos los elementos en XDR son múltiplos de 4 bytes
@@ -409,14 +432,56 @@ datos estándar
       * El servidor tiene que reservar memoria e implementarse xxx_freeresult(...) correspondiente.
       * El cliente tiene que reservar memoria antes de invocar a la RPC y liberar luego con xdr_free(...)
 
- * Notación XDR para los principales elementos:
+## IDL: formato base
+
+ * Una interfaz puede contener:
+    * Definición de tipos de datos
+    * Un conjunto de procedimientos remotos:
+       * Por defecto, los procedimientos sólo aceptan un parámetro de entrada (se encapsulan en una estructura)
+       * Los parámetros de salida se devuelven mediante un único resultado
+       * Cada procedimiento remoto se identifica unívocamente mediante tres campos codificados con enteros sin signo:  (NUM-PROG, NUM-VERSION, NUM-PROCEDURE)
+         * NUM-PROG es el número de programa remoto. 
+           * Se definen en la RFC 1831 (http://www.ietf.org/rfc/rfc1831.txt)
+         * NUM-VERSION es el número de versión de programa.
+           * La primera implementación (versión) debe ser la 1.
+         * NUM-PROCEDURE es el número de procedimiento remoto. 
+           * Los especifica el/la programador/a.     
+
+ * Ejemplo de definición de interfaz con un parámetro:
+    ```c
+     struct args{
+        int a;
+        int b;
+     };
+     program SUMAR {
+        version SUMAVER {
+           int SUMA  (struct args a) = 1;  // números de procedimientos
+           int RESTA (struct args a) = 2;
+        } = 1;    // 1 es el número de versión
+     } = 99;      // 99 es el número de programa
+     ```
+
+ * Ejemplo de definición de interfaz con múltiples argumentos:
+    ```c
+     program SUMAR {
+        version SUMAVER {
+           int SUMA  (int a, int b) = 1;  // números de procedimientos
+           int RESTA (int a, int b) = 2;
+        } = 1;    // 1 es el número de versión
+     } = 99;      // 99 es el número de programa
+     ```
+
+
+## IDL: notación XDR usada 
+
+ * La notación XDR para los principales elementos es:
    <html>
    <table>
-   <tr> <th>Elemento</th><th>En XDR</th><th>Traducción a C</th> </tr>
+   <tr> <th></th><th>Elemento</th><th>En XDR</th><th>Traducción a C</th> </tr>
+   
    <tr>
-   <td>
-   Constantes				  
-   </td>
+   <td></td>
+   <td>Constantes</td>
    <td><pre lang="c">
    const MAX_SIZE = 8192;
    </pre></td>
@@ -426,9 +491,8 @@ datos estándar
    </tr>
 
    <tr>
-   <td>
-   Entero con signo				  
-   </td>
+   <td rowspan=3>Tipos básicos</td>
+   <td>   Entero con signo </td>
    <td><pre lang="c">
    int a;
    </pre></td>
@@ -438,9 +502,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>
-   Entero sin signo				  
-   </td>
+   <td>   Entero sin signo		     </td>
    <td><pre lang="c">
    unsigned a;
    </pre></td>
@@ -450,9 +512,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>
-   Coma flotante				  
-   </td>
+   <td>   Coma flotante				     </td>
    <td><pre lang="c">
    float a; double c;
    </pre></td>
@@ -462,9 +522,8 @@ datos estándar
    </tr>
 
    <tr>
-   <td>
-   Cadena de longitud fija (1)		  
-   </td>
+   <td rowspan=6>Colecciones mismo tipo</td>
+   <td>   Cadena de longitud fija (1)		    </td>
    <td><pre lang="c">
    string a<37>;
    </pre></td>
@@ -474,9 +533,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>
-   Cadena de longitud variable
-   </td>
+   <td>   Cadena de longitud variable   </td>
    <td><pre lang="c">
    string b<>;
    </pre></td>
@@ -489,9 +546,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>
-   Vectores de tamaño fijo
-   </td>
+   <td>   Vectores de tamaño fijo   </td>
    <td><pre lang="c">
    int a[12];
    </pre></td>
@@ -501,9 +556,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>
-   Vectores de tamaño variable
-   </td>
+   <td>   Vectores de tamaño variable   </td>
    <td><pre lang="c">
    int d<>; int d<MAX>;
    </pre></td>
@@ -516,9 +569,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>
-   Cadena de bytes de tamaño fijo
-   </td>
+   <td> Array de bytes (tamaño fijo)</td>
    <td><pre lang="c">
    opaque a[20];
    </pre></td>
@@ -528,9 +579,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>
-   Cadena de bytes de tamaño variable
-   </td>
+   <td> Array de bytes (tamaño variable)</td>
    <td><pre lang="c">
    opaque b<>;
    </pre></td>
@@ -541,8 +590,50 @@ datos estándar
    } a ;
    </pre></td>
    </tr>
+  
+   <tr>
+   <td rowspan=2>Colecciones distinto tipo</td>
+   <td>   Estructuras   </td>
+   <td><pre lang="c">
+   struct punto {
+      int x;
+      int y;
+   };
+   </pre></td>
+   <td><pre lang="c">
+   struct punto {
+      int x;
+      int y;
+   };
+   typedef struct punto punto;
+   bool_t xdr_punto (XDR *, punto*);
+   </pre></td>
+   </tr>
 
    <tr>
+   <td>   Uniones   </td>
+   <td><pre lang="c">
+   union resultado switch (int error) {
+     case 0:
+        int n;
+     default:
+        void;
+   } ;
+   </pre></td>
+   <td><pre lang="c">
+   struct resultado {
+     int error;
+     union { 
+       int n;
+     } resultado_u ;
+   } ;
+   typedef struct resultado resultado;
+   bool_t xdr_resultado (XDR *, resultado*);
+   </pre></td>
+   </tr>
+
+   <tr>
+   <td rowspan=3>Nuevos tipos</td>
    <td>
    Enumerados
    </td>
@@ -565,53 +656,7 @@ datos estándar
    </tr>
    
    <tr>
-   <td>
-   Estructuras
-   </td>
-   <td><pre lang="c">
-   struct punto {
-      int x;
-      int y;
-   };
-   </pre></td>
-   <td><pre lang="c">
-   struct punto {
-      int x;
-      int y;
-   };
-   typedef struct punto punto;
-   bool_t xdr_punto (XDR *, punto*);
-   </pre></td>
-   </tr>
-
-   <tr>
-   <td>
-   Uniones
-   </td>
-   <td><pre lang="c">
-   union resultado switch (int error) {
-     case 0:
-        int n;
-     default:
-        void;
-   } ;
-   </pre></td>
-   <td><pre lang="c">
-   struct resultado {
-     int error;
-     union { 
-       int n;
-     } resultado_u ;
-   } ;
-   typedef struct resultado resultado;
-   bool_t xdr_resultado (XDR *, resultado*);
-   </pre></td>
-   </tr>
-
-   <tr>
-   <td>
-   Definición de tipos nuevos
-   </td>
+   <td>   Definición de tipos nuevos   </td>
    <td><pre lang="c">
    typedef punto puntos[2];
    </pre></td>
@@ -621,9 +666,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>
-   Lista enlazada
-   </td>
+   <td>   Lista enlazada   </td>
    <td><pre lang="c">
    struct lista {
       int x;
@@ -644,6 +687,108 @@ datos estándar
 * NOTA(1): al transmitir por red, se envía primero la longitud (37) y luego la secuencia de caracteres ASCII.
 
 
+## El proceso rpcbind/portmapper
+
+ * El enlace en ONC-RPC se realiza mediante un proceso denominado rpcbind (portmapper).
+    * Soporta TCP y UDP
+ * Funcionamiento básico:
+   * En cada ordenador se ejecuta un proceso rpcbind en un puerto bien conocido (111)
+   * Cuando un servidor arranca, registra el servicio en el rpcbind local del computador en el que ejecuta.
+   * El rpcbind almacena por cada servicio local:
+     * El número de programa
+     * El número de versión
+     * El número de puerto
+   * Cuando un cliente necesita invocar un procedimiento remoto, envía al rpcbind del host remoto (necesita conocer la dirección IP del servidor)
+       * El número de programa y el número de versión
+   * El proceso rpcbind devuelve el puerto del servidor en esa máquina.
+
+       
+ * Enlace dinámico:
+   * El número de puertos disponibles es limitado y el número de programas remotos potenciales puede ser muy grande
+   * Sólo el rpcbind ejecutará en un puerto determinado (111) y los números de puertos donde escuchan los servidores se averiguan preguntando al rpcbind
+   * Se puede usar el mandato ```rpcinfo``` para consultar los servicios registrados:
+      ```bash
+     acaldero@guernika:~$ rpcinfo -p localhost
+     program vers proto   port  service
+     100000    4   tcp    111  portmapper
+     100000    3   tcp    111  portmapper
+     ...
+     100005    1   udp  42264  mountd
+     100005    1   tcp  48921  mountd
+     100005    2   udp  33964  mountd
+     ...
+     100021    4   udp  47609  nlockmgr
+     100021    1   tcp  42741  nlockmgr
+     100021    3   tcp  42741  nlockmgr
+     100021    4   tcp  42741  nlockmgr
+     99        1   udp  46936
+     99        1   tcp  40427
+     ``` 
+
+
+## Biblioteca de funciones rpc.h 
+
+ * Crear un manejador para el cliente:
+    ```c
+    CLIENT * clnt_create ( const char *host, 
+                           const u_long prognum, 
+                           const u_long versnum, 
+                           const char *nettype )
+    ```
+    * Argumentos:
+       * **host**: nombre del host remoto donde se localiza el programa remoto
+       * **prognum**: número de programa del programa remoto
+       * **versnum**: número de versión del programa remoto
+       * **nettype**: protocolo de transporte: NETPATH, VISIBLE, CIRCUIT_V, DATAGRAM_V, CIRCUIT_N, DATAGRAM_N, TCP, UDP
+
+ * Destruir el manejador del cliente:
+    ```c
+     void clnt_destroy ( CLIENT *clnt ) ;
+    ```
+    * Argumentos:
+      * **clnt**: manejador de RPC del cliente
+
+ * Indicar el error en un fallo de RPC:
+    ```c
+     void clnt_perror       ( CLIENT *clnt, char *s ) ;
+     void clnt_pcreateerror ( CLIENT *clnt, char *s ) ;
+    ```
+    * Argumentos:
+      * **clnt**: manejador de RPC del cliente
+      * **s**: mensaje de error
+
+
+## Notación usada en el código generado por rpcgen
+
+ * Prototipo de un procedimiento remoto en el *cliente* (múltiples argumentos):
+   ```c
+   bool_t procedimiento_v ( tipo_arg1 arg1,
+                            tipo_arg2 arg2,
+                            ...
+                            tipo_argn argn,
+                            CLIENT *clnt );
+   ```
+    * Donde:
+       * **procedimiento_v**:  nombre del procedimiento a invocar.
+          * NOTA: **v** se sustituye por el número de versión que se invoca
+       * **arg1, arg2, …, argn**: argumentos del procedimiento
+       * **clnt**: manejador de un cliente de RPC
+
+ * Prototipo de un procedimiento remoto a implementar en el *servidor* (múltiples argumentos):
+   ```c
+   bool_t procedimiento_v_svc ( tipo_arg1 arg1,
+                                tipo_arg2 arg2,
+                                ...
+                                tipo_argn argn,
+                                struct svc_req *rqstp );
+   ```
+    * Donde:
+       * **procedimiento_v_svc**:  nombre del procedimiento a implementar.
+          * NOTA: **v** se sustituye por el número de versión que se invoca
+       * **arg1, arg2, …, argn**: argumentos del procedimiento
+       * **rqstp**: Estructura que contiene información de la petición
+
+
 ## Calculadora remota
 
 1. Crear el archivo de interfaz suma.x
@@ -657,7 +802,7 @@ datos estándar
    } = 99;
    ```
 
-2. Hay que usar prcgen con suma.x:
+2. Hay que usar rpcgen con suma.x:
    ```bash 
    rpcgen -NMa suma.x  
    ```
@@ -743,4 +888,5 @@ Hay 3 detalles a comprobar en su instalación de Ubuntu:
    sudo mkdir -p /run/sendsigs.omit.d/  
    sudo /etc/init.d/rpcbind restart   
    ```
+
 
