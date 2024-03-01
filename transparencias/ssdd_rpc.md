@@ -225,7 +225,8 @@
    * **JSON** (**J**ava**S**cript **O**bject **N**otation) formato de texto ligero para el intercambio de datos.
 
  * Ejemplo:  'Smith', 'Paris', 1934
-        ![Comparación entre XDR, CDR, XML y JSON](./ssdd_rpc_drawio_40.svg)<img src="./transparencias/ssdd_rpc_drawio_40.svg">
+   
+   ![Comparación entre XDR, CDR, XML y JSON](./ssdd_rpc_drawio_40.svg)<img src="./transparencias/ssdd_rpc_drawio_40.svg">
 
 
 ## Localización y enlazado (*binding*)
@@ -372,8 +373,6 @@ datos estándar
 
 ## RPC de Sun/ONC
 
-(58-59)
-
  * Breve historia:
    * Diseñado inicialmente para el sistema de ficheros NFS
    * Descrito en RFC 1831
@@ -410,200 +409,239 @@ datos estándar
       * El servidor tiene que reservar memoria e implementarse xxx_freeresult(...) correspondiente.
       * El cliente tiene que reservar memoria antes de invocar a la RPC y liberar luego con xdr_free(...)
 
-### Constantes
+ * Notación XDR para los principales elementos:
+   <html>
+   <table>
+   <tr> <th>Elemento</th><th>En XDR</th><th>Traducción a C</th> </tr>
+   <tr>
+   <td>
+   Constantes				  
+   </td>
+   <td><pre lang="c">
+   const MAX_SIZE = 8192;
+   </pre></td>
+   <td><pre lang="c">
+   #define MAX_SIZE 8192	  
+   </pre></td>
+   </tr>
 
- * Definición de **constantes**:
-    * En XDR:
-      ```c
-      const MAX_SIZE = 8192;
-      ```
-    * Traducción a C:
-       ```c
-      #define MAX_SIZE 8192
-      ```
+   <tr>
+   <td>
+   Entero con signo				  
+   </td>
+   <td><pre lang="c">
+   int a;
+   </pre></td>
+   <td><pre lang="c">
+   int a;
+   </pre></td>
+   </tr>
 
-### Tipos básicos
+   <tr>
+   <td>
+   Entero sin signo				  
+   </td>
+   <td><pre lang="c">
+   unsigned a;
+   </pre></td>
+   <td><pre lang="c">
+   unsigned int a;
+   </pre></td>
+   </tr>
 
- * Definición de **entero con signo**:
-    * En XDR:
-      ```c
-      int a;
-      ```
-    * Traducción a C:
-       ```c
-      int a;
-      ```
+   <tr>
+   <td>
+   Coma flotante				  
+   </td>
+   <td><pre lang="c">
+   float a; double c;
+   </pre></td>
+   <td><pre lang="c">
+   float a; double c;
+   </pre></td>
+   </tr>
 
- * Definición de **entero sin signo**:
-    * En XDR:
-      ```c
-      unsigned a;
-      ```
-    * Traducción a C:
-       ```c
-      unsigned int a;
-      ```
+   <tr>
+   <td>
+   Cadena de longitud fija (1)		  
+   </td>
+   <td><pre lang="c">
+   string a<37>;
+   </pre></td>
+   <td><pre lang="c">
+   char *a;
+   </pre></td>
+   </tr>
 
- * Definición de **coma flotante**:
-    * En XDR:
-      ```c
-      float a; double c;
-      ```
-    * Traducción a C:
-       ```c
-      float a; double c;
-      ```
+   <tr>
+   <td>
+   Cadena de longitud variable
+   </td>
+   <td><pre lang="c">
+   string b<>;
+   </pre></td>
+   <td><pre lang="c">
+   struct {
+       u_int  b_len;
+       char  *b_val;
+   } b ;
+   </pre></td>
+   </tr>
 
- * Definición de **cadena de longitud fija**:
-    * En XDR:
-      ```c
-      string a<37>;
-      ```
-    * Traducción a C:
-       ```c
-      char *a;
-      ```
-     * Al transmitir por red, se envía primero la longitud (37) y luego la secuencia de caracteres ASCII.
+   <tr>
+   <td>
+   Vectores de tamaño fijo
+   </td>
+   <td><pre lang="c">
+   int a[12];
+   </pre></td>
+   <td><pre lang="c">
+   int a[12];
+   </pre></td>
+   </tr>
 
- * Definición de **cadena de longitud variable**:
-    * En XDR:
-      ```c
-      string b<>;
-      ```
-    * Traducción a C:
-       ```c
-      struct {
-          u_int  b_len;
-          char  *b_val;
-      } b ;
-      ```
+   <tr>
+   <td>
+   Vectores de tamaño variable
+   </td>
+   <td><pre lang="c">
+   int d<>; int d<MAX>;
+   </pre></td>
+   <td><pre lang="c">
+   struct {
+      u_int  d_len;
+      char  *d_val;
+   } d ;
+   </pre></td>
+   </tr>
 
- * Definición de **vectores de tamaño fijo**:
-    * En XDR:
-      ```c
-      int a[12];
-      ```
-    * Traducción a C:
-       ```c
-      int a[12];
-      ```
+   <tr>
+   <td>
+   Cadena de bytes de tamaño fijo
+   </td>
+   <td><pre lang="c">
+   opaque a[20];
+   </pre></td>
+   <td><pre lang="c">
+   char a[20];
+   </pre></td>
+   </tr>
 
- * Definición de **vectores de tamaño variable**:
-    * En XDR:
-      ```c
-      int d<>; int d<MAX>;
-      ```
-    * Traducción a C:
-       ```c
-      struct {
-          u_int  d_len;
-          char  *d_val;
-      } d ;
-      ```
+   <tr>
+   <td>
+   Cadena de bytes de tamaño variable
+   </td>
+   <td><pre lang="c">
+   opaque b<>;
+   </pre></td>
+   <td><pre lang="c">
+   struct {
+      u_int  a_len;
+      char  *a_val;
+   } a ;
+   </pre></td>
+   </tr>
 
- * Definición de **cadena de bytes de tamaño fijo**:
-    * En XDR:
-      ```c
-      opaque a[20];
-      ```
-    * Traducción a C:
-       ```c
-      char a[20];
-      ```
+   <tr>
+   <td>
+   Enumerados
+   </td>
+   <td><pre lang="c">
+   enum color {
+     ROJO = 0,
+     VERDE = 1,
+     AZUL = 2
+   };
+   </pre></td>
+   <td><pre lang="c">
+   enum color {
+     ROJO = 0,
+     VERDE = 1,
+     AZUL = 2
+   };
+   typedef enum color color;
+   bool_t xdr_color (XDR *, colortype*);
+   </pre></td>
+   </tr>
+   
+   <tr>
+   <td>
+   Estructuras
+   </td>
+   <td><pre lang="c">
+   struct punto {
+      int x;
+      int y;
+   };
+   </pre></td>
+   <td><pre lang="c">
+   struct punto {
+      int x;
+      int y;
+   };
+   typedef struct punto punto;
+   bool_t xdr_punto (XDR *, punto*);
+   </pre></td>
+   </tr>
 
- * Definición de **cadena de bytes de tamaño variable**:
-    * En XDR:
-      ```c
-      opaque b<>;
-      ```
-    * Traducción a C:
-       ```c
-      struct {
-          u_int  a_len;
-          char  *a_val;
-      } a ;
-      ```
+   <tr>
+   <td>
+   Uniones
+   </td>
+   <td><pre lang="c">
+   union resultado switch (int error) {
+     case 0:
+        int n;
+     default:
+        void;
+   } ;
+   </pre></td>
+   <td><pre lang="c">
+   struct resultado {
+     int error;
+     union { 
+       int n;
+     } resultado_u ;
+   } ;
+   typedef struct resultado resultado;
+   bool_t xdr_resultado (XDR *, resultado*);
+   </pre></td>
+   </tr>
 
-### Tipos nuevos
+   <tr>
+   <td>
+   Definición de tipos nuevos
+   </td>
+   <td><pre lang="c">
+   typedef punto puntos[2];
+   </pre></td>
+   <td><pre lang="c">
+   typedef punto puntos[2];
+   </pre></td>
+   </tr>
 
- * Definición de **tipos enumerados**:
-    * En XDR:
-      ```c
-      enum color {
-        ROJO = 0,
-        VERDE = 1,
-        AZUL = 2
-      };
-      ```
-    * Traducción a C:
-       ```c
-      enum color {
-        ROJO = 0,
-        VERDE = 1,
-        AZUL = 2
-      };
-      typedef enum color color;
-      bool_t xdr_color (XDR *, colortype*);
-      ```
+   <tr>
+   <td>
+   Lista enlazada
+   </td>
+   <td><pre lang="c">
+   struct lista {
+      int x;
+      lista *next;
+   }
+   </pre></td>
+   <td><pre lang="c">
+   struct lista {
+      int x;
+      lista *next;
+   }
+   </pre></td>
+   </tr>
 
- * Definición de **estructuras**:
-    * En XDR:
-      ```c
-      struct punto {
-        int x;
-        int y;
-      };
-      ```
-    * Traducción a C:
-       ```c
-      struct punto {
-        int x;
-        int y;
-      };
-      typedef struct punto punto;
-      bool_t xdr_punto (XDR *, punto*);
-      ```
+   </table>
+   </html>
 
- * Definición de **uniones**:
-    * En XDR:
-      ```c
-      union resultado switch (int error) {
-        case 0:
-           int n;
-        default:
-           void;
-      } ;
-      ```
-    * Traducción a C:
-       ```c
-      struct resultado {
-        int error;
-        union { 
-           int n;
-        } resultado_u ;
-      } ;
-      typedef struct resultado resultado;
-      bool_t xdr_resultado (XDR *, resultado*);
-      ```
-
- * **Definición de tipos nuevos**:
-    * En XDR:
-      ```c
-      typedef punto puntos[2];
-      ```
-    * Traducción a C:
-       ```c
-      typedef punto puntos[2];
-      ```
-
- * Definición de **lista enlazada**:
-    * En XDR:
-      ```c
-      struct lista {
-         int x;
-         lista *next;
-      }
-      ```
+* NOTA(1): al transmitir por red, se envía primero la longitud (37) y luego la secuencia de caracteres ASCII.
 
 
 ## Calculadora remota
@@ -705,5 +743,4 @@ Hay 3 detalles a comprobar en su instalación de Ubuntu:
    sudo mkdir -p /run/sendsigs.omit.d/  
    sudo /etc/init.d/rpcbind restart   
    ```
-
 
