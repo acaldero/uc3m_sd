@@ -13,6 +13,7 @@
  * Ejemplos de uso de RPC
    * [Desarrollando con las RPC: suma remota](#desarrollando-con-las-rpc)
    * [Calculadora remota](#calculadora-remota)
+   * [Vector remoto](#vector-remoto)
  * Aspectos adicionales
    * [Lenguaje IDL](#lenguaje-idl)
    * [Aplanamiento (marshalling)](#aplanamiento-marshalling)
@@ -24,7 +25,7 @@
    * [IDL: formato base](#idl-formato-base)
    * [IDL: notación XDR usada](#id--notación-xdr-usada)
    * [El proceso rpcbind/portmapper](#el-proceso-rpcbindportmapper)
-   * [Biblioteca de funciones rpc.h](#biblioteca-de-funciones-rpc.h)
+   * [Biblioteca de funciones rpc.h](#biblioteca-de-funciones-rpch)
    * [Notación usada en el código generado por rpcgen](#notación-usada-en-el-código-generado-por-rpcgen)
    * [RPC en Ubuntu](#prc-en-ubuntu)
    
@@ -558,7 +559,7 @@ datos estándar
    <tr>
    <td>   Vectores de tamaño variable   </td>
    <td><pre lang="c">
-   int d<>; int d<MAX>;
+   int d<>; int d&lt;MAX>;
    </pre></td>
    <td><pre lang="c">
    struct {
@@ -613,7 +614,8 @@ datos estándar
    <tr>
    <td>   Uniones   </td>
    <td><pre lang="c">
-   union resultado switch (int error) {
+   union resultado
+   switch (int error) {
      case 0:
         int n;
      default:
@@ -791,6 +793,10 @@ datos estándar
 
 ## Calculadora remota
 
+///////////////////////////////////////
+(81)
+///////////////////////////////////////
+
 1. Crear el archivo de interfaz suma.x
     ### suma.x
    ```c
@@ -816,9 +822,9 @@ datos estándar
    {
      	bool_t retval;
 
-     	/*  insert server code here */
-   	   *result = a + b;
-     	retval = TRUE;
+       /*  insert server code here */
+       *result = a + b;
+       retval = TRUE;
 
      	return retval;
    }
@@ -827,9 +833,9 @@ datos estándar
    {
      	bool_t retval;
 
-     	/*  insert server code here */
-   	   *result = a - b;
-     	retval = TRUE;
+        /*  insert server code here */
+        *result = a - b;
+        retval = TRUE;
 
     	return retval;
    }
@@ -838,16 +844,50 @@ datos estándar
    {
    	xdr_free (xdr_result, result);
 
-	   /*
-   	 * Insert additional freeing code here, **if needed**
-   	 */
+	   /* Insert additional freeing code here, **if needed**  */
 
    	return 1;
    }
    ```
 
 4. Hay que editar suma_cliente.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
- 
+   ```c
+    #include "suma.h"
+
+    void sumar_resta_1 ( char *host, int a, int b )
+    {
+   	CLIENT *clnt;
+    	enum clnt_stat retval_1;
+    	int ret ;
+
+	    clnt = clnt_create (host, SUMAR, SUMAVER, "udp");
+    	if (clnt == NULL) {
+	   	clnt_pcreateerror (host); exit (-1);
+   	}
+   	retval_1 = suma_1(a, b, &ret, clnt);
+	    if (retval_1 != RPC_SUCCESS) {
+		     clnt_perror (clnt, "call failed"); exit (-1);
+	    }
+	    printf("1 + 2 = %d\n", ret) ;
+        retval_1 = resta_1(a, b, &ret, clnt);
+	    if (retval_1 != RPC_SUCCESS) {
+    		clnt_perror (clnt, "call failed"); exit (-1);
+	    }
+	    printf("1 - 2 = %d\n", ret) ;
+	    clnt_destroy (clnt);
+    }
+
+    int main ( int argc, char *argv[] )
+    {
+       if (argc < 2) {
+      		printf ("usage: %s server_host\n", argv[0]);
+      		exit (1);
+        }
+        sumar_resta_1 (argv[1], 1, 2);
+        exit (0);
+    }
+    ```
+
 5. Compilar el ejemplo con:
    ```bash
    make -f Makefile.suma  
@@ -862,6 +902,148 @@ datos estándar
     gcc –c suma_server.c
     gcc suma_xdr.o suma_clnt.o suma_client.o –o cliente
     gcc suma_xdr.o suma_svc.o suma_server.c –o servidor
+    ```
+    * **NOTA**: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.
+
+
+## Vector remoto
+
+* En el proceso de desarrollo de un procedimiento remoto que devuelve la suma los componentes de un vector de enteros que se le pase como parámetro, los pasos a seguir son:
+
+  1. Crear el archivo de interfaz vector.x
+      ### vector.x
+       ```c
+      typedef int t_vector<>;
+      
+      program VECTOR {
+            version VECTORVER {
+                  int sumar(t_vector v) = 1;
+            } = 1;
+      } = 99;
+     ```
+
+       Hay que recordar que el elemento:
+        ```c
+     typedef int t_vector<>;
+      ```
+     
+      Se va a traducir como:
+     ```c
+     typedef struct {
+           u_int t_vector_len;
+           int *t_vector_val;
+     } t_vector;
+     ```
+
+  2. Hay que usar rpcgen con vector.x:
+      ```bash 
+     rpcgen -NMa vector.x  
+     ```
+
+  3. Hay que editar vector_server.c y añadir el código de los servicios a ser invocados de forma remota:
+     ### vector_server.c
+     ```c
+     #include "vector.h"
+
+     bool_t sumar_1_svc ( t_vector v, int *result, struct svc_req *rqstp )
+     {
+        *result = 0;
+        for (int i=0; i<v.t_vector_len; i++)
+              *result = *result + v.t_vector_val[i] ;
+        return TRUE;
+     }
+
+     int vector_1_freeresult ( SVCXPRT *transp, xdrproc_t xdr_result,caddr_t result )
+     {
+         xdr_free (xdr_result, result);
+         return 1;
+     }
+      ```
+
+  4. Hay que editar vector_cliente.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
+     ```c
+     #include "vector.h"
+   
+     int sumar_vector_1 ( char *host, t_vector *sumar_1_v )
+     {
+         CLIENT *clnt;
+        enum clnt_stat retval_1;
+        int result_1;
+   
+        clnt = clnt_create (host, VECTOR, VECTORVER, "tcp");
+        if (clnt == NULL) {
+            clnt_pcreateerror (host); exit (-1);
+        }
+        retval_1 = sumar_1(*sumar_1_v, &result_1, clnt);
+        if (retval_1 != RPC_SUCCESS) {
+            clnt_perror (clnt, "call failed"); exit(-1) ;
+        }
+        clnt_destroy (clnt);
+
+        return result_1;
+     }  
+   
+     int main ( int argc, char *argv[] )
+     {
+        long MAX;
+        t_vector sumar_1_v;
+        int ret;
+
+        if (argc < 2) {
+            printf ("Uso: %s <server host>\n", argv[0]);
+            exit (1);
+        }
+
+        MAX = 100;
+        sumar_1_v.t_vector_len= MAX;
+        sumar_1_v.t_vector_val= (int *) malloc(MAX * sizeof(int));
+        for (int i =0; i < MAX; i ++) {
+               sumar_1_v.t_vector_val[i] = 2;	
+        }
+
+        ret = sumar_vector_1 (argv[1], &sumar_1_v);
+        printf("La suma es %d\n", ret);
+   
+        free (sumar_1_v.t_vector_val);
+        return (0);
+     }
+      ```
+
+  5. Compilar el ejemplo con:
+     ```bash
+     make -f Makefile.vector 
+      ```
+     Dicho proceso de compilación suele suponer los siguientes pasos:
+
+     ```bash
+     gcc -g  -D_REENTRANT  -c -o vector_clnt.o vector_clnt.c
+     gcc -g  -D_REENTRANT  -c -o vector_client.o vector_client.c
+     gcc -g  -D_REENTRANT  -c -o vector_xdr.o vector_xdr.c
+     gcc -g  -D_REENTRANT -o vector_client vector_clnt.o vector_client.o vector_xdr.o -lnsl -lpthread
+     gcc -g  -D_REENTRANT  -c -o vector_svc.o vector_svc.c
+     gcc -g  -D_REENTRANT  -c -o vector_server.o vector_server.c
+     gcc -g  -D_REENTRANT -o vector_server vector_svc.o vector_server.o vector_xdr.o -lnsl -lpthread
+      ```
+      * **NOTA**: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.
+
+* Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente:
+     ```bash
+    acaldero@docker1:~/sd$ ./vector_server &
+    acaldero@docker1:~/sd$ rpcinfo  -p localhost
+    program vers proto   port  service
+    100000    4   tcp    111  portmapper
+    100000    3   tcp    111  portmapper
+    100000    2   tcp    111  portmapper
+    100000    4   udp    111  portmapper
+    100000    3   udp    111  portmapper
+    100000    2   udp    111  portmapper
+        99    1   udp  49848
+        99    1   tcp  42919
+    acaldero@docker1:~/sd$ ./vector_client  localhost
+    La suma es 200
+    acaldero@docker1:~/sd$ kill -9 %1
+    acaldero@docker1:~/sd$
+    [1]+  Killed                  ./vector_server
     ```
 
 
