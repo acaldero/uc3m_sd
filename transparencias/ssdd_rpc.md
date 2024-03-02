@@ -13,6 +13,7 @@
  * Ejemplos de uso de RPC
    * [Desarrollando con las RPC: suma remota](#desarrollando-con-las-rpc)
    * [Calculadora remota](#calculadora-remota)
+   * [Cadena de caracteres](cadena-de-caracteres)
    * [Vector remoto](#vector-remoto)
  * Aspectos adicionales
    * [Lenguaje IDL](#lenguaje-idl)
@@ -50,7 +51,7 @@
  * Uno de los ingredientes es la transparencia de la invocación remota: se busca que código de invocación remota lo más transparente posible, de manera que se parezca a una invocación a una función local.
  
  * En el siguiente ejemplo a la izquierda se muestra los elementos de una aplicación no distribuida con llamada local a la función de sumar. A la izquierda se muestra la misma aplicación con una llamada remota a la función de sumar:
-       ![Organización del código para invocación remota mediante colas POSIX](./ssdd_rpc_drawio_10.svg)<img src="./transparencias/ssdd_rpc_drawio_10.svg">
+       ![Organización del código para invocación remota mediante colas POSIX](./ssdd_rpc/ssdd_rpc_drawio_10.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_10.svg">
 
     * El código del stub_servidor y del stub_cliente oculta a la función "main(...)" los detalles de que la ejecución es remota.
     * El componente biblioteca de la aplicación pasa a estar en otro proceso, y se comunican en este ejemplo usando colas POSIX.
@@ -81,7 +82,7 @@
 
  * Las RPC ofrecen una interfaz sencilla para construir aplicaciones distribuidas sobre TCP/IP
 
-   ![Pila software con RPC y marshalling](./ssdd_rpc_drawio_10.svg)<img src="./transparencias/ssdd_rpc_drawio_13.svg">
+   ![Pila software con RPC y marshalling](./ssdd_rpc/ssdd_rpc_drawio_10.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_13.svg">
 
   * De forma general, los elementos que participan son:
      * Un cliente **activo**, que realiza una RPC al servidor
@@ -91,7 +92,7 @@
           * El stub_servidor responde a la petición del cliente
           * En la respuesta al cliente se envía un mensaje que contine, al menos, el resultado de la función invocada. 
 
-      ![Cliente, stub_cliente, stub_servidor y servidor](./ssdd_rpc_drawio_16.svg)<img src="./transparencias/ssdd_rpc_drawio_16.svg">
+      ![Cliente, stub_cliente, stub_servidor y servidor](./ssdd_rpc/ssdd_rpc_drawio_16.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_16.svg">
 
   * Conceptos básicos:
      * Un **servicio de red** es una colección de uno o más programas remotos
@@ -217,7 +218,7 @@
  * La interfaz es compartida por cliente y servidor.
    * Los compiladores pueden diseñarse para que los clientes y servidores se escriban en lenguajes diferentes
 
-      ![IDL, stubs y cliente/servidor](./ssdd_rpc_drawio_36.svg)<img src="./transparencias/ssdd_rpc_drawio_36.svg">
+      ![IDL, stubs y cliente/servidor](./ssdd_rpc/ssdd_rpc_drawio_36.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_36.svg">
 
  * Programación con un paquete de RPC:
    * El programador debe proporcionar:
@@ -246,7 +247,7 @@
 
  * Ejemplo:  'Smith', 'Paris', 1934
    
-   ![Comparación entre XDR, CDR, XML y JSON](./ssdd_rpc_drawio_40.svg)<img src="./transparencias/ssdd_rpc_drawio_40.svg">
+   ![Comparación entre XDR, CDR, XML y JSON](./ssdd_rpc/ssdd_rpc_drawio_40.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_40.svg">
 
 
 ## Localización y enlazado (*binding*)
@@ -559,7 +560,7 @@ datos estándar
    <tr>
    <td>   Vectores de tamaño variable   </td>
    <td><pre lang="c">
-   int d<>; int d&lt;MAX>;
+   int d<>; int d&lt;MAX&gt;;
    </pre></td>
    <td><pre lang="c">
    struct {
@@ -710,7 +711,7 @@ datos estándar
    * Sólo el rpcbind ejecutará en un puerto determinado (111) y los números de puertos donde escuchan los servidores se averiguan preguntando al rpcbind
    * Se puede usar el mandato ```rpcinfo``` para consultar los servicios registrados:
       ```bash
-     acaldero@guernika:~$ rpcinfo -p localhost
+     acaldero@docker1:~$ rpcinfo -p localhost
      program vers proto   port  service
      100000    4   tcp    111  portmapper
      100000    3   tcp    111  portmapper
@@ -793,117 +794,290 @@ datos estándar
 
 ## Calculadora remota
 
-///////////////////////////////////////
-(81)
-///////////////////////////////////////
+* A partir de la descripción de la interfaz del servicio en IDL, la utilidad rpcgen genera los archivos relacionados con la comunicación y genera una plantilla de los archivos que el/la programador/a ha de rellenar con la implementación y uso del servicio:
 
-1. Crear el archivo de interfaz suma.x
-    ### suma.x
-   ```c
-   program SUMAR {  
-      version SUMAVER {  
-         int SUMA(int a, int b) = 1;  
-         int RESTA(int a, int b) = 2;  
-      } = 1;  
-   } = 99;
-   ```
+   ![Archivos generados por rpcgen y por programador/a](./ssdd_rpc/ssdd_rpc_drawio_81.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_81.svg">
 
-2. Hay que usar rpcgen con suma.x:
-   ```bash 
-   rpcgen -NMa suma.x  
-   ```
 
-3. Hay que editar suma_server.c y añadir el código de los servicios a ser invocados de forma remota:
-   ### suma_server.c
-   ```c
-   #include "suma.h"
+* En el proceso de desarrollo de un procedimiento remoto que devuelve la suma los componentes de un vector de enteros que se le pase como parámetro, los pasos a seguir son:
 
-   bool_t suma_1_svc(int a, int b, int *result,  struct svc_req *rqstp)
-   {
-     	bool_t retval;
+  1. Crear el archivo de interfaz suma.x
+     ### suma.x
+     ```c
+     program SUMAR {  
+        version SUMAVER {  
+           int SUMA  ( int a, int b ) = 1;  
+           int RESTA ( int a, int b ) = 2;  
+        } = 1;  
+     } = 99;
+     ```
 
-       /*  insert server code here */
-       *result = a + b;
-       retval = TRUE;
+  2. Hay que usar rpcgen con suma.x:
+     ```bash 
+     rpcgen -NMa suma.x  
+     ```
 
-     	return retval;
-   }
+  3. Hay que editar suma_server.c y añadir el código de los servicios a ser invocados de forma remota:
+     ### suma_server.c
+     ```c
+     #include "suma.h"
 
-   bool_t resta_1_svc(int a, int b, int *result,  struct svc_req *rqstp)
-   {
-     	bool_t retval;
+     bool_t suma_1_svc ( int a, int b, int *result,  struct svc_req *rqstp )
+     {
+         *result = a + b ;
+         return TRUE ;
+     }
 
-        /*  insert server code here */
-        *result = a - b;
-        retval = TRUE;
+     bool_t resta_1_svc ( int a, int b, int *result,  struct svc_req *rqstp )
+     {
+         *result = a - b ;
+         return TRUE ;
+     }
 
-    	return retval;
-   }
+     int sumar_1_freeresult (SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result)
+     {
+        xdr_free (xdr_result, result);
 
-   int sumar_1_freeresult (SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result)
-   {
-   	xdr_free (xdr_result, result);
+        /* Insert additional freeing code here, if needed */
 
-	   /* Insert additional freeing code here, **if needed**  */
+        return 1;
+     }
+     ```
 
-   	return 1;
-   }
-   ```
+  4. Hay que editar suma_cliente.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
+     ### suma_cliente.c
+     ```c
+      #include "suma.h"
 
-4. Hay que editar suma_cliente.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
-   ```c
-    #include "suma.h"
+      void sumar_resta_1 ( char *host, int a, int b )
+      {
+        CLIENT *clnt;
+        enum clnt_stat retval_1;
+        int ret ;
 
-    void sumar_resta_1 ( char *host, int a, int b )
-    {
-   	CLIENT *clnt;
-    	enum clnt_stat retval_1;
-    	int ret ;
-
-	    clnt = clnt_create (host, SUMAR, SUMAVER, "udp");
-    	if (clnt == NULL) {
-	   	clnt_pcreateerror (host); exit (-1);
-   	}
-   	retval_1 = suma_1(a, b, &ret, clnt);
-	    if (retval_1 != RPC_SUCCESS) {
-		     clnt_perror (clnt, "call failed"); exit (-1);
-	    }
-	    printf("1 + 2 = %d\n", ret) ;
-        retval_1 = resta_1(a, b, &ret, clnt);
-	    if (retval_1 != RPC_SUCCESS) {
-    		clnt_perror (clnt, "call failed"); exit (-1);
-	    }
-	    printf("1 - 2 = %d\n", ret) ;
-	    clnt_destroy (clnt);
-    }
-
-    int main ( int argc, char *argv[] )
-    {
-       if (argc < 2) {
-      		printf ("usage: %s server_host\n", argv[0]);
-      		exit (1);
+        clnt = clnt_create (host, SUMAR, SUMAVER, "udp");
+        if (clnt == NULL) {
+            clnt_pcreateerror (host); exit (-1);
         }
-        sumar_resta_1 (argv[1], 1, 2);
-        exit (0);
-    }
+        retval_1 = suma_1(a, b, &ret, clnt);
+        if (retval_1 != RPC_SUCCESS) {
+            clnt_perror (clnt, "call failed"); exit (-1);
+        }
+        printf("1 + 2 = %d\n", ret) ;
+        retval_1 = resta_1(a, b, &ret, clnt);
+        if (retval_1 != RPC_SUCCESS) {
+            clnt_perror (clnt, "call failed"); exit (-1);
+  	    }
+        printf("1 - 2 = %d\n", ret) ;
+        clnt_destroy (clnt);
+      }
+
+       int main ( int argc, char *argv[] )
+       {
+          if (argc < 2) {
+              printf ("usage: %s server_host\n", argv[0]);
+              exit (1);
+          }
+          sumar_resta_1 (argv[1], 1, 2);
+          exit (0);
+       }
+       ```
+
+  5. Compilar el ejemplo con:
+     ```bash
+     make -f Makefile.suma  
+      ```
+     Dicho proceso de compilación suele suponer los siguientes pasos:
+
+     ```bash
+     gcc –c suma_xdr.c
+     gcc –c suma_svc.c
+     gcc –c suma_clnt.c
+     gcc –c suma_client.c
+     gcc –c suma_server.c
+     gcc suma_xdr.o suma_clnt.o suma_client.o –o cliente
+     gcc suma_xdr.o suma_svc.o suma_server.c –o servidor
+      ```
+     * **NOTA**: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.
+
+* Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente:
+     ```bash
+    acaldero@docker1:~/sd$ ./suma_server &
+    acaldero@docker1:~/sd$ rpcinfo  -p localhost
+    program vers proto   port  service
+    100000    4   tcp    111  portmapper
+    100000    3   tcp    111  portmapper
+    100000    2   tcp    111  portmapper
+    100000    4   udp    111  portmapper
+    100000    3   udp    111  portmapper
+    100000    2   udp    111  portmapper
+        99    1   udp  34654
+        99    1   tcp  41745
+    acaldero@docker1:~/sd$ ./suma_client  localhost
+    1 + 2 = 3
+    1 - 2 = -1
+    acaldero@docker1:~/sd$ kill -9 %1
+    acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
+    [1]+  Killed                  ./suma_server
     ```
 
-5. Compilar el ejemplo con:
-   ```bash
-   make -f Makefile.suma  
-    ```
-   Dicho proceso de compilación suele suponer los siguientes pasos:
 
-   ```bash
-    gcc –c suma_xdr.c
-    gcc –c suma_svc.c
-    gcc –c suma_clnt.c
-    gcc –c suma_client.c
-    gcc –c suma_server.c
-    gcc suma_xdr.o suma_clnt.o suma_client.o –o cliente
-    gcc suma_xdr.o suma_svc.o suma_server.c –o servidor
+## Cadena de caracteres
+
+* En el proceso de desarrollo de tres procedimientos remoto que cuenten el número de vocales, indiquen el primer caracter o transforme de entero a cadena, los pasos a seguir son:
+
+  1. Crear el archivo de interfaz string.x
+      ### string.x
+       ```c
+     program STRING {
+        version STRINGVER {
+           int vocales(string) = 1;
+           char first(string) = 2;
+           string convertir(int n) = 3;
+        } = 1;
+     } = 99;       
+     ```
+
+  2. Hay que usar rpcgen con string.x:
+      ```bash 
+     rpcgen -NMa string.x  
+     ```
+
+  3. Hay que editar string_server.c y añadir el código de los servicios a ser invocados de forma remota:
+     ### string_server.c
+     ```c
+     #include "string.h"
+
+     bool_t vocales_1_svc ( char *arg1, int *result,  struct svc_req *rqstp )
+     {
+         char *vowels = "aeiou" ;
+         char *pos = NULL ;
+
+         (*result) = 0 ;
+         while (*arg1 != '\0')
+         {
+            pos = strchr(vowels, *arg1) ;
+            if (pos != NULL) (*result)++ ;
+            arg1++;
+         }
+
+         return TRUE ;
+      }
+
+      bool_t first_1_svc ( char *arg1, char *result,  struct svc_req *rqstp )
+      {
+          *result = arg1[0] ;
+          return TRUE ;
+      }
+
+      bool_t convertir_1_svc ( int n, char **result,  struct svc_req *rqstp )
+      {
+          *result = (char *) malloc(256) ;
+          sprintf(*result, "%d", n) ;
+          return TRUE ;
+      }
+
+      int string_1_freeresult ( SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result )
+      {
+           xdr_free (xdr_result, result);
+           return 1;
+      }
+        ```
+
+  4. Hay que editar string_cliente.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
+     ### string_cliente.c
+     ```c
+     #include "string.h"
+
+     void test_string_1 ( char *host, char *cadena, int numero )
+     {
+        CLIENT *clnt;
+        enum clnt_stat retval_1;
+        int   result_1;
+        char  result_2;
+        char *result_3;
+
+        clnt = clnt_create (host, STRING, STRINGVER, "udp");
+        if (clnt == NULL) {
+            clnt_pcreateerror (host); exit (1);
+        }
+
+        retval_1 = vocales_1(cadena, &result_1, clnt);
+        if (retval_1 != RPC_SUCCESS) {
+            clnt_perror (clnt, "call failed"); exit (1);
+        }
+        printf(" vocales   = %d\n", result_1) ;
+
+        retval_1 = first_1(cadena, &result_2, clnt);
+        if (retval_1 != RPC_SUCCESS) {
+            clnt_perror (clnt, "call failed"); exit (1);
+        }
+        printf(" first     = %c\n", result_2) ;
+
+        result_3 = malloc(256) ;
+        if (NULL == result_3) {
+            perror("malloc: ") ; exit (1);
+        }
+        retval_1 = convertir_1(numero, &result_3, clnt);
+        if (retval_1 != RPC_SUCCESS) {
+            clnt_perror (clnt, "call failed"); exit (1);
+        }
+        printf(" convertir = %s\n", result_3) ;
+        free(result_3) ;
+
+        clnt_destroy (clnt);
+     }
+
+     int main (int argc, char *argv[])
+     {
+        if (argc < 2) {
+            printf ("Uso: %s <server host>\n", argv[0]);
+            exit (1);
+        }
+
+        test_string_1 (argv[1], "murcielago", 12345) ;
+        return 0 ;
+     }
+      ```
+
+  5. Compilar el ejemplo con:
+     ```bash
+     make -f Makefile.string 
+      ```
+     Dicho proceso de compilación suele suponer los siguientes pasos:
+
+     ```bash
+     gcc -g  -D_REENTRANT  -c -o string_clnt.o string_clnt.c
+     gcc -g  -D_REENTRANT  -c -o string_client.o string_client.c
+     gcc -g  -D_REENTRANT  -c -o string_xdr.o string_xdr.c
+     gcc -g  -D_REENTRANT -o string_client string_clnt.o string_client.o string_xdr.o -lnsl -lpthread
+     gcc -g  -D_REENTRANT  -c -o string_svc.o string_svc.c
+     gcc -g  -D_REENTRANT  -c -o string_server.o string_server.c
+     gcc -g  -D_REENTRANT -o string_server string_svc.o string_server.o string_xdr.o -lnsl -lpthread
+      ```
+      * **NOTA**: mucho cuidado con "make -f Makefile.string clean" puesto que por defecto borra string_server.c y string_client.c perdiendo el trabajo realizado en dichos ficheros.
+
+* Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente:
+     ```bash
+    acaldero@docker1:~/sd$ ./string_server &
+    acaldero@docker1:~/sd$ rpcinfo  -p localhost
+    program vers proto   port  service
+    100000    4   tcp    111  portmapper
+    100000    3   tcp    111  portmapper
+    100000    2   tcp    111  portmapper
+    100000    4   udp    111  portmapper
+    100000    3   udp    111  portmapper
+    100000    2   udp    111  portmapper
+        99    1   udp  33906
+        99    1   tcp  39879
+    acaldero@docker1:~/sd$ ./string_client  localhost
+    vocales   = 5
+    first     = m
+    convertir = 12345
+    acaldero@docker1:~/sd$ kill -1 %1
+    acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
+    [1]+  Killed                  ./string_server
     ```
-    * **NOTA**: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.
 
 
 ## Vector remoto
@@ -961,6 +1135,7 @@ datos estándar
       ```
 
   4. Hay que editar vector_cliente.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
+     ### vector_cliente.c
      ```c
      #include "vector.h"
    
@@ -1042,7 +1217,7 @@ datos estándar
     acaldero@docker1:~/sd$ ./vector_client  localhost
     La suma es 200
     acaldero@docker1:~/sd$ kill -9 %1
-    acaldero@docker1:~/sd$
+    acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
     [1]+  Killed                  ./vector_server
     ```
 
