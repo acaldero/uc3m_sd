@@ -13,8 +13,9 @@
  * Ejemplos de uso de RPC
    * [Desarrollando con las RPC: suma remota](#desarrollando-con-las-rpc)
    * [Calculadora remota](#calculadora-remota)
-   * [Cadena de caracteres](cadena-de-caracteres)
+   * [Cadena de caracteres](#cadena-de-caracteres)
    * [Vector remoto](#vector-remoto)
+   * [RPC en Python](#rpc-en-python)
  * Aspectos adicionales
    * [Lenguaje IDL](#lenguaje-idl)
    * [Aplanamiento (marshalling)](#aplanamiento-marshalling)
@@ -900,27 +901,47 @@ datos estándar
       ```
      * **NOTA**: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.
 
-* Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente:
-     ```bash
-    acaldero@docker1:~/sd$ ./suma_server &
-    acaldero@docker1:~/sd$ rpcinfo  -p localhost
-    program vers proto   port  service
-    100000    4   tcp    111  portmapper
-    100000    3   tcp    111  portmapper
-    100000    2   tcp    111  portmapper
-    100000    4   udp    111  portmapper
-    100000    3   udp    111  portmapper
-    100000    2   udp    111  portmapper
-        99    1   udp  34654
-        99    1   tcp  41745
-    acaldero@docker1:~/sd$ ./suma_client  localhost
-    1 + 2 = 3
-    1 - 2 = -1
-    acaldero@docker1:~/sd$ kill -9 %1
-    acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
-    [1]+  Killed                  ./suma_server
-    ```
-
+* Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente.
+   1. En una misma máquina, se puede usar como nombre de host *localhost*:
+       ```bash
+      acaldero@docker1:~/sd$ ./suma_server &
+      acaldero@docker1:~/sd$ rpcinfo  -p localhost
+      program vers proto   port  service
+      100000    4   tcp    111  portmapper
+      100000    3   tcp    111  portmapper
+      100000    2   tcp    111  portmapper
+      100000    4   udp    111  portmapper
+      100000    3   udp    111  portmapper
+      100000    2   udp    111  portmapper
+          99    1   udp  34654
+          99    1   tcp  41745
+      acaldero@docker1:~/sd$ ./suma_client  localhost
+      1 + 2 = 3
+      1 - 2 = -1
+      acaldero@docker1:~/sd$ kill -9 %1
+      acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
+      [1]+  Killed                  ./suma_server
+      ```
+   2. Si funciona en una misma máquina, se puede probar en dos máquinas (docker1 para suma_server y docker2 para suma_client):
+       ```bash
+      acaldero@docker1:~/sd$ ./suma_server &
+      acaldero@docker2:~/sd$ rpcinfo  -p docker1
+      program vers proto   port  service
+      100000    4   tcp    111  portmapper
+      100000    3   tcp    111  portmapper
+      100000    2   tcp    111  portmapper
+      100000    4   udp    111  portmapper
+      100000    3   udp    111  portmapper
+      100000    2   udp    111  portmapper
+          99    1   udp  34654
+          99    1   tcp  41745
+      acaldero@docker2:~/sd$ ./suma_client  docker1
+      1 + 2 = 3
+      1 - 2 = -1
+      acaldero@docker1:~/sd$ kill -9 %1
+      acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
+      [1]+  Killed                  ./suma_server
+      ```
 
 ## Cadena de caracteres
 
@@ -1058,26 +1079,48 @@ datos estándar
       * **NOTA**: mucho cuidado con "make -f Makefile.string clean" puesto que por defecto borra string_server.c y string_client.c perdiendo el trabajo realizado en dichos ficheros.
 
 * Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente:
-     ```bash
-    acaldero@docker1:~/sd$ ./string_server &
-    acaldero@docker1:~/sd$ rpcinfo  -p localhost
-    program vers proto   port  service
-    100000    4   tcp    111  portmapper
-    100000    3   tcp    111  portmapper
-    100000    2   tcp    111  portmapper
-    100000    4   udp    111  portmapper
-    100000    3   udp    111  portmapper
-    100000    2   udp    111  portmapper
-        99    1   udp  33906
-        99    1   tcp  39879
-    acaldero@docker1:~/sd$ ./string_client  localhost
-    vocales   = 5
-    first     = m
-    convertir = 12345
-    acaldero@docker1:~/sd$ kill -1 %1
-    acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
-    [1]+  Killed                  ./string_server
-    ```
+   1. En una misma máquina, se puede usar como nombre de host *localhost*:
+       ```bash
+      acaldero@docker1:~/sd$ ./string_server &
+      acaldero@docker1:~/sd$ rpcinfo  -p localhost
+      program vers proto   port  service
+      100000    4   tcp    111  portmapper
+      100000    3   tcp    111  portmapper
+      100000    2   tcp    111  portmapper
+      100000    4   udp    111  portmapper
+      100000    3   udp    111  portmapper
+      100000    2   udp    111  portmapper
+          99    1   udp  33906
+          99    1   tcp  39879
+      acaldero@docker1:~/sd$ ./string_client  localhost
+      vocales   = 5
+      first     = m
+      convertir = 12345
+      acaldero@docker1:~/sd$ kill -1 %1
+      acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
+      [1]+  Killed                  ./string_server
+      ```
+   2. Si funciona en una misma máquina, se puede probar en dos máquinas (docker1 para string_server y docker2 para string_client):
+       ```bash
+      acaldero@docker1:~/sd$ ./string_server &
+      acaldero@docker2:~/sd$ rpcinfo  -p localhost
+      program vers proto   port  service
+      100000    4   tcp    111  portmapper
+      100000    3   tcp    111  portmapper
+      100000    2   tcp    111  portmapper
+      100000    4   udp    111  portmapper
+      100000    3   udp    111  portmapper
+      100000    2   udp    111  portmapper
+          99    1   udp  33906
+          99    1   tcp  39879
+      acaldero@docker2:~/sd$ ./string_client  localhost
+      vocales   = 5
+      first     = m
+      convertir = 12345
+      acaldero@docker1:~/sd$ kill -1 %1
+      acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
+      [1]+  Killed                  ./string_server
+      ```
 
 
 ## Vector remoto
@@ -1202,24 +1245,142 @@ datos estándar
       * **NOTA**: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.
 
 * Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente:
-     ```bash
-    acaldero@docker1:~/sd$ ./vector_server &
-    acaldero@docker1:~/sd$ rpcinfo  -p localhost
-    program vers proto   port  service
-    100000    4   tcp    111  portmapper
-    100000    3   tcp    111  portmapper
-    100000    2   tcp    111  portmapper
-    100000    4   udp    111  portmapper
-    100000    3   udp    111  portmapper
-    100000    2   udp    111  portmapper
-        99    1   udp  49848
-        99    1   tcp  42919
-    acaldero@docker1:~/sd$ ./vector_client  localhost
-    La suma es 200
-    acaldero@docker1:~/sd$ kill -9 %1
-    acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
-    [1]+  Killed                  ./vector_server
-    ```
+   1. En una misma máquina, se puede usar como nombre de host *localhost*:
+       ```bash
+      acaldero@docker1:~/sd$ ./vector_server &
+      acaldero@docker1:~/sd$ rpcinfo  -p localhost
+      program vers proto   port  service
+      100000    4   tcp    111  portmapper
+      100000    3   tcp    111  portmapper
+      100000    2   tcp    111  portmapper
+      100000    4   udp    111  portmapper
+      100000    3   udp    111  portmapper
+      100000    2   udp    111  portmapper
+          99    1   udp  49848
+          99    1   tcp  42919
+      acaldero@docker1:~/sd$ ./vector_client  localhost
+      La suma es 200
+      acaldero@docker1:~/sd$ kill -9 %1
+      acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
+      [1]+  Killed                  ./vector_server
+      ```
+   2. Si funciona en una misma máquina, se puede probar en dos máquinas (docker1 para vector_server y docker2 para vector_client):
+       ```bash
+      acaldero@docker1:~/sd$ ./vector_server &
+      acaldero@docker2:~/sd$ rpcinfo  -p localhost
+      program vers proto   port  service
+      100000    4   tcp    111  portmapper
+      100000    3   tcp    111  portmapper
+      100000    2   tcp    111  portmapper
+      100000    4   udp    111  portmapper
+      100000    3   udp    111  portmapper
+      100000    2   udp    111  portmapper
+          99    1   udp  49848
+          99    1   tcp  42919
+      acaldero@docker2:~/sd$ ./vector_client  localhost
+      La suma es 200
+      acaldero@docker1:~/sd$ kill -9 %1
+      acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
+      [1]+  Killed                  ./vector_server
+      ```
+
+## Autenticación
+
+ * Los mensajes de petición y respuesta disponen de campos para pasar información de autenticación
+ * El servidor es el encargado de controlar el acceso
+ * Hay distintos tipos de protocolos de autenticación:
+    * Autenticación nula (AUTH_NULL)
+    * Al estilo UNIX, basado en uid y gid (AUTH_UNIX)
+    * Autenticación Kerberos
+    * Mediante una clave compartida que se utiliza para firmar los mensajes RPC
+  
+Ejemplo de esqueleto con autenticación UNIX:
+   ```c
+   CLIENT *cl = client_create("host", <SOMEPROG>, <SOMEVERS>, "udp");
+   if (cl != NULL) {
+       /* To set UNIX style authentication */
+       cl->cl_auth = authunix_create_default(); 
+   }
+   
+   /* use the autentication */
+   ...
+   
+   /* destroy the authentication */
+   auth_destroy(clnt->cl_auth);
+   ```    
+
+## RPC en Python
+
+ * Instalación de *rpyc*:
+    * Instalación en el sistema:
+       ```bash
+      pip3 install rpyc
+      ```
+    * Instalación para un usuario:
+       ```bash
+      pip3 install rpyc --user
+      ```
+
+  * (1/2) Ejecución mediante *Classic RPyC*
+    * Ejecución de un servidor clásico que puede ejecutar funciones y evaluar expresiones en Python:
+       ```bash
+      /usr/local/bin/rpyc_classic.py
+      ```
+    * Ejecución de cliente:
+       * Con eval + execute:
+         ### client-1.python
+         ```python
+         import rpyc
+         conn = rpyc.classic.connect("localhost")
+         conn.execute('import math')
+         x = conn.eval('2*math.pi')
+         print(x)
+         ```
+       * Con teleport:
+         ### client-2.python
+         ```python
+         import rpyc
+         conn = rpyc.classic.connect("localhost")
+         def square(x):
+             return x**2
+         fn = conn.teleport(square)
+         print(fn(2))
+         ```
+
+  * (2/2) Ejecución mediante *RPC*
+       * Ejemplo de servidor de cálculo:
+         ### calc_service.py
+         ```python
+         import rpyc
+         from rpyc.utils.server import ThreadedServer
+         
+         class CalculatorService(rpyc.Service):
+            def exposed_add(self, a, b):
+                return a + b
+            def exposed_sub(self, a, b):
+                return a - b
+            def exposed_mul(self, a, b):
+                return a * b
+            def exposed_div(self, a, b):
+                return a / b
+
+         if __name__ == "__main__":
+            server = ThreadedServer(CalculatorService, port = 12345)
+            server.start()
+         ```
+       * Ejemplo de cliente del servicio de calculadora:
+         ### calc_client.py
+         ```python
+         import rpyc
+         conn = rpyc.connect("localhost", 12345)
+         
+         x = conn.root.add(4,7)
+         print(x)
+         
+         x = conn.root.sub(4,7)
+         print(x)
+           ```
+
 
 
 ## RPC en Ubuntu
@@ -1233,17 +1394,18 @@ Hay 3 detalles a comprobar en su instalación de Ubuntu:
     rpcsvc-proto
     rpcbind  
 
-3) Hay que editar el Makefile.suma y comprobar que está lo indicado destacado entre '**':
+2) Se ha de arrancar rpcbind. Si hay un error al arrancar por favor pruebe lo siguiente:
+   ```bash
+   sudo mkdir -p /run/sendsigs.omit.d/  
+   sudo /etc/init.d/rpcbind restart   
+   ```
+
+3) Es posible que haya que editar el Makefile.suma y comprobar que está lo indicado destacado entre '**':
     ```make
     ...  
     CFLAGS += -g **-I/usr/include/tirpc**
     LDLIBS += -lnsl -lpthread -ldl **-ltirpc**  
     ...
     ```
-5) Se ha de arrancar rpcbind. Si hay un error al arrancar por favor pruebe lo siguiente:
-   ```bash
-   sudo mkdir -p /run/sendsigs.omit.d/  
-   sudo /etc/init.d/rpcbind restart   
-   ```
 
 

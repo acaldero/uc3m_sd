@@ -35,7 +35,7 @@
       <td rowspan="1">4</td>
       <td>RPC</td>
       <td><ul>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_rpc.md">RPC en C</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_rpc.md">RPC</a></li>
       </ul></td>
   </tr>
   <tr><td>5</td>
