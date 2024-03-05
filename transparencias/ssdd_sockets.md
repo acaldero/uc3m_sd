@@ -852,176 +852,208 @@ graph LR;
 
 **servidor-base-tcp.c**
    ```c
-    #include <stdio.h>
-    #include <string.h>
-    #include <unistd.h>
-    #include <netinet/in.h>
-    #include <sys/types.h>
-    #include <arpa/inet.h>
-    #include <sys/socket.h>
+   #include <stdio.h>
+   #include <string.h>
+   #include <unistd.h>
+   #include <netinet/in.h>
+   #include <sys/types.h>
+   #include <arpa/inet.h>
+   #include <sys/socket.h>
 
-    int main ( int argc, char **argv )
-    {
-         int sd, newsd, ret;
-         socklen_t size;
-         struct sockaddr_in server_addr, client_addr;
+   int write_all ( int newsd, char *buffer, size_t total )
+   {
+       size_t escritos = 0 ;
+       ssize_t result  = 0 ;
 
-         // (1) creación de un socket
-         // * NO tiene dirección asignada aquí
-         sd = socket(AF_INET, SOCK_STREAM, 0) ;
-         if (sd < 0) {
-             perror("Error en la creación del socket: ");
-             return -1;
-         }
+       while (escritos != total) // mientras queda por escribir...
+       {
+          result = write(newsd, buffer+escritos, total-escritos) ;
+          // puede que write NO escriba todo lo solicitado de una vez
+          if (-1 == result) {
+              return -1 ;
+          }
 
-         // (2) obtener la dirección
-         bzero((char *)&server_addr, sizeof(server_addr));
-         server_addr.sin_family = AF_INET;
-         server_addr.sin_port = htons(4200);
-         server_addr.sin_addr.s_addr = INADDR_ANY;
+          escritos = escritos + result ;
+       }
 
-         // (3) asigna dirección a un socket
-         // * host = INADDR_ANY -> cualquier dirección del host
-         // * port = 0 -> el sistema selecciona el primer puerto libre
-         // * port = 1...1023 -> puertos reservados (puede necesitar ser root la ejecución)
-         ret = bind(sd,(struct sockaddr *)& server_addr, sizeof(server_addr)) ;
-         if (ret < 0) {
-             perror("Error en bind: ") ;
-             return -1 ;
-         }
+       return escritos ;
+   }
 
-         // (4) preparar para aceptar conexiones
-         // * listen permite definir el número máximo de peticiones pendientes a encolar
-         // * SOMAXCONN está en sys/socket.h
-         ret = listen(sd, SOMAXCONN);
-         if (ret < 0) {
-             perror("Error en listen: ") ;
-             return -1 ;
-         }
+   int main ( int argc, char **argv )
+   {
+       int sd, newsd, ret;
+       socklen_t size;
+       struct sockaddr_in server_addr, client_addr;
 
-         while (1)
-         {
-            // (5) aceptar nueva conexión (newsd) desde socket servidor (sd)
-            // * bloquea al servidor hasta que se produce la conexión
-            // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
-            size = sizeof(struct sockaddr_in) ;
-            newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
-            if (newsd < 0) {
-                perror("Error en el accept");
-                return -1 ;
-            }
+       if (argc != 2) {
+           printf("Uso: %s <puerto>\n", argv[0]);
+           return 0;
+       }
 
-            // Para ayudar a la depuración,
-            // se imprime la IP y puerto del cliente que se conecta
-            // client_addr almacena la IP y el puerto del proceso cliente
-            printf("conexión aceptada de IP:%s y puerto:%d\n",
-                    inet_ntoa(client_addr.sin_addr),
-                        ntohs(client_addr.sin_port));
+       int puerto = atoi(argv[1]) ;
 
-            // Preparar el mensaje a enviar: 1024 bytes con "hola mundo"
-            char buffer[1024] ;
-            strcpy(buffer, "Hola mundo") ;
+       // (1) creación de un socket
+       // * NO tiene dirección asignada aquí
+       sd = socket(AF_INET, SOCK_STREAM, 0) ;
+       if (sd < 0) {
+           perror("Error en la creación del socket: ");
+           return -1;
+       }
 
-            // (6) transferir datos sobre newsd
-            size_t total    = sizeof(buffer) ;
-            size_t escritos = 0 ;
-            ssize_t result  = 0 ;
-            while (escritos != total) // queda por escribir
-            {
-               result = write(newsd, buffer+escritos, total-escritos) ;
-               // puede que write NO escriba todos los datos solicitados
-               if (-1 == result) { break; }
-               escritos = escritos + result ;
-            }
-            if (escritos != total) { // error, no se ha escrito todo
-                printf("Error al escribir buffer") ;
-            }
+       // (2) obtener la dirección
+       bzero((char *)&server_addr, sizeof(server_addr));
+       server_addr.sin_family = AF_INET;
+       server_addr.sin_port = htons(puerto);
+       server_addr.sin_addr.s_addr = INADDR_ANY;
 
-            // (7) cerrar socket conectado
-            close(newsd);
-         }
+       // (3) asigna dirección a un socket
+       // * host = INADDR_ANY -> cualquier dirección del host
+       // * port = 0 -> el sistema selecciona el primer puerto libre
+       // * port = 1...1023 -> puertos reservados (puede necesitar ser root la ejecución)
+       ret = bind(sd,(struct sockaddr *)& server_addr, sizeof(server_addr)) ;
+       if (ret < 0) {
+           perror("Error en bind: ") ;
+           return -1 ;
+       }
 
-         // (8) cerrar socket de servicio
-         close(sd);
+       // (4) preparar para aceptar conexiones
+       // * listen permite definir el número máximo de peticiones pendientes a encolar
+       // * SOMAXCONN está en sys/socket.h
+       ret = listen(sd, SOMAXCONN);
+       if (ret < 0) {
+           perror("Error en listen: ") ;
+           return -1 ;
+       }
 
-    } /* fin main */
+       while (1)
+       {
+          // (5) aceptar nueva conexión (newsd) desde socket servidor (sd)
+          // * bloquea al servidor hasta que se produce la conexión
+          // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
+          size = sizeof(struct sockaddr_in) ;
+          newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
+          if (newsd < 0) {
+              perror("Error en el accept");
+              return -1 ;
+          }
+
+          // Para ayudar a la depuración,
+          // se imprime la IP y puerto del cliente que se conecta
+          // client_addr almacena la IP y el puerto del proceso cliente
+          printf("conexión aceptada de IP:%s y puerto:%d\n",
+                  inet_ntoa(client_addr.sin_addr),
+                      ntohs(client_addr.sin_port));
+
+          // Preparar el mensaje a enviar: 1024 bytes con "hola mundo"
+          char buffer[1024] ;
+          strcpy(buffer, "Hola mundo") ;
+
+          // (6) transferir datos sobre newsd
+          size_t escritos = write_all(newsd, buffer, sizeof(buffer)) ;
+          if (escritos < 0) {
+              printf("Error al escribir buffer\n") ;
+          }
+
+          // (7) cerrar socket conectado
+          close(newsd);
+       }
+
+       // (8) cerrar socket de servicio
+       close(sd);
+
+   } /* fin main */
    ```
 
 **cliente-base-tcp.c**
    ```c
-    #include <stdlib.h>
-    #include <stdio.h>
-    #include <unistd.h>
-    #include <string.h>
-    #include <netdb.h>
-    #include <sys/socket.h>
-    #include <arpa/inet.h>
-    #include <arpa/inet.h>
-
-    int main ( int argc, char **argv )
-    {
-        char *maquina; short puerto;
-        struct sockaddr_in server_addr;
-        struct hostent *hp;
-        int sd, ret;
-
-        if (argc != 3) {
-            printf("Uso: %s <IP máquina> <puerto>\n", argv[0]);
-            return 0;
-        }
-        maquina = argv[1] ;
-        puerto = (short) atoi(argv[2]);
-
-        // (1) creación del socket (NO tiene dirección asignada aquí)
-        sd = socket(AF_INET, SOCK_STREAM, 0);
-        if (sd < 0) {
-            perror("ERROR en socket: ") ;
-            return -1 ;
-        }
-
-         // (2) obtener la dirección
-        bzero((char *)&server_addr, sizeof(server_addr));
-        hp = gethostbyname(maquina);
-        memcpy (&(server_addr.sin_addr), hp->h_addr, hp->h_length);
-        server_addr.sin_family = AF_INET;
-        server_addr.sin_port = htons(puerto);
-
-        // (3) Solicitud de conexión (con socket remoto)
-        // * si el socket local no tiene dirección asignada
-        //   entonces se le asigna una automáticamente con puerto temporal
-        ret = connect(sd, (struct sockaddr *) &server_addr, sizeof(server_addr)) ;
-        if (ret < 0) {
-            perror("ERROR en connect: ");
-            return -1;
-        }
-
-        // Preparar el espacio para recepción del mensaje
-        char buffer[1024] ;
-        strcpy(buffer, "") ;
-
-        // (4) transferir datos sobre sd
-        size_t total  = sizeof(buffer) ;
-        size_t leidos = 0 ;
-        ssize_t result = 0 ;
-        while (leidos != total) // queda por escribir
-        {
-           result = read(sd, buffer+leidos , total-leidos ) ;
-           // puede que read NO lea todos los datos solicitados
-           if (-1 == result) { break; }
-           leidos = leidos + result ;
-        }
-        if (leidos != total) { // error, no se ha leído todo
-            printf("Error al leer buffer") ;
-        }
-
-        // Imprimir el mensaje recibido
-        printf("mensaje del servidor: %s\n", buffer) ;
-
-        // (5) Cerrar socket
-        close(sd);
-
-        return 0;
-    }
+   #include <stdlib.h>
+   #include <stdio.h>
+   #include <unistd.h>
+   #include <string.h>
+   #include <netdb.h>
+   #include <sys/socket.h>
+   #include <arpa/inet.h>
+   #include <arpa/inet.h>
+  
+   int read_all ( int sd, char *buffer, size_t total )
+   {
+       size_t  leidos = 0 ;
+       ssize_t result = 0 ;
+  
+       while (leidos != total) // mientras queda por leer...
+       {
+          // puede que read NO lea todo lo solicitado de una vez
+          result = read(sd, buffer+leidos , total-leidos ) ;
+          if (-1 == result) {
+              return -1 ;
+          }
+  
+          leidos = leidos + result ;
+       }
+  
+       return leidos ;
+   }
+  
+   int main ( int argc, char **argv )
+   {
+       char *maquina; short puerto;
+       struct sockaddr_in server_addr;
+       struct hostent *hp;
+       int sd, ret;
+  
+       if (argc != 3) {
+           printf("Uso: %s <IP máquina> <puerto>\n", argv[0]);
+           return 0;
+       }
+  
+       maquina = argv[1] ;
+       puerto  = (short) atoi(argv[2]);
+       hp = gethostbyname(maquina);
+       if (NULL == hp) {
+           printf("ERROR en gethostbyname con '%s'\n", maquina) ;
+           return -1 ;
+       }
+  
+       // (1) creación del socket (NO tiene dirección asignada aquí)
+       sd = socket(AF_INET, SOCK_STREAM, 0);
+       if (sd < 0) {
+           perror("ERROR en socket: ") ;
+           return -1 ;
+       }
+  
+       // (2) obtener la dirección
+       bzero((char *)&server_addr, sizeof(server_addr));
+       memcpy (&(server_addr.sin_addr), hp->h_addr, hp->h_length);
+       server_addr.sin_family = AF_INET;
+       server_addr.sin_port = htons(puerto);
+  
+       // (3) Solicitud de conexión (con socket remoto)
+       // * si el socket local no tiene dirección asignada
+       //   entonces se le asigna una automáticamente con puerto temporal
+       ret = connect(sd, (struct sockaddr *) &server_addr, sizeof(server_addr)) ;
+       if (ret < 0) {
+           perror("ERROR en connect: ");
+           return -1;
+       }
+  
+       // Preparar el espacio para recepción del mensaje
+       char buffer[1024] ;
+       strcpy(buffer, "") ;
+  
+       // (4) transferir datos sobre sd
+       size_t leidos = read_all(sd, buffer, sizeof(buffer)) ;
+       if (leidos < 0) {
+           printf("Error al leer buffer\n") ;
+       }
+  
+       // Imprimir el mensaje recibido
+       printf("mensaje del servidor: %s\n", buffer) ;
+  
+       // (5) Cerrar socket
+       close(sd);
+  
+       return 0;
+   }
    ```
 
 * Para compilar, se puede usar:

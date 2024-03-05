@@ -78,7 +78,7 @@ Cómo (2/2)
 <tr>
 <td>
 <ol type="1" start="7">
-<li> Modificar el formato de los mensajes y modificar la secuencia detallada de paso de mensajes si fuera necesario 
+<li> Modificar el formato de los mensajes y modificar la secuencia detallada de paso de mensajes si fuera necesario
 </ol>
 </td>
 <td>
@@ -93,7 +93,7 @@ Diseño final
 ##  Ejemplo de calculadora basada en Sockets
 
  * Un programa cliente  que ejecuta en la máquina A envía  la petición "sumar(5,2)" por la red.
- * Un programa servidor que ejecuta en la máquina B recibe la petición por la red, la procesa y responde con el resultado. 
+ * Un programa servidor que ejecuta en la máquina B recibe la petición por la red, la procesa y responde con el resultado.
 
 ```mermaid
 sequenceDiagram
@@ -124,8 +124,8 @@ sequenceDiagram
   gcc -I./ -Wall -g -c comm.c
   gcc -I./ -Wall -g -c calc-servidor-tcp.c
   gcc -I./ -Wall -g -c calc-cliente-tcp.c
-  gcc  -o calc-cliente-tcp  calc-cliente-tcp.o  comm.o 
-  gcc  -o calc-servidor-tcp calc-servidor-tcp.o comm.o 
+  gcc  -o calc-cliente-tcp  calc-cliente-tcp.o  comm.o
+  gcc  -o calc-servidor-tcp calc-servidor-tcp.o comm.o
   ```
 
 * Para ejecutar, se puede usar:
@@ -164,9 +164,12 @@ sequenceDiagram
    int     serverSocket ( unsigned int addr, int port, int type ) ;
    int     serverAccept ( int sd ) ;
    int     clientSocket ( char *remote, int port ) ;
+
    int     sendMessage  ( int socket, char *buffer, int len );
    int     recvMessage  ( int socket, char *buffer, int len );
-   ssize_t readLine     ( int fd,     void *buffer, size_t n );
+
+   ssize_t writeLine    ( int fd, char *buffer ) ;
+   ssize_t readLine     ( int fd, char *buffer, size_t n );
 
 #endif
 ```
@@ -451,7 +454,12 @@ int recvMessage ( int socket, char *buffer, int len )
         return 0;
 }
 
-ssize_t readLine ( int fd, void *buffer, size_t n )
+ssize_t writeLine ( int fd, char *buffer )
+{
+        return sendMessage(fd, buffer, strlen(buffer)+1) ;
+}
+
+ssize_t readLine ( int fd, char *buffer, size_t n )
 {
         ssize_t numRead;  /* num of bytes fetched by last read() */
         size_t totRead;   /* total bytes read so far */

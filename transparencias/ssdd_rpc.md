@@ -129,11 +129,19 @@
      ```bash 
      rpcgen -N -M -a suma.x  
      ```
-   	 * Opciones comunes son **-N** para procedimientos con múltiples argumentos, **-M** para codigo multithread y **-a** para que genere todos los ficheros (incluido un Makefile de plantilla para la compilación)
-   	 * Generación automática de archivos (salvo servidor.c y cliente.c):
-     	 * Archivos en el lado del servidor: suma_svc.c y servidor.c 
-    	 * Archivos en el lado del cliente: suma_clnt.c y cliente.c 
+   	 * Opciones comunes son:
+     	 * **-N** para procedimientos con múltiples argumentos.
+     	 * **-M** para codigo multithread.
+     	 * **-a** para que genere todos los ficheros (incluido un Makefile de plantilla para la compilación)
+
+   	 * A partir de la descripción de la interfaz del servicio en IDL, la utilidad rpcgen genera los archivos relacionados con la comunicación y genera una plantilla de los archivos que el/la programador/a ha de rellenar con la implementación y uso del servicio.
+   	 * Generación automática de archivos:
+     	 * Archivos en el lado del servidor: suma_svc.c y servidor.c (este último ha de cambiarse con la implementación de la interfaz del servicio)
+    	 * Archivos en el lado del cliente: suma_clnt.c y cliente.c (este último ha de cambiarse con la implementación del cliente que usará el servicio)
     	 * Archivos comunes: suma_xdr.c y suma.h
+
+       ![Archivos generados por rpcgen y archivos escritos por programador/a](./ssdd_rpc/ssdd_rpc_drawio_81.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_81.svg">
+
 
  3. Se implementa el servicio en el lado del servidor.
 
@@ -794,11 +802,6 @@ datos estándar
 
 
 ## Calculadora remota
-
-* A partir de la descripción de la interfaz del servicio en IDL, la utilidad rpcgen genera los archivos relacionados con la comunicación y genera una plantilla de los archivos que el/la programador/a ha de rellenar con la implementación y uso del servicio:
-
-   ![Archivos generados por rpcgen y por programador/a](./ssdd_rpc/ssdd_rpc_drawio_81.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_81.svg">
-
 
 * En el proceso de desarrollo de un procedimiento remoto que devuelve la suma los componentes de un vector de enteros que se le pase como parámetro, los pasos a seguir son:
 
