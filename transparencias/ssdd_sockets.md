@@ -399,55 +399,6 @@ memset(&a4, 0, sizeof(struct sockaddr_in));  // inicializar todo a cero
     ```
 
 
-## Resumen de transformación de direcciones y ejemplo
-
-```mermaid
-flowchart TD
-    A(in_addr, 32-bit, IPv4) -->|inet_ntop,<br> inet_ntoa| B(Dirección decimal-punto IPv4)
-    B -->|inet_pton,<br> inet_aton,<br> inet_addr| A
-    C(in6_addr, 128-bit, IPv6) -->|inet_ntop| D(x:x:x:x:x:x:a.b.c.d)
-    D -->|inet_pton| C
-    subgraph " "
-      subgraph "IPv4"
-        A
-        B
-      end
-      subgraph "IPV6"
-        C
-        D
-      end
-    end
-```
-
-
-### direcciones.c
-```c
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-
-int main(int argc, char **argv)
-{
-    struct in_addr in;
-
-    if (argc != 2) {
-        printf("Uso: %s <decimal-punto>\n", argv[0]);
-        exit(0);
-    }
-
-    if (inet_aton(argv[1], &in) == 0) {
-        printf("Error en la dirección\n");
-        exit(0);
-    }
-
-    printf("La dirección es %s\n", inet_ntoa(in));
-    exit(0);
-}
-```
-
-
 ## Obtener la información de una máquina: (D, B y E) resolver nombres (forma clásica)
 
   * La información de una máquina se representa mediante la estructura ``struct hostent``:
@@ -522,11 +473,63 @@ int main(int argc, char **argv)
 
 ## Ejemplos de conversión
 
-* <details>
+```mermaid
+flowchart TD
+    A(in_addr, 32-bit, IPv4) -->|inet_ntop,<br> inet_ntoa| B(Dirección decimal-punto IPv4)
+    B -->|inet_pton,<br> inet_aton,<br> inet_addr| A
+    C(in6_addr, 128-bit, IPv6) -->|inet_ntop| D(x:x:x:x:x:x:a.b.c.d)
+    D -->|inet_pton| C
+    subgraph " "
+      subgraph "IPv4"
+        A
+        B
+      end
+      subgraph "IPV6"
+        C
+        D
+      end
+    end
+```
+
+* En C:
+
+  * <details>
+    <summary>Ejemplo de inet_aton + inet_ntoa... </summary>
+
+    ### direcciones.c
+    ```c
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <arpa/inet.h>
+
+    int main(int argc, char **argv)
+    {
+       struct in_addr in;
+
+       if (argc != 2) {
+           printf("Uso: %s <decimal-punto>\n", argv[0]);
+           exit(0);
+       }
+
+       if (inet_aton(argv[1], &in) == 0) {
+           printf("Error en la dirección\n");
+           exit(0);
+       }
+
+       printf("La dirección es %s\n", inet_ntoa(in));
+       exit(0);
+    }
+     ```
+   </details>
+
+  
+  * <details>
     <summary>En C, ejemplo de gethostbyname + inet_ntoa...</summary>
     
-   **dns.c**
-   ```c
+     ### dns.c
+     ```c
     #include <stdio.h>
     #include <string.h>
     #include <stdlib.h>
@@ -551,71 +554,70 @@ int main(int argc, char **argv)
         return 0;
     }
     ```
-  </details>
+   </details>
 
 
-* <details>
-    <summary>En C, ejemplo de inet_aton + gethostbyaddr (D, B y E clásico)...</summary>
+  * <details>
+    <summary>Ejemplo de inet_aton + gethostbyaddr (D, B y E clásico)...</summary>
     
-   **obtener-dominio.c**
-  ```c
-  #include <netdb.h>
-  #include <stdio.h>
-  #include <string.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #include <arpa/inet.h>
+    ### obtener-dominio.c
+    ```c
+    #include <netdb.h>
+    #include <stdio.h>
+    #include <string.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <arpa/inet.h>
 
-  int main(int argc, const char **argv)
-  {
-     struct in_addr addr; struct hostent *hp;
-     char **p; struct in_addr in;
-     char **q; int err;
+    int main(int argc, const char **argv)
+    {
+       struct in_addr addr; struct hostent *hp;
+       char **p; struct in_addr in;
+       char **q; int err;
 
-     if (argc != 2) {
-         printf("USO: %s <Direccion-IP>\n", argv[0]);
-         return (1);
-     }
+       if (argc != 2) {
+           printf("USO: %s <Direccion-IP>\n", argv[0]);
+           return (1);
+       }
 
-     err = inet_aton(argv[1], &addr);
-     if (err == 0) {
-         printf("por favor use direccion IP en formato a.b.c.d\n");
-         return (2);
-     }
+       err = inet_aton(argv[1], &addr);
+       if (err == 0) {
+           printf("por favor use direccion IP en formato a.b.c.d\n");
+           return (2);
+       }
 
-     hp = gethostbyaddr((char *) &addr, sizeof(addr), AF_INET);
-     if (hp == NULL) {
-        printf("Error en gethostbyaddr\n");
-        return (3);
-     }
+       hp = gethostbyaddr((char *) &addr, sizeof(addr), AF_INET);
+       if (hp == NULL) {
+           printf("Error en gethostbyaddr\n");
+           return (3);
+       }
 
-     for (p = hp->h_addr_list; *p != 0; p++)
-     {
-         memcpy(&(in.s_addr), *p, sizeof(in.s_addr));
-         printf("%s es \t%s (%ld)\n", inet_ntoa(in), hp->h_name, in.s_addr) ;
-         for (q=hp->h_aliases; *q != 0; q++) {
-              printf("%s\n", *q);
-         }
-     }
+       for (p = hp->h_addr_list; *p != 0; p++)
+       {
+           memcpy(&(in.s_addr), *p, sizeof(in.s_addr));
+           printf("%s es \t%s (%ld)\n", inet_ntoa(in), hp->h_name, in.s_addr) ;
+           for (q=hp->h_aliases; *q != 0; q++) {
+                printf("%s\n", *q);
+           }
+       }
 
-     return(0);
-  }
-  ```
-  </details>
+       return(0);
+    }
+    ```
+    </details>
 
 
-* <details>
-    <summary>En C, ejemplo de getaddrinfo + getnameinfo + freeaddrinfo (D, B y E moderno)...</summary>
+  * <details>
+    <summary>Ejemplo de getaddrinfo + getnameinfo + freeaddrinfo (D, B y E moderno)...</summary>
     
-   **obtener-dominio-6.c**
-  ```c
+    ### obtener-dominio-6.c
+    ```c
     #include <stdio.h>
     #include <stdlib.h>
     #include <netdb.h>
     #include <string.h>
     #include <netinet/in.h>
     #include <sys/socket.h>
-
 
     int main ( int argc, char*argv[] )
     {
@@ -653,57 +655,58 @@ int main(int argc, char **argv)
 
         return 0;
     }
-  ```
-  </details>
+    ```
+    </details>
 
+* En Python:
 
-* <details>
-  <summary>En Python, ejemplo de gethostname + gethostbyname...</summary>
+  * <details>
+    <summary>Ejemplo de gethostname + gethostbyname...</summary>
 
-  ### gethostname.py
-  ```python
-  import socket
-  name = socket.gethostname();
-  print(name + ': ' + socket.gethostbyname(name))
-  ```
-  </details>
+    ### gethostname.py
+    ```python
+    import socket
+    name = socket.gethostname();
+    print(name + ': ' + socket.gethostbyname(name))
+    ```
+    </details>
 
-* <details>
-  <summary>En Python, ejemplo de gethostbyaddr...</summary>
+  * <details>
+    <summary>Ejemplo de gethostbyaddr...</summary>
 
-  ### dns.py
-  ```python
-  import socket
-  import sys
+    ### dns.py
+    ```python
+    import socket
+    import sys
 
-  arguments = len(sys.argv)
-  if arguments < 2:
-     print('Uso: dns <host>')
-     exit()
-  try:
-     hostname, aliases, addresses = socket.gethostbyaddr(sys.argv[1])
-     print(sys.argv[1] + ': ', hostname)
-     print(sys.argv[1] + ': ', aliases)
-     print(sys.argv[1] + ': ', addresses)
-  except socket.error as msg:
-     print('ERROR: ', msg)
-   ```
-  </details>
+    arguments = len(sys.argv)
+    if arguments < 2:
+       print('Uso: dns <host>')
+       exit()
+    try:
+       hostname, aliases, addresses = socket.gethostbyaddr(sys.argv[1])
+       print(sys.argv[1] + ': ', hostname)
+       print(sys.argv[1] + ': ', aliases)
+       print(sys.argv[1] + ': ', addresses)
+    except socket.error as msg:
+       print('ERROR: ', msg)
+    ```
+    </details>
 
-* <details>
-  <summary>En Python, ejemplo de inet_aton...</summary>
+  * <details>
+    <summary>Ejemplo de inet_aton...</summary>
 
-  ### addr_dot2bin.py
-  ```python
-  import socket
-  import struct
+    ### addr_dot2bin.py
+    ```python
+    import socket
+    import struct
 
-  // Example from: https://pythontic.com/modules/socket/inet_aton
-  IPQuad  = "192.168.0.0"
-  IP32Bit = socket.inet_aton(IPQuad) 
-  print(IP32Bit)
-   ```
-  </details>
+    // Example from: https://pythontic.com/modules/socket/inet_aton
+    IPQuad  = "192.168.0.0"
+    IP32Bit = socket.inet_aton(IPQuad) 
+    print(IP32Bit)
+    ```
+    </details>
 
 
 ## Orden de los bytes: big-endian y little-endian
@@ -1064,8 +1067,8 @@ graph LR;
 
 * Para ejecutar, se puede usar:
    ```bash
-   user$ ./servidor-base-tcp &
-   user$ ./cliente-base-tcp localhost 4200
+   user$ ./servidor-base-tcp 4200 &
+   user$ ./cliente-base-tcp  localhost 4200
    conexión aceptada de IP:127.0.0.1 y puerto:57422
    mensaje del servidor: Hola mundo
    user$  kill -9 %1
