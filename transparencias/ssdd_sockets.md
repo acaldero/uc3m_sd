@@ -18,7 +18,7 @@
    * [Opciones más comunes de un socket](#opciones-importantes-asociadas-a-un-socket)
    * [Servidor secuencial vs procesos pesados vs hilos](#servidor-secuencial-vs-procesos-pesados-vs-hilos)
    * [Trabajar con heterogeneidad en el sistema distribuido](#trabajar-con-heterogeneidad-en-el-sistema-distribuido)
-   
+
 
 ## Introducción a sockets
 
@@ -91,7 +91,7 @@ int socket(int domain, int type, int protocol) ;
     * SOCK_RAW: Raw, sin protocolo de transporte (protocolo IP)
 
   * Protocolo
- 
+
 
 ## Sockets: protocolo
 
@@ -110,7 +110,7 @@ int socket(int domain, int type, int protocol) ;
 
   * **Protocolo**
     * 0: valor por defecto (ver /etc/protocols para otros)
-    
+
 
 ## Socket **stream** vs **datagram**
 
@@ -160,7 +160,7 @@ Donde:
  * Las direcciones se usan para:
    * Asignar una dirección local a un socket (bind)
    * Especificar una dirección remota (connect o sendto)
-   
+
  * Las direcciones son dependientes del dominio
     * Cada dominio usa una estructura específica
       * Direcciones en AF_UNIX (``struct sockaddr_un``)
@@ -217,7 +217,7 @@ Donde:
 
   addr = ipaddress.ip_address('176.58.10.138')
   print(addr)
-  
+
   print(' IP version:',  addr.version)
   print(' is private:',  addr.is_private)
   print(' packed form:', binascii.hexlify(addr.packed))
@@ -245,7 +245,7 @@ struct sockaddr_in
 struct sockaddr_in a2;
 memset(&a2, 0, sizeof(struct sockaddr_in)); // inicializar todo a cero
 a2.sin_family      = AF_INET ;
-a2.sin_port        = htons(8080) ; 
+a2.sin_port        = htons(8080) ;
 a2.sin_addr.s_addr = inet_addr("10.12.110.57");
 ```
  * **TIP:** Al usar ```struct sockaddr_in``` que hay que inicializar a 0 todos los campos para limpiar lo que tenga antes.
@@ -348,9 +348,9 @@ memset(&a6, 0, sizeof(struct sockaddr_in6)); // inicializar todo a cero
   * **inet_addr** -> PROBLEMA: el error devuelto se confunde con un valor válido
     ```c
     // (opción 1) in_addr_t inet_addr(const char *cp);
-    a4.sin_addr.s_addr = inet_addr("10.10.10.57"); 
+    a4.sin_addr.s_addr = inet_addr("10.10.10.57");
     if (INADDR_NONE == a4.sin_addr.s_addr) {
-        // INADDR_NONE: dirección con todos los bits a uno 
+        // INADDR_NONE: dirección con todos los bits a uno
         printf("ERROR en inet_addr\n") ;
     }
     ```
@@ -365,10 +365,10 @@ memset(&a6, 0, sizeof(struct sockaddr_in6)); // inicializar todo a cero
   * **inet_pton** -> vale para IPv4 y para IPv6
     ```c
     // (opción 3) int inet_pton(int family, const char *strptr, void *addrptr);
-    int ret = inet_pton(AF_INET6, "2024:db8:8722:3a92::15", &(a6.sin6_addr)); 
+    int ret = inet_pton(AF_INET6, "2024:db8:8722:3a92::15", &(a6.sin6_addr));
     if (ret != 1) {
         printf("ERROR en inet_pton\n") ;
-    } 
+    }
     ```
 
 
@@ -395,7 +395,7 @@ memset(&a4, 0, sizeof(struct sockaddr_in));  // inicializar todo a cero
     ptr = inet_ntop(AF_INET, &(a4.sin_addr.s_addr), str4, sizeof(str4));
     if (NULL == ret) {
         printf("ERROR en inet_ntop\n") ;
-    } 
+    }
     ```
 
 
@@ -413,12 +413,12 @@ memset(&a4, 0, sizeof(struct sockaddr_in));  // inicializar todo a cero
     }
     ```
 
-    * Obtiene la información de un host a partir de una dirección en formato dominio-punto 
+    * Obtiene la información de un host a partir de una dirección en formato dominio-punto
          ```c
       struct hostent *gethostbyname(char *str);  // str: nombre de la máquina
       ```
 
-    * Obtiene la información de un host a partir de una dirección IP 
+    * Obtiene la información de un host a partir de una dirección IP
         ```c
       struct hostent *gethostbyaddr(const void *addr,  // addr: puntero a struct in_addr
                                       int len,           // len:  tamaño de la estructura
@@ -436,7 +436,7 @@ memset(&a4, 0, sizeof(struct sockaddr_in));  // inicializar todo a cero
 
 
 ## Obtener la información de una máquina: (D, B y E) resolver nombres (forma moderna)
- 
+
   * Para tanto IPv4 como IPv6 se recomienda usar la nueva estructura  ``struct addrinfo``:
     ```c
     struct addrinfo {
@@ -450,7 +450,7 @@ memset(&a4, 0, sizeof(struct sockaddr_in));  // inicializar todo a cero
        struct addrinfo * ai_next;
     };
     ```
-    
+
     * El equivalente a ``gethostbyname`` para IPv4 e IPv6 es **getaddrinfo** + **freeaddrinfo**
          ```c
       int getaddrinfo ( const char *restrict node,
@@ -464,7 +464,7 @@ memset(&a4, 0, sizeof(struct sockaddr_in));  // inicializar todo a cero
 
     * La función **getnameinfo** es la inversa de getaddrinfo: convierte una dirección de socket interna en el nombre legible y servicio correspondiente, de forma independiente del protocolo.
       ```c
-      int getnameinfo ( const struct sockaddr *sa, 
+      int getnameinfo ( const struct sockaddr *sa,
                         socklen_t salen,
                         char *host, size_t hostlen,
                         char *serv, size_t servlen, int flags );
@@ -524,10 +524,10 @@ flowchart TD
      ```
    </details>
 
-  
+
   * <details>
     <summary>En C, ejemplo de gethostbyname + inet_ntoa...</summary>
-    
+
      ### dns.c
      ```c
     #include <stdio.h>
@@ -559,7 +559,7 @@ flowchart TD
 
   * <details>
     <summary>Ejemplo de inet_aton + gethostbyaddr (D, B y E clásico)...</summary>
-    
+
     ### obtener-dominio.c
     ```c
     #include <netdb.h>
@@ -609,7 +609,7 @@ flowchart TD
 
   * <details>
     <summary>Ejemplo de getaddrinfo + getnameinfo + freeaddrinfo (D, B y E moderno)...</summary>
-    
+
     ### obtener-dominio-6.c
     ```c
     #include <stdio.h>
@@ -703,7 +703,7 @@ flowchart TD
 
     // Example from: https://pythontic.com/modules/socket/inet_aton
     IPQuad  = "192.168.0.0"
-    IP32Bit = socket.inet_aton(IPQuad) 
+    IP32Bit = socket.inet_aton(IPQuad)
     print(IP32Bit)
     ```
     </details>
@@ -713,7 +713,7 @@ flowchart TD
 
  * Hay dos órdenes de los bytes de una palabra en memoria:
     * Big-endian
-       * Motorola 
+       * Motorola
     * Little-endian
        * Intel, AMD
 
@@ -726,15 +726,15 @@ flowchart TD
 
  * Big-endian es el estándar para el ordenamiento de los bytes usado en TCP/IP
     * También llamado *Network Byte Order*
-    
+
   * En computadores que no utilicen Big-endian es necesario emplear funciones para traducir números entre el formato que utiliza TCP/IP (Big-endian) y el empleado por el propio computador (Little-endian)
-    * Host (Little-Endian) -> Network (Big-Endian): 
+    * Host (Little-Endian) -> Network (Big-Endian):
          ```c
        #include <arpa/inet.h>
       u_long  htonl(u_long hostlong);   // traducir número de 32 bits del formato host al de net
       u_short htons(u_short hostshort); // traducir número de 16 bits del formato host al de net
       ```
-    * Network (Big-Endian) -> host (Little-Endian): 
+    * Network (Big-Endian) -> host (Little-Endian):
          ```c
        #include <arpa/inet.h>
        u_long ntohl(u_long netlong);     // traducir número de 32 bits del formato net a host
@@ -769,7 +769,7 @@ flowchart TD
 
 ## Modelos de comunicación: orientado a conexión
 
-* Uso de TCP mediante sockets stream (SOCK_STREAM) 
+* Uso de TCP mediante sockets stream (SOCK_STREAM)
 
 <html>
 <table>
@@ -823,7 +823,7 @@ graph LR;
 
     CB -.->|conexión| SD
     CC -.->|petición| SE
-    SF -.->|respuesta| CD     
+    SF -.->|respuesta| CD
 
     subgraph "Proceso cliente"
     CA
@@ -977,12 +977,12 @@ graph LR;
    #include <sys/socket.h>
    #include <arpa/inet.h>
    #include <arpa/inet.h>
-  
+
    int read_all ( int sd, char *buffer, size_t total )
    {
        size_t  leidos = 0 ;
        ssize_t result = 0 ;
-  
+
        while (leidos != total) // mientras queda por leer...
        {
           // puede que read NO lea todo lo solicitado de una vez
@@ -990,25 +990,25 @@ graph LR;
           if (-1 == result) {
               return -1 ;
           }
-  
+
           leidos = leidos + result ;
        }
-  
+
        return leidos ;
    }
-  
+
    int main ( int argc, char **argv )
    {
        char *maquina; short puerto;
        struct sockaddr_in server_addr;
        struct hostent *hp;
        int sd, ret;
-  
+
        if (argc != 3) {
            printf("Uso: %s <IP máquina> <puerto>\n", argv[0]);
            return 0;
        }
-  
+
        maquina = argv[1] ;
        puerto  = (short) atoi(argv[2]);
        hp = gethostbyname(maquina);
@@ -1016,20 +1016,20 @@ graph LR;
            printf("ERROR en gethostbyname con '%s'\n", maquina) ;
            return -1 ;
        }
-  
+
        // (1) creación del socket (NO tiene dirección asignada aquí)
        sd = socket(AF_INET, SOCK_STREAM, 0);
        if (sd < 0) {
            perror("ERROR en socket: ") ;
            return -1 ;
        }
-  
+
        // (2) obtener la dirección
        bzero((char *)&server_addr, sizeof(server_addr));
        memcpy (&(server_addr.sin_addr), hp->h_addr, hp->h_length);
        server_addr.sin_family = AF_INET;
        server_addr.sin_port = htons(puerto);
-  
+
        // (3) Solicitud de conexión (con socket remoto)
        // * si el socket local no tiene dirección asignada
        //   entonces se le asigna una automáticamente con puerto temporal
@@ -1038,23 +1038,23 @@ graph LR;
            perror("ERROR en connect: ");
            return -1;
        }
-  
+
        // Preparar el espacio para recepción del mensaje
        char buffer[1024] ;
        strcpy(buffer, "") ;
-  
+
        // (4) transferir datos sobre sd
        size_t leidos = read_all(sd, buffer, sizeof(buffer)) ;
        if (leidos < 0) {
            printf("Error al leer buffer\n") ;
        }
-  
+
        // Imprimir el mensaje recibido
        printf("mensaje del servidor: %s\n", buffer) ;
-  
+
        // (5) Cerrar socket
        close(sd);
-  
+
        return 0;
    }
    ```
@@ -1082,14 +1082,14 @@ graph LR;
   ```python
   import socket
   import sys
-   
+
   sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-   
+
   server_address = ('localhost', 10009)
   sock.bind(server_address)
   sock.listen(5)
-   
+
   while True:
        connection, client_address = sock.accept()
        try:
@@ -1100,7 +1100,7 @@ graph LR;
                    break;
                message += msg.decode()
            message = message + "\0"
-   
+
            print('mensaje: ' + message)
            connection.sendall(message.encode())
        finally:
@@ -1111,21 +1111,21 @@ graph LR;
   ```python
   import socket
   import sys
-  
+
   arguments = len(sys.argv)
   if arguments < 3:
       print('Uso: client_base_tcp  <host> <port>')
       exit()
-  
+
   sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   server_address = (sys.argv[1], int(sys.argv[2]))
   print('conectando a {} y puerto {}'.format(*server_address))
   sock.connect(server_address)
-  
+
   try:
       message = b'Esto es una cadena de prueba\0'
       sock.sendall(message)
-  
+
       message = ''
       while True:
           msg = sock.recv(1)
@@ -1133,8 +1133,8 @@ graph LR;
               break;
           message += msg.decode()
       message = message + "\0"
-  
-      print('mensaje: ' + message)  
+
+      print('mensaje: ' + message)
   finally:
       sock.close()
   ```
@@ -1143,7 +1143,7 @@ graph LR;
 
 ## Modelos de comunicación: NO orientado a conexión
 
-* Uso de UDP mediante sockets datagrama (SOCK_DGRAM) 
+* Uso de UDP mediante sockets datagrama (SOCK_DGRAM)
 
 <html>
 <table>
@@ -1189,7 +1189,7 @@ graph LR;
 
     CC -.->|petición| SE
     SF -.->|respuesta| CD
-    
+
     subgraph "Proceso servidor"
     SA
     SB
@@ -1346,7 +1346,7 @@ graph LR;
 * Para ejecutar, se puede usar:
    ```bash
    user$ ./servidor-base-udp &
-   user$ ./cliente-base-udp 
+   user$ ./cliente-base-udp
    mensaje: 'Hola mundo...' desde 127.0.0.1
    mensaje: 'Hola mundo...'
    user$  kill -9 %1
@@ -1385,7 +1385,7 @@ Las opciones más importantes son:
 
    Por defecto espera un poco de tiempo antes de enviar pocos bytes por si puede agrupar varias pequeñas peticiones. El problema es que la latencia de cada petición particular es mayor. Por eso se recomienda el envío inmediato.
 
-* SO_RCVBUF, SO_SNDBUF: 
+* SO_RCVBUF, SO_SNDBUF:
   * Fijar el tamaño del buffer de envío/recepción
        ```c
        int size = 16*1024;
@@ -1474,7 +1474,7 @@ Las opciones más importantes son:
             if (pid < 0) {
                 perror("Error en fork: ") ;
                 return -1;
-            } 
+            }
             if (0 == pid) // el proceso hijo atiende al cliente
             {
                 // (6) transferir datos sobre newsd
@@ -1516,7 +1516,7 @@ Las opciones más importantes son:
     void *tratar_peticion ( void * arg )
     {
          int s_local;
-         
+
          /// avisar copiado argumentos ////
          pthread_mutex_lock(&m);
          s_local = (* (int *) arg);
@@ -1524,7 +1524,7 @@ Las opciones más importantes son:
          pthread_cond_signal(&c);
          pthread_mutex_unlock(&m);
          /////////////////////
-         
+
          // (6) transferir datos sobre newsd
          size_t total    = sizeof(buffer) ;
          size_t escritos = 0 ;
@@ -1538,10 +1538,10 @@ Las opciones más importantes son:
              if (escritos != total) { // error, no se ha escrito todo
                  printf("Error al escribir buffer") ;
          }
-         
+
          // (7) cerrar socket conectado
          close(s_local);
-     
+
          pthread_exit(NULL);
          return NULL ;
     }
@@ -1550,7 +1550,7 @@ Las opciones más importantes son:
     {
          pthread_attr_init(&attr);
          pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-         
+
          ...
          while (1)
          {
@@ -1565,7 +1565,7 @@ Las opciones más importantes son:
 
             ...
             pthread_create(&thid, &attr, tratar_peticion, (void *)&newsd);
-            
+
             /// Esperar copia de argumentos ///
             pthread_mutex_lock(&m);
             while (busy == 1) {
@@ -1587,7 +1587,7 @@ Las opciones más importantes son:
   ```python
   import threading
   import socket
-  
+
   def worker(sock):
       try:
           ...
@@ -1595,17 +1595,17 @@ Las opciones más importantes son:
           ...
       finally:
           sock.close()
-  
+
   sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
- 
+
   server_address = ('localhost', 12345)
-  sock.bind(server_address)  
+  sock.bind(server_address)
   sock.listen(5)
-  
+
   while True:
       connection, client_address = sock.accept()
- 
+
       t = threading.Thread(target=worker, name='Daemon', args=(connection,))
       t.start()
   ```
@@ -1634,11 +1634,10 @@ Las opciones más importantes son:
 ## Trabajar con heterogeneidad con protocolos basados en texto (1/2)
 
  * Para la lectura de cadenas de caracteres con sockets stream
-    * Cuando una cadena de caracteres finaliza con el código ASCII ‘\0’ no se sabe a priori su longitud y no se puede usar la función recvMessage para leerla.
-    * En este caso hay que leer byte a byte hasta leer el el código ASCII ‘\0’, y se puede usar la función readLine para ello.
-    **lines.c**
+    * Cuando una cadena de caracteres finaliza con el código ASCII '\0' no se sabe a priori su longitud (y por tanto cuántos bytes hay que leer a priori)
+    * En este caso hay que leer byte a byte hasta leer el el código ASCII '\0', y se puede usar la función readLine para ello:
        ```c
-   
+
         ssize_t readLine ( int fd, void *buffer, size_t n )
         {
             ssize_t numRead;  /* num of bytes fetched by last read() */
@@ -1681,11 +1680,39 @@ Las opciones más importantes son:
        ```
 
  * Para la escritura de cadenas de caracteres con sockets stream
-    * Para el envío se puede usar sendMessage PERO hay que indicar el número de caracteres incluido el fin de cadena:
+    * Para el envío se puede usar *sendMessage* PERO hay que indicar el número de caracteres incluido el fin de cadena:
       ```c
+
+      int sendMessage ( int socket, char * buffer, int len )
+      {
+          int r;
+          int l = len;
+
+          do
+          {
+               r = write(socket, buffer, l);
+               if (r < 0) {
+                   return (-1);   /* fail */
+               }
+               l = l - r;
+               buffer = buffer + r;
+
+          } while ((l>0) && (r>=0));
+
+          return 0;
+      }
+
+      int writeLine ( int socket, char *buffer )
+      {
+          return sendMessage(socket, buffer, strlen(buffer)+1);
+      }
+
+      ...
+
       char buffer[256] ;
-      strcpy(buffer, "Cadena a enviar") ;
-      sendMessage(socket, buffer, strlen(buffer)+1) ;
+      strcpy(buffer, "Cadena a enviar...") ;
+      writeLine(sd, buffer) ;        // se envía hasta el fin de cadena (incluido)
+      sendMessage(sd, buffer, 256) ; // se envía 256 caracteres (no todos se usan)
       ```
 
 * <details>
@@ -1702,9 +1729,10 @@ Las opciones más importantes son:
          return str
 
   def write_string(sock, str):
-         sock.sendall(str) 
+         sock.sendall(str)
   ```
   </details>
+
 
 ## Trabajar con heterogeneidad con protocolos basados en texto (2/2)
 
@@ -1712,24 +1740,46 @@ Las opciones más importantes son:
     * Usando readLine se lee la cadena de caracteres que lo representa.
     * A continuación se transforma a número.
        ```c
-      int n ;
-      char buffer[256];
-      char *endptr ;
-      
-      readLine(socket, buffer, 256) ;
-      n = strtol(buffer, &endptr, 10) ; // n = atoi(buffer) ;
-      if (endptr[0] != '\0') {
-          printf("Error: %s no es un número en base %d\n", buffer, 10) ;
-      }
+
+       int read_int ( int socket, int *number )
+       {
+          char buffer[1024];
+          char *endptr ;
+
+          readLine(socket, buffer, 1024) ;
+          (*number) = strtol(buffer, &endptr, 10) ; // n = atoi(buffer) ;
+          if (endptr[0] != '\0') {
+              printf("Error: %s no es un número en base %d\n", buffer, 10) ;
+              return -1 ;
+          }
+
+          return 0 ;
+       }
+
+       ...
+
+       int n = 0 ;
+       int ret = read_int(sd, &n) ;
+       printf("ret=%d y n=%d\n", ret, n) ;
        ```
 
  * Para enviar un número con sockets stream
     * Para el envío se puede usar sendMessage PERO hay que indicar el número de caracteres incluido el fin de cadena:
       ```c
+
+      int write_int ( int socket, int number )
+      {
+          char buffer[1024];
+
+          sprintf(buffer, "%d", number);
+          sendMessage(socket, buffer, strlen(buffer)+1);
+          return 0 ;
+      }
+
+      ...
+
       int n = 1234;
-      char buffer[256];
-      sprintf(buffer, "%d", n);
-      sendMessage(socket, buffer, strlen(buffer)+1);
+      write_int(sd, n) ;
       ```
 
     * Se puede transformar números en coma flotante, etc. de forma similar.
@@ -1746,13 +1796,13 @@ Las opciones más importantes son:
              break;
          a += msg.decode()
          return a
-  
+
   def read_number(sock):
          a = read_string(sock)
          return(int(a,10))
 
   def write_string(sock, str):
-         sock.sendall(str) 
+         sock.sendall(str)
 
   def write_number(sock, num):
          a = str(num) + b'\0'
