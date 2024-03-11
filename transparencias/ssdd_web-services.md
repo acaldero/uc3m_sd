@@ -6,17 +6,15 @@
 
 ## Contenidos
 
-  * [Motivación en el uso de servicios Web](#por-que-usar-un-servicio-web)
+  * [Motivación en el uso de servicios Web](#primera-generacion-de-la-www-contenido-estatico)
   * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-eventos-enviados-por-servidor--sse-)
   * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gSOAP-XML--cliente-solo,-en-C-)
   * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gSOAP/XML--cliente-y-servidor--en-C-)
 
 
-
-## Por qué usar un Servicio Web
+## Primera generación de la WWW: contenido estático
 
 En la WWW se usa una arquitectura cliente (ejemplo: navegador web) y servidor (ejemplo: servidor web Apache), con un protocolo HTTP basado en texto. \
-Inicialmente los servidores Web se han usado para enviar el contenido estático guardado en ficheros. \
 Por ejemplo, es posible pedir una página web a mano:
 * Ejecutamos:
   ```
@@ -57,9 +55,19 @@ La salida tiene dos partes:
 * Una cabecera con los metadatos de la respuesta.
 * El contenido de la página pedida (index.html) en formato texto HTML.
 
-La siguiente generación, el contenido se generaba parcialmente o totalmente de forma dinámica (en el servidor con tecnologías como servlets, JSP, PHP, etc. así en el cliente con tecnologías como Applets, JavaScript, etc.)
-Era posible usar el método POST para enviar información útil (argumentos) para la generación dinámica. \
-Hay un paso adicional interesante, ¿y si detrás de un fichero dinámico no hay un fichero sino un programa al que enviar los argumentos y que nos responda con el resultado? \
+Inicialmente los servidores Web se han usado para enviar el contenido estático guardado en ficheros. \
+Esta primera generación permitía servir información escrita previamente en ficheros en formato HTML.
+
+
+## Segunda generación de la WWW: contenido dinámico
+
+La siguiente generación, el contenido se generaba parcialmente o totalmente de forma dinámica:
+ * En el servidor con tecnologías como servlets, JSP, PHP, etc.
+ * En el cliente con tecnologías como Applets, JavaScript, etc.
+
+Hay un paso adicional interesante, ¿y si detrás de un fichero dinámico no hay un fichero sino un programa al que enviar los parámetros y que nos responda con el resultado? 
+El método POST se usaba para enviar información útil para la generación dinámica: los "parámetros" con los que trabajar. 
+
 Por tanto tenemos el potencial de:
 * Al escribir:
   ```
@@ -79,13 +87,81 @@ Por tanto tenemos el potencial de:
   5
   ```
 
-Y de esta forma podemos tener un posible servicio web... afortunadamente hay distintos estándares que nos permiten construir servicios web en los que se evite en lo posible incompatibilidades. \
-De esta forma se puede usar un servicio web, facilitando el despliegue de una nueva generación de aplicaciones distribuidas.
+Inicialmente este "dinamismo" se usó para permitir a las personas poder indicar términos de búsqueda y tener una página de resultados asociada a esos términos construida de forma dinámica.
+
+En la segunda generación se caracterizaba inicialmente por que:
+  * Había distintas tecnologías no siempre compatibles.
+  * Estaba muy orientada a interacción con personas.
+  * Por seguridad los cortafuegos solo solía dejar pasar el tráfico hacia el puerto 80.
+
+
+## Por qué usar un Servicio Web
+
+No obstante, si se usa este mecanismo de generación dinámica para comunicar aplicaciones entre sí, tenemos la base para construir un posible servicio Web.
+En la tercera generación:
+ * Se empezó a usar el mecanismo de generación dinámica de contenido para b2b (*business to business*).
+ * Aparecieron distintos estándares que nos permiten construir servicios web en los que se evite en lo posible incompatibilidades.
+ * Se empezó a definir un servicio web en base a generación dinámica de contenido, facilitando el despliegue de una nueva generación de aplicaciones distribuidas.
+
+Un **servicio web** (*Web Service*) es un conjunto de protocolos y estándares que sirven para intercambiar datos entre aplicaciones en redes de ordenadores como Internet:
+   * **Distintas aplicaciones de software** desarrolladas en lenguajes de programación diferentes, y ejecutadas sobre cualquier plataforma, pueden utilizar los servicios web para intercambiar datos.
+   * Una única **aplicación distribuida** puede descomponerse en servicios modulares independientes débilmente acoplados que pueden interoperar entre sí mediante el paradigma cliente/servidor.
+     * **Arquitectura SOA**: Arquitectura en la que el software se expone como “servicio” servicio”, que es invocado utilizando un protocolo estándar de comunicación
+   * La **interoperabilidad** se consigue mediante la adopción de **estándares abiertos**.
+     * Las organizaciones OASIS y W3C son los comités responsables de la arquitectura y reglamentación de los servicios Web.
+
 
 
 ## Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)
 
-Usaremos el ejemplo disponible en [ws-rest-sse-bash](ws-rest-sse-bash/README.md)
+El siguiente es un ejemplo de [Server Side Events](https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events). \
+Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).
+
+Este ejemplo está disponible en [ws-rest-sse-bash](/ws-rest-sse-bash/README.md) y está compuesto de 3 ficheros:
+ * El script **`demo-server.sh`**: manda la salida del script **`demo.sh`** al mandato **nc** (*net cat*) que está escuchando en el puerto 8080.
+   ```bash
+   #!/bin/bash
+   set -x
+   ./demo.sh | nc -l -p 8080
+   ```
+ * El script **`demo.sh`**: se encarga de mandar las cabeceras de respuesta de un servidor web, y luego cada segundo manda el instante de tiempo dentro de un JSON.
+   ```bash
+   #!/bin/bash
+   # (1) cabeceras
+   echo "HTTP/1.1 200 OK"
+   echo "Access-Control-Allow-Origin: *"
+   echo "Content-Type: text/event-stream"
+   echo "Cache-Control: no-cache"
+   echo ""
+   # (2) cada segundo manda "data: {'timestamp': <instante>}"
+   while [ 1 ]; do
+     T=$(date +%H:%M:%S)
+     echo "data: {'timestamp': $T}"
+     echo ""
+     echo ""
+     sleep 1
+   done
+   ```
+ * La página web **`demo-client.html`**: se encarga de mostrar la información que va llegando en tiempo real.
+   ```html
+   <!DOCTYPE html>
+   <html>
+     <head><meta charset="utf-8" /></head>
+     <body>
+     <div id="msg1"></div><br>
+     <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div><br>
+     <script>
+       var s = new EventSource('http://localhost:8080');
+           s.onmessage = function(e) {
+               document.getElementById("msg1").innerHTML = e.data ;
+               var old_msg2 = document.getElementById("msg2").innerHTML ;
+               document.getElementById("msg2").innerHTML = e.data + '<br>' + old_msg2 ;
+           };
+     </script>
+     </body>
+   </html>
+   ```
+
 
 Los pasos para la ejecución típica son:
  * Ejecutar el servidor:
@@ -97,12 +173,9 @@ Los pasos para la ejecución típica son:
    firefox demo-client.html
    ```
 
-Como puede observarse, demo-server.sh manda la salida del script "demo.sh" a un net-cat que está escuchando en el puerto 8080. \
-El script "demo.sh" se encarga de mandar las cabeceras de respuesta de un servidor web, junto a cada segundo el instante de tiempo dentro de un JSON. \
-La página web "demo-client.html" se encarga de mostrar la información que va llegando en tiempo real.
 
-Se usa en este ejemplo el [Server Side Events](https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events). \
-Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).
+En la página Web `demo-client.html` cada segundo llega un evento por parte del script `demo.sh` a través del mandato `nc`que simula un servidor web en el puerto 8080.
+En lugar de mostrarse en la página Web el instante de tiempo cada segundo, se puede mandar otro tipo de información (por ejemplo, valores de los sensores), con distinto tipo de periodicidad y distinto tipo de visualización o procesamiento.
 
 
 
@@ -114,15 +187,15 @@ Dicho ejemplo se basa en el servicio de calculadora que está en: http://www.gen
 
 Los pasos a seguir habitualmente son los siguientes:
 * Primero hay que generar el archivo de cabecera calc.h con la interfaz del servicio a partir de la descripción del servicio dada en WSDL:
-  ```
+  ```bash
   wsdl2h -c -o calc.h http://www.genivia.com/calc.wsdl
   ```
 * A continuación hay que generar los resguardos (stubs) a partir de la interfaz de calc.h:
-  ```
+  ```bash
   soapcpp2 -CL calc.h
   ```
 * Hay que crear la aplicación "app-d.c" que use el servicio:
-  ```
+  ```c
   #include "calc.nsmap"
   #include "soapH.h"
 
@@ -143,14 +216,14 @@ Los pasos a seguir habitualmente son los siguientes:
   }
   ```
 * Hay que compilar todo, por ejemplo usando:
-  ```
+  ```bash
   gcc -o app-d \
       -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ \
       -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
       app-d.c soapC.c soapClient.c -lgsoap
   ```
 * La ejecución del ejemplo sería:
-  ```
+  ```bash
   $ ./app-d
   result = 5.79
   ```
@@ -164,15 +237,15 @@ Dicho ejemplo es el ejemplo de calculadora disponible en: https://www.genivia.co
 
 Los pasos a seguir habitualmente son los siguientes:
 * Primero hay que generar el archivo de cabecera calc.h con la interfaz del servicio a partir de la descripción del servicio dada en WSDL:
-  ```
+  ```bash
   wsdl2h -c -o calc.h http://www.genivia.com/calc.wsdl
   ```
 * A continuación hay que generar los resguardos (stubs) a partir de la interfaz de calc.h:
-  ```
+  ```bash
   soapcpp2 -CL calc.h
   ```
 * Hay que crear la aplicación "app-d.c" que use el servicio:
-  ```
+  ```c
   #include "calc.nsmap"
   #include "soapH.h"
 
@@ -193,7 +266,7 @@ Los pasos a seguir habitualmente son los siguientes:
   }
   ```
 * NUEVO: hay que crear la aplicación servidora "lib-server.c" que implementa el servicio:
-  ```
+  ```c
   #include "soapH.h"
   #include "calc.nsmap"
 
@@ -226,7 +299,7 @@ Los pasos a seguir habitualmente son los siguientes:
   }
   ```
 * NUEVO: Hay que compilar todo, por ejemplo usando:
-  ```
+  ```bash
   gcc -o app-d \
       -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
       app-d.c soapC.c soapClient.c -lgsoap
@@ -235,10 +308,10 @@ Los pasos a seguir habitualmente son los siguientes:
       lib-server.c soapC.c soapClient.c -lgsoap
   ```
 * Es posible ejecutar por un lado el servidor (lib-server) y por otro el cliente (app-d) de la siguiente manera:
-```
-$ ./lib-server &
-$ ./app-d
-```
+  ```bash
+  $ ./lib-server &
+  $ ./app-d
+  ```
 
 
 Gracias al mandato soapcpp2 se han generado gran parte del trabajo, como se puede ver en la siguiente figura:
@@ -247,5 +320,6 @@ Gracias al mandato soapcpp2 se han generado gran parte del trabajo, como se pued
 
 **Información adicional**:
   * [t8_web-services.pdf](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t8_web-services.pdf)
-  * <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t8_web-services.pdf">t8_web-services.pdf</a>
+
+
 

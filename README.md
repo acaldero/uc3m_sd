@@ -42,6 +42,7 @@
       <td>Servicios Web</td>
       <td><ul>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_web-services.md">Introducción a servicios web</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t8_web-services.pdf">t8_web-services.pdf</a></li>
       </ul></td>
   </tr>
   <tr><td>6</td>

@@ -11,7 +11,7 @@ cd distribuido-rest-json-flask
 ./run.sh
 ```
 
-Si no se tiene instalado gsoap, se puede instalar con:
+Si no se tiene instalado flask y requests, se puede instalar con:
  * Linux (Ubuntu, Debian o similar):
    ```
    sudo apt-get install -y pip3-install
