@@ -7,6 +7,8 @@
 ## Contenidos
 
   * [Motivación en el uso de servicios Web](#primera-generacion-de-la-www-contenido-estatico)
+  * [Estilos de servicios web: SOAP vs REST](#estilos-de-servicios-web-soap-vs-rest)
+  * [Ejemplo simple de servicio web (servidor, en Python)](#ejemplo-simple-de-servicio-web--servidor--en-python-)
   * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-eventos-enviados-por-servidor--sse-)
   * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gSOAP-XML--cliente-solo,-en-C-)
   * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gSOAP/XML--cliente-y-servidor--en-C-)
@@ -110,6 +112,171 @@ Un **servicio web** (*Web Service*) es un conjunto de protocolos y estándares q
    * La **interoperabilidad** se consigue mediante la adopción de **estándares abiertos**.
      * Las organizaciones OASIS y W3C son los comités responsables de la arquitectura y reglamentación de los servicios Web.
 
+
+## Estilos de servicios web: SOAP vs REST
+
+Hay dos estilos principales:
+ * Servicios web **SOAP** (*Simple Object Accces Protocol*)
+ * **REST** (*RESTful Architecture Style*)
+
+<html>
+<table>
+<tr><th></th><th>SOAP</th><th>REST</th></tr>
+<tr>
+<td>Qué ofrece</td>
+<td>Un protocolo de mensajes</td>
+<td>Un estilo de arquitectura software</td>
+</tr>
+<tr>
+<td>Una URL representa...</td>
+<td>Acceso a un API</td>
+<td>Un recurso</td>
+</tr>
+<tr>
+<td>Métodos HTTP</td>
+<td>Habitualmente solo precisa POST (y el algún caso simple puede usarse GET)</td>
+<td>POST y/o PUT/GET/UPDATE/DELETE se corresponden a CRUD (Create/Read/Update/Delete)</td>
+</tr>
+<tr>
+<td>Representación de datos</td>
+<td>XML</td>
+<td>JSON (pero también HTML, texto plano, XML)</td>
+</tr>
+<tr>
+<td>Se puede usar caché</td>
+<td>No</td>
+<td>Si</td>
+</tr>
+<tr>
+<td>A destacar</td>
+<td>Seguridad y escalabilidad</td>
+<td>Sencillez y ligero</td>
+</tr>
+</table>
+</html>
+
+   ![REST versus SOAP](./ssdd_web-services/ssdd_web-services_drawio_32.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_32.svg">
+
+### Ejemplo de comunicación con SOAP
+
+Para la siguiente función:
+  ```c
+  Float precio ;
+  Precio = ObtenerPrecio(mesa);
+  ```
+  En el caso de SOAP:
+   * Una **petición** podría representarse como:
+     ```xml
+     POST StockQuote HTTP/1.1
+     ...
+     <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+      SOAP-ENV:encodingStyle ="http://schemas.xmlsoap.org/soap/
+     <SOAP-ENV:Body>
+       <m:ObtenerPrecio xmlns:m="http://example.com/stockquote.xsd">
+          <item>mesa</item>
+       </m:ObtenerPrecio>
+     </SOAP-ENV:Body>
+     </SOAP-ENV:Envelope>
+     ```
+   * Una **respuesta** podría representarse como:
+     ```xml
+     HTTP/1.1 200 OK
+     ...
+     <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+      SOAP-ENV:encodingStyle ="http://schemas.xmlsoap.org/soap/
+     <SOAP-ENV:Body>
+        <m:ObtenerPrecioResponse xmlns:m="http://example.com/stockquote.xsd">
+          <Precio>123.5</Precio>
+        </m:ObtenerPrecioResponse>
+     </SOAP-ENV:Body>
+     </SOAP-ENV:Envelope>
+     ```
+
+Principales tecnologías (protocolos, etc.) usadas con servicios web basados en SOAP:
+* HTTP: transporte utilizado
+* XML: describe la información, los mensajes
+* SOAP: empaqueta la información y la transmite entre el cliente y el proveedor del servicio
+* WSDL: descripción del servicio
+* UDDI: lista de servicios disponibles
+   ![Pila de protocolos habitual en servicios web](./ssdd_web-services/ssdd_web-services_drawio_29.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_29.svg">
+
+### Ejemplo de comunicación con REST
+
+Para la siguiente función:
+  ```c
+  Float precio ;
+  Precio = ObtenerPrecio(mesa);
+  ```
+  En el caso de REST:
+   * Una **petición** podría representarse como:
+     ```xml
+     POST /precio HTTP/1.1
+     Content-Type: application/json
+     ...
+     {"item":"mesa"}   
+     ```
+   * Una **respuesta** podría representarse como:
+     ```xml
+     HTTP/1.0 201 CREATED
+     ...
+     123.5   
+     ```
+
+Principales tecnologías (protocolos, etc.) usadas con servicios web basados en REST:
+* HTTP: transporte utilizado
+* JSON: describe la información como estructura de datos en JavaScript
+   
+
+## Ejemplo simple de servicio web (servidor, en Python)
+
+El siguiente ejemplo de servicio web implementa el servidor de dicho servicio web en Python, pero para el cliente utiliza el mandato `curl` en línea de mandatos.
+
+ * El script **`app.py`** se encarga de implementar un servicio web en Python usando los paquetes *Flask*, *request* y *jsonify*:
+   ```python
+   from flask import Flask, request, jsonify
+
+   app = Flask(__name__)
+   precios = { "mesa": "123.5", "reserva": "12" }
+
+   @app.route('/precio', methods=["POST"])
+   def add_precio():
+       if not request.is_json:
+          return {"error": "Request must be JSON"}, 415
+       da = request.get_json()
+       if None == da['item']:
+          return {"error": "Request must content an item"}, 415
+       item = da['item']
+       return precios[item], 201
+   ```
+
+ * El script **`run.sh`** se encarga de (1) iniciar el servicio web, (2) hacer una petición REST y (3) parar el servicio web:
+   ```bash
+   #!/bin/bash
+   set -x
+   echo " (1) Inicializar servicio web..."
+   FLASK_APP=app.py FLASK_DEBUG=true  flask run &
+   sleep 2
+   echo " (2) Obtener el precio de 'mesa'"
+   curl -i http://127.0.0.1:5000/precio \
+        -X POST \
+        -H 'Content-Type: application/json' \
+        -d '{"item":"mesa"}'
+   sleep 1
+   echo " (3) Finalizar servicio web..."
+   kill $(pgrep -f flask)
+   ```
+
+ * La salida es:
+   ```bash
+   127.0.0.1 - - [12/Mar/2024 02:42:00] "POST /precio HTTP/1.1" 201 -
+   HTTP/1.0 201 CREATED
+   Content-Type: text/html; charset=utf-8
+   Content-Length: 5
+   Server: Werkzeug/2.0.3 Python/3.8.10
+   Date: Tue, 12 Mar 2024 01:42:00 GMT
+
+   123.5
+   ```
 
 
 ## Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)
