@@ -155,7 +155,7 @@ Hay dos estilos principales:
 </table>
 </html>
 
-   ![REST versus SOAP](./ssdd_web-services/ssdd_web-services-drawio_32.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services-drawio_32.svg">
+   ![REST versus SOAP](./ssdd_web-services/ssdd_web-services_drawio_32.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_32.svg">
 
 ### Ejemplo de comunicación con SOAP
 

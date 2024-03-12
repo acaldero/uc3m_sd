@@ -10,10 +10,15 @@
    * [Motivación](#introducción-a-sockets)
    * [Dominios y tipos](#sockets-dominios-de-comunicación)
    * [Direcciones y puertos](#direcciones)
+     * [Ejemplos en C y Python](#ejemplos-de-conversión)
    * [Representación de datos](#orden-de-los-bytes-big-endian-y-little-endian)
  * Modelos de comunicación
-   * [Stream o orientado a conexión](#modelos-de-comunicación-orientado-a-conexión)
-   * [Datagram o no orientado a conexión](#modelos-de-comunicación-no-orientado-a-conexión)
+   * [Stream o orientado a conexión](#ejemplo-de-uso-de-sockets-orientados-a-conexión-en-c)
+     * [Ejemplo en C](#ejemplo-de-uso-de-sockets-orientados-a-conexión-en-c)
+     * [Ejemplo en Python](#ejemplo-de-uso-de-sockets-orientados-a-conexión-en-python)
+   * [Datagram o no orientado a conexión](#ejemplo-de-uso-de-sockets-no-orientados-a-conexión-en-c)
+     * [Ejemplo en C](#ejemplo-de-uso-de-sockets-no-orientados-a-conexión-en-c)
+     * [Ejemplo en Python](#ejemplo-de-uso-de-sockets-no-orientados-a-conexión-en-python)
  * Aspectos adicionales
    * [Opciones más comunes de un socket](#opciones-importantes-asociadas-a-un-socket)
    * [Servidor secuencial vs procesos pesados vs hilos](#servidor-secuencial-vs-procesos-pesados-vs-hilos)
@@ -851,7 +856,7 @@ graph LR;
 ```
 
 
-## Ejemplo de uso de sockets orientados a conexión
+## Ejemplo de uso de sockets orientados a conexión (en C)
 
 **servidor-base-tcp.c**
    ```c
@@ -1075,8 +1080,7 @@ graph LR;
   ```
 
 
-* <details>
-  <summary>En Python...</summary>
+## Ejemplo de uso de sockets orientados a conexión (en Python)
 
   ### server_base_tcp.py
   ```python
@@ -1138,10 +1142,19 @@ graph LR;
   finally:
       sock.close()
   ```
-  </details>
+
+* Para ejecutar, se puede usar:
+   ```bash
+   user$ python3 server_base_tcp.py & 
+   user$ python3 client_base_tcp.py  localhost 10009
+   conectando a localhost y puerto 10009
+   mensaje: Esto es una cadena de prueba
+   mensaje: Esto es una cadena de prueba
+   user$  kill -9 %1
+  ```
 
 
-## Modelos de comunicación: NO orientado a conexión
+## Modelos de comunicación: NO orientado a conexión (en C)
 
 * Uso de UDP mediante sockets datagrama (SOCK_DGRAM)
 
@@ -1349,6 +1362,54 @@ graph LR;
    user$ ./cliente-base-udp
    mensaje: 'Hola mundo...' desde 127.0.0.1
    mensaje: 'Hola mundo...'
+   user$  kill -9 %1
+  ```
+
+
+## Ejemplo de uso de sockets NO orientados a conexión (en Python)
+
+  ### server_base_udp.py
+  ```python
+  import socket
+  import sys
+
+  sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+  server_address = ('localhost', 10009)
+  sock.bind(server_address)
+
+  while True:
+       message, addr = sock.recvfrom(1024)  
+       print("mensaje: ", message) 
+  ```
+
+  ### client_base_udp.py
+  ```python
+  import socket
+  import sys
+
+  arguments = len(sys.argv)
+  if arguments < 3:
+      print('Uso: client_base_tcp  <host> <port>')
+      exit()
+
+  sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+  server_address = (sys.argv[1], int(sys.argv[2]))
+  print('destino con dirección {} y puerto {}'.format(*server_address))
+
+  try:
+      message = 'Esto es una cadena de prueba\0'
+      sock.sendto(bytes(message, "utf-8"), server_address)
+  finally:
+      sock.close()
+  ```
+
+* Para ejecutar, se puede usar:
+   ```bash
+   user$ python3 server_base_udp.py & 
+   user$ python3 client_base_udp.py  localhost 10009
+   destino con dirección localhost y puerto 10009
+   mensaje:  b'Esto es una cadena de prueba\x00'
    user$  kill -9 %1
   ```
 
