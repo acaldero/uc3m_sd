@@ -6,12 +6,12 @@
 
 ## Contenidos
 
-  * [Motivación en el uso de servicios Web](#primera-generacion-de-la-www-contenido-estatico)
+  * [Motivación en el uso de servicios Web](#primera-generación-de-la-www-contenido-estático)
   * [Estilos de servicios web: SOAP vs REST](#estilos-de-servicios-web-soap-vs-rest)
-  * [Ejemplo simple de servicio web (servidor, en Python)](#ejemplo-simple-de-servicio-web--servidor--en-python-)
-  * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-eventos-enviados-por-servidor--sse-)
-  * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gSOAP-XML--cliente-solo,-en-C-)
-  * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gSOAP/XML--cliente-y-servidor--en-C-)
+  * [Ejemplo simple de servicio web (servidor, en Python)](#ejemplo-simple-de-servicio-web-servidor-en-python)
+  * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-eventos-enviados-por-servidor-sse)
+  * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
+  * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c)
 
 
 ## Primera generación de la WWW: contenido estático
@@ -155,7 +155,7 @@ Hay dos estilos principales:
 </table>
 </html>
 
-   ![REST versus SOAP](./ssdd_web-services/ssdd_web-services_drawio_32.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_32.svg">
+   ![REST versus SOAP](./ssdd_web-services/ssdd_web-services-drawio_32.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services-drawio_32.svg">
 
 ### Ejemplo de comunicación con SOAP
 
@@ -197,8 +197,8 @@ Principales tecnologías (protocolos, etc.) usadas con servicios web basados en 
 * XML: describe la información, los mensajes
 * SOAP: empaqueta la información y la transmite entre el cliente y el proveedor del servicio
 * WSDL: descripción del servicio
-* UDDI: lista de servicios disponibles
-   ![Pila de protocolos habitual en servicios web](./ssdd_web-services/ssdd_web-services_drawio_29.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_29.svg">
+* UDDI: lista de servicios disponibles \
+![Pila de protocolos habitual en servicios web](./ssdd_web-services/ssdd_web-services_drawio_29.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_29.svg">
 
 ### Ejemplo de comunicación con REST
 
