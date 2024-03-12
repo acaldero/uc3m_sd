@@ -13,10 +13,10 @@
      * [Ejemplos en C y Python](#ejemplos-de-conversión)
    * [Representación de datos](#orden-de-los-bytes-big-endian-y-little-endian)
  * Modelos de comunicación
-   * [Stream o orientado a conexión](#ejemplo-de-uso-de-sockets-orientados-a-conexión-en-c)
+   * [Stream o orientado a conexión](#modelos-de-comunicaci%C3%B3n-orientado-a-conexi%C3%B3n)
      * [Ejemplo en C](#ejemplo-de-uso-de-sockets-orientados-a-conexión-en-c)
      * [Ejemplo en Python](#ejemplo-de-uso-de-sockets-orientados-a-conexión-en-python)
-   * [Datagram o no orientado a conexión](#ejemplo-de-uso-de-sockets-no-orientados-a-conexi%C3%B3n)
+   * [Datagram o no orientado a conexión](#modelos-de-comunicación-no-orientado-a-conexión-en-c)
      * [Ejemplo en C](#ejemplo-de-uso-de-sockets-no-orientados-a-conexi%C3%B3n)
      * [Ejemplo en Python](#ejemplo-de-uso-de-sockets-no-orientados-a-conexión-en-python)
  * Aspectos adicionales
