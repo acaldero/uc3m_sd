@@ -18,12 +18,12 @@
 
 Los servicios web están al nivel de un servicio de red y un nivel más del paradigma de procedimiento remoto:
 
-   ![Paradigmas por niveles](./ssdd_web-services/ssdd_web-services_drawio_4.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_4.svg">
+   ![Paradigmas por niveles](/transparencias/ssdd_web-services/ssdd_web-services-drawio_4.svg)
 
 #### Transparencia de localización
 Los servicios web (y los servicios de red) son una extensión al paradigma de invocación de procedimientos remotos en el que se añade un servicio de directorio que proporcionan la referencia a los servicios disponibles:
 
-   ![Paradigmas por niveles](./ssdd_web-services/ssdd_web-services_drawio_5.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_5.svg">
+   ![Transparencia de localización](/transparencias/ssdd_web-services/ssdd_web-services-drawio_5.svg)
 
 Este servicio de directorio permite *transparencia de localización*, lo que es un nivel de abstracción extra.
 Los pasos habituales para el uso del servicio de directorio (o registro) son:
@@ -190,8 +190,8 @@ Hay dos estilos principales:
 </tr>
 <tr>
 <td>Registro</td>
-<td><img src="/transparencias/ssdd_web-services/ssdd_web-services_drawio_soap.svg"></td>
-<td><img src="/transparencias/ssdd_web-services/ssdd_web-services_drawio_rest.svg"></td>
+<td><img src="/transparencias/ssdd_web-services/ssdd_web-services-drawio_soap.svg"></td>
+<td><img src="/transparencias/ssdd_web-services/ssdd_web-services-drawio_rest.svg"></td>
 </tr>
 </table>
 </html>
