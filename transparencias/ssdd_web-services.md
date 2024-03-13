@@ -6,12 +6,48 @@
 
 ## Contenidos
 
-  * [Motivación en el uso de servicios Web](#primera-generación-de-la-www-contenido-estático)
+  * [Motivación en el uso de servicios Web](#introducción)
   * [Estilos de servicios web: SOAP vs REST](#estilos-de-servicios-web-soap-vs-rest)
   * [Ejemplo simple de servicio web REST (servidor y cliente en Python)](#ejemplo-simple-de-servicio-web-rest-servidor-y-cliente-en-python)
   * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-eventos-enviados-por-servidor-sse)
   * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
   * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c)
+
+
+## Introducción
+
+Los servicios web están al nivel de un servicio de red y un nivel más del paradigma de procedimiento remoto:
+
+   ![Paradigmas por niveles](./ssdd_web-services/ssdd_web-services_drawio_4.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_4.svg">
+
+#### Transparencia de localización
+Los servicios web (y los servicios de red) son una extensión al paradigma de invocación de procedimientos remotos en el que se añade un servicio de directorio que proporcionan la referencia a los servicios disponibles:
+
+   ![Paradigmas por niveles](./ssdd_web-services/ssdd_web-services_drawio_5.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_5.svg">
+
+Este servicio de directorio permite *transparencia de localización*, lo que es un nivel de abstracción extra.
+Los pasos habituales para el uso del servicio de directorio (o registro) son:
+1. El proceso solicitante contacta con el servicio de directorio
+2. El servicio de directorio devuelve la referencia al servicio solicitado
+3. Usando la referencia, el proceso solicitante interactúa con el servicio
+
+El disponer de un repositorio de servicios web ofrecidos permite:
+   * **Distintas aplicaciones de software** desarrolladas en lenguajes de programación diferentes, y ejecutadas sobre cualquier plataforma, pueden utilizar los servicios web para intercambiar datos.
+   * Una única **aplicación distribuida** puede descomponerse en servicios modulares independientes débilmente acoplados que pueden interoperar entre sí mediante el paradigma cliente/servidor.
+     * **Arquitectura SOA**: Arquitectura en la que el software se expone como “servicio”, que es invocado utilizando un protocolo estándar de comunicación
+     *  Es posible componer y combinar servicios web para generar nuevas aplicaciones distribuidas (por ejemplo: agencia de viajes que interactúa con hoteles, aviones, banco, etc.)
+
+
+#### Invocación remota usando la Web
+
+En el directorio se puede dar de alta el servicio (paso 0) y dar de baja. 
+Dar de alta un servicio puede suponer incluir en el directorio lo siguiente:
+* Identificación del servicio.
+* Dirección y puerto de la máquina donde se ofrece.
+* Una descripción del API que permite diseñar, implementar y probar un cliente (consumidor) que pida el servicio a un servidor (proveedor).
+
+A partir de la descripción del API puede ser posible generar los resguardos (stubs) que facilitan el despliegue de forma parecida a como `rpcgen` automatiza la generación de parte del código en las RPC. 
+* La generación de código mediante una herramienta de este tipo permite garantizar que se ha validado dicho proceso de generación (en lugar de basarse en una generación de código basada en probabilidad que puede no funcionar como es el caso de herramientas puramente basadas en IA).
 
 
 ## Primera generación de la WWW: contenido estático
@@ -106,9 +142,6 @@ En la tercera generación:
  * Se empezó a definir un servicio web en base a generación dinámica de contenido, facilitando el despliegue de una nueva generación de aplicaciones distribuidas.
 
 Un **servicio web** (*Web Service*) es un conjunto de protocolos y estándares que sirven para intercambiar datos entre aplicaciones en redes de ordenadores como Internet:
-   * **Distintas aplicaciones de software** desarrolladas en lenguajes de programación diferentes, y ejecutadas sobre cualquier plataforma, pueden utilizar los servicios web para intercambiar datos.
-   * Una única **aplicación distribuida** puede descomponerse en servicios modulares independientes débilmente acoplados que pueden interoperar entre sí mediante el paradigma cliente/servidor.
-     * **Arquitectura SOA**: Arquitectura en la que el software se expone como “servicio” servicio”, que es invocado utilizando un protocolo estándar de comunicación
    * La **interoperabilidad** se consigue mediante la adopción de **estándares abiertos**.
      * Las organizaciones OASIS y W3C son los comités responsables de la arquitectura y reglamentación de los servicios Web.
 
@@ -143,19 +176,25 @@ Hay dos estilos principales:
 <td>JSON (pero también HTML, texto plano, XML)</td>
 </tr>
 <tr>
-<td>Se puede usar caché</td>
-<td>No</td>
-<td>Si</td>
+<td>Ventajas</td>
+<td>
+<li> Seguridad</li>
+<li> Flexibilidad</li>
+</td>
+<td>
+<li> Precisa menos ancho de banda</li>
+<li> Tecnología sin estado</li>
+<li> Almacenamiento en caché</li>
+<li> Escalabilidad</li>
+</td>
 </tr>
 <tr>
-<td>A destacar</td>
-<td>Seguridad y escalabilidad</td>
-<td>Sencillez y ligero</td>
+<td>Registro</td>
+<td><img src="/transparencias/ssdd_web-services/ssdd_web-services_drawio_soap.svg"></td>
+<td><img src="/transparencias/ssdd_web-services/ssdd_web-services_drawio_rest.svg"></td>
 </tr>
 </table>
 </html>
-
-   ![REST versus SOAP](./ssdd_web-services/ssdd_web-services_drawio_32.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_32.svg">
 
 
 
@@ -570,4 +609,5 @@ Los pasos a seguir habitualmente son los siguientes:
 
 **Información adicional**:
   * [t8_web-services.pdf](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t8_web-services.pdf)
+
 
