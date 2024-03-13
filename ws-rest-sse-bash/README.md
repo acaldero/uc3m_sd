@@ -7,7 +7,7 @@
 
 Hay que introducir:
 ```
-cd distribuido-rest-sse-bash
+cd ws-rest-sse-bash
 ```
 
 

@@ -8,7 +8,7 @@
 
   * [Motivación en el uso de servicios Web](#primera-generación-de-la-www-contenido-estático)
   * [Estilos de servicios web: SOAP vs REST](#estilos-de-servicios-web-soap-vs-rest)
-  * [Ejemplo simple de servicio web (servidor y cliente en Python)](#ejemplo-simple-de-servicio-web-servidor-y-cliente-en-python)
+  * [Ejemplo simple de servicio web REST (servidor y cliente en Python)](#ejemplo-simple-de-servicio-web-rest-servidor-y-cliente-en-python)
   * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-eventos-enviados-por-servidor-sse)
   * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
   * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c)
@@ -67,8 +67,8 @@ La siguiente generación, el contenido se generaba parcialmente o totalmente de 
  * En el servidor con tecnologías como servlets, JSP, PHP, etc.
  * En el cliente con tecnologías como Applets, JavaScript, etc.
 
-Hay un paso adicional interesante, ¿y si detrás de un fichero dinámico no hay un fichero sino un programa al que enviar los parámetros y que nos responda con el resultado? 
-El método POST se usaba para enviar información útil para la generación dinámica: los "parámetros" con los que trabajar. 
+Hay un paso adicional interesante, ¿y si detrás de un fichero dinámico no hay un fichero sino un programa al que enviar los parámetros y que nos responda con el resultado?
+El método POST se usaba para enviar información útil para la generación dinámica: los "parámetros" con los que trabajar.
 
 Por tanto tenemos el potencial de:
 * Al escribir:
@@ -157,77 +157,120 @@ Hay dos estilos principales:
 
    ![REST versus SOAP](./ssdd_web-services/ssdd_web-services_drawio_32.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_32.svg">
 
-### Ejemplo de comunicación con SOAP
+
+
+### Ejemplo de comunicación con SOAP y REST
 
 Para la siguiente función:
   ```c
   Float precio ;
   Precio = ObtenerPrecio(mesa);
   ```
-  En el caso de SOAP:
-   * Una **petición** podría representarse como:
-     ```xml
-     POST StockQuote HTTP/1.1
-     ...
-     <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
-      SOAP-ENV:encodingStyle ="http://schemas.xmlsoap.org/soap/
-     <SOAP-ENV:Body>
-       <m:ObtenerPrecio xmlns:m="http://example.com/stockquote.xsd">
-          <item>mesa</item>
-       </m:ObtenerPrecio>
-     </SOAP-ENV:Body>
-     </SOAP-ENV:Envelope>
-     ```
-   * Una **respuesta** podría representarse como:
-     ```xml
-     HTTP/1.1 200 OK
-     ...
-     <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
-      SOAP-ENV:encodingStyle ="http://schemas.xmlsoap.org/soap/
-     <SOAP-ENV:Body>
-        <m:ObtenerPrecioResponse xmlns:m="http://example.com/stockquote.xsd">
-          <Precio>123.5</Precio>
-        </m:ObtenerPrecioResponse>
-     </SOAP-ENV:Body>
-     </SOAP-ENV:Envelope>
-     ```
 
-Principales tecnologías (protocolos, etc.) usadas con servicios web basados en SOAP:
-* HTTP: transporte utilizado
-* XML: describe la información, los mensajes
-* SOAP: empaqueta la información y la transmite entre el cliente y el proveedor del servicio
-* WSDL: descripción del servicio
-* UDDI: lista de servicios disponibles \
-![Pila de protocolos habitual en servicios web](./ssdd_web-services/ssdd_web-services_drawio_29.svg)<img src="./transparencias/ssdd_web-services/ssdd_web-services_drawio_29.svg">
+La siguiente tabla muestra un ejemplo de cómo podría ser las peticiones y respuestas:
 
-### Ejemplo de comunicación con REST
+<html>
+<table>
+<tr><th></th><th>SOAP</th><th>REST</th></tr>
 
-Para la siguiente función:
-  ```c
-  Float precio ;
-  Precio = ObtenerPrecio(mesa);
-  ```
-  En el caso de REST:
-   * Una **petición** podría representarse como:
-     ```xml
-     POST /precio HTTP/1.1
-     Content-Type: application/json
-     ...
-     {"item":"mesa"}   
-     ```
-   * Una **respuesta** podría representarse como:
-     ```xml
-     HTTP/1.0 201 CREATED
-     ...
-     123.5   
-     ```
+<tr>
+<td>
+Petición
+</td>
+<td>
+<pre>
+POST StockQuote HTTP/1.1
+...
+&lt;SOAP-ENV:Envelope
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  SOAP-ENV:encodingStyle ="http://schemas.xmlsoap.org/soap/
+&lt;SOAP-ENV:Body&gt;
+  &lt;m:ObtenerPrecio
+     xmlns:m="http://example.com/stockquote.xsd"&gt;
+     &lt;item&gt;mesa&lt;/item&gt;
+  &lt;/m:ObtenerPrecio&gt;
+&lt;/SOAP-ENV:Body&gt;
+&lt;/SOAP-ENV:Envelope&gt;
+</pre>
+</td>
+<td>
+<pre>
+POST /precio HTTP/1.1
+Content-Type: application/json
+...
+{"item":"mesa"}
+</pre>
+</td>
+</tr>
 
-Principales tecnologías (protocolos, etc.) usadas con servicios web basados en REST:
-* HTTP: transporte utilizado
-* JSON: describe la información como estructura de datos en JavaScript
-   
+<tr>
+<td>
+Respuesta
+</td>
+<td>
+<pre>
+HTTP/1.1 200 OK
+...
+&lt;SOAP-ENV:Envelope
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  SOAP-ENV:encodingStyle ="http://schemas.xmlsoap.org/soap/
+&lt;SOAP-ENV:Body&gt;
+   &lt;m:ObtenerPrecioResponse
+     xmlns:m="http://example.com/stockquote.xsd"&gt;
+     &lt;Precio&gt;123.5&lt;/Precio&gt;
+   &lt;/m:ObtenerPrecioResponse&gt;
+&lt;/SOAP-ENV:Body&gt;
+&lt;/SOAP-ENV:Envelope&gt;
+</pre>
+</td>
+<td>
+<pre>
+HTTP/1.0 201 CREATED
+...
+123.5
+</pre>
+</td>
+</tr>
 
-## Ejemplo simple de servicio web (servidor y cliente en Python)
+<tr>
+<td>
+Principales tecnologías (protocolos, etc.)
+</td>
+<td>
+<ul>
+<li> HTTP: transporte utilizado</li>
+<li> XML: describe la información, los mensajes</li>
+<li> SOAP: empaqueta la información y la transmite entre el cliente y el proveedor del servicio</li>
+<li> WSDL: descripción del servicio</li>
+<li> UDDI: lista de servicios disponibles </li>
+<ul>
+</td>
+<td>
+<ul>
+<li> HTTP: transporte utilizado </li>
+<li> JSON: describe la información como estructura de datos en JavaScript</li>
+<ul>
+</td>
+</tr>
+
+<tr>
+<td>
+Relación entre tecnologías
+</td>
+<td>
+<img src="/transparencias/ssdd_web-services/ssdd_web-services_drawio_29.svg" alt="Pila de protocolos habitual en servicios web">
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+
+</table>
+</html>
+
+
+
+## Ejemplo simple de servicio web REST (servidor y cliente en Python)
 
 El siguiente ejemplo implementa un servidor de un servicio web en Python que permite consultar el precio de una mesa de un restaurante:
 
@@ -245,7 +288,7 @@ El siguiente ejemplo implementa un servidor de un servicio web en Python que per
           item = req['item']
           return precios[item], 201
        except Exception as e:
-          return {"error": str(e)}, 415       
+          return {"error": str(e)}, 415
    ```
 
  * Para *iniciar* la ejecución del servidor hay que usar lo siguiente:
@@ -275,7 +318,7 @@ El siguiente ejemplo implementa un cliente del servicio web anterior usando Pyth
    ```bash
    python3 clnt.py
    ```
-   
+
  * La salida es:
    ```bash
    123.5

@@ -7,8 +7,7 @@
 
 Hay que introducir:
 ```
-cd distribuido-rest-json-flask
-./run.sh
+cd ws-rest-json-flask
 ```
 
 Si no se tiene instalado flask y requests, se puede instalar con:
@@ -57,8 +56,6 @@ curl -i http://127.0.0.1:5000/ddaa  -X POST \
      -d '{"name":"first", "array": {}}'
 ```
 
-Ver NOTA(1)
-
 </td>
 <td>
 
@@ -71,11 +68,6 @@ Ver NOTA(1)
 </table>
 </html>
 
-* NOTA(1): Es posible usar una herramienta como swagger que de forma visual permite trabajar con un API REST:
-```
-https://swagger.io/tools/swagger-ui/
-```
-
 
 
 #### Arquitectura
@@ -85,4 +77,11 @@ sequenceDiagram
     curl           ->> flask run: request REST API in a distributed way
     flask run      ->> curl: return result of the distributed API call
 ```
+
+
+## Material adicional
+
+ * Es posible usar una herramienta como swagger que de forma visual permite trabajar con un API REST:
+   https://swagger.io/tools/swagger-ui/
+
 
