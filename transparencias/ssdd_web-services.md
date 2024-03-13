@@ -8,7 +8,7 @@
 
   * [Motivación en el uso de servicios Web](#primera-generación-de-la-www-contenido-estático)
   * [Estilos de servicios web: SOAP vs REST](#estilos-de-servicios-web-soap-vs-rest)
-  * [Ejemplo simple de servicio web (servidor, en Python)](#ejemplo-simple-de-servicio-web-servidor-en-python)
+  * [Ejemplo simple de servicio web (servidor y cliente en Python)](#ejemplo-simple-de-servicio-web-servidor-y-cliente-en-python)
   * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-eventos-enviados-por-servidor-sse)
   * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
   * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c)
@@ -227,46 +227,71 @@ Principales tecnologías (protocolos, etc.) usadas con servicios web basados en 
 * JSON: describe la información como estructura de datos en JavaScript
    
 
-## Ejemplo simple de servicio web (servidor, en Python)
+## Ejemplo simple de servicio web (servidor y cliente en Python)
 
-El siguiente ejemplo de servicio web implementa el servidor de dicho servicio web en Python, pero para el cliente utiliza el mandato `curl` en línea de mandatos.
+El siguiente ejemplo implementa un servidor de un servicio web en Python que permite consultar el precio de una mesa de un restaurante:
 
- * El script **`app.py`** se encarga de implementar un servicio web en Python usando los paquetes *Flask*, *request* y *jsonify*:
+ * El script **`app.py`** se encarga de implementar un servicio web en Python usando los paquetes *Flask* y *request*:
    ```python
-   from flask import Flask, request, jsonify
+   from flask import Flask, request
 
    app = Flask(__name__)
-   precios = { "mesa": "123.5", "reserva": "12" }
+   precios = { "mesa": "123.5", "reserva": "12.5" }
 
    @app.route('/precio', methods=["POST"])
    def add_precio():
-       if not request.is_json:
-          return {"error": "Request must be JSON"}, 415
-       da = request.get_json()
-       if None == da['item']:
-          return {"error": "Request must content an item"}, 415
-       item = da['item']
-       return precios[item], 201
+       try:
+          req  = request.get_json()
+          item = req['item']
+          return precios[item], 201
+       except Exception as e:
+          return {"error": str(e)}, 415       
    ```
 
- * El script **`run.sh`** se encarga de (1) iniciar el servicio web, (2) hacer una petición REST y (3) parar el servicio web:
+ * Para *iniciar* la ejecución del servidor hay que usar lo siguiente:
    ```bash
-   #!/bin/bash
-   set -x
-   echo " (1) Inicializar servicio web..."
-   FLASK_APP=app.py FLASK_DEBUG=true  flask run &
-   sleep 2
-   echo " (2) Obtener el precio de 'mesa'"
+   FLASK_APP=app.py  FLASK_DEBUG=true  flask run &
+   ```
+
+ * Para *parar* la ejecución del servidor (cuando ya no se necesite el servicio) se puede usar lo siguiente:
+   ```bash
+   kill $(pgrep -f flask)
+   ```
+
+
+El siguiente ejemplo implementa un cliente del servicio web anterior usando Python:
+
+ * El script **`clnt.py`**  usa *requests*:
+   ```python
+   import requests
+
+   r = requests.post(url="http://127.0.0.1:5000/precio",
+                     json={ "item": "mesa" },
+                     headers={ 'Content-type': 'application/json' })
+   print(r.text)
+   ```
+
+ * Para ejecutar el cliente se puede usar:
+   ```bash
+   python3 clnt.py
+   ```
+   
+ * La salida es:
+   ```bash
+   123.5
+   ```
+
+Es incluso posible usar el mandato `curl` como cliente del servicio web anterior:
+
+ * Para ejecutar un cliente se puede usar:
+   ```bash
    curl -i http://127.0.0.1:5000/precio \
         -X POST \
         -H 'Content-Type: application/json' \
         -d '{"item":"mesa"}'
-   sleep 1
-   echo " (3) Finalizar servicio web..."
-   kill $(pgrep -f flask)
    ```
 
- * La salida es:
+ * Y la salida sería:
    ```bash
    127.0.0.1 - - [12/Mar/2024 02:42:00] "POST /precio HTTP/1.1" 201 -
    HTTP/1.0 201 CREATED
@@ -361,7 +386,7 @@ Los pasos a seguir habitualmente son los siguientes:
   ```bash
   soapcpp2 -CL calc.h
   ```
-* Hay que crear la aplicación "app-d.c" que use el servicio:
+* Hay que crear la aplicación **`app-d.c`** que use el servicio:
   ```c
   #include "calc.nsmap"
   #include "soapH.h"
@@ -392,7 +417,7 @@ Los pasos a seguir habitualmente son los siguientes:
 * La ejecución del ejemplo sería:
   ```bash
   $ ./app-d
-  result = 5.79
+  Sum = 5.79
   ```
 
 
@@ -403,36 +428,54 @@ Usaremos el ejemplo disponible en [ws-gsoap-xml-standalone](ws-gsoap-xml-standal
 Dicho ejemplo es el ejemplo de calculadora disponible en: https://www.genivia.com/dev.html#client-c
 
 Los pasos a seguir habitualmente son los siguientes:
-* Primero hay que generar el archivo de cabecera calc.h con la interfaz del servicio a partir de la descripción del servicio dada en WSDL:
-  ```bash
-  wsdl2h -c -o calc.h http://www.genivia.com/calc.wsdl
+* NUEVO: primero hay que generar el archivo de cabecera **`calc.h`** con la interfaz del servicio:
+  ```c
+   //gsoap ns service name: calc
+   //gsoap ns schema namespace: urn:calc
+   int ns__add(double a,double b,double *result);
+   int ns__sub(double a,double b,double *result);
   ```
 * A continuación hay que generar los resguardos (stubs) a partir de la interfaz de calc.h:
   ```bash
-  soapcpp2 -CL calc.h
+  soapcpp2 -cL calc.h
   ```
-* Hay que crear la aplicación "app-d.c" que use el servicio:
+   Gracias al mandato soapcpp2 se han generado gran parte del trabajo, como se puede ver en la siguiente figura: <br/>
+   <img src="https://www.genivia.com/images/flowchart.png" style="max-height:512" /><br/><br/>
+* Hay que crear la aplicación **`app-d.c`** que use el servicio:
   ```c
-  #include "calc.nsmap"
   #include "soapH.h"
+  #include "calc.nsmap"
 
-  int main ( int argc, char *argv[] )
+  int main(int argc, char **argv)
   {
-    double sum;
+     const char *server = "localhost:12345";
+     struct soap soap;
+     double result = 0.0;
 
-    struct soap *soap = soap_new();
-    if (NULL == soap) { return -1; }
+     if (argc < 3) {
+         printf("Usage: %s <a|s> <operand 1> <operand 2>\n", argv[0]);
+         exit(-1);
+     }
 
-    int ret = soap_call_ns2__add(soap, NULL, NULL, 1.23, 4.56, &sum) ;
-    if (SOAP_OK != ret) { soap_print_fault(soap, stderr); exit(-1); }
+     soap_init(&soap);
+     double a = strtod(argv[2], NULL);
+     double b = strtod(argv[3], NULL);
+     char   o = argv[1][0];
 
-    printf("Sum = %g\n", sum);
+     if ('a' == o)
+         soap_call_ns__add(&soap, server, "", a, b, &result);
+     else if ('s' == o)
+         soap_call_ns__sub(&soap, server, "", a, b, &result);
+     else printf("error en operación: %c\n", o) ;
 
-    soap_destroy(soap); soap_end(soap); soap_free(soap);
-    return 0;
+     if (soap.error)
+          soap_print_fault(&soap, stderr);
+     else printf("result = %g\n", result);
+
+     return 0;
   }
   ```
-* NUEVO: hay que crear la aplicación servidora "lib-server.c" que implementa el servicio:
+* NUEVO: hay que crear la aplicación servidora **`lib-server.c`** que implementa el servicio:
   ```c
   #include "soapH.h"
   #include "calc.nsmap"
@@ -453,13 +496,13 @@ Los pasos a seguir habitualmente son los siguientes:
       return 0;
   }
 
-  int ns__add (struct soap *soap, double a, double b, double *result)
+  int ns2__add (struct soap *soap, double a, double b, double *result)
   {
       *result = a + b;
       return SOAP_OK;
   }
 
-  int ns__sub (struct soap *soap, double a, double b, double *result)
+  int ns2__sub (struct soap *soap, double a, double b, double *result)
   {
        *result = a - b;
        return SOAP_OK;
@@ -467,26 +510,21 @@ Los pasos a seguir habitualmente son los siguientes:
   ```
 * NUEVO: Hay que compilar todo, por ejemplo usando:
   ```bash
-  gcc -o app-d \
-      -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
-      app-d.c soapC.c soapClient.c -lgsoap
-  gcc -o lib-server \
-      -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
-      lib-server.c soapC.c soapClient.c -lgsoap
+   gcc -g -o app-d \
+       -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
+       app-d.c soapC.c soapClient.c -lgsoap
+   gcc -g -o lib-server \
+       -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
+       lib-server.c soapC.c soapServer.c -lgsoap
   ```
 * Es posible ejecutar por un lado el servidor (lib-server) y por otro el cliente (app-d) de la siguiente manera:
   ```bash
-  $ ./lib-server &
-  $ ./app-d
+  $ ./lib-server 12345 &
+  $ ./app-d a 1 2
+  result = 3
   ```
-
-
-Gracias al mandato soapcpp2 se han generado gran parte del trabajo, como se puede ver en la siguiente figura:
-<img src="https://www.genivia.com/images/flowchart.png" style="max-height:512" />
 
 
 **Información adicional**:
   * [t8_web-services.pdf](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t8_web-services.pdf)
-
-
 
