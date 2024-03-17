@@ -1,6 +1,6 @@
 
 # Resumen de los principales aspectos del lenguaje C para Sistemas Distribuidos
-+ **Felix García Carballeira y Alejandro Calderón Mateos**
++ **Felix García Carballeira, Alejandro Calderón Mateos y Carlos Gómez Carrasco**
 + Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
@@ -683,7 +683,7 @@ Como ejemplo de paso por parámetros de punteros por referencia, usaremos el sig
 
 ## 6.- Archivos de cabecera y proyectos de varios archivos
 
-Como ejemplo usaremos estos tres archivos:
+Como ejemplo de cómo compilar un proyecto con varios ficheros usaremos estos tres archivos:
 
 * lib_hola.h
   ```c
@@ -728,46 +728,56 @@ Como ejemplo usaremos estos tres archivos:
   ```
 
 
-(1/3) Ejemplo de compilación de los anteriores archivos:
-
-```bash
-gcc -g -Wall -c lib_hola.c -o lib_hola.o
-gcc -g -Wall -c main.c     -o main.o      -I./
-gcc -g -Wall -o main main.o lib_hola.o
-```
-
-<details>
-  <summary>Donde... (hacer click)</summary>
-
-  * "-c ... -o ..." genera el archivo binario asociado a un fichero fuente:
-    ```bash
-    gcc -g -Wall -c fichero.c -o fichero.o
-    ```
-  * "-o ... libs..." genera el archivo ejecutable combinando todos los binarios (incluidas bibliotecas como libc.a con -lc):
-    ```bash
-    gcc -g -Wall -o fichero fichero.o lib_hola.o -lc
-    ```
-  </details>
-
-
-(2/3) Ejemplo de compilación con librería estática:
-
+Hay 3 alternativas de compilación principales:
+* (1/3) Ejemplo de compilación del ejecutable main (sin librerías):
   ```bash
   gcc -g -Wall -c lib_hola.c -o lib_hola.o
-  ar rcs libestatica.a lib_hola.o
-  gcc -g -Wall -o main main.c -lestatica -L.
-  ./main
+  gcc -g -Wall -c main.c     -o main.o      -I./
+  gcc -g -Wall -o main main.o lib_hola.o
   ```
 
-(3/3) Ejemplo de compilación con librería dinámica:
+  <details>
+    <summary>Donde las opciones de compilación... (hacer click)</summary>
 
-  ```bash
-  gcc -g -Wall -fPIC -c lib_hola.c -o lib_hola.o
-  gcc -shared -Wl,-soname,libdinamica.so -o libdinamica.so.1.0 lib_hola.o
-  ln -s libdinamica.so.1.0 libdinamica.so
-  gcc -g -Wall -o main main.c -ldinamica -L.
-  env LD_LIBRARY_PATH=$LD_LIBRARY_PATH:. ./main
-  ```
+    * "-c ... -o ..." genera el archivo binario asociado a un fichero fuente:
+      ```bash
+      gcc -g -Wall -c fichero.c -o fichero.o
+      ```
+    * "-o ... libs..." genera el archivo ejecutable combinando todos los binarios (incluidas bibliotecas como libc.a con -lc):
+      ```bash
+      gcc -g -Wall -o fichero fichero.o lib_hola.o -lc
+      ```
+    </details>
+* (2/3) Ejemplo de compilación con librería estática para lib_hola.o:
+    ```bash
+    gcc -g -Wall -c lib_hola.c -o lib_hola.o
+    ar rcs libestatica.a lib_hola.o
+    gcc -g -Wall -o main main.c -lestatica -L.
+    ./main
+    ```
+ * (3/3) Ejemplo de compilación con librería dinámica para lib_hola.o:
+    ```bash
+    gcc -g -Wall -fPIC -c lib_hola.c -o lib_hola.o
+    gcc -shared -Wl,-soname,libdinamica.so -o libdinamica.so lib_hola.o
+    gcc -g -Wall -o main main.c -ldinamica -L.
+    env LD_LIBRARY_PATH=$LD_LIBRARY_PATH:. ./main
+    ```
+    <details>
+      <summary>Opciones para compilar con una librería dinámica... (hacer click)</summary>
+
+      * Ejemplo de compilación con versiones para la librería dinámica:
+        ```bash
+        gcc -g -Wall -fPIC -c lib_hola.c -o lib_hola.o
+        gcc -shared -Wl,-soname,libdinamica.so -o libdinamica.so.1.0 lib_hola.o
+        ln -s libdinamica.so.1.0 libdinamica.so
+        gcc -g -Wall -o main main.c -ldinamica -L.
+        env LD_LIBRARY_PATH=$LD_LIBRARY_PATH:. ./main
+        ```
+      * Ejemplo de guardar en el ejecutable el directorio actual para buscar la librería dinámica (-Wl,-rpath,*directorio*):
+        ```bash
+        gcc -g -Wall -o main main.c -ldinamica -L. -Wl,-rpath,.
+        ```
+      </details>
 
 
 **Información recomendada**:
