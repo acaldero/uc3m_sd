@@ -136,8 +136,8 @@
 
    	 * A partir de la descripción de la interfaz del servicio en IDL, la utilidad rpcgen genera los archivos relacionados con la comunicación y genera una plantilla de los archivos que el/la programador/a ha de rellenar con la implementación y uso del servicio.
    	 * Generación automática de archivos:
-     	 * Archivos en el lado del servidor: suma_svc.c y servidor.c (este último ha de cambiarse con la implementación de la interfaz del servicio)
-    	 * Archivos en el lado del cliente: suma_clnt.c y cliente.c (este último ha de cambiarse con la implementación del cliente que usará el servicio)
+     	 * Archivos en el lado del servidor: suma_svc.c y suma_server.c (este último ha de cambiarse con la implementación de la interfaz del servicio)
+    	 * Archivos en el lado del cliente: suma_clnt.c y suma_client.c (este último ha de cambiarse con la implementación del cliente que usará el servicio)
     	 * Archivos comunes: suma_xdr.c y suma.h
 
        ![Archivos generados por rpcgen y archivos escritos por programador/a](./ssdd_rpc/ssdd_rpc_drawio_81.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_81.svg">
@@ -170,33 +170,39 @@
     ```c
     #include "suma.h"
 
-    void sumar_1 ( char *host, int a, int b )
+    int sumar_1 ( char *host, int a, int b )
     {
-        CLIENT *clnt ;
-        enum clnt_stat retval ;
-        int result ;
+       CLIENT *clnt ;
+       enum clnt_stat retval ;
+       int result ;
 
-        clnt = clnt_create (host, SUMAR, SUMAVER, "udp");
-        if (clnt == NULL) {
-            clnt_pcreateerror (host);
-            exit (-1);
-        }
-        retval = suma_1(a, b, &result, clnt);
-        if (retval != RPC_SUCCESS) {
-            clnt_perror (clnt, "call failed");
-        }
-        clnt_destroy (clnt);
-        return result ;
+       clnt = clnt_create (host, SUMAR, SUMAVER, "udp");
+       if (clnt == NULL) {
+           clnt_pcreateerror (host);
+           exit (-1);
+       }
+
+       retval = suma_1(a, b, &result, clnt);
+       if (retval != RPC_SUCCESS) {
+           clnt_perror (clnt, "call failed");
+       }
+
+       clnt_destroy (clnt);
+
+       return result ;
     }
-    
+
     int main ( int argc, char *argv[] )
     {
-      if (argc < 2) {
-          printf ("Uso: %s <host>\n", argv[0]);
-          exit (-1);
-      }
-      sumar_1 (argv[1]);
-      return 0 ;
+       if (argc < 2) {
+           printf ("Uso: %s <host>\n", argv[0]);
+           exit (-1);
+       }
+
+       int ret = sumar_1(argv[1], 1, 2);
+       printf("Resultado de %d + %d es %d\n", 1, 2, ret) ;
+
+       return 0 ;
     }
     ```
 
@@ -204,14 +210,35 @@
 
       ### Ejemplo: compilación individual
     ```bash
-    gcc –c suma_xdr.c
-    gcc –c suma_svc.c
-    gcc –c suma_clnt.c
-    gcc –c suma_client.c
-    gcc –c suma_server.c
-    gcc suma_xdr.o suma_clnt.o suma_client.o –o cliente
-    gcc suma_xdr.o suma_svc.o suma_server.c –o servidor
+    gcc -g  -D_REENTRANT  -o suma_client.o  -c suma_client.c
+    gcc -g  -D_REENTRANT  -o suma_xdr.o     -c suma_xdr.c
+    gcc -g  -D_REENTRANT  -o suma_svc.o     -c suma_svc.c
+    gcc -g  -D_REENTRANT  -o suma_server.o  -c suma_server.c
+    gcc -g  -D_REENTRANT  -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lnsl -lpthread
+    gcc -g  -D_REENTRANT  -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lnsl -lpthread
     ```
+
+ 6. Para la ejecución hay que primero ejecutar el servidor y luego el cliente.
+    Por ejemplo, para la misma máquina se puede usar *localhost*:
+       ```bash
+      acaldero@docker1:~/sd$ ./suma_server &
+      acaldero@docker1:~/sd$ rpcinfo  -p localhost
+      program vers proto   port  service
+      100000    4   tcp    111  portmapper
+      100000    3   tcp    111  portmapper
+      100000    2   tcp    111  portmapper
+      100000    4   udp    111  portmapper
+      100000    3   udp    111  portmapper
+      100000    2   udp    111  portmapper
+          99    1   udp  34654
+          99    1   tcp  41745
+      acaldero@docker1:~/sd$ ./suma_client  localhost
+      Resultado de 1 + 2 es 3
+      acaldero@docker1:~/sd$ kill -9 %1
+      acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
+      [1]+  Killed                  ./suma_server
+      ```
+
 
 ## Lenguaje IDL
 
@@ -894,13 +921,12 @@ datos estándar
      Dicho proceso de compilación suele suponer los siguientes pasos:
 
      ```bash
-     gcc –c suma_xdr.c
-     gcc –c suma_svc.c
-     gcc –c suma_clnt.c
-     gcc –c suma_client.c
-     gcc –c suma_server.c
-     gcc suma_xdr.o suma_clnt.o suma_client.o –o cliente
-     gcc suma_xdr.o suma_svc.o suma_server.c –o servidor
+     gcc -g  -D_REENTRANT  -o suma_client.o  -c suma_client.c
+     gcc -g  -D_REENTRANT  -o suma_xdr.o     -c suma_xdr.c
+     gcc -g  -D_REENTRANT  -o suma_svc.o     -c suma_svc.c
+     gcc -g  -D_REENTRANT  -o suma_server.o  -c suma_server.c
+     gcc -g  -D_REENTRANT  -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lnsl -lpthread
+     gcc -g  -D_REENTRANT  -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lnsl -lpthread
       ```
      * **NOTA**: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.
 
