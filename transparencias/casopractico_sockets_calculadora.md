@@ -120,7 +120,6 @@ Diseño final
       Servidor ->>-   Cliente2: resultado suma/resta
    ```
 
-
 3. Tipo de servidor: se utiliza orientado a conexión con conexión por petición:
    * **TCP: No se quiere que se pierda los mensajes intercambiados**
    * **Por petición: No se precisa una sesión con varias peticiones en dicha petición**
@@ -155,9 +154,8 @@ Diseño final
 ## Ejemplo de implementación de servicio distribuido de calculadora con TCP
 
 * Se precisan los siguientes ficheros:
-  * comm.h -> interfaz de la librería de comunicaciones
-    <details>
-    <summary>código fuente del fichero...</summary>
+  * <details>
+    <summary>comm.h -> interfaz de la librería de comunicaciones...</summary>
         
     ### comm.h
     ```c
@@ -176,6 +174,7 @@ Diseño final
        int     serverSocket ( unsigned int addr, int port, int type ) ;
        int     serverAccept ( int sd ) ;
        int     clientSocket ( char *remote, int port ) ;
+       int     closeSocket  ( int sd ) ;
 
        int     sendMessage  ( int socket, char *buffer, int len );
        int     recvMessage  ( int socket, char *buffer, int len );
@@ -186,10 +185,8 @@ Diseño final
     #endif
     ```
     </details>
-    
-  * comm.c -> implementación de la librería de comunicaciones
-    <details>
-    <summary>código fuente del fichero...</summary>
+  * <details>
+    <summary>comm.c -> implementación de la librería de comunicaciones</summary>
     
     ### comm.c
     ```c
@@ -287,6 +284,11 @@ Diseño final
         return sd ;
     }
 
+    int  closeSocket ( int sd )
+    {
+        return close(sd) ;
+    }
+
     int sendMessage ( int socket, char * buffer, int len )
     {
         int r;
@@ -371,10 +373,8 @@ Diseño final
     }
     ```
     </details>
-    
-  * calc-servidor-tcp.c -> implementación de un servicio de calculadora con sockets TCP
-    <details>
-    <summary>código fuente del fichero...</summary>
+  * <details>
+    <summary>calc-servidor-tcp.c -> implementación de un servicio de calculadora con sockets TCP...</summary>
         
     ### calc-servidor-tcp.c
     ```c
@@ -445,18 +445,16 @@ Diseño final
 
                 // procesar petición
                 servicio(sc) ;
-                close(sc);
+                closeSocket(sc);
         }
 
-        close(sd);
+        closeSocket(sd);
         return 0;
     }
     ```
     </details>
-    
-  * calc-cliente-tcp.c  -> implementación de un cliente  de calculadora con sockets TCP
-    <details>
-    <summary>código fuente del fichero...</summary>
+  * <details>
+    <summary>calc-cliente-tcp.c  -> implementación de un cliente  de calculadora con sockets TCP...</summary>
         
     ### calc-cliente-tcp.c
     ```c
@@ -520,11 +518,18 @@ Diseño final
         ret = suma_remota(sd, 5, 2) ;
         printf("Resultado de a+b es: %d\n", ret);
 
-        close(sd);
+        closeSocket(sd);
         return 0;
     }
     ```
     </details>
+
+```mermaid
+flowchart LR
+    D(calc-servidor-tcp.c) --->|"1. serverSocket(...)<br>2. while True: <br>2.1 serverAccept(...)<br>2.2 servicio(...)<br>2.3 closeSocket(...)"| B(comm.c)
+    B(comm.c) -->|...| C(sockets)
+    A(calc-cliente-tcp.c) -->|"1. clientSocket(...)<br>2. suma_remota(...)<br>3. closeSocket(...)"| B(comm.c)
+```
 
 * Para compilar, se puede usar:
   ```bash
