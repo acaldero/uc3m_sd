@@ -540,23 +540,78 @@ flowchart LR
   gcc  -o calc-servidor-tcp calc-servidor-tcp.o comm.o
   ```
 
-* Para ejecutar, se puede usar:
+* Para ejecutar en una máquina, se puede usar:
   ```bash
   $ ./calc-servidor-tcp &
   esperando conexion...
+
   $ ./calc-cliente-tcp
   Uso: ./calc-cliente-tcp <dirección servidor>
-  $ ./calc-cliente-tcp localhost
+
   $ ./calc-cliente-tcp localhost
   conexión aceptada de IP: 127.0.0.1 y puerto: 41356
   esperando conexion...
   Resultado de a+b es: 7
+
   $ ./calc-cliente-tcp localhost
   conexión aceptada de IP: 127.0.0.1 y puerto: 41368
   esperando conexion...
   Resultado de a+b es: 7
+
   $ kill -9 %1
   ```
+
+* Para ejecutar en dos máquinas, se puede usar:
+  <table>
+  <tr><td></td><td> host-a </td> <td> host-b </td></tr>
+  <tr>
+  <td>1. Arrancar servidor</td>
+  <td></td>
+  <td>
+
+  ```bash
+  $ ./calc-servidor-tcp &
+  esperando conexion...
+  ```
+
+  </td>
+  </tr>
+  <tr>
+  <td>2.- Ejecutar cliente</td>
+  <td>
+
+  ```bash
+  $ ./calc-cliente-tcp
+  Uso: ./calc-cliente-tcp <dirección servidor>
+
+  $ ./calc-cliente-tcp host-b
+  conexión aceptada de IP: 127.0.0.1 y puerto: 41356
+  esperando conexion...
+  Resultado de a+b es: 7
+
+  $ ./calc-cliente-tcp localhost
+  conexión aceptada de IP: 127.0.0.1 y puerto: 41368
+  esperando conexion...
+  Resultado de a+b es: 7
+  ```
+
+</td>
+<td> 
+</td>
+</tr>
+<tr>
+<td>3.- Finalizar servidor</td>
+<td></td>
+<td>
+
+  ```bash
+  $ kill -9 %1
+  ```
+
+</td>
+</tr>
+</table>
+
 
 
 #### comm.h
