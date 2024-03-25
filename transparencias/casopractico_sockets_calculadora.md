@@ -268,6 +268,7 @@ Diseño final
     int main ( int argc, char *argv[] )
     {
         int sd, sc;
+        struct sigaction new_action, old_action;
 
         // crear socket
         sd = serverSocket(INADDR_ANY, 4200, SOCK_STREAM) ;
@@ -277,7 +278,13 @@ Diseño final
         }
 
         // si se presiona Ctrl-C el bucle termina
-        signal(SIGINT, sigHandler);
+        new_action.sa_handler = sigHandler ;
+        sigemptyset (&new_action.sa_mask) ;
+        new_action.sa_flags = 0 ;
+        sigaction (SIGINT, NULL, &old_action) ;
+        if (old_action.sa_handler != SIG_IGN) {
+            sigaction (SIGINT, &new_action, NULL);
+        }
 
         while (0 == the_end)
         {
@@ -603,6 +610,10 @@ Diseño final
   esperando conexión...
   Resultado de a+b es: 7
 
+  $ ./calc-cliente-tcp localhost 4201
+  connect: : Connection refused
+  Error en clientSocket with localhost:4201
+
   $ pkill -n -f calc-servidor-tcp
   ```
 
@@ -633,11 +644,6 @@ Diseño final
   $ ./calc-cliente-tcp host-b 4200
   conexión aceptada de IP: 127.0.0.1 y puerto: 41356
   esperando conexion...
-  Resultado de a+b es: 7
-
-  $ ./calc-cliente-tcp localhost 4200
-  conexión aceptada de IP: 127.0.0.1 y puerto: 41368
-  esperando conexión...
   Resultado de a+b es: 7
   ```
 
