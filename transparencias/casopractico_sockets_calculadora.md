@@ -155,9 +155,8 @@ Diseño final
 
 * Una posible implementación sería la basada en la siguiente estructura:
 
-   ![Estructura de la implementación de la calculadora](/transparencias/casopractico_sockets_calculadora/calc-arq.svg)
+    ![Estructura de la implementación de la calculadora](/transparencias/casopractico_sockets_calculadora/calc-arq.svg)
 
-* En donde se precisan los siguientes ficheros:
   * calc-servidor-tcp.c -> implementación de un servicio de calculadora con sockets TCP.
   * calc-cliente-tcp.c  -> implementación de un cliente  de calculadora con sockets TCP.
   * comm.h -> interfaz de la librería de comunicaciones.
@@ -173,6 +172,7 @@ Diseño final
   gcc  -o calc-servidor-tcp calc-servidor-tcp.o comm.o
   ```
 
+* Los archivos serían:
 
 <br/>
 <details open>
@@ -610,8 +610,8 @@ Diseño final
   <tr><td></td><td> host-a </td> <td> host-b </td></tr>
   <tr>
   <td>1. Arrancar servidor</td>
-  <td></td>
-  <td>
+  <td width=50%></td>
+  <td width=50%>
 
   ```bash
   $ ./calc-servidor-tcp &
@@ -622,7 +622,7 @@ Diseño final
   </tr>
   <tr>
   <td>2.- Ejecutar cliente</td>
-  <td>
+  <td><small>
 
   ```bash
   $ ./calc-cliente-tcp
@@ -640,24 +640,21 @@ Diseño final
   Resultado de a+b es: 7
   ```
 
-</td>
-<td> 
-</td>
-</tr>
-<tr>
-<td>3.- Finalizar servidor</td>
-<td></td>
-<td>
+  </small></td>
+  <td> 
+  </td>
+  </tr>
+  <tr>
+  <td>3.- Finalizar servidor</td>
+  <td></td>
+  <td>
 
   ```bash
   $ pkill -n -f calc-servidor-tcp
   ```
 
-</td>
-</tr>
-</table>
+  </td>
+  </tr>
+  </table>
 
-
-
-</details>
 
