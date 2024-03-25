@@ -153,18 +153,16 @@ Diseño final
 
 ## Ejemplo de implementación de servicio distribuido de calculadora con TCP
 
-* Se precisan los siguientes ficheros:
-  * comm.h -> interfaz de la librería de comunicaciones.
-  * comm.c -> implementación de la librería de comunicaciones.
+* Una posible implementación sería la basada en la siguiente estructura:
+
+   ![Estructura de la implementación de la calculadora](/transparencias/casopractico_sockets_calculadora/calc-arq.svg)
+
+* En donde se precisan los siguientes ficheros:
   * calc-servidor-tcp.c -> implementación de un servicio de calculadora con sockets TCP.
   * calc-cliente-tcp.c  -> implementación de un cliente  de calculadora con sockets TCP.
+  * comm.h -> interfaz de la librería de comunicaciones.
+  * comm.c -> implementación de la librería de comunicaciones.
 
-```mermaid
-flowchart LR
-    D(calc-servidor-tcp.c) --->|"1. serverSocket(...)<br>2. while True: <br>2.1 serverAccept(...)<br>2.2 servicio(...)<br>2.3 closeSocket(...)"| B(comm.c)
-    B(comm.c) -->|...| C(sockets)
-    A(calc-cliente-tcp.c) -->|"1. clientSocket(...)<br>2. suma_remota(...)<br>3. closeSocket(...)"| B(comm.c)
-```
 
 * Para compilar, se puede usar:
   ```bash
