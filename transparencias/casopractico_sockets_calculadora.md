@@ -78,7 +78,7 @@ Diseño inicial
 <tr>
 <td>
 <ol type="1" start="5">
- <li>Diseñar aspectos de concurrencia (secuencial, proceso pesado, proceso ligero bajo demanda, proceso ligero con pool)
+ <li>Diseñar aspectos de concurrencia (secuencial, proceso pesado, proceso ligero bajo demanda o proceso ligero con pool)
  <li>Nombrado (direccionamiento estático o dinámico)
 </ol>
 </td>
@@ -174,7 +174,6 @@ Diseño final
 
 * Los archivos serían:
 
-<br/>
 <details open>
 <summary><b>comm.h</b></summary>
 
@@ -243,9 +242,11 @@ Diseño final
         }
         b = ntohl(b); // unmarshalling
 
-        if (op == 0)
-             res = a + b;
-        else res = a - b;
+        res = 0;
+        if (0 == op) res = a + b;
+        if (1 == op) res = a - b;
+        if (2 == op) res = a * b;
+        if (3 == op) res = a / b;
 
         res = htonl(res); // marshalling
         ret = sendMessage(sc, (char *)&res, sizeof(int32_t));
@@ -319,7 +320,7 @@ Diseño final
         int32_t a, b, res ;
 
         op = 0; // operación sumar
-        ret = sendMessage(sd, (char *) &op, sizeof(char));  // envía operacóon
+        ret = sendMessage(sd, (char *) &op, sizeof(char));  // envía operación
         if (ret == -1) {
             printf("Error envío op\n");
             return -1;
@@ -435,7 +436,7 @@ Diseño final
         struct sockaddr_in client_addr ;
         socklen_t size ;
 
-        printf("esperando conexion...\n");
+        printf("esperando conexión...\n");
 
         size = sizeof(client_addr) ;
         sc = accept(sd, (struct sockaddr *)&client_addr, (socklen_t *)&size);
@@ -503,9 +504,9 @@ Diseño final
         do
         {
                 r = write(socket, buffer, l);
-                if (r < 0)
-                    return (-1);   /* fail */
-
+                if (r < 0) {
+                    return (-1); /* error */
+                }
                 l = l -r;
                 buffer = buffer + r;
 
@@ -521,9 +522,9 @@ Diseño final
 
         do {
                 r = read(socket, buffer, l);
-                if (r < 0)
-                    return (-1);   /* fail */
-
+                if (r < 0) {
+                    return (-1); /* error */
+                }
                 l = l -r ;
                 buffer = buffer + r;
 
@@ -539,14 +540,14 @@ Diseño final
 
     ssize_t readLine ( int fd, char *buffer, size_t n )
     {
-        ssize_t numRead;  /* num of bytes fetched by last read() */
-        size_t totRead;   /* total bytes read so far */
+        ssize_t numRead;  /* bytes leídos en último read() */
+        size_t totRead;   /* bytes leídos hasta ahora */
         char *buf;
         char ch;
 
         if (n <= 0 || buffer == NULL) {
-                errno = EINVAL;
-                return -1;
+            errno = EINVAL;
+            return -1;
         }
 
         buf = buffer;
@@ -554,20 +555,20 @@ Diseño final
 
         while (1)
         {
-                numRead = read(fd, &ch, 1);  /* read a byte */
+                numRead = read(fd, &ch, 1);  /* leer un byte */
 
                 if (numRead == -1) {
-                    if (errno == EINTR)      /* interrupted -> restart read() */
+                    if (errno == EINTR)      /* interrupción -> reiniciar read() */
                          continue;
-                    else return -1;          /* some other error */
+                    else return -1;          /* otro tipo de error */
                 } else if (numRead == 0) {   /* EOF */
-                    if (totRead == 0)        /* no byres read; return 0 */
+                    if (totRead == 0)        /* no bytes leídos -> return 0 */
                          return 0;
                     else break;
-                } else {                     /* numRead must be 1 if we get here*/
+                } else {                     /* numRead debe ser 1 aquí */
                     if (ch == '\n') break;
                     if (ch == '\0') break;
-                    if (totRead < n - 1) {   /* discard > (n-1) bytes */
+                    if (totRead < n - 1) {   /* descartar > (n-1) bytes */
                         totRead++;
                         *buf++ = ch;
                     }
@@ -586,7 +587,7 @@ Diseño final
 * Para ejecutar en una máquina, se puede usar:
   ```bash
   $ ./calc-servidor-tcp &
-  esperando conexion...
+  esperando conexión...
 
   $ ./calc-cliente-tcp
   Uso: ./calc-cliente-tcp <dirección servidor> <puerto servidor>
@@ -594,12 +595,12 @@ Diseño final
 
   $ ./calc-cliente-tcp localhost 4200
   conexión aceptada de IP: 127.0.0.1 y puerto: 41356
-  esperando conexion...
+  esperando conexión...
   Resultado de a+b es: 7
 
   $ ./calc-cliente-tcp localhost 4200
   conexión aceptada de IP: 127.0.0.1 y puerto: 41368
-  esperando conexion...
+  esperando conexión...
   Resultado de a+b es: 7
 
   $ pkill -n -f calc-servidor-tcp
@@ -615,7 +616,7 @@ Diseño final
 
   ```bash
   $ ./calc-servidor-tcp &
-  esperando conexion...
+  esperando conexión...
   ```
 
   </td>
@@ -634,9 +635,9 @@ Diseño final
   esperando conexion...
   Resultado de a+b es: 7
 
-  $ ./calc-cliente-tcp localhost 4200f.
+  $ ./calc-cliente-tcp localhost 4200
   conexión aceptada de IP: 127.0.0.1 y puerto: 41368
-  esperando conexion...
+  esperando conexión...
   Resultado de a+b es: 7
   ```
 
