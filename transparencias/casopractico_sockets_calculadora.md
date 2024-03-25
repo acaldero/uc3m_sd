@@ -477,7 +477,7 @@ flowchart LR
 
         ret = connect(sd, (struct sockaddr *) &server_addr,  sizeof(server_addr));
         if (ret < 0) {
-            connect("connect: ");
+            perror("connect: ");
             return -1;
         }
 
@@ -490,7 +490,7 @@ flowchart LR
 
         ret = close(sd) ;
         if (ret < 0) {
-            connect("close: ");
+            perror("close: ");
             return -1;
         }
 
