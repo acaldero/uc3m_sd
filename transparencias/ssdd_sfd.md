@@ -276,8 +276,8 @@
    * Los UFID permiten obtener los atributos de los ficheros (metadatos)
 * Dos opciones:
    * Los directorios son objetos independientes gestionados por un servidor de directorios (SD)
-   * Los directorios son ficheros especiales. Servidor de ficheros y de directorios combinados 
-<br>
+   * Los directorios son ficheros especiales. Servidor de ficheros y de directorios combinados
+     
 * Operaciones básicas de un servicio de directorios:
   * Lookup(dir, name) -> FileId
      * Busca un nombre en un directorio
@@ -287,7 +287,7 @@
      * Elimina una nombre de un directorio
   *  GetNames(dir) -> ListName
      * Devuelve los nombre de un directorio
-  <br>
+  
 * Resolución de nombres:
    * Dirigida por los clientes
      * Ejemplo: NFS
@@ -311,7 +311,7 @@
    * Caché de bloques
    * El problema de la coherencia de cache
    * Métodos para mejorar el rendimiento
-<br>
+
 * Operaciones básicas de un servicio de ficheros:
    * ReadFile(FileId, pos, n) -> Data
       * Lee n bytes a partir de una determinada posición
@@ -325,7 +325,7 @@
       * Devuelve los atributos de un fichero
    * SetAttributes(FileId, Attr)
       * Modifica los atributos de un fichero
-<br>
+
 * Semánticas de coutilización:
   * **Sesión**: serie de accesos que realiza un cliente entre un open y un close
   * La **semántica de coutilización** especifica el efecto de varios procesos accediendo de forma simultánea al mismo fichero
@@ -334,7 +334,7 @@
      * Semántica de sesión
      * Semántica de ficheros inmutables
      * Semántica de transacciones
-<br>
+
 * Es posible emplear una caché de bloques:
   * V: el empleo de caché de bloques permite mejorar el rendimiento:
      * Explota el principio de proximidad de referencias
@@ -390,7 +390,7 @@
    * Paralelismo tanto en cliente como en servidor: 
       * Varias aplicaciones ejecutando en paralelo acceden cada una de ellas en paralelo a los datos guardados en varios servidores.
       * En una aplicación paralela formada por varios procesos se puede desde cada proceso acceder en paralelo a los datos guardados en distintos servidores.
-<br>
+
 * Múltiples nodos de E/S -> Incrementa el ancho de banda
 * Fichero distribuido entre diferentes nodos de E/S con acceso paralelo:
      * A diferentes ficheros
@@ -400,7 +400,7 @@
 * Optimizaciones:
    * E/S colectiva
    * Acceso a datos no contiguos
-<br>
+
 * Ejemplos:
   * GPFS
   * OrangeFS
