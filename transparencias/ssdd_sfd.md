@@ -425,7 +425,7 @@
    * Paralelismo tanto en cliente como en servidor:
       * Varias aplicaciones ejecutando en paralelo acceden cada una de ellas en paralelo a los datos guardados en varios servidores.
       * En una aplicación paralela formada por varios procesos se puede desde cada proceso acceder en paralelo a los datos guardados en distintos servidores.
-<br>
+
 * Múltiples nodos de E/S -> Incrementa el ancho de banda
 * Fichero distribuido entre diferentes nodos de E/S con acceso paralelo:
      * A diferentes ficheros
