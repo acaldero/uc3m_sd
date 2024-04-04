@@ -58,28 +58,30 @@
   B --- C(Disco)  
   C -.- D("b1, b2, ...")  
   ```  
-* Aunque hay más soluciones alternativas como una base de datos donde <u>la abstracción</u> **se basa en el uso de tablas** y hay un componente que es el <u>gestor de dicha abstracción</u> **que es el gestor de base de datos**.  
+* Aunque hay otras soluciones alternativas, como una base de datos donde <u>la abstracción</u> **se basa en el uso de tablas** y hay un componente que es el <u>gestor de dicha abstracción</u> **que es el gestor de base de datos**.  
   ```mermaid  
   flowchart LR  
   A(Proceso)---|"base de datos"|B("gestor BBDD")  
   B --- C(Disco)  
   C -.- D("b1, b2, ...")  
   ```  
+* Normalmente con la abstracción de **ficheros y directorios** que tiene el sistema operativo de serie es suficiente para el acceso habitual a los datos, y el propio sistema operativo usa dicha abstracción para la gestión de sus componentes (lo que demuestra su potencial).
  
  
 #### Para más información:
   * Puede repasar de sistemas operativos el tema [sistema de ficheros (1/3)]([https://acaldero.github.io/uc3m_so/transparencias/clase_w12-sf-ficheros.pdf#page9](https://acaldero.github.io/uc3m_so/transparencias/clase_w12-sf-ficheros.pdf#page9))  
  
+
  
 ## Arquitectura básica de un sistema de ficheros  
 
-La arquitectura general de un sistema de ficheros es:
+Repasando la arquitectura general de un sistema de ficheros, tenemos:
 
 <html>
 <table>
 <tr>
 <td>
-  <img src="/transparencias/ssdd_sfd/ssdd_sfd_intro_2.svg">
+  <img src="/transparencias/ssdd_sfd/ssdd_sfd_intro_1.svg">
 </td>
 <td>
 <ul>
@@ -109,16 +111,16 @@ La arquitectura general de un sistema de ficheros es:
 </html>
 
 
-En dicha arquitectura general, el software está organizado por capas, de forma que las capas superiores usan la funcionalidad de las capas inferiores para implementar su funcionalidad:
+En dicha arquitectura general, el software está organizado por capas, de forma que las capas superiores usan la funcionalidad de las capas inferiores para implementar su funcionalidad.
+Las principales capas de software son:
 ![Arquitectura básica del software en un sistema de ficheros Unix](./ssdd_sfd/ssdd_sfd_intro_2.svg)
 
-* La caché de bloques tiene las siguientes operaciones:
-  * **getblk**: busca/reserva en caché un bloque (a partir de un v nodo, desplazamiento y tamaño dado).
+* La caché de bloques tiene las siguientes operaciones habitualmente:
+  * **getblk**: busca/reserva en caché un bloque (a partir de un v-nodo, desplazamiento y tamaño dado).
   * **brelse**: libera un bloque y lo pasa a la lista de libres.
   * **bwrite**: escribe un bloque de la caché a disco.
   * **bread**: lee un bloque de disco a caché.
   * **breada**: lee un bloque (y el siguiente) de disco a caché.
-
 * Los algoritmos de bajo nivel son:
   * **namei**: convierte una ruta al i-nodo asociado.
   * **iget**: devuelve un i-nodo de la tabla de i-nodos y si no está lo lee de memoria secundaria, lo añade a la tabla de i-nodos y lo devuelve.
@@ -129,6 +131,12 @@ memoria secundaria.
   * **bmap**: calcula el bloque de disco asociado a un desplazamiento del fichero. Traduce direcciones lógicas (*offset* de fichero) a físicas (bloque de disco).
   * **alloc**: asigna un bloque a un fichero.
   * **free**: libera un bloque previamente asignado a un fichero.
+* Las llamadas al sistema de archivos son las habituales en el estándar POSIX:
+  * **open**
+  * **write**
+  * **read**
+  * **close**
+  * Etc.
 
 
 #### Para más información:
