@@ -81,24 +81,28 @@
 
 ## Funcionamiento básico de un sistema de ficheros  
 
-* Un sistema de ficheros es un software de sistema que establece una correspondencia lógica entre los ficheros y directorios y los dispositivos de almacenamiento.
+* **Un sistema de ficheros es un software de sistema que establece una correspondencia lógica entre los ficheros y directorios y los dispositivos de almacenamiento**.
 
-* Funciones principales:
-  * Organización, almacenamiento, recuperación, gestión de nombres, coutilización y protección de los ficheros
-  * Ofrece un mecanismo de abstracción que oculta todos los detalles relacionados con el almacenamiento y distribución de la información en los dispositivos, así como el funcionamiento de los mismos.
+* **Funciones principales**: organización, almacenamiento, recuperación, gestión de nombres, coutilización y protección de los ficheros.
+  * Relativo al almacenamiento y recuperación, ofrece un mecanismo de abstracción que oculta todos los detalles relacionados con el almacenamiento y distribución de la información en los dispositivos, así como el funcionamiento de los mismos.
+  * Relativo a la gestión de nombres, ofrece una traducción transparente entre el nombre de fichero usado por los programas basados en cadenas de caracteres (representación más cómoda para personas) a la representación numérica interna basada en el identificador de i-nodo donde internamente están los detalles del fichero.
 
-* Organización básica:
+* **Organización básica**:
    * Un **dispositivo** permite almacenar bloques de datos.
+     * Puede ejecutar  ```lsblk``` para ver todos los dispositivos de bloque.
    * En dicho dispositivo se pueden tener una o varias **particiones** o **volúmenes**. Las particiones o volúmenes permiten dividir de forma lógica un dispositivo físico en espacios de almacenamientos con los que trabajar.
+     * Puede ejecutar  ```cat /proc/partitions``` para ver todas las particiones reconocidas.
    * Por cada **partición** o **volumen** se tiene formateado con un **sistema de ficheros en disco**, que son las estructuras de datos que precisa en disco para localizar la información.
    * Cada **sistema de ficheros en disco** permite trabajar con **ficheros** y **directorios**. 
+     * Un fichero es una abstracción en la que el contenido de un archivo se trabaja como una secuencia de bytes.
      * Un directorio es una colección de ficheros agrupados por algún criterio de el/la usuario/a.
-     * Un fichero es una abstracción que permite trabajar con el contenido del archivo como si fuera una secuencia de bytes.
-
-* Operaciones:
-  * **Crear el sistema de ficheros**: crea en una partición o volumen un sistema de ficheros vacío. Reserva parte del almacenamiento para guardar las estructuras de datos que posteriormente permiten la gestión de la información en disco (metadatos en disco).
-  * **Montar**: añade el árbol de directorio contenido en un sistema de ficheros a un directorio de un árbol ya montado.
-  * **Desmontar**: quita el árbol de directorio de un directorio de montaje, volviendo a poder acceder al contenido inicial de ese directorio.
+       * Importante: en UNIX/Linux un directorio permite asociar el número de i-nodo al nombre de un fichero. 
+       * Si ejecuta ```ls -i1``` se puede ver tanto los nombres como los número de i-nodos del directorio actual.
+  
+* Operaciones básicas:
+  * **Crear el sistema de ficheros** (```mkfs```): crea en una partición o volumen un sistema de ficheros vacío. Reserva parte del almacenamiento para guardar las estructuras de datos que posteriormente permiten la gestión de la información en disco (metadatos en disco).
+  * **Montar** (```mount```): añade el árbol de directorio contenido en un sistema de ficheros a un directorio de un árbol ya montado.
+  * **Desmontar** (```unmount```): quita el árbol de directorio de un directorio de montaje, volviendo a poder acceder al contenido inicial de ese directorio.
  
  
 ## Arquitectura básica de un sistema de ficheros  
@@ -262,11 +266,143 @@
    * *Transparencia de concurrencia*: si varios programas cliente acceden a un mismo fichero del sistema de ficheros distribuido, las modificaciones se han de ver de alguna forma coherente.
    * *Transparencia de fallo*: cualquier programa cliente de un fichero distribuido debería de poder trabajar aún en presencia de fallos en la red o en el servidor.
    * *Transparencia de replicación*: los clientes no deben de preocuparse por la replicación en distintos servidores que pueda realizarse por parte del sistema de ficheros distribuidos para mejorar la tolerancia a fallos y escalabilidad.
-  
-  
+
+
+### Servicio de directorio
+
+* Se encarga de la traducción de nombres de usuario a Identificadores de ficheros únicos (UFID)
+   * Ej.: En UNIX/Linux de nombre de fichero a identificador de i-nodo
+* Directorio: relaciona de forma única nombres de fichero con UFID
+   * Los UFID permiten obtener los atributos de los ficheros (metadatos)
+* Dos opciones:
+   * Los directorios son objetos independientes gestionados por un servidor de directorios (SD)
+   * Los directorios son ficheros especiales. Servidor de ficheros y de directorios combinados 
+<br>
+* Operaciones básicas de un servicio de directorios:
+  * Lookup(dir, name) -> FileId
+     * Busca un nombre en un directorio
+  *  AddName(dir, name, FileId)
+     * Añade un nombre (name, FileId) a un directorio
+  *  RemoveName(dir, name)
+     * Elimina una nombre de un directorio
+  *  GetNames(dir) -> ListName
+     * Devuelve los nombre de un directorio
+  <br>
+* Resolución de nombres:
+   * Dirigida por los clientes
+     * Ejemplo: NFS
+   * Dirigida por los servidores:
+     * Resolución iterativa
+        * El cliente envía el nombre al SD
+        * El SD realiza la traducción hasta que termina en un componente que pertenece a otro SD
+        * El SD envía el resultado al cliente, el cual si no ha terminado la traducción continúa con el SD correspondiente
+     *  Resolución transitiva
+        * Los SD implicados contactan entre si para llevar a cabo la traducción. El último SD devuelve la traducción al cliente
+        * Rompe el modelo cliente/servidor (no adecuado para RPC)
+     *  Resolución recursiva
+        * El último SD implicado devuelve el resultado al anterior y así sucesivamente hasta que el primero responde al cliente
+
+### Servicio de ficheros
+
+* Se encarga de la gestión de los ficheros y del acceso a los datos
+* Aspectos relacionados:
+   * Semántica de coutilización
+   * Métodos de acceso
+   * Caché de bloques
+   * El problema de la coherencia de cache
+   * Métodos para mejorar el rendimiento
+<br>
+* Operaciones básicas de un servicio de ficheros:
+   * ReadFile(FileId, pos, n) -> Data
+      * Lee n bytes a partir de una determinada posición
+   * WriteFile(FileId, pos, n, Data)
+      * Escribe n bytes (Data) a partir de una determinada posición
+   * Create(name) -> FileId
+      * Crea un nuevo fichero de longitud 0 bytes.
+   * Delete(FileId)
+      * Borra el fichero
+   * GetAttributes(FileId) -> Attr
+      * Devuelve los atributos de un fichero
+   * SetAttributes(FileId, Attr)
+      * Modifica los atributos de un fichero
+<br>
+* Semánticas de coutilización:
+  * **Sesión**: serie de accesos que realiza un cliente entre un open y un close
+  * La **semántica de coutilización** especifica el efecto de varios procesos accediendo de forma simultánea al mismo fichero
+  * Semánticas más usadas:
+     * Semántica UNIX
+     * Semántica de sesión
+     * Semántica de ficheros inmutables
+     * Semántica de transacciones
+<br>
+* Es posible emplear una caché de bloques:
+  * V: el empleo de caché de bloques permite mejorar el rendimiento:
+     * Explota el principio de proximidad de referencias
+       * Proximidad temporal
+       * Proximidad espacial
+     * En lecturas adelantadas: mejora el rendimiento de las operaciones de lectura, sobre todo si son secuenciales
+     * En escrituras diferidas: mejora el rendimiento de las escrituras
+  * I: no es fácil mantener la coherencia si hay multiples modificaciones.
+    * El problema surge cuando se coutiliza un fichero en escritura:
+       * Coutilización en escritura secuencial: típico en entornos y aplicaciones distribuidas.
+         * Si no se actualizan todas las copias al cierre:
+           open (A) + write (A) + close (A) + open (B) + read (B):
+         * Si se actualiza al cierre PERO se usa escritura diferida:
+           open (A) + read (A) + write (A) + close (A) + open (B) + read (B):
+       * Coutilización en escritura concurrente: típico en aplicaciones paralelas.
+         * Si hay escritura concurrente:
+           open (A) + open (B) + read (A) + read (B) + write (A) ... B ya no está actualizado
+ * Localización de las caché en un sistema de ficheros distribuido:
+    * Caché en los servidores:
+      * Reducen los accesos a disco en el servidor
+    * Caché en los clientes:
+      * Reducen el tráfico por la red
+      * Reducen la carga en los servidores
+      * Mejora la capacidad de crecimiento
+      * Dos posibles localizaciones dentro del cliente:
+         * En discos locales
+            * V: Más capacidad,
+            * V: No volátil (facilita la recuperación)
+            * I: Más lento
+         * En memoria principal
+            * V: Más rápido
+            * I: Menor capacidad
+            * I: Memoria volátil (se pierde si se apaga la máquina)
+ * Soluciones para la coherencia:
+    * No emplear caché en los clientes.
+    * No utilizar caché en los clientes para datos compartidos en escritura (Ej.: Sprite).
+    * Mecanismos de caché sin replicación de datos.
+    * Empleo de protocolos de coherencia de caché.
+       * Aspectos de diseño a considerar en protocolo de coherencia de caché:
+         * Granularidad del protocolo
+         * Mecanismo de validación
+         * Mecanismos de actualización/invalidación
+         * Localización de las copias en las caches de los clientes
+
+
 ## Sistema de ficheros paralelo
 
-* Si los accesos a las distintas máquinas donde están los datos se realiza en paralelo entonces el sistema de ficheros distribuido es también un sistema de ficheros paralelo.
-
+* Se añade paralelismo a la forma de trabajar el sistema de ficheros distribuido.
+   * Paralelismo en el servidor:
+      * Ej.: Una aplicación de un proceso puede acceder a los datos de distintos servidores en paralelo.
+   * Paralelismo en clientes:
+      * Ej.: Varias aplicaciones de un proceso cada una pueden acceder cada una a sus datos en paralelo.
+   * Paralelismo tanto en cliente como en servidor: 
+      * Varias aplicaciones ejecutando en paralelo acceden cada una de ellas en paralelo a los datos guardados en varios servidores.
+      * En una aplicación paralela formada por varios procesos se puede desde cada proceso acceder en paralelo a los datos guardados en distintos servidores.
+<br>
+* Múltiples nodos de E/S -> Incrementa el ancho de banda
+* Fichero distribuido entre diferentes nodos de E/S con acceso paralelo:
+     * A diferentes ficheros
+     * Al mismo fichero
+* Se añade interfaces de E/S paralela
+   * MPI-IO
+* Optimizaciones:
+   * E/S colectiva
+   * Acceso a datos no contiguos
+<br>
+* Ejemplos:
+  * GPFS
+  * OrangeFS
 
 

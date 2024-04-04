@@ -46,6 +46,12 @@
       </ul></td>
   </tr>
   <tr><td>6</td>
+      <td>Sistema de ficheros distribuidos</td>
+      <td><ul>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_sfd.md">Introducción a los sistemas de ficheros distribuidos</a></li>
+      </ul></td>
+  </tr>
+  <tr><td>7</td>
       <td>Tolerancia a fallos</td>
       <td><ul>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t9_tolerancia-a-fallos.pdf">t9_tolerancia-a-fallos.pdf</a></li>
