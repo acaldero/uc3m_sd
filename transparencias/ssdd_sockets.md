@@ -1776,7 +1776,7 @@ Las opciones más importantes son:
       sendMessage(sd, buffer, 256) ; // se envía 256 caracteres (no todos se usan)
       ```
 
-* <details>
+* <details open>
   <summary>En Python...</summary>
 
   ```python
@@ -1845,7 +1845,7 @@ Las opciones más importantes son:
 
     * Se puede transformar números en coma flotante, etc. de forma similar.
 
-* <details>
+* <details open>
   <summary>En Python...</summary>
 
   ```python

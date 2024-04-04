@@ -52,7 +52,7 @@
  * Uno de los ingredientes es la transparencia de la invocación remota: se busca que código de invocación remota lo más transparente posible, de manera que se parezca a una invocación a una función local.
  
  * En el siguiente ejemplo a la izquierda se muestra los elementos de una aplicación no distribuida con llamada local a la función de sumar. A la izquierda se muestra la misma aplicación con una llamada remota a la función de sumar:
-       ![Organización del código para invocación remota mediante colas POSIX](./ssdd_rpc/ssdd_rpc_drawio_10.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_10.svg">
+       ![Organización del código para invocación remota mediante colas POSIX](./ssdd_rpc/ssdd_rpc_drawio_10.svg)
 
     * El código del stub_servidor y del stub_cliente oculta a la función "main(...)" los detalles de que la ejecución es remota.
     * El componente biblioteca de la aplicación pasa a estar en otro proceso, y se comunican en este ejemplo usando colas POSIX.
@@ -83,7 +83,7 @@
 
  * Las RPC ofrecen una interfaz sencilla para construir aplicaciones distribuidas sobre TCP/IP
 
-   ![Pila software con RPC y marshalling](./ssdd_rpc/ssdd_rpc_drawio_10.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_13.svg">
+   ![Pila software con RPC y marshalling](./ssdd_rpc/ssdd_rpc_drawio_10.svg)
 
   * De forma general, los elementos que participan son:
      * Un cliente **activo**, que realiza una RPC al servidor
@@ -93,7 +93,7 @@
           * El stub_servidor responde a la petición del cliente
           * En la respuesta al cliente se envía un mensaje que contine, al menos, el resultado de la función invocada. 
 
-      ![Cliente, stub_cliente, stub_servidor y servidor](./ssdd_rpc/ssdd_rpc_drawio_16.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_16.svg">
+      ![Cliente, stub_cliente, stub_servidor y servidor](./ssdd_rpc/ssdd_rpc_drawio_16.svg)
 
   * Conceptos básicos:
      * Un **servicio de red** es una colección de uno o más programas remotos
@@ -140,7 +140,7 @@
     	 * Archivos en el lado del cliente: suma_clnt.c y suma_client.c (este último ha de cambiarse con la implementación del cliente que usará el servicio)
     	 * Archivos comunes: suma_xdr.c y suma.h
 
-       ![Archivos generados por rpcgen y archivos escritos por programador/a](./ssdd_rpc/ssdd_rpc_drawio_81.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_81.svg">
+       ![Archivos generados por rpcgen y archivos escritos por programador/a](./ssdd_rpc/ssdd_rpc_drawio_81.svg)
 
 
  3. Se implementa el servicio en el lado del servidor.
@@ -254,7 +254,7 @@
  * La interfaz es compartida por cliente y servidor.
    * Los compiladores pueden diseñarse para que los clientes y servidores se escriban en lenguajes diferentes
 
-      ![IDL, stubs y cliente/servidor](./ssdd_rpc/ssdd_rpc_drawio_36.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_36.svg">
+      ![IDL, stubs y cliente/servidor](./ssdd_rpc/ssdd_rpc_drawio_36.svg)
 
  * Programación con un paquete de RPC:
    * El programador debe proporcionar:
@@ -283,7 +283,7 @@
 
  * Ejemplo:  'Smith', 'Paris', 1934
    
-   ![Comparación entre XDR, CDR, XML y JSON](./ssdd_rpc/ssdd_rpc_drawio_40.svg)<img src="./transparencias/ssdd_rpc/ssdd_rpc_drawio_40.svg">
+   ![Comparación entre XDR, CDR, XML y JSON](./ssdd_rpc/ssdd_rpc_drawio_40.svg)
 
 
 ## Localización y enlazado (*binding*)

@@ -73,20 +73,44 @@
  
 ## Arquitectura básica de un sistema de ficheros  
 
-* La arquitectura general de un sistema de ficheros es:          
-![Arquitectura básica general de un sistema de ficheros en Unix](./ssdd_sfd/ssdd_sfd_intro_2.svg)<img src="./transparencias/ssdd_sfd/ssdd_sfd_intro_2.svg">
-* En dicha arquitectura se tiene los siguientes componentes:
-  * **Manejador de dispositivo**:
-    * Transforma peticiones de bloques en peticiones de dispositivo.
-  * **Servidor de bloques**:
-    * Gestiona las peticiones de operaciones de bloques sobre dispositivos.
-    * Mantiene una caché de bloques o páginas.
-  * **Módulo de organización de archivos**:
-    * Transforma peticiones lógicas en físicas.
-    * Distinto para cada sistema de ficheros particular.
-  * **Servidor de ficheros/archivos virtual**:
-    * Proporciona interfaz de llamadas de E/S.
-    * Independiente de sistema de ficheros particular.
+La arquitectura general de un sistema de ficheros es:
+
+<html>
+<table>
+<tr>
+<td>
+  <img src="/transparencias/ssdd_sfd/ssdd_sfd_intro_2.svg">
+</td>
+<td>
+<ul>
+<li><b>Manejador de dispositivo</b>: 
+<ul>
+<li>Transforma peticiones de bloques en peticiones de dispositivo.
+</ul>
+<li><b>Servidor de bloques</b>:
+<ul>
+<li>Gestiona las peticiones de operaciones de bloques sobre dispositivos.
+<li>Mantiene una caché de bloques o páginas.
+</ul>
+<li><b>Módulo de organización de archivos</b>:
+<ul>
+<li>Transforma peticiones lógicas en físicas.
+<li>Distinto para cada sistema de ficheros particular.
+</ul>
+<li><b>Servidor de ficheros/archivos virtual</b>:
+<ul>
+<li>Proporciona interfaz de llamadas de E/S.
+<li>Independiente de sistema de ficheros particular.
+</ul>
+</ul>
+</td>
+</tr>
+</table>
+</html>
+
+
+En dicha arquitectura general, el software está organizado por capas, de forma que las capas superiores usan la funcionalidad de las capas inferiores para implementar su funcionalidad:
+![Arquitectura básica del software en un sistema de ficheros Unix](./ssdd_sfd/ssdd_sfd_intro_2.svg)
 
 * La caché de bloques tiene las siguientes operaciones:
   * **getblk**: busca/reserva en caché un bloque (a partir de un v nodo, desplazamiento y tamaño dado).
@@ -110,7 +134,8 @@ memoria secundaria.
 #### Para más información:
   * Puede repasar de sistemas operativos el tema [sistema de ficheros (3/3)]([https://acaldero.github.io/uc3m_so/transparencias/clase_w12-sf-ficheros.pdf#page18](https://acaldero.github.io/uc3m_so/transparencias/clase_w14-sf-sistfich#page18))  
   * Dispone de un ejemplo de un mínimo sistema de ficheros de ejemplo en [nanofs]([https://github.com/acaldero/nanofs])
-  
+ 
+ 
 ## Sistema de ficheros remoto  
   
   
