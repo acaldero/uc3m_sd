@@ -147,14 +147,44 @@
 
 * A la hora de hacer remoto el acceso a los datos en un sistema de ficheros, tenemos varios puntos en la arquitectura donde podemos aplicar un patrón de software **proxy** para pedir la funcionalidad a una máquina remota.
 * Entre las principales opciones (puede haber más opciones o mezcla de opciones) se tiene:
-  * Acceso remoto a dispositivos de bloques que están en otras máquinas:
-    ![Acceso a discos remotos](./ssdd_sfd/ssdd_sfd_remoto_1.svg)
-    Ejemplo de esta posibilidad:
-    * [DRBD](https://en.wikipedia.org/wiki/Distributed_Replicated_Block_Device)
-  * Acceso remoto a los servicios de sistema de ficheros del sistema operativo en otra máquina:
-    ![Acceso a discos remotos](./ssdd_sfd/ssdd_sfd_remoto_2.svg)
-    Ejemplo de esta posibilidad:
-    * [NFS](https://es.wikipedia.org/wiki/Network_File_System)
+
+<html>
+<table>
+<tr>
+  <td>
+    Opción
+  </td>
+  <td>
+    Figura
+  </td>
+  <td>
+    Ejemplo:
+  </td>
+</tr>  
+<tr>
+  <td>
+    Acceso remoto a dispositivos de bloques que están en otras máquinas
+  </td>
+  <td>
+     <img alt="Acceso a discos remotos" src="./ssdd_sfd/ssdd_sfd_remoto_1.svg">
+  </td>
+  <td>
+     <a href="https://en.wikipedia.org/wiki/Distributed_Replicated_Block_Device">DRBD</a>
+  </td>
+</tr>  
+<tr>
+  <td>
+    Acceso remoto a los servicios de sistema de ficheros del sistema operativo en otra máquina
+  </td>
+  <td>
+    <img alt="Acceso a discos remotos" src="./ssdd_sfd/ssdd_sfd_remoto_2.svg">
+  </td>
+  <td>
+    <a href="https://es.wikipedia.org/wiki/Network_File_System">NFS</a>
+  </td>
+</tr>  
+</table>
+</html>
 
 
  
@@ -162,8 +192,28 @@
 
 * De forma muy general, un sistema de ficheros distribuidos (DFS) es un sistema de ficheros que permite el acceso a ficheros de múltiples máquinas a través de una red de interconexión haciendo posible a múltiples usuarios de múltiples máquinas compartir ficheros (y por tanto, recursos de almacenamiento).
 
-* Habitualmente las capas software usadas se basan en el uso de un patrón proxy a nivel de sistema de ficheros (integrando el servidor de sistema de ficheros a nivel de kernel):
-    ![Acceso a discos remotos](./ssdd_sfd/ssdd_sfd_remoto_3.svg)
+* Habitualmente las capas software usadas se basan en el uso de un patrón proxy a nivel de sistema de ficheros:<br>
+
+<html>
+<table>
+<tr>
+  <td>
+    Servidor a nivel de usuario
+  </td>
+  <td>
+    Servidor integrado en el Kernel
+  </td>
+</tr>  
+<tr>
+  <td>
+     <img alt="Acceso a discos remotos" src="./ssdd_sfd/ssdd_sfd_remoto_2.svg">
+  </td>
+  <td>
+     <img alt="Acceso a discos remotos" src="./ssdd_sfd/ssdd_sfd_remoto_3.svg">
+  </td>
+</tr>  
+</table>
+</html>
 
 * Un sistema de ficheros distribuido busca que para los programas clientes su comportamiento sea similar a un sistema de ficheros local, ofreciendo "transparencia" en una serie de aspectos:
    * *Transparencia de acceso*: los programas cliente no conocen que los ficheros están distribuidos en otras máquinas, trabaja con los ficheros como si fueran locales.
