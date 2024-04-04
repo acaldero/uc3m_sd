@@ -1,4 +1,5 @@
 
+
 # Sistemas de ficheros distribuidos  
 + **Felix García Carballeira y Alejandro Calderón Mateos**  
 + Licencia [GPLv3.0]([https://github.com/acaldero/uc3m_sd/blob/main/LICENSE](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE))  
@@ -10,7 +11,6 @@
   * [Sistema de ficheros](#sistema-de-ficheros)  
   * [Arquitectura básica de un sistema de ficheros](#arquitectura-basica-de-un-sistema-de-ficheros)
 * Sistemas de almacenamiento remotos  
-  * [Sistema de ficheros remoto](#sistema-de-ficheros-remoto)  
   * [Sistema de ficheros distribuido](#sistema-de-ficheros-distribuido)  
   * [Sistema de ficheros paralelo](#sistema-de-ficheros-paralelo)  
   
@@ -69,87 +69,92 @@
  
  
 #### Para más información:
-  * Puede repasar de sistemas operativos el tema [sistema de ficheros (1/3)]([https://acaldero.github.io/uc3m_so/transparencias/clase_w12-sf-ficheros.pdf#page9](https://acaldero.github.io/uc3m_so/transparencias/clase_w12-sf-ficheros.pdf#page9))  
+  * Puede repasar de sistemas operativos el tema ["sistema de ficheros (1/3)"](https://acaldero.github.io/uc3m_so/transparencias/clase_w12-sf-ficheros.pdf#page9)
  
 
  
 ## Arquitectura básica de un sistema de ficheros  
 
-Repasando la arquitectura general de un sistema de ficheros, tenemos:
+* Repasando la arquitectura general de un sistema de ficheros, tenemos:
+  <html>
+  <table>
+  <tr>
+  <td>
+    <img src="/transparencias/ssdd_sfd/ssdd_sfd_intro_1.svg">
+  </td>
+  <td>
 
-<html>
-<table>
-<tr>
-<td>
-  <img src="/transparencias/ssdd_sfd/ssdd_sfd_intro_1.svg">
-</td>
-<td>
-<ul>
-<li><b>Manejador de dispositivo</b>: 
-<ul>
-<li>Transforma peticiones de bloques en peticiones de dispositivo.
-</ul>
-<li><b>Servidor de bloques</b>:
-<ul>
-<li>Gestiona las peticiones de operaciones de bloques sobre dispositivos.
-<li>Mantiene una caché de bloques o páginas.
-</ul>
-<li><b>Módulo de organización de archivos</b>:
-<ul>
-<li>Transforma peticiones lógicas en físicas.
-<li>Distinto para cada sistema de ficheros particular.
-</ul>
-<li><b>Servidor de ficheros/archivos virtual</b>:
-<ul>
-<li>Proporciona interfaz de llamadas de E/S.
-<li>Independiente de sistema de ficheros particular.
-</ul>
-</ul>
-</td>
-</tr>
-</table>
-</html>
+  <ul>
+  <li><b>Servidor de ficheros/archivos virtual</b>:
+  <ul>
+  <li>Proporciona interfaz de llamadas de E/S.
+  <li>Independiente de sistema de ficheros particular.
+  </ul>
+  <li><b>Módulo de organización de archivos</b>:
+  <ul>
+  <li>Transforma peticiones lógicas en físicas.
+  <li>Distinto para cada sistema de ficheros particular.
+  </ul>
+  <li><b>Servidor de bloques</b>:
+  <ul>
+  <li>Gestiona las peticiones de operaciones de bloques sobre dispositivos.
+  <li>Mantiene una caché de bloques o páginas.
+  </ul>  
+  <li><b>Manejador de dispositivo</b>: 
+  <ul>
+  <li>Transforma peticiones de bloques en peticiones de dispositivo.
+  </ul>   
+    
+  </ul>
+  </td>
+  </tr>
+  </table>
+  </html>
 
-
-En dicha arquitectura general, el software está organizado por capas, de forma que las capas superiores usan la funcionalidad de las capas inferiores para implementar su funcionalidad.
-Las principales capas de software son:
-![Arquitectura básica del software en un sistema de ficheros Unix](./ssdd_sfd/ssdd_sfd_intro_2.svg)
-
-* La caché de bloques tiene las siguientes operaciones habitualmente:
-  * **getblk**: busca/reserva en caché un bloque (a partir de un v-nodo, desplazamiento y tamaño dado).
-  * **brelse**: libera un bloque y lo pasa a la lista de libres.
-  * **bwrite**: escribe un bloque de la caché a disco.
-  * **bread**: lee un bloque de disco a caché.
-  * **breada**: lee un bloque (y el siguiente) de disco a caché.
-* Los algoritmos de bajo nivel son:
-  * **namei**: convierte una ruta al i-nodo asociado.
-  * **iget**: devuelve un i-nodo de la tabla de i-nodos y si no está lo lee de memoria secundaria, lo añade a la tabla de i-nodos y lo devuelve.
-  * **iput**: libera un i-nodo de la tabla de i-nodos, y si es necesario lo actualiza en
-memoria secundaria.
-  * **ialloc**: asignar un i-nodo a un fichero.
-  * **ifree**: libera un i-nodo previamente asignado a un fichero.
-  * **bmap**: calcula el bloque de disco asociado a un desplazamiento del fichero. Traduce direcciones lógicas (*offset* de fichero) a físicas (bloque de disco).
-  * **alloc**: asigna un bloque a un fichero.
-  * **free**: libera un bloque previamente asignado a un fichero.
-* Las llamadas al sistema de archivos son las habituales en el estándar POSIX:
-  * **open**
-  * **write**
-  * **read**
-  * **close**
-  * Etc.
+* En dicha arquitectura general, el software está organizado por capas, de forma que las capas superiores usan la funcionalidad de las capas inferiores para implementar su funcionalidad.<br/>
+  Las principales capas de software son: <br/>
+  ![Arquitectura básica del software en un sistema de ficheros Unix](./ssdd_sfd/ssdd_sfd_intro_2.svg)
+  * La caché de bloques tiene las siguientes operaciones habitualmente:
+    * **getblk**: busca/reserva en caché un bloque (a partir de un v-nodo, desplazamiento y tamaño dado).
+    * **brelse**: libera un bloque y lo pasa a la lista de libres.
+    * **bwrite**: escribe un bloque de la caché a disco.
+    * **bread**: lee un bloque de disco a caché.
+    * **breada**: lee un bloque (y el siguiente) de disco a caché.
+  * Los algoritmos de bajo nivel son:
+    * **namei**: convierte una ruta al i-nodo asociado.
+    * **iget**: devuelve un i-nodo de la tabla de i-nodos y si no está lo lee de memoria secundaria, lo añade a la tabla de i-nodos y lo devuelve.
+    * **iput**: libera un i-nodo de la tabla de i-nodos, y si es necesario lo actualiza en memoria secundaria.
+    * **ialloc**: asignar un i-nodo a un fichero.
+    * **ifree**: libera un i-nodo previamente asignado a un fichero.
+    * **bmap**: calcula el bloque de disco asociado a un desplazamiento del fichero. Traduce direcciones lógicas (*offset* de fichero) a físicas (bloque de disco).
+    * **alloc**: asigna un bloque a un fichero.
+    * **free**: libera un bloque previamente asignado a un fichero.
+  * Las llamadas al sistema de archivos son las habituales en el estándar POSIX:
+    * **open**
+    * **write**
+    * **read**
+    * **close**
+    * Etc.
 
 
 #### Para más información:
-  * Puede repasar de sistemas operativos el tema [sistema de ficheros (3/3)]([https://acaldero.github.io/uc3m_so/transparencias/clase_w12-sf-ficheros.pdf#page18](https://acaldero.github.io/uc3m_so/transparencias/clase_w14-sf-sistfich#page18))  
-  * Dispone de un ejemplo de un mínimo sistema de ficheros de ejemplo en [nanofs]([https://github.com/acaldero/nanofs])
+  * Puede repasar de sistemas operativos el tema ["sistema de ficheros (3/3)"](https://acaldero.github.io/uc3m_so/transparencias/clase_w12-sf-ficheros.pdf#page18)
+  * Dispone de un ejemplo de un mínimo sistema de ficheros de ejemplo en [nanofs](https://github.com/acaldero/nanofs)
  
  
-## Sistema de ficheros remoto  
-  
-  
-## Sistema de ficheros distribuido  
-  
+## Sistema de ficheros distribuido 
+
+* A la hora de hacer remoto el acceso a los datos en un sistema de ficheros, tenemos varios puntos en la arquitectura donde podemos aplicar un patrón de software **proxy** para pedir la funcionalidad a una máquina remota.
+* Una posibilidad es tener acceso remoto a dispositivos de bloques que están en otras máquinas:
+  ![Acceso a discos remotos](./ssdd_sfd/ssdd_sfd_remoto_1.svg)
+* Otra posibilidad es solicitar los servicios del sistema operativo a otra máquina:
+  ![Acceso a discos remotos](./ssdd_sfd/ssdd_sfd_remoto_2.svg)
+
+* Es importante recordar que el acceso remoto puede realizarse a una sola máquina o a varias máquinas.  
+ 
   
 ## Sistema de ficheros paralelo
+
+* Si los accesos a las distintas máquinas donde están los datos se realiza en paralelo entonces el sistema de ficheros distribuido es también un sistema de ficheros paralelo.
 
 
