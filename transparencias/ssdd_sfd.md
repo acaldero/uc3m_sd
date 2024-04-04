@@ -7,10 +7,11 @@
   
 ## Contenidos  
   
-* Introducción a sistemas de ficheros  
+* Introducción a sistemas de ficheros  distribuidos:
   * [Sistema de ficheros](#sistema-de-ficheros)  
   * [Arquitectura básica de un sistema de ficheros](#arquitectura-basica-de-un-sistema-de-ficheros)
-* Sistemas de almacenamiento remotos  
+  * [Posibles opciones para almacenamiento remoto](#posibles-opciones-para-almacenamiento-remoto)
+* Sistemas de almacenamiento distribuidos:  
   * [Sistema de ficheros distribuido](#sistema-de-ficheros-distribuido)  
   * [Sistema de ficheros paralelo](#sistema-de-ficheros-paralelo)  
   
@@ -141,20 +142,41 @@
   * Puede repasar de sistemas operativos el tema ["sistema de ficheros (3/3)"](https://acaldero.github.io/uc3m_so/transparencias/clase_w12-sf-ficheros.pdf#page18)
   * Dispone de un ejemplo de un mínimo sistema de ficheros de ejemplo en [nanofs](https://github.com/acaldero/nanofs)
  
+
+## Posibles opciones para almacenamiento remoto
+
+* A la hora de hacer remoto el acceso a los datos en un sistema de ficheros, tenemos varios puntos en la arquitectura donde podemos aplicar un patrón de software **proxy** para pedir la funcionalidad a una máquina remota.
+* Entre las principales opciones (puede haber más opciones o mezcla de opciones) se tiene:
+  * Acceso remoto a dispositivos de bloques que están en otras máquinas:
+    ![Acceso a discos remotos](./ssdd_sfd/ssdd_sfd_remoto_1.svg)
+    Ejemplo de esta posibilidad:
+    * [DRBD](https://en.wikipedia.org/wiki/Distributed_Replicated_Block_Device)
+  * Acceso remoto a los servicios de sistema de ficheros del sistema operativo en otra máquina:
+    ![Acceso a discos remotos](./ssdd_sfd/ssdd_sfd_remoto_2.svg)
+    Ejemplo de esta posibilidad:
+    * [NFS](https://es.wikipedia.org/wiki/Network_File_System)
+
+
  
 ## Sistema de ficheros distribuido 
 
-* A la hora de hacer remoto el acceso a los datos en un sistema de ficheros, tenemos varios puntos en la arquitectura donde podemos aplicar un patrón de software **proxy** para pedir la funcionalidad a una máquina remota.
-* Una posibilidad es tener acceso remoto a dispositivos de bloques que están en otras máquinas:
-  ![Acceso a discos remotos](./ssdd_sfd/ssdd_sfd_remoto_1.svg)
-* Otra posibilidad es solicitar los servicios del sistema operativo a otra máquina:
-  ![Acceso a discos remotos](./ssdd_sfd/ssdd_sfd_remoto_2.svg)
+* De forma muy general, un sistema de ficheros distribuidos (DFS) es un sistema de ficheros que permite el acceso a ficheros de múltiples máquinas a través de una red de interconexión haciendo posible a múltiples usuarios de múltiples máquinas compartir ficheros (y por tanto, recursos de almacenamiento).
 
-* Es importante recordar que el acceso remoto puede realizarse a una sola máquina o a varias máquinas.  
- 
+* Habitualmente las capas software usadas se basan en el uso de un patrón proxy a nivel de sistema de ficheros (integrando el servidor de sistema de ficheros a nivel de kernel):
+    ![Acceso a discos remotos](./ssdd_sfd/ssdd_sfd_remoto_3.svg)
+
+* Un sistema de ficheros distribuido busca que para los programas clientes su comportamiento sea similar a un sistema de ficheros local, ofreciendo "transparencia" en una serie de aspectos:
+   * *Transparencia de acceso*: los programas cliente no conocen que los ficheros están distribuidos en otras máquinas, trabaja con los ficheros como si fueran locales.
+   * *Transparencia de localización*: los programas cliente utilizan nombres de directorios y ficheros que no incluyen la localización explícita de dichos ficheros en el sistema distribuido.
+   * *Heterogeneidad*: los programas cliente y los servidores de ficheros distribuidos pueden ejecutarse en diferentes tipos de hardware y sistemas operativos.
+   * *Transparencia de concurrencia*: si varios programas cliente acceden a un mismo fichero del sistema de ficheros distribuido, las modificaciones se han de ver de alguna forma coherente.
+   * *Transparencia de fallo*: cualquier programa cliente de un fichero distribuido debería de poder trabajar aún en presencia de fallos en la red o en el servidor.
+   * *Transparencia de replicación*: los clientes no deben de preocuparse por la replicación en distintos servidores que pueda realizarse por parte del sistema de ficheros distribuidos para mejorar la tolerancia a fallos y escalabilidad.
+
   
 ## Sistema de ficheros paralelo
 
 * Si los accesos a las distintas máquinas donde están los datos se realiza en paralelo entonces el sistema de ficheros distribuido es también un sistema de ficheros paralelo.
+
 
 
