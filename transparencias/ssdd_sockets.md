@@ -1571,8 +1571,8 @@ Las opciones más importantes son:
 
     ...
     int busy = 0 ;
-    pthread_mutex_t     m = PTHREAD_MUTEX_INITIALIZER ;
-    pthread_condition_t c = PTHREAD_COND_INITIALIZER ;
+    pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER ;
+    pthread_cond_t  c = PTHREAD_COND_INITIALIZER ;
 
     void *tratar_peticion ( void * arg )
     {
@@ -1609,6 +1609,8 @@ Las opciones más importantes son:
 
     int main ( int argc, char **argv )
     {
+         pthread_attr_t attr ;
+
          pthread_attr_init(&attr);
          pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
