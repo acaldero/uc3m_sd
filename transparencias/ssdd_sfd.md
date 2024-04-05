@@ -1,74 +1,72 @@
 
+# Sistemas de ficheros distribuidos
++ **Felix García Carballeira y Alejandro Calderón Mateos**
++ Licencia [GPLv3.0]([https://github.com/acaldero/uc3m_sd/blob/main/LICENSE](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE))
 
 
-# Sistemas de ficheros distribuidos 
-+ **Felix García Carballeira y Alejandro Calderón Mateos** 
-+ Licencia [GPLv3.0]([https://github.com/acaldero/uc3m_sd/blob/main/LICENSE](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)) 
- 
- 
-## Contenidos 
- 
+## Contenidos
+
 * Introducción a sistemas de ficheros  distribuidos:
-  * [Sistema de ficheros](#sistema-de-ficheros) 
+  * [Sistema de ficheros](#sistema-de-ficheros)
   * [Funcionamiento básico de un sistema de ficheros](#funcionamiento-basico-de-un-sistema-de-ficheros)
   * [Arquitectura básica de un sistema de ficheros](#arquitectura-basica-de-un-sistema-de-ficheros)
   * [Posibles opciones para almacenamiento remoto](#posibles-opciones-para-almacenamiento-remoto)
-* Sistemas de almacenamiento distribuidos: 
-  * [Sistema de ficheros distribuido](#sistema-de-ficheros-distribuido) 
-  * [Sistema de ficheros paralelo](#sistema-de-ficheros-paralelo) 
- 
- 
- 
-## Sistema de ficheros 
- 
-* En una máquina Von Neumann, tanto los datos como el código de un programa ha de estar cargado en memoria principal para ejecutar: 
-  ```mermaid 
-  flowchart LR 
-  A[CPU] <--> B(Memoria principal) 
-  ``` 
- 
-* A día de hoy hay dos tecnologías principales para el almacenamiento: 
-  ```mermaid 
-  flowchart LR 
-  A[CPU] <--> B(Memoria) 
-  B[Memoria] <--> C(Disco) 
-  ``` 
-  * Memoria RAM 
-    * **Volátil** (se pierde contenido si falta electricidad) 
-    * **Menor** capacidad (orden de Gigabyte) 
-    * Direccionamiento a nivel de **byte** 
-  * Disco 
-    * **NO Volátil** (permanente) 
-    * **Mayor** capacidad (orden de Terabytes) 
-    * Direccionamiento a nivel de **bloque** 
- 
-* **Problema**: que los/as programadoras/es tengan que ocuparse de tratar con los bloques de disco para buscar en qué bloque están los datos, recuperar o guardar datos de un bloque, etc. 
-* **Objetivo**: Ofrecer una abstracción de datos intermedia que se traduzca a bloques de manera que: 
-  * Sea independiente del dispositivo físico. 
-  * Ofrezca una visión lógica unificada. 
-  * Sea lo suficientemente simple pero completa. 
-  ```mermaid 
-  flowchart LR 
-  A(Proceso)---|"(1) Abstracción de datos"|B("(2) Gestor de abstracción") 
-  B --- C(Disco) 
-  C -.- D("b1, b2, ...") 
-  ``` 
- 
-* El sistema operativo integra una <u>abstracción básica y genérica</u> (**ficheros y directorios**) y hay un componente en el sistema operativo que es el <u>gestor de dicha abstracción</u> (**sistema de ficheros**). 
-  ```mermaid 
-  flowchart LR 
-  A(Proceso)---|"ficheros y directorios"|B("sistema de ficheros") 
-  B --- C(Disco) 
-  C -.- D("b1, b2, ...") 
-  ``` 
+* Sistemas de almacenamiento distribuidos:
+  * [Sistema de ficheros distribuido](#sistema-de-ficheros-distribuido)
+  * [Sistema de ficheros paralelo](#sistema-de-ficheros-paralelo)
+
+
+
+## Sistema de ficheros
+
+* En una máquina Von Neumann, tanto los datos como el código de un programa ha de estar cargado en memoria principal para ejecutar:
+  ```mermaid
+  flowchart LR
+  A[CPU] <--> B(Memoria principal)
+  ```
+
+* A día de hoy hay dos tecnologías principales para el almacenamiento:
+  ```mermaid
+  flowchart LR
+  A[CPU] <--> B(Memoria)
+  B[Memoria] <--> C(Disco)
+  ```
+  * Memoria RAM
+    * **Volátil** (se pierde contenido si falta electricidad)
+    * **Menor** capacidad (orden de Gigabyte)
+    * Direccionamiento a nivel de **byte**
+  * Disco
+    * **NO Volátil** (permanente)
+    * **Mayor** capacidad (orden de Terabytes)
+    * Direccionamiento a nivel de **bloque**
+
+* **Problema**: que los/as programadoras/es tengan que ocuparse de tratar con los bloques de disco para buscar en qué bloque están los datos, recuperar o guardar datos de un bloque, etc.
+* **Objetivo**: Ofrecer una abstracción de datos intermedia que se traduzca a bloques de manera que:
+  * Sea independiente del dispositivo físico.
+  * Ofrezca una visión lógica unificada.
+  * Sea lo suficientemente simple pero completa.
+  ```mermaid
+  flowchart LR
+  A(Proceso)---|"(1) Abstracción de datos"|B("(2) Gestor de abstracción")
+  B --- C(Disco)
+  C -.- D("b1, b2, ...")
+  ```
+
+* El sistema operativo integra una <u>abstracción básica y genérica</u> (**ficheros y directorios**) y hay un componente en el sistema operativo que es el <u>gestor de dicha abstracción</u> (**sistema de ficheros**).
+  ```mermaid
+  flowchart LR
+  A(Proceso)---|"ficheros y directorios"|B("sistema de ficheros")
+  B --- C(Disco)
+  C -.- D("b1, b2, ...")
+  ```
   * Normalmente con la abstracción de **ficheros y directorios** que tiene el sistema operativo de serie es suficiente para el acceso habitual a los datos, y el propio sistema operativo usa dicha abstracción para la gestión de sus componentes (lo que demuestra su potencial).
-* Aunque hay otras soluciones alternativas, como una base de datos donde <u>la abstracción</u> **se basa en el uso de tablas** y hay un componente que es el <u>gestor de dicha abstracción</u> **que es el gestor de base de datos**. 
-  ```mermaid 
-  flowchart LR 
-  A(Proceso)---|"base de datos"|B("gestor BBDD") 
-  B --- C(Disco) 
-  C -.- D("b1, b2, ...") 
-  ``` 
+* Aunque hay otras soluciones alternativas, como una base de datos donde <u>la abstracción</u> **se basa en el uso de tablas** y hay un componente que es el <u>gestor de dicha abstracción</u> **que es el gestor de base de datos**.
+  ```mermaid
+  flowchart LR
+  A(Proceso)---|"base de datos"|B("gestor BBDD")
+  B --- C(Disco)
+  C -.- D("b1, b2, ...")
+  ```
 * La *Storage Networking Industry Association* (SNIA) propone el [*The SNIA Shared Storage Model*](https://www.snia.org/education/storage_networking_primer/shared_storage_model):<br>
    ![SNIA storage model v2](./ssdd_sfd/snia_model_v2.gif)<br>
    * Donde una aplicación puede usar un gestor de base de datos, o bien un sistema de ficheros (o bien ambos, por ejemplo un reproductor de canciones con una base de datos con la información de las canciones del usuario y las propias canciones guardadas en archivos).
@@ -79,7 +77,7 @@
   * Puede repasar de sistemas operativos el tema ["sistema de ficheros (1/3)"](https://acaldero.github.io/uc3m_so/transparencias/clase_w12-sf-ficheros.pdf#page9)
 
 
-## Funcionamiento básico de un sistema de ficheros 
+## Funcionamiento básico de un sistema de ficheros
 
 * **Un sistema de ficheros es un software de sistema que establece una correspondencia lógica entre los ficheros y directorios y los dispositivos de almacenamiento**.
 
@@ -98,14 +96,14 @@
      * Un directorio es una colección de ficheros agrupados por algún criterio de el/la usuario/a.
        * Importante: en UNIX/Linux un directorio permite asociar el número de i-nodo al nombre de un fichero.
        * Si ejecuta ```ls -i1``` se puede ver tanto los nombres como los número de i-nodos del directorio actual.
- 
+
 * Operaciones básicas:
   * **Crear el sistema de ficheros** (```mkfs```): crea en una partición o volumen un sistema de ficheros vacío. Reserva parte del almacenamiento para guardar las estructuras de datos que posteriormente permiten la gestión de la información en disco (metadatos en disco).
   * **Montar** (```mount```): añade el árbol de directorio contenido en un sistema de ficheros a un directorio de un árbol ya montado.
   * **Desmontar** (```unmount```): quita el árbol de directorio de un directorio de montaje, volviendo a poder acceder al contenido inicial de ese directorio.
 
 
-## Arquitectura básica de un sistema de ficheros 
+## Arquitectura básica de un sistema de ficheros
 
 * Repasando la arquitectura general de un sistema de ficheros, tenemos:
   <html>
@@ -131,12 +129,12 @@
   <ul>
   <li>Gestiona las peticiones de operaciones de bloques sobre dispositivos.
   <li>Mantiene una caché de bloques o páginas.
-  </ul> 
+  </ul>
   <li><b>Manejador de dispositivo</b>:
   <ul>
   <li>Transforma peticiones de bloques en peticiones de dispositivo.
-  </ul>  
-   
+  </ul> 
+  
   </ul>
   </td>
   </tr>
@@ -190,7 +188,7 @@
   <td>
     Ejemplo:
   </td>
-</tr> 
+</tr>
 <tr>
   <td>
     Acceso remoto a dispositivos de bloques que están en otras máquinas
@@ -201,7 +199,7 @@
   <td>
      <a href="https://en.wikipedia.org/wiki/Distributed_Replicated_Block_Device">DRBD</a>
   </td>
-</tr> 
+</tr>
 <tr>
   <td>
     Acceso remoto a los servicios de sistema de ficheros del sistema operativo en otra máquina
@@ -212,7 +210,18 @@
   <td>
     <a href="https://es.wikipedia.org/wiki/Network_File_System">NFS</a>
   </td>
-</tr> 
+</tr>
+<tr>
+  <td>
+    Acceso remoto a servicio de directorio (i-nodos), a servicio de bloques y servicio de coherencia de caché
+  </td>
+  <td>
+    <img alt="Acceso bloques, inodos y caché remotos" src="./ssdd_sfd/ssdd_sfd_remoto_4.svg">
+  </td>
+  <td>
+    <a href="https://www.researchgate.net/publication/4658185_The_Sprite_Network_Operating_System">Sprite</a>
+  </td>
+</tr>
 </table>
 </html>
 
@@ -221,29 +230,6 @@
 ## Sistema de ficheros distribuido
 
 * De forma muy general, un sistema de ficheros distribuidos (DFS) es un *sistema de ficheros* que *permite el acceso a ficheros de múltiples máquinas* a través de una red de interconexión *haciendo posible a múltiples usuarios* de múltiples máquinas *compartir* ficheros (y por tanto, recursos de almacenamiento).
-
-* Habitualmente las capas software usadas se basan en el uso de un patrón proxy a nivel de sistema de ficheros:<br>
-
-<html>
-<table>
-<tr>
-  <td>
-    Servidor a nivel de usuario
-  </td>
-  <td>
-    Servidor integrado en el Kernel
-  </td>
-</tr> 
-<tr>
-  <td>
-     <img alt="Acceso a discos remotos" src="./ssdd_sfd/ssdd_sfd_remoto_2.svg">
-  </td>
-  <td>
-     <img alt="Acceso a discos remotos" src="./ssdd_sfd/ssdd_sfd_remoto_3.svg">
-  </td>
-</tr> 
-</table>
-</html>
 
 * Los requisitos de un sistema de ficheros distribuido son:
    * Transparencia:
@@ -260,12 +246,54 @@
    * Seguridad
 
 * Un sistema de ficheros distribuido busca que para los programas clientes su comportamiento sea similar a un sistema de ficheros local, ofreciendo "transparencia" en una serie de aspectos:
-   * *Transparencia de acceso*: los programas cliente no conocen que los ficheros están distribuidos en otras máquinas, trabaja con los ficheros como si fueran locales.
-   * *Transparencia de localización*: los programas cliente utilizan nombres de directorios y ficheros que no incluyen la localización explícita de dichos ficheros en el sistema distribuido.
-   * *Heterogeneidad*: los programas cliente y los servidores de ficheros distribuidos pueden ejecutarse en diferentes tipos de hardware y sistemas operativos.
-   * *Transparencia de concurrencia*: si varios programas cliente acceden a un mismo fichero del sistema de ficheros distribuido, las modificaciones se han de ver de alguna forma coherente.
-   * *Transparencia de fallo*: cualquier programa cliente de un fichero distribuido debería de poder trabajar aún en presencia de fallos en la red o en el servidor.
-   * *Transparencia de replicación*: los clientes no deben de preocuparse por la replicación en distintos servidores que pueda realizarse por parte del sistema de ficheros distribuidos para mejorar la tolerancia a fallos y escalabilidad.
+   * **Transparencia de acceso**: los programas cliente no conocen que los ficheros están distribuidos en otras máquinas, trabaja con los ficheros como si fueran locales.
+   * **Transparencia de localización**: los programas cliente utilizan nombres de directorios y ficheros que no incluyen la localización explícita de dichos ficheros en el sistema distribuido.
+   * **Heterogeneidad**: los programas cliente y los servidores de ficheros distribuidos pueden ejecutarse en diferentes tipos de hardware y sistemas operativos.
+   * **Transparencia de concurrencia**: si varios programas cliente acceden a un mismo fichero del sistema de ficheros distribuido, las modificaciones se han de ver de alguna forma coherente.
+   * **Transparencia de fallo**: cualquier programa cliente de un fichero distribuido debería de poder trabajar aún en presencia de fallos en la red o en el servidor.
+     * Servidores con estado: cuando se abre un archivo el servidor almacena la información de la sesión de trabajo y devuelve al cliente un identificador único de dicha sesión de trabajo para posteriores operaciones.
+       * V: operaciones más cortas y oportunidades de optimización en el servidor.
+       * I: Es preciso guardar el estado del servidor para en caso de fallo poder recuperarlo.
+     * Servidor sin estado: cada operación es autocontenida (nombre del fichero, posición actual de trabajo, etc. va en cada operación).
+       * V: recuperación ante fallos más sencilla al no conservar estado el servidor.
+       * I: Aunque no son necesarios el open y close, el resto de operaciones tienen más campos.
+   * **Transparencia de replicación**: los clientes no deben de preocuparse por la replicación en distintos servidores que pueda realizarse por parte del sistema de ficheros distribuidos para mejorar la tolerancia a fallos y escalabilidad.
+
+* Habitualmente las capas software usadas se basan en el uso de un patrón proxy a nivel de sistema de ficheros:<br>
+<html>
+<table>
+<tr>
+  <td>
+    Servidor a nivel de usuario
+  </td>
+  <td>
+    Servidor integrado en el Kernel
+  </td>
+</tr>
+<tr>
+  <td>
+     <img alt="Acceso a discos remotos" src="./ssdd_sfd/ssdd_sfd_remoto_2.svg">
+  </td>
+  <td>
+     <img alt="Acceso a discos remotos" src="./ssdd_sfd/ssdd_sfd_remoto_3.svg">
+  </td>
+</tr>
+</table>
+</html>
+
+* Pero también se puede aplicar el patrón proxy a los tres elementos de la capa inferior de software:<br>
+     * Servicio de directorio (para traducir de nombre lógico a identificador único de i-nodo)
+     * Servicio de bloque o *chunck* (para pedir los bloques del fichero)
+     * Servicio de coherencia de caché (para mantener la coherencia de las caché en los clientes y en los servidores)
+<html>
+<table>
+<tr>
+  <td>
+  <img alt="Acceso bloques, inodos y caché remotos" src="./ssdd_sfd/ssdd_sfd_remoto_4.svg">
+  </td>
+</tr>
+</table>
+</html>
 
 
 ### Servicio de directorio
@@ -287,7 +315,7 @@
      * Elimina una nombre de un directorio
   *  GetNames(dir) -> ListName
      * Devuelve los nombre de un directorio
- 
+
 * Resolución de nombres:
    * Dirigida por los clientes
      * Ejemplo: NFS
@@ -334,6 +362,9 @@
      * Semántica de sesión
      * Semántica de ficheros inmutables
      * Semántica de transacciones
+
+
+### Servicio de caché de bloques
 
 * Es posible emplear una caché de bloques:
   * V: el empleo de caché de bloques permite mejorar el rendimiento:
@@ -408,9 +439,9 @@
              * Si -> continua con caché en todos los clientes desactivada
              * No, 1 máquina y escritura -> OK
                * Si copia en el servidor no es la última versión -> pide volcar los datos a lastWriter
-               * Se utilizará la caché en cliente 
+               * Se utilizará la caché en cliente
              * No, en 1 o más máquinas para lectura -> OK
-               * Si no lo estaba ya, se utilizará la caché en cliente 
+               * Si no lo estaba ya, se utilizará la caché en cliente
         * El cliente:
           * Si le llega usar caché -> actualiza los datos, la versión y utilizará *write-back* en escritura
 
