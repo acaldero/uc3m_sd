@@ -298,62 +298,86 @@
 
 ### Servicio de directorio
 
-* Se encarga de la traducción de nombres de usuario a Identificadores de ficheros únicos (UFID)
+* Servicio de directorio: se encarga de la traducción de nombres de usuario a Identificadores de ficheros únicos (UFID)
    * Ej.: En UNIX/Linux de nombre de fichero a identificador de i-nodo
-* Directorio: relaciona de forma única nombres de fichero con UFID
    * Los UFID permiten obtener los atributos de los ficheros (metadatos)
+   * Directorio: relaciona de forma única nombres de fichero con UFID
 * Dos opciones:
    * Los directorios son objetos independientes gestionados por un servidor de directorios (SD)
-   * Los directorios son ficheros especiales. Servidor de ficheros y de directorios combinados
-
+   * Los directorios son ficheros especiales -> se tiene servidor de ficheros y de directorios combinados
 * Operaciones básicas de un servicio de directorios:
-  * Lookup(dir, name) -> FileId
-     * Busca un nombre en un directorio
-  *  AddName(dir, name, FileId)
-     * Añade un nombre (name, FileId) a un directorio
-  *  RemoveName(dir, name)
-     * Elimina una nombre de un directorio
-  *  GetNames(dir) -> ListName
-     * Devuelve los nombre de un directorio
-
-* Resolución de nombres:
-   * Dirigida por los clientes
+  <html>
+  <table>
+  <tr>
+  <td>Lookup(dir, name) -> FileId</td>
+  <td>Busca un nombre en un directorio</td>
+  </tr>
+  <tr>
+  <td>AddName(dir, name, FileId)</td>
+  <td>Añade un nombre (name, FileId) a un directorio</td>
+  </tr>
+  <tr>
+  <td>RemoveName(dir, name)</td>
+  <td>Elimina una nombre de un directorio</td>
+  </tr>
+  <tr>
+  <td>GetNames(dir) -> ListName</td>
+  <td>Devuelve los nombre de un directorio</td>
+  </tr>
+  </table>
+  </html>
+* **Resolución de nombres**:
+   * **Dirigida por los clientes**:
      * Ejemplo: NFS
-   * Dirigida por los servidores:
-     * Resolución iterativa
+   * **Dirigida por los servidores**:
+     * Resolución **iterativa**:
         * El cliente envía el nombre al SD
         * El SD realiza la traducción hasta que termina en un componente que pertenece a otro SD
         * El SD envía el resultado al cliente, el cual si no ha terminado la traducción continúa con el SD correspondiente
-     *  Resolución transitiva
+     *  Resolución **transitiva**:
         * Los SD implicados contactan entre si para llevar a cabo la traducción. El último SD devuelve la traducción al cliente
         * Rompe el modelo cliente/servidor (no adecuado para RPC)
-     *  Resolución recursiva
+     *  Resolución **recursiva**:
         * El último SD implicado devuelve el resultado al anterior y así sucesivamente hasta que el primero responde al cliente
 
 ### Servicio de ficheros
 
-* Se encarga de la gestión de los ficheros y del acceso a los datos
+* Servicio de ficheros: se encarga de la gestión de los ficheros y del acceso a los datos
 * Aspectos relacionados:
    * Semántica de coutilización
    * Métodos de acceso
    * Caché de bloques
-   * El problema de la coherencia de cache
+     * El problema de la coherencia de cache
    * Métodos para mejorar el rendimiento
-
 * Operaciones básicas de un servicio de ficheros:
-   * ReadFile(FileId, pos, n) -> Data
-      * Lee n bytes a partir de una determinada posición
-   * WriteFile(FileId, pos, n, Data)
-      * Escribe n bytes (Data) a partir de una determinada posición
-   * Create(name) -> FileId
-      * Crea un nuevo fichero de longitud 0 bytes.
-   * Delete(FileId)
-      * Borra el fichero
-   * GetAttributes(FileId) -> Attr
-      * Devuelve los atributos de un fichero
-   * SetAttributes(FileId, Attr)
-      * Modifica los atributos de un fichero
-
+  <html>
+   <table>
+   <tr>
+   <td>ReadFile(FileId, pos, n) -> Data</td>
+   <td>Lee n bytes a partir de una determinada posición</td>
+   </tr>
+   <tr>
+   <td>WriteFile(FileId, pos, n, Data)</td>
+   <td>Escribe n bytes (Data) a partir de una determinada posición</td>
+   </tr>
+   <tr>
+   <td>Create(name) -> FileId</td>
+   <td>Crea un nuevo fichero de longitud 0 bytes</td>
+   </tr>
+   <tr>
+   <td>Delete(FileId)</td>
+   <td>Borra el fichero</td>
+   </tr>
+   <tr>
+   <td>GetAttributes(FileId) -> Attr</td>
+   <td>Devuelve los atributos de un fichero</td>
+   </tr>
+   <tr>
+   <td>SetAttributes(FileId, Attr)</td>
+   <td>Modifica los atributos de un fichero</td>
+   </tr>
+   </table>
+  </html>
 * Semánticas de coutilización:
   * **Sesión**: serie de accesos que realiza un cliente entre un open y un close
   * La **semántica de coutilización** especifica el efecto de varios procesos accediendo de forma simultánea al mismo fichero
@@ -418,33 +442,46 @@
      * Número de versión para el fichero
      * Identificador del último escritor
    * Funcionamiento general:
-     * Cuando un cliente X *abre* un fichero "f" para leer o escribir -> envía al servidor (open, f, R) o (open, f, W)
-       * El servidor:
-          * Añade tupla del cliente -> f = f U { (X, R/W) }
-          * Analiza si se abre para escritura:
-            * Si -> incrementa número de versión del fichero: f.versión = f.versión + 1
-          * Analiza si está (abierto en 2 o más máquinas + en alguna de ellas es para escritura):
-            * Si -> se desactiva la caché en todos los clientes y todo acceso será remoto al servidor
-            * No -> OK
-              * Si copia en el servidor no es la última versión -> pide volcar los datos a lastWriter
-              * Se utilizará la caché en cliente
-       * El cliente:
-          * Si le llega desactivar la caché -> todo el acceso será remoto al servidor
-          * Si le llega usar caché -> actualiza los datos, la versión y utilizará *write-back* en escritura
-      * Cuando un cliente X *cierra* un fichero "f" -> envía al servidor (close, f)
-        * El servidor:
-           * Quita tupla de este cliente -> f = f - { (X,R/W) }
-           * Apunta si fué el último escritor -> lastWriter = X
-           * Analiza si está (abierto en 2 o más máquinas + en alguna de ellas es para escritura):
-             * Si -> continua con caché en todos los clientes desactivada
-             * No, 1 máquina y escritura -> OK
-               * Si copia en el servidor no es la última versión -> pide volcar los datos a lastWriter
-               * Se utilizará la caché en cliente
-             * No, en 1 o más máquinas para lectura -> OK
-               * Si no lo estaba ya, se utilizará la caché en cliente
-        * El cliente:
-          * Si le llega usar caché -> actualiza los datos, la versión y utilizará *write-back* en escritura
+     * Compartición con lectores concurrentes (CLC)
+       * Escenario:
+         * Un fichero se abre por varios clientes para lecturas
+         * Ocurren lecturas concurrentes
+       * Acciones:
+         * El servidor detecta CLC -> mantiene lista de tuplas {cliente ID, Lectura}
+         * El servidor notifica a cada cliente al abrir que use cache
+         * El servidor también utiliza cache
+         * Cuando un cliente cierra el fichero, se mantiene cache
+     * Compartición con escrituras concurrentes (CEC)
+       * Escenario:
+         * Un fichero se abre por varios clientes
+         * Al menos un cliente abre para escritura
+         * Ocurren escrituras concurrentes
+       * Acciones:
+         * El servidor detecta CEC al abrir para escritura
+         * El servidor notifica a todos los clientes que no usen cache -> todos los accesos se hacen directamente en el servidor
+         * El servidor serializa las peticiones de los clientes
+         * Cuando no haya clientes escritores -> se notifica de usar caché de nuevo
+     * Compartición con escrituras secuenciales (CES)
+       * Escenario 1:
+         * Un fichero se abre por un cliente 1, se escribe y se cierra
+           * En cache cliente 1 los datos más recientes (no en servidor)
+         * A continuación se abre por un cliente 2
+           * El cliente 2 copia los datos antiguos desde el servidor -> problema 1
+       * Escenario 2:
+         * Un fichero se abre por un cliente 1, se escribe y se cierra
+         * Un fichero se abre por un cliente 2, se escribe y se cierra
+         * A continuación se abre por un cliente 3
+           * El servidor no tiene las últimas escrituras -> problema 2
+       * Acciones:
+         * El servidor detecta CES al abrir para escritura
+           * El servidor lleva la pista de el último escritor: "lastWriter"
+           * El servidor lleva la pista de la última versión:  "version"
+         * Se incrementa "version" cada apertura para escritura en cliente
+         * El servidor pide al último escritor que le mande la última versión
 
+#### Para más información:
+ * Puede repasar el artículo ["scale and performance in distributed file systems"](https://www.slideserve.com/penelope-herman/caching-in-the-sprite-network-file-system-scale-and-performance-in-a-distributed-file-system)
+ 
 
 ## Sistema de ficheros paralelo
 
@@ -456,7 +493,6 @@
    * Paralelismo tanto en cliente como en servidor:
       * Varias aplicaciones ejecutando en paralelo acceden cada una de ellas en paralelo a los datos guardados en varios servidores.
       * En una aplicación paralela formada por varios procesos se puede desde cada proceso acceder en paralelo a los datos guardados en distintos servidores.
-
 * Múltiples nodos de E/S -> Incrementa el ancho de banda
 * Fichero distribuido entre diferentes nodos de E/S con acceso paralelo:
      * A diferentes ficheros
@@ -466,10 +502,7 @@
 * Optimizaciones:
    * E/S colectiva
    * Acceso a datos no contiguos
-
 * Ejemplos:
   * GPFS
   * OrangeFS
  
-
-
