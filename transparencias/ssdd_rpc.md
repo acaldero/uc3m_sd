@@ -584,7 +584,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>   Vectores de tamaño fijo   </td>
+   <td>   Vectores de tamaño fijo (2)</td>
    <td><pre lang="c">
    int a[12];
    </pre></td>
@@ -724,6 +724,11 @@ datos estándar
    </html>
 
 * NOTA(1): al transmitir por red, se envía primero la longitud (37) y luego la secuencia de caracteres ASCII.
+* NOTA(2): un argumento de un procedimiento remoto no puede ser un array/vector de tamaño fijo, pero si una estructura que contenga un campo que sea un array/vector de tamaño fijo.
+  * int rutina_no_valida ( int arg[32] ) ; // no debería de valer en el IDL
+  * struct arr_double_struct { double vector[32]; } ;
+    typedef struct arr_double_struct arr_double ;
+    int rutina_valida ( arr_double arg ) ; // si podría usarse en el IDL
 
 
 ## El proceso rpcbind/portmapper
@@ -886,7 +891,7 @@ datos estándar
         enum clnt_stat retval_1;
         int ret ;
 
-        clnt = clnt_create (host, SUMAR, SUMAVER, "udp");
+        clnt = clnt_create (host, SUMAR, SUMAVER, "tcp");
         if (clnt == NULL) {
             clnt_pcreateerror (host); exit (-1);
         }
@@ -952,9 +957,28 @@ datos estándar
       [1]+  Killed                  ./suma_server
       ```
    2. Si funciona en una misma máquina, se puede probar en dos máquinas (docker1 para suma_server y docker2 para suma_client):
+       <html>
+       <table>
+       <tr>
+       <td><b>docker1</b></td>
+       <td><b>docker2</b></td>
+       </tr>
+       <tr>
+       <td>
+
        ```bash
-      acaldero@docker1:~/sd$ ./suma_server &
-      acaldero@docker2:~/sd$ rpcinfo  -p docker1
+      docker1:~/sd$ ./suma_server &
+      ```
+
+       </td>
+       <td> </td>
+       </tr>
+       <tr>
+       <td> </td>
+       <td>
+
+       ```bash
+      docker2:~/sd$ rpcinfo  -p docker1
       program vers proto   port  service
       100000    4   tcp    111  portmapper
       100000    3   tcp    111  portmapper
@@ -964,13 +988,30 @@ datos estándar
       100000    2   udp    111  portmapper
           99    1   udp  34654
           99    1   tcp  41745
-      acaldero@docker2:~/sd$ ./suma_client  docker1
+          
+      @docker2:~/sd$ ./suma_client  docker1
       1 + 2 = 3
       1 - 2 = -1
-      acaldero@docker1:~/sd$ kill -9 %1
-      acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
-      [1]+  Killed                  ./suma_server
       ```
+
+       </td>
+       </tr>
+       <tr>
+       <td>
+
+       ```bash
+      docker1:~/sd$ kill -9 %1
+      
+      docker1:~/sd$ sudo rpcinfo -d 99 1
+      [1]+  Killed       ./suma_server
+      ```
+
+       </td>
+       <td></td>
+       </tr>
+       </table>
+       </html>
+       
 
 ## Cadena de caracteres
 
@@ -1294,8 +1335,27 @@ datos estándar
       [1]+  Killed                  ./vector_server
       ```
    2. Si funciona en una misma máquina, se puede probar en dos máquinas (docker1 para vector_server y docker2 para vector_client):
+       <html>
+       <table>
+       <tr>
+       <td><b>docker1</b></td>
+       <td><b>docker2</b></td>
+       </tr>
+       <tr>
+       <td>
+
        ```bash
       acaldero@docker1:~/sd$ ./vector_server &
+      ```
+
+       </td>
+       <td> </td>
+       </tr>
+       <tr>
+       <td> </td>
+       <td>
+
+       ```bash
       acaldero@docker2:~/sd$ rpcinfo  -p localhost
       program vers proto   port  service
       100000    4   tcp    111  portmapper
@@ -1306,12 +1366,28 @@ datos estándar
       100000    2   udp    111  portmapper
           99    1   udp  49848
           99    1   tcp  42919
+          
       acaldero@docker2:~/sd$ ./vector_client  localhost
       La suma es 200
-      acaldero@docker1:~/sd$ kill -9 %1
-      acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
-      [1]+  Killed                  ./vector_server
       ```
+
+       </td>
+       </tr>
+       <tr>
+       <td>
+
+       ```bash
+      acaldero@docker1:~/sd$ kill -9 %1
+      
+      acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
+      [1]+  Killed                ./vector_server
+      ```
+
+       </td>
+       <td></td>
+       </tr>
+       </table>
+       </html>
 
 ## Autenticación
 
@@ -1436,5 +1512,3 @@ Hay 3 detalles a comprobar en su instalación de Ubuntu:
     LDLIBS += -lnsl -lpthread -ldl **-ltirpc**  
     ...
     ```
-
-
