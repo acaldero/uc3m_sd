@@ -1,4 +1,5 @@
 
+
 # Comunicación con RPC
 + **Felix García Carballeira y Alejandro Calderón Mateos**
 + Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
@@ -7,7 +8,7 @@
 ## Contenidos
 
  * Introducción a RPC
-   * [Motivación: transparencia de invocación y generación automática](#llamadas-a-procedimientos-remotos--objetivo)
+   * [Motivación: transparencia de invocación y generación automática](#llamadas-a-procedimientos-remotos-objetivo)
    * [Breve historia](#breve-historia-de-las-rpc)
    * [Estructura de las RPC](#estructura-de-las-rpc)
  * Ejemplos de uso de RPC
@@ -29,7 +30,7 @@
    * [El proceso rpcbind/portmapper](#el-proceso-rpcbindportmapper)
    * [Biblioteca de funciones rpc.h](#biblioteca-de-funciones-rpch)
    * [Notación usada en el código generado por rpcgen](#notación-usada-en-el-código-generado-por-rpcgen)
-   * [Usar las RPC en la distribución Ubuntu de Linux](#usar-las-rpc-en-la-distribucion-ubuntu-de-linux)
+   * [Usar las RPC en la distribución Ubuntu de Linux](#usar-las-rpc-en-la-distribución-ubuntu-de-linux)
 
 
 ## Llamadas a procedimientos remotos: objetivo
@@ -281,6 +282,7 @@
    * El compilador de IDL genera :
       * El **suplente** (stub) **del cliente**
       * El **suplente** (stub) **del servidor**
+      * Puede generar una librería auxiliar para hacer el *marshalling/unmarshalling* en los suplentes
 
 
 ## Aplanamiento (marshalling)
@@ -486,49 +488,68 @@ datos estándar
 
 ## IDL: formato base
 
- * Una interfaz puede contener:
-    * Definición de tipos de datos
-    * Un conjunto de procedimientos remotos:
-       * Por defecto, los procedimientos sólo aceptan un parámetro de entrada (se encapsulan en una estructura)
-       * Los parámetros de salida se devuelven mediante un único resultado
-       * Cada procedimiento remoto se identifica unívocamente mediante tres campos codificados con enteros sin signo:  (NUM-PROG, NUM-VERSION, NUM-PROCEDURE)
+ * Ejemplos de definición de interfaz:
+   * Con un parámetro:
+      ```c
+      struct args {
+          int a;
+          int b;
+      };
+      struct res {
+          int r;
+      };
+      program SUMAR {
+          version SUMAVER {
+             struct res SUMA  (struct args a) = 1;  // 1 es el número de procedimiento
+             struct res RESTA (struct args a) = 2;
+          } = 1;    // 1 es el número de versión
+      } = 99;      // 99 es el número de programa
+       ```
+   * Con múltiples argumentos (precisa rpcgen con al menos la opción -N):
+      ```c
+     program SUMAR {
+        version SUMAVER {
+           int SUMA  (int a, int b) = 1;  // 1 es el número de procedimiento
+           int RESTA (int a, int b) = 2;
+        } = 1;    // 1 es el número de versión
+     } = 99;      // 99 es el número de programa
+     ```
+ * Una definición interfaz puede contener:
+    * <u>Definición de tipos de datos al principio</u>
+    * <u>Un conjunto de procedimientos remotos a continuación</u>:
+       * **Cada procedimiento remoto se identifica unívocamente mediante tres campos** codificados con enteros sin signo:  (NUM-PROG, NUM-VERSION, NUM-PROCEDURE)
          * NUM-PROG es el número de programa remoto.
            * Se definen en la RFC 1831 (http://www.ietf.org/rfc/rfc1831.txt)
              * ```0x00000000 - 0x1fffffff``` --> definido por Sun
              * ```0x20000000 - 0x3fffffff``` --> definido por usuario/a
              * ```0x40000000 - 0x5fffffff``` --> transitorio
              * ```0x60000000 - 0xffffffff``` --> reservado
-           * Para los laboratorios se recomienda usar el NIA de uno de los integrantes del grupo para evitar interferir con los servicios de otros grupos.
+           * **Para los laboratorios se recomienda usar el NIA de uno de los integrantes del grupo para evitar interferir con los servicios de otros grupos.**
          * NUM-VERSION es el número de versión de programa.
            * La primera implementación (versión) debe ser la 1.
            * Cada vez que se hace un cambio en la interfaz IDL (se añaden/quitan/modifican procedimientos) se incrementa la versión.
-           * De esta forma es posible tener clientes y servidores de distintas versiones ejecutando sin problemas.
          * NUM-PROCEDURE es el número de procedimiento remoto.
            * Los especifica el/la programador/a, y han de ser diferente para cada procedimiento.
-
- * Ejemplo de definición de interfaz con un parámetro:
-    ```c
-     struct args{
-        int a;
-        int b;
-     };
-     program SUMAR {
-        version SUMAVER {
-           int SUMA  (struct args a) = 1;  // números de procedimientos
-           int RESTA (struct args a) = 2;
-        } = 1;    // 1 es el número de versión
-     } = 99;      // 99 es el número de programa
-     ```
-
- * Ejemplo de definición de interfaz con múltiples argumentos (precisa rpcgen con al menos -N):
-    ```c
-     program SUMAR {
-        version SUMAVER {
-           int SUMA  (int a, int b) = 1;  // números de procedimientos
-           int RESTA (int a, int b) = 2;
-        } = 1;    // 1 es el número de versión
-     } = 99;      // 99 es el número de programa
-     ```
+       * **Los parámetros de entrada**:
+          * Por defecto (sin usar la opción -N en rpcgen), los procedimientos sólo aceptan un parámetro de entrada. 
+          * Si hay más un un parámetro entonces **es posible encapsular todos los parámetros en una estructura y pasar dicha estructura (o bien se usa la opción -N si es posible)**
+          * Pasar un puntero no tiene sentido puesto que apunta al espacio de direcciones local y a una zona arbitraria de datos en espacio remoto. Para resolver este problema un sistema RPC puede:
+             * Prohibir el uso de punteros como argumentos.
+             * Permitir el uso de punteros, pero asegurarando que los datos referenciados y no el puntero es lo transmitido.
+           * Es posible que no se puede pasar un array/vector de tamaño fijo, 
+              por ejemplo:
+              ```c
+             int rutina_no_valida ( int arg[32] );
+               ```
+             pero si es posible usar una estructura que contenga un campo que sea un array/vector de tamaño fijo,
+             por ejemplo:  
+             ```c
+             struct arr_double_struct { double vector[32]; } ;
+             int rutina_valida ( struct arr_double arg );
+                ```
+       * **Los parámetros de salida**:
+          * La función devuelve un único resultado (del tipo indicado a la izquierda del nombre de la función).
+          * Si hay que devolver más, **es posible definir una estructura que contenga todos los valores a devolver y devolver dicha estructura**.
 
 
 ## IDL: notación XDR usada
@@ -605,7 +626,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>   Vectores de tamaño fijo (2)</td>
+   <td>   Vectores de tamaño fijo</td>
    <td><pre lang="c">
    int a[12];
    </pre></td>
@@ -745,11 +766,6 @@ datos estándar
    </html>
 
 * NOTA(1): al transmitir por red, se envía primero la longitud (37) y luego la secuencia de caracteres ASCII.
-* NOTA(2): un argumento de un procedimiento remoto no puede ser un array/vector de tamaño fijo, pero si una estructura que contenga un campo que sea un array/vector de tamaño fijo.
-  * int rutina_no_valida ( int arg[32] ) ; // no debería de valer en el IDL
-  * struct arr_double_struct { double vector[32]; } ;
-    typedef struct arr_double_struct arr_double ;
-    int rutina_valida ( arr_double arg ) ; // si podría usarse en el IDL
 
 
 ## El proceso rpcbind/portmapper
@@ -1532,4 +1548,11 @@ Hay 3 detalles a comprobar en su instalación de Ubuntu:
     ...
     ```
 
+<br>
+
+## Material complementario
+
+  * <a href="https://www.omscs-notes.com/operating-systems/remote-procedure-calls/">Remote Procedure Calls (19 minutos)</a>
+  * <a href="http://dist-prog-book.com/chapter/1/rpc.html">RPC is Not Dead: Rise, Fall and the Rise of Remote Procedure Calls</a>
+  * <a href="https://pubs.opengroup.org/onlinepubs/9629399/toc.htm">DCE 1.1: Remote Procedure Call</a>
 
