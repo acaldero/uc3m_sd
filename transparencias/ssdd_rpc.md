@@ -25,32 +25,43 @@
    * [RPC de Sun/ONC](#rpc-de-sunonc)
    * [XDR para Sun/ONC](#xdr-para-sunonc)
    * [IDL: formato base](#idl-formato-base)
-   * [IDL: notación XDR usada](#id--notación-xdr-usada)
+   * [IDL: notación XDR usada](#idl-notación-xdr-usada)
    * [El proceso rpcbind/portmapper](#el-proceso-rpcbindportmapper)
    * [Biblioteca de funciones rpc.h](#biblioteca-de-funciones-rpch)
    * [Notación usada en el código generado por rpcgen](#notación-usada-en-el-código-generado-por-rpcgen)
-   * [RPC en Ubuntu](#prc-en-ubuntu)
-   
+   * [Usar las RPC en la distribución Ubuntu de Linux](#usar-las-rpc-en-la-distribucion-ubuntu-de-linux)
+
 
 ## Llamadas a procedimientos remotos: objetivo
 
  * **Objetivo**: hacer que una aplicación distribuida se programe lo más igual posible que una aplicación no distribuida
-   * Mediante el modelo RPC la comunicación se realiza conceptualmente igual que una invocación de un procedimiento local.
-    ```mermaid
-    sequenceDiagram
-      ProcesoA  ->>+  ProcesoB: proc1(arg1, arg2)
-      ProcesoB  ->>+  ProcesoA: proc2(arg1)
-      ProcesoA  ->>+  ProcesoB: proc3(arg1, arg2, arg3)
+   * Mediante el modelo RPC se busca que la comunicación se realiza conceptualmente igual que una invocación de un procedimiento local.
+   ```mermaid
+     sequenceDiagram
+     box  Local  Procedure  Call
+     participant  ProcesoC
+     end
+     ProcesoC  ->>+  ProcesoC: proc1(arg1, arg2)
+     box  Remote  Procedure  Call
+     participant  ProcesoA
+     participant  ProcesoB
+     end
+     ProcesoA  ->>+  ProcesoB: proc1(arg1, arg2)
+     ProcesoB  ->>-  ProcesoA: <br/>
     ```
- * Hay **dos ingredientes principales**:
-    * Código de invocación remota lo más transparente posible.
-    * Generación lo más automatizada posible del código de invocación remota.
-    
+ * Hay <u>**dos ingredientes principales**</u>:
+    * Código de invocación remota <u>lo más transparente posible.</u>
+    * Generación del código de invocación remota <u>lo más automatizada posible.</u>
+ * **Beneficio**: la persona que desarrolla puede centrarse más en lo que hace su aplicación en lugar preocuparse de poner en marcha una plantilla inicial repetitiva.
+   * Se simplifica las complejidades de las interacciones entre máquinas y espacios de direcciones.
+   * Se ofrece una interfaz de alto nivel para el movimiento de datos y comunicación.
+   * Se simplifica muchos de los errores que pueden surgir de las interacciones de comunicación/transmisión de bajo nivel, liberando al desarrollador de tener que reimplementar explícitamente el manejo de errores en cada programa.
+
 
 ## (1/2) Transparencia de invocación remota
 
  * Uno de los ingredientes es la transparencia de la invocación remota: se busca que código de invocación remota lo más transparente posible, de manera que se parezca a una invocación a una función local.
- 
+
  * En el siguiente ejemplo a la izquierda se muestra los elementos de una aplicación no distribuida con llamada local a la función de sumar. A la izquierda se muestra la misma aplicación con una llamada remota a la función de sumar:
        ![Organización del código para invocación remota mediante colas POSIX](./ssdd_rpc/ssdd_rpc_drawio_10.svg)
 
@@ -61,10 +72,10 @@
 ## (2/2) Generación automática
 
  * El otro ingrediente es la generación lo más automatizada posible del código de invocación remota, es decir, que el stub_servidor y stub_cliente se pueda obtener de forma automática a partir de la definición de la interfaz de las funciones remotas (sumar, etc. para el ejemplo anterior)
- 
+
  * De esta forma:
     * Se facilita la generación de nuevas aplicaciones distribuidas así como transformar aplicaciones existentes a distribuidas
-    * Se garantiza que el código generado se base en una gramática que puede validarse (el código funcione).
+    * Se garantiza que el código generado que sirve de plantilla inicial se base en una gramática que puede validarse (y con ello asegurar que el código funcione).
 
 
 ## Breve historia de las RPC
@@ -91,13 +102,13 @@
           * En la petición del cliente se envía un mensaje que contiene, al menos, el código de operación y los argumentos.
      * Un servidor **pasivo**, que realiza el servicio y devuelve el resultado de la RPC al cliente
           * El stub_servidor responde a la petición del cliente
-          * En la respuesta al cliente se envía un mensaje que contine, al menos, el resultado de la función invocada. 
+          * En la respuesta al cliente se envía un mensaje que contine, al menos, el resultado de la función invocada.
 
       ![Cliente, stub_cliente, stub_servidor y servidor](./ssdd_rpc/ssdd_rpc_drawio_16.svg)
 
   * Conceptos básicos:
      * Un **servicio de red** es una colección de uno o más programas remotos
-     * Un **programa remoto** implementa uno o más procedimientos remotos 
+     * Un **programa remoto** implementa uno o más procedimientos remotos
      * Un **procedimiento remoto**, sus parámetros y sus resultados se especifican en un fichero de especificación del protocolo escrito en un lenguaje de especificación de interfaces (IDL)
      * Un servidor puede soportar más de una **versión de un programa remoto**
         * Permite al servidor ser compatible con las actualizaciones del servicio
@@ -114,10 +125,10 @@
 
       ### Ejemplo: suma.x
      ```c
-     program SUMAR {  
-        version SUMAVER {  
-           int SUMA ( int a, int b ) = 1;  
-        } = 1;  
+     program SUMAR {
+        version SUMAVER {
+           int SUMA ( int a, int b ) = 1;
+        } = 1;
      } = 99;
     ```
 
@@ -126,8 +137,8 @@
 
 
       ### Ejemplo: rpcgen
-     ```bash 
-     rpcgen -N -M -a suma.x  
+     ```bash
+     rpcgen -N -M -a suma.x
      ```
    	 * Opciones comunes son:
      	 * **-N** para procedimientos con múltiples argumentos.
@@ -149,14 +160,14 @@
     ```c
     #include "suma.h"
 
-    bool_t suma_1_svc ( int a, int b, int *result,  
+    bool_t suma_1_svc ( int a, int b, int *result,
                         struct svc_req *rqstp )
     {
-        *result = a + b;
-      	return TRUE;
+        *result = a + b; // código a añadir
+      	return 1;        // 1 -> resultado ok
     }
 
-    int sumar_1_freeresult ( SVCXPRT *transp, 
+    int sumar_1_freeresult ( SVCXPRT *transp,
                              xdrproc_t xdr_result, caddr_t result )
     {
     	xdr_free (xdr_result, result);
@@ -176,7 +187,7 @@
        enum clnt_stat retval ;
        int result ;
 
-       clnt = clnt_create (host, SUMAR, SUMAVER, "udp");
+       clnt = clnt_create (host, SUMAR, SUMAVER, "tcp");
        if (clnt == NULL) {
            clnt_pcreateerror (host);
            exit (-1);
@@ -222,6 +233,7 @@
     Por ejemplo, para la misma máquina se puede usar *localhost*:
        ```bash
       acaldero@docker1:~/sd$ ./suma_server &
+
       acaldero@docker1:~/sd$ rpcinfo  -p localhost
       program vers proto   port  service
       100000    4   tcp    111  portmapper
@@ -232,8 +244,10 @@
       100000    2   udp    111  portmapper
           99    1   udp  34654
           99    1   tcp  41745
+
       acaldero@docker1:~/sd$ ./suma_client  localhost
       Resultado de 1 + 2 es 3
+
       acaldero@docker1:~/sd$ kill -9 %1
       acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
       [1]+  Killed                  ./suma_server
@@ -282,7 +296,7 @@
    * **JSON** (**J**ava**S**cript **O**bject **N**otation) formato de texto ligero para el intercambio de datos.
 
  * Ejemplo:  'Smith', 'Paris', 1934
-   
+
    ![Comparación entre XDR, CDR, XML y JSON](./ssdd_rpc/ssdd_rpc_drawio_40.svg)
 
 
@@ -329,7 +343,7 @@
 ## Tipos de fallos que pueden aparecer con las RPC
 
    * El cliente no es capaz de localizar al servidor
-      * Posibles soluciones:  
+      * Posibles soluciones:
         * Revisar si servidor caído
         * Revisar que no se use una versión antigua del servidor
    * Pérdidas de mensajes
@@ -337,8 +351,8 @@
           * Posible solución:
             * Se activa un temporizador después de enviar el mensaje y **si no hay respuesta se retransmite el mensaje**.
       *  Se pierde el mensaje de respuesta del servidor al cliente
-         * Posibles soluciones: 
-           * Si es una operación **idempotente** (se pueden repetir y devuelven el mismo resultado) no hay problema. 
+         * Posibles soluciones:
+           * Si es una operación **idempotente** (se pueden repetir y devuelven el mismo resultado) no hay problema.
            * Con operación **no idempotente** hay que descartar las peticiones ya ejecutadadas: hay que añadir **un número de secuencia y un campo para indicar si es original o retransmisión** en el cliente y guardar un histórico de las peticiones anteriores y su respuesta para no ejecutar de nuevo en el servidor.
    * El servidor falla después de recibir una petición
      * Posibles soluciones:
@@ -347,7 +361,7 @@
         * Semántica **a lo más una vez**: no reintentar, puede que no se realice ni usa sola vez
         * Semántica de **exactamente una**
    * El cliente falla después de enviar una petición
-     * Posible solución: 
+     * Posible solución:
        * Disponer de la posibilidad de cancelar una operación en curso.
 
 
@@ -372,7 +386,7 @@
        * Ejemplo en CORBA: métodos *oneway*
 
  * Posibles esquemas de representación de datos:
-   * **XDR** (e**X**ternal **D**ata **R**epresentation) 
+   * **XDR** (e**X**ternal **D**ata **R**epresentation)
    * **CDR** es la representación común de datos de CORBA.
    * **XML** (e**X**tensible **M**arkup **L**anguage) es un metalenguaje basado en etiquetas definida por W3C
    * **JSON** (**J**ava**S**cript **O**bject **N**otation) formato de texto ligero para el intercambio de datos.
@@ -443,7 +457,7 @@ datos estándar
     * **Tipado implícito**
     * **Representación de datos simétrica**
     * Incluye:
-       * Un generador de suplentes (stubs) llamado rpcgen 
+       * Un generador de suplentes (stubs) llamado rpcgen
        * Bibliotecas de funciones de soporte de las RPC (<rpc/rpc.h>)
        * Servicio de registro de procedimientos (*portmapper* o *rpcbind*)
 
@@ -458,7 +472,7 @@ datos estándar
  * XDR (eXternal Data Representation) es un estándar que define la representación de tipos de datos (RFC 1832)
     * Utilizado inicialmente para representaciones externas de datos
     * Se extendió a lenguajes de definición de interfaces
-    
+
  * Principales características de XDR:
    * Utiliza representación big-endian
    * No utiliza protocolo de negociación
@@ -466,7 +480,7 @@ datos estándar
    * La transmisión de mensajes utiliza tipado implícito (el tipo de datos no viaje con el valor)
    * Utiliza conversión de datos simétrica
    * Los datos se codifican en un flujo de bytes
-   * Gestión de memoria: las RPC no reservan memoria dinámica. 
+   * Gestión de memoria: las RPC no reservan memoria dinámica.
       * El servidor tiene que reservar memoria e implementarse xxx_freeresult(...) correspondiente.
       * El cliente tiene que reservar memoria antes de invocar a la RPC y liberar luego con xdr_free(...)
 
@@ -478,12 +492,19 @@ datos estándar
        * Por defecto, los procedimientos sólo aceptan un parámetro de entrada (se encapsulan en una estructura)
        * Los parámetros de salida se devuelven mediante un único resultado
        * Cada procedimiento remoto se identifica unívocamente mediante tres campos codificados con enteros sin signo:  (NUM-PROG, NUM-VERSION, NUM-PROCEDURE)
-         * NUM-PROG es el número de programa remoto. 
+         * NUM-PROG es el número de programa remoto.
            * Se definen en la RFC 1831 (http://www.ietf.org/rfc/rfc1831.txt)
+             * ```0x00000000 - 0x1fffffff``` --> definido por Sun
+             * ```0x20000000 - 0x3fffffff``` --> definido por usuario/a
+             * ```0x40000000 - 0x5fffffff``` --> transitorio
+             * ```0x60000000 - 0xffffffff``` --> reservado
+           * Para los laboratorios se recomienda usar el NIA de uno de los integrantes del grupo para evitar interferir con los servicios de otros grupos.
          * NUM-VERSION es el número de versión de programa.
            * La primera implementación (versión) debe ser la 1.
-         * NUM-PROCEDURE es el número de procedimiento remoto. 
-           * Los especifica el/la programador/a.     
+           * Cada vez que se hace un cambio en la interfaz IDL (se añaden/quitan/modifican procedimientos) se incrementa la versión.
+           * De esta forma es posible tener clientes y servidores de distintas versiones ejecutando sin problemas.
+         * NUM-PROCEDURE es el número de procedimiento remoto.
+           * Los especifica el/la programador/a, y han de ser diferente para cada procedimiento.
 
  * Ejemplo de definición de interfaz con un parámetro:
     ```c
@@ -499,7 +520,7 @@ datos estándar
      } = 99;      // 99 es el número de programa
      ```
 
- * Ejemplo de definición de interfaz con múltiples argumentos:
+ * Ejemplo de definición de interfaz con múltiples argumentos (precisa rpcgen con al menos -N):
     ```c
      program SUMAR {
         version SUMAVER {
@@ -510,13 +531,13 @@ datos estándar
      ```
 
 
-## IDL: notación XDR usada 
+## IDL: notación XDR usada
 
  * La notación XDR para los principales elementos es:
    <html>
    <table>
    <tr> <th></th><th>Elemento</th><th>En XDR</th><th>Traducción a C</th> </tr>
-   
+
    <tr>
    <td></td>
    <td>Constantes</td>
@@ -524,7 +545,7 @@ datos estándar
    const MAX_SIZE = 8192;
    </pre></td>
    <td><pre lang="c">
-   #define MAX_SIZE 8192	  
+   #define MAX_SIZE 8192	
    </pre></td>
    </tr>
 
@@ -584,7 +605,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>   Vectores de tamaño fijo   </td>
+   <td>   Vectores de tamaño fijo (2)</td>
    <td><pre lang="c">
    int a[12];
    </pre></td>
@@ -628,7 +649,7 @@ datos estándar
    } a ;
    </pre></td>
    </tr>
-  
+
    <tr>
    <td rowspan=2>Colecciones distinto tipo</td>
    <td>   Estructuras   </td>
@@ -662,7 +683,7 @@ datos estándar
    <td><pre lang="c">
    struct resultado {
      int error;
-     union { 
+     union {
        int n;
      } resultado_u ;
    } ;
@@ -693,7 +714,7 @@ datos estándar
    bool_t xdr_color (XDR *, colortype*);
    </pre></td>
    </tr>
-   
+
    <tr>
    <td>   Definición de tipos nuevos   </td>
    <td><pre lang="c">
@@ -724,6 +745,11 @@ datos estándar
    </html>
 
 * NOTA(1): al transmitir por red, se envía primero la longitud (37) y luego la secuencia de caracteres ASCII.
+* NOTA(2): un argumento de un procedimiento remoto no puede ser un array/vector de tamaño fijo, pero si una estructura que contenga un campo que sea un array/vector de tamaño fijo.
+  * int rutina_no_valida ( int arg[32] ) ; // no debería de valer en el IDL
+  * struct arr_double_struct { double vector[32]; } ;
+    typedef struct arr_double_struct arr_double ;
+    int rutina_valida ( arr_double arg ) ; // si podría usarse en el IDL
 
 
 ## El proceso rpcbind/portmapper
@@ -741,7 +767,7 @@ datos estándar
        * El número de programa y el número de versión
    * El proceso rpcbind devuelve el puerto del servidor en esa máquina.
 
-       
+
  * Enlace dinámico:
    * El número de puertos disponibles es limitado y el número de programas remotos potenciales puede ser muy grande
    * Sólo el rpcbind ejecutará en un puerto determinado (111) y los números de puertos donde escuchan los servidores se averiguan preguntando al rpcbind
@@ -762,16 +788,16 @@ datos estándar
      100021    4   tcp  42741  nlockmgr
      99        1   udp  46936
      99        1   tcp  40427
-     ``` 
+     ```
 
 
-## Biblioteca de funciones rpc.h 
+## Biblioteca de funciones rpc.h
 
  * Crear un manejador para el cliente:
     ```c
-    CLIENT * clnt_create ( const char *host, 
-                           const u_long prognum, 
-                           const u_long versnum, 
+    CLIENT * clnt_create ( const char *host,
+                           const u_long prognum,
+                           const u_long versnum,
                            const char *nettype )
     ```
     * Argumentos:
@@ -835,17 +861,17 @@ datos estándar
   1. Crear el archivo de interfaz suma.x
      ### suma.x
      ```c
-     program SUMAR {  
-        version SUMAVER {  
-           int SUMA  ( int a, int b ) = 1;  
-           int RESTA ( int a, int b ) = 2;  
-        } = 1;  
+     program SUMAR {
+        version SUMAVER {
+           int SUMA  ( int a, int b ) = 1;
+           int RESTA ( int a, int b ) = 2;
+        } = 1;
      } = 99;
      ```
 
   2. Hay que usar rpcgen con suma.x:
-     ```bash 
-     rpcgen -NMa suma.x  
+     ```bash
+     rpcgen -NMa suma.x
      ```
 
   3. Hay que editar suma_server.c y añadir el código de los servicios a ser invocados de forma remota:
@@ -886,7 +912,7 @@ datos estándar
         enum clnt_stat retval_1;
         int ret ;
 
-        clnt = clnt_create (host, SUMAR, SUMAVER, "udp");
+        clnt = clnt_create (host, SUMAR, SUMAVER, "tcp");
         if (clnt == NULL) {
             clnt_pcreateerror (host); exit (-1);
         }
@@ -916,7 +942,7 @@ datos estándar
 
   5. Compilar el ejemplo con:
      ```bash
-     make -f Makefile.suma  
+     make -f Makefile.suma
       ```
      Dicho proceso de compilación suele suponer los siguientes pasos:
 
@@ -952,9 +978,28 @@ datos estándar
       [1]+  Killed                  ./suma_server
       ```
    2. Si funciona en una misma máquina, se puede probar en dos máquinas (docker1 para suma_server y docker2 para suma_client):
+       <html>
+       <table>
+       <tr>
+       <td><b>docker1</b></td>
+       <td><b>docker2</b></td>
+       </tr>
+       <tr>
+       <td>
+
        ```bash
-      acaldero@docker1:~/sd$ ./suma_server &
-      acaldero@docker2:~/sd$ rpcinfo  -p docker1
+      docker1:~/sd$ ./suma_server &
+      ```
+
+       </td>
+       <td> </td>
+       </tr>
+       <tr>
+       <td> </td>
+       <td>
+
+       ```bash
+      docker2:~/sd$ rpcinfo  -p docker1
       program vers proto   port  service
       100000    4   tcp    111  portmapper
       100000    3   tcp    111  portmapper
@@ -964,13 +1009,30 @@ datos estándar
       100000    2   udp    111  portmapper
           99    1   udp  34654
           99    1   tcp  41745
-      acaldero@docker2:~/sd$ ./suma_client  docker1
+
+      @docker2:~/sd$ ./suma_client  docker1
       1 + 2 = 3
       1 - 2 = -1
-      acaldero@docker1:~/sd$ kill -9 %1
-      acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
-      [1]+  Killed                  ./suma_server
       ```
+
+       </td>
+       </tr>
+       <tr>
+       <td>
+
+       ```bash
+      docker1:~/sd$ kill -9 %1
+
+      docker1:~/sd$ sudo rpcinfo -d 99 1
+      [1]+  Killed       ./suma_server
+      ```
+
+       </td>
+       <td></td>
+       </tr>
+       </table>
+       </html>
+
 
 ## Cadena de caracteres
 
@@ -985,12 +1047,12 @@ datos estándar
            char first(string) = 2;
            string convertir(int n) = 3;
         } = 1;
-     } = 99;       
+     } = 99;
      ```
 
   2. Hay que usar rpcgen con string.x:
-      ```bash 
-     rpcgen -NMa string.x  
+      ```bash
+     rpcgen -NMa string.x
      ```
 
   3. Hay que editar string_server.c y añadir el código de los servicios a ser invocados de forma remota:
@@ -1092,7 +1154,7 @@ datos estándar
 
   5. Compilar el ejemplo con:
      ```bash
-     make -f Makefile.string 
+     make -f Makefile.string
       ```
      Dicho proceso de compilación suele suponer los siguientes pasos:
 
@@ -1160,7 +1222,7 @@ datos estándar
       ### vector.x
        ```c
       typedef int t_vector<>;
-      
+
       program VECTOR {
             version VECTORVER {
                   int sumar(t_vector v) = 1;
@@ -1172,7 +1234,7 @@ datos estándar
         ```c
      typedef int t_vector<>;
       ```
-     
+
       Se va a traducir como:
      ```c
      typedef struct {
@@ -1182,8 +1244,8 @@ datos estándar
      ```
 
   2. Hay que usar rpcgen con vector.x:
-      ```bash 
-     rpcgen -NMa vector.x  
+      ```bash
+     rpcgen -NMa vector.x
      ```
 
   3. Hay que editar vector_server.c y añadir el código de los servicios a ser invocados de forma remota:
@@ -1210,13 +1272,13 @@ datos estándar
      ### vector_cliente.c
      ```c
      #include "vector.h"
-   
+
      int sumar_vector_1 ( char *host, t_vector *sumar_1_v )
      {
          CLIENT *clnt;
         enum clnt_stat retval_1;
         int result_1;
-   
+
         clnt = clnt_create (host, VECTOR, VECTORVER, "tcp");
         if (clnt == NULL) {
             clnt_pcreateerror (host); exit (-1);
@@ -1228,8 +1290,8 @@ datos estándar
         clnt_destroy (clnt);
 
         return result_1;
-     }  
-   
+     }
+
      int main ( int argc, char *argv[] )
      {
         long MAX;
@@ -1250,7 +1312,7 @@ datos estándar
 
         ret = sumar_vector_1 (argv[1], &sumar_1_v);
         printf("La suma es %d\n", ret);
-   
+
         free (sumar_1_v.t_vector_val);
         return (0);
      }
@@ -1258,7 +1320,7 @@ datos estándar
 
   5. Compilar el ejemplo con:
      ```bash
-     make -f Makefile.vector 
+     make -f Makefile.vector
       ```
      Dicho proceso de compilación suele suponer los siguientes pasos:
 
@@ -1294,8 +1356,27 @@ datos estándar
       [1]+  Killed                  ./vector_server
       ```
    2. Si funciona en una misma máquina, se puede probar en dos máquinas (docker1 para vector_server y docker2 para vector_client):
+       <html>
+       <table>
+       <tr>
+       <td><b>docker1</b></td>
+       <td><b>docker2</b></td>
+       </tr>
+       <tr>
+       <td>
+
        ```bash
       acaldero@docker1:~/sd$ ./vector_server &
+      ```
+
+       </td>
+       <td> </td>
+       </tr>
+       <tr>
+       <td> </td>
+       <td>
+
+       ```bash
       acaldero@docker2:~/sd$ rpcinfo  -p localhost
       program vers proto   port  service
       100000    4   tcp    111  portmapper
@@ -1306,12 +1387,28 @@ datos estándar
       100000    2   udp    111  portmapper
           99    1   udp  49848
           99    1   tcp  42919
+
       acaldero@docker2:~/sd$ ./vector_client  localhost
       La suma es 200
-      acaldero@docker1:~/sd$ kill -9 %1
-      acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
-      [1]+  Killed                  ./vector_server
       ```
+
+       </td>
+       </tr>
+       <tr>
+       <td>
+
+       ```bash
+      acaldero@docker1:~/sd$ kill -9 %1
+
+      acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
+      [1]+  Killed                ./vector_server
+      ```
+
+       </td>
+       <td></td>
+       </tr>
+       </table>
+       </html>
 
 ## Autenticación
 
@@ -1322,21 +1419,21 @@ datos estándar
     * Al estilo UNIX, basado en uid y gid (AUTH_UNIX)
     * Autenticación Kerberos
     * Mediante una clave compartida que se utiliza para firmar los mensajes RPC
-  
+
 Ejemplo de esqueleto con autenticación UNIX:
    ```c
    CLIENT *cl = client_create("host", <SOMEPROG>, <SOMEVERS>, "udp");
    if (cl != NULL) {
        /* To set UNIX style authentication */
-       cl->cl_auth = authunix_create_default(); 
+       cl->cl_auth = authunix_create_default();
    }
-   
+
    /* use the autentication */
    ...
-   
+
    /* destroy the authentication */
    auth_destroy(clnt->cl_auth);
-   ```    
+   ```
 
 ## RPC en Python
 
@@ -1382,7 +1479,7 @@ Ejemplo de esqueleto con autenticación UNIX:
          ```python
          import rpyc
          from rpyc.utils.server import ThreadedServer
-         
+
          class CalculatorService(rpyc.Service):
             def exposed_add(self, a, b):
                 return a + b
@@ -1402,38 +1499,36 @@ Ejemplo de esqueleto con autenticación UNIX:
          ```python
          import rpyc
          conn = rpyc.connect("localhost", 12345)
-         
+
          x = conn.root.add(4,7)
          print(x)
-         
+
          x = conn.root.sub(4,7)
          print(x)
            ```
 
 
 
-## RPC en Ubuntu
+## Usar las RPC en la distribución Ubuntu de Linux
 
 Hay 3 detalles a comprobar en su instalación de Ubuntu:
 
-1) Hay que tener instalado los siguientes paquetes:
-    libtirpc-common
-    libtirpc-dev
-    libtirpc3
-    rpcsvc-proto
-    rpcbind  
-
-2) Se ha de arrancar rpcbind. Si hay un error al arrancar por favor pruebe lo siguiente:
+1) Hay que tener instalado los siguientes paquetes: libtirpc, rpcsvc-proto y rpcbind
+   Para la distribución Ubuntu de Linux se ha de ejecutar:
    ```bash
-   sudo mkdir -p /run/sendsigs.omit.d/  
-   sudo /etc/init.d/rpcbind restart   
+   sudo apt-get install  libtirpc-common libtirpc-dev libtirpc3 rpcsvc-proto rpcbind
    ```
-
-3) Es posible que haya que editar el Makefile.suma y comprobar que está lo indicado destacado entre '**':
+2) Se ha de arrancar rpcbind.
+    Si hay un error al arrancar por favor pruebe lo siguiente:
+   ```bash
+   sudo mkdir -p /run/sendsigs.omit.d/
+   sudo /etc/init.d/rpcbind restart
+   ```
+3) Es posible que haya que editar el **Makefile** y comprobar que incluye lo indicado en el siguiente fragmento:
     ```make
-    ...  
-    CFLAGS += -g **-I/usr/include/tirpc**
-    LDLIBS += -lnsl -lpthread -ldl **-ltirpc**  
+    ...
+    CFLAGS += -g -I/usr/include/tirpc
+    LDLIBS += -lnsl -lpthread -ldl -ltirpc
     ...
     ```
 
