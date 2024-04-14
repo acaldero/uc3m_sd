@@ -1,5 +1,4 @@
 
-
 # Comunicación con RPC
 + **Felix García Carballeira y Alejandro Calderón Mateos**
 + Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
@@ -841,33 +840,61 @@ datos estándar
 
 ## Notación usada en el código generado por rpcgen
 
- * Prototipo de un procedimiento remoto en el *cliente* (múltiples argumentos):
-   ```c
-   bool_t procedimiento_v ( tipo_arg1 arg1,
-                            tipo_arg2 arg2,
-                            ...
-                            tipo_argn argn,
-                            CLIENT *clnt );
-   ```
-    * Donde:
-       * **procedimiento_v**:  nombre del procedimiento a invocar.
-          * NOTA: **v** se sustituye por el número de versión que se invoca
-       * **arg1, arg2, …, argn**: argumentos del procedimiento
-       * **clnt**: manejador de un cliente de RPC
+* A partir de la definición de PROCEDIMIENTO en el archivo .x como por ejemplo:
+  ```c
+  struct res {
+     int a ;
+     int b ;
+  } ;
 
- * Prototipo de un procedimiento remoto a implementar en el *servidor* (múltiples argumentos):
-   ```c
-   bool_t procedimiento_v_svc ( tipo_arg1 arg1,
-                                tipo_arg2 arg2,
-                                ...
-                                tipo_argn argn,
-                                struct svc_req *rqstp );
-   ```
+  program PROGRAM {
+     version PROGRAM_VER {
+         struct res PROCEDIMIENTO ( int a, char b ) = 1 ;
+     } = 1 ;
+  } = 0x1001010 ;
+  ```
+
+* Al ejecutar **rpcgen con la opción de múltiples argumentos** (normalmente -N) se genera:
+
+  * En el lado del **servidor**, prototipo de un procedimiento remoto a implementar:
+    ```c
+    bool_t procedimiento_1_svc ( int arg1,
+                                 char arg2,
+                                 struct res *result,
+                                 struct svc_req *rqstp );
+    ```
     * Donde:
-       * **procedimiento_v_svc**:  nombre del procedimiento a implementar.
-          * NOTA: **v** se sustituye por el número de versión que se invoca
-       * **arg1, arg2, …, argn**: argumentos del procedimiento
-       * **rqstp**: Estructura que contiene información de la petición
+       * Nombre de la función a implementar: **procedimiento_1_svc**
+         * se parte de PROCEDIMIENTO...
+         * ...se pasa todo a minúsculas...
+         * ...seguido de "_", seguido de la versión (1 en este ejemplo) y seguido de "_svc"
+       * Argumentos: **int a, int b, struct res \*result, struct svc_req \*rqstp**
+         * argumentos en el IDL
+         * si función devuelve un valor entonces:
+           * puntero al tipo de datos del valor de retorno del IDL
+         * parámetro extra de tipo "struct svc_req *rstp" que contiene información de la petición
+       * Valor retorno: **boot_t**
+         * 1 (TRUE) si ha ido bien y 0 (FALSE) para indicar error temporal
+
+  * En el lado del **cliente**, prototipo de un procedimiento remoto a adaptar:
+     ```c
+     enum clnt_stat procedimiento_1 ( int a,
+                                      char b,
+                                      struct res *res,
+                                      CLIENT *clnt );
+     ```
+    * Donde:
+       * Nombre de la función: **procedimiento_1**
+         * se parte de PROCEDIMIENTO...
+         * ...se pasa todo a minúsculas...
+         * ...seguido de "_" seguido de la versión (1 en este ejemplo)
+       * Argumentos: **int a, char b, struct res \*ret, CLIENT \*clnt**
+         * argumentos en el IDL
+         * si función devuelve un valor entonces:
+           * puntero al tipo de datos del valor de retorno del IDL
+         * parámetro extra de tipo "CLIENT *" que representa el manejador de un cliente RPC
+       * Valor retorno: **enum clnt_stat**
+         * RPC_SUCCESS si ha ido bien
 
 
 ## Calculadora remota
@@ -1555,4 +1582,3 @@ Hay 3 detalles a comprobar en su instalación de Ubuntu:
   * <a href="https://www.omscs-notes.com/operating-systems/remote-procedure-calls/">Remote Procedure Calls (19 minutos)</a>
   * <a href="http://dist-prog-book.com/chapter/1/rpc.html">RPC is Not Dead: Rise, Fall and the Rise of Remote Procedure Calls</a>
   * <a href="https://pubs.opengroup.org/onlinepubs/9629399/toc.htm">DCE 1.1: Remote Procedure Call</a>
-
