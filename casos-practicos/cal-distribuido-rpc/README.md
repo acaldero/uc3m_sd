@@ -43,11 +43,11 @@
      ```
      rpcgen -a -N -M message.x
      ```
-     NOTA: este mandato genera distintos ficheros, los stubs o suplentes de RPC no han de modificarse:
-     * **message.h**
-     * **message_clnt.c**
-     * **message_svc.c**
-     * **message_xdr.c**
+     NOTA: este mandato genera distintos ficheros, los siguientes no han de modificarse:
+     * **message.h**: definición de tipos y funciones a partir de lo indicado en message.x
+     * **message_clnt.c**: *stub* o suplente RPC en el lado del cliente.
+     * **message_svc.c**: *stub* o suplente RPC en el lado del servidor.
+     * **message_xdr.c**: encargado del *marshalling* y *unmarshalling* de los datos.
 
   3) Solo en el caso de usar Ubuntu 22.04 o compatible, habría que editar Makefile.rpc y revisar que CFLAGS y LDFLAGS usan tirpc:
      ```

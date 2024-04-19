@@ -155,7 +155,7 @@ Diseño final
 
 * Una posible implementación sería la basada en la siguiente estructura:
 
-    ![Estructura de la implementación de la calculadora](/transparencias/casopractico_sockets_calculadora/calc-arq.svg)
+    ![Estructura de la implementación de la calculadora](/transparencias/ejercicio_sockets_calculadora/calc-arq.svg)
 
   * calc-servidor-tcp.c -> implementación de un servicio de calculadora con sockets TCP.
   * calc-cliente-tcp.c  -> implementación de un cliente  de calculadora con sockets TCP.

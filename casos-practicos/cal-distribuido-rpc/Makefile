@@ -1,9 +1,9 @@
 
  CC = gcc
 #CFLAGS   = -g -Wall
- CFLAGS  += -g -Wall -I/usr/include/tirpc
+ CFLAGS  += -g -Wall
 #LDFLAGS  = -lpthread -ldl
- LDFLAGS += -lnsl -lpthread -ldl -ltirpc
+ LDFLAGS += -lnsl -lpthread -ldl
 
 
 all :: app-d lib-server
