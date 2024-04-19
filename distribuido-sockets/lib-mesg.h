@@ -1,6 +1,6 @@
 
 /*
- *  Copyright 2020-2021 Felix Garcia Carballeira, Alejandro Calderon Mateos,
+ *  Copyright 2020-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos,
  *
  *  This file is part of nanodt proyect.
  *

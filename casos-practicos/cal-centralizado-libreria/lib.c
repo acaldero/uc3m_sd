@@ -19,24 +19,38 @@
  *
  */
 
-#ifndef LIB_MSG_H
-#define LIB_MSG_H
 
-   #define MAX 256
+#include "lib.h"
 
-   //  message = op + q_name + (nombre, N) + (nombre, i, valor) + (nombre, i)
-   struct message 
-   {
-      // peticion 
-      int    op;
-      char   name[MAX] ;
-      int    value;
-      int    i;
-      char   q_name[MAX];
-      // respuesta
-   // int    value;
-      char   status;
-   } ;
 
-#endif
+/*
+ * Internal functions
+ */
+
+
+// Sumar dos números enteros.
+int add ( int *r, int a, int b )
+{
+    *r = a + b ;
+    return 0 ;
+}
+
+// Divide dos números enteros.
+int divide ( int *r, int a, int b )
+{
+    if (0 == b) {
+        *r = 0 ;
+	return -1 ;
+    }
+
+    *r = a / b ;
+    return 0 ;
+}
+
+// Cambio de signo de un número entero.
+int neg ( int *r, int a )
+{
+    *r = -a ;
+    return 0 ;
+}
 

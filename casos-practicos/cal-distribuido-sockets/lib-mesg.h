@@ -24,17 +24,16 @@
 
    #define MAX 256
 
-   //  message = op + q_name + (nombre, N) + (nombre, i, valor) + (nombre, i)
+   //  message = op + q_name + (a, b) + (a, b) + (a)
    struct message 
    {
       // peticion 
       int    op;
-      char   name[MAX] ;
-      int    value;
-      int    i;
       char   q_name[MAX];
+      int    a;
+      int    b;
       // respuesta
-   // int    value;
+      int    value;
       char   status;
    } ;
 

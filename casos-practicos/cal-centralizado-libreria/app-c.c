@@ -19,24 +19,30 @@
  *
  */
 
-#ifndef LIB_MSG_H
-#define LIB_MSG_H
 
-   #define MAX 256
+#include <stdio.h>
+#include <stdlib.h>
+#include "lib.h"
 
-   //  message = op + q_name + (nombre, N) + (nombre, i, valor) + (nombre, i)
-   struct message 
-   {
-      // peticion 
-      int    op;
-      char   name[MAX] ;
-      int    value;
-      int    i;
-      char   q_name[MAX];
-      // respuesta
-   // int    value;
-      char   status;
-   } ;
 
-#endif
+int main ( int argc, char *argv[] )
+{
+    int   N1 = 20 ;
+    int   N2 = 10 ;
+    int   val, ret ;
+
+    // add
+    ret = add(&val, N1, N2) ;
+    printf("%d = add(%d, %d, %d)\n", ret, val, N1, N2) ;
+
+    // sub
+    ret = divide(&val, N1, N2) ;
+    printf("%d = divide(%d, %d, %d)\n", ret, val, N1, N2) ;
+
+    // neg
+    ret = neg(&val, N2) ;
+    printf("%d = neg(%d, %d)\n", ret, val, N2) ;
+
+    return 0 ;
+}
 

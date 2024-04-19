@@ -19,24 +19,46 @@
  *
  */
 
-#ifndef LIB_MSG_H
-#define LIB_MSG_H
 
-   #define MAX 256
+#include <stdio.h>
+#include <stdlib.h>
+#include "lib-client.h"
 
-   //  message = op + q_name + (nombre, N) + (nombre, i, valor) + (nombre, i)
-   struct message 
-   {
-      // peticion 
-      int    op;
-      char   name[MAX] ;
-      int    value;
-      int    i;
-      char   q_name[MAX];
-      // respuesta
-   // int    value;
-      char   status;
-   } ;
 
-#endif
+int   N = 10 ;
+char *A = "nombre" ;
+int   E =  1 ;
+int   V = 0x123 ;
+
+
+int main ( int argc, char *argv[] )
+{
+    int ret ;
+    int val ;
+
+    // init
+    ret = d_init(A, N) ;
+    if (ret < 0) {
+        printf("d_init: error code %d\n", ret) ;
+        exit(-1) ;
+    }
+
+    // set
+    ret = d_set (A, E, V) ;
+    if (ret < 0) {
+        printf("d_set: error code %d\n", ret) ;
+        exit(-1) ;
+    }
+    printf("d_set(\"%s\", %d, 0x%x)\n", A, E, V) ;
+
+    // get
+    ret = d_get (A, E, &val) ;
+    if (ret < 0) {
+        printf("d_get: error code %d\n", ret) ;
+        exit(-1) ;
+    }
+    printf("d_get(\"%s\", %d) -> 0x%x\n", A, E, val) ;
+
+    return 0 ;
+}
 
