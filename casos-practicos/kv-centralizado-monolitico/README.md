@@ -7,7 +7,7 @@
 
 Hay que introducir:
 ```
-cd centralizado-monolitico
+cd kv-centralizado-monolitico
 make
 ```
 

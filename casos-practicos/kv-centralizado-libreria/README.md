@@ -7,7 +7,7 @@
 
 Hay que introducir:
 ```
-cd centralizado-librería
+cd kv-centralizado-librería
 make
 ```
 

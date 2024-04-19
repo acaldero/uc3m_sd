@@ -8,7 +8,7 @@
 ### Compilar
 
 ```
-$ cd distribuido-sockets
+$ cd cal-distribuido-sockets
 $ make
 gcc -g -Wall -c app-d.c
 gcc -g -Wall -c lib-client.c

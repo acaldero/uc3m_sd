@@ -47,7 +47,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como único ejecutable (centralizado)
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio centralizado monolítico](/casos-practicos/cal-centralizado-monolitico/README.md)
+  * [Servicio centralizado monolítico](/casos-practicos/cal-centralizado-monolitico#readme)
 
 Partiendo de esta versión inicial monolítica centralizada,
 para transformar a un servicio distribuidos, se aconseja seguir los siguientes pasos:
@@ -73,7 +73,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como único ejecutable (centralizado)
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio centralizado con librería](/casos-practicos/cal-centralizado-libreria/README.md)
+  * [Servicio centralizado con librería](/casos-practicos/cal-centralizado-libreria#readme)
 
 La arquitectura se puede resumir como:
   ```mermaid
@@ -90,7 +90,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como varios ejecutables (distribuidos) usando colas POSIX
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio distribuido basado en colas POSIX](/casos-practicos/cal-distribuido-mqueue/README.md)
+  * [Servicio distribuido basado en colas POSIX](/casos-practicos/cal-distribuido-mqueue#readme)
 
 La arquitectura se puede resumir como:
 ```mermaid
@@ -111,7 +111,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como varios ejecutables (distribuidos) usando sockets
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio distribuido basado en sockets](/casos-practicos/cal-distribuido-sockets/README.md)
+  * [Servicio distribuido basado en sockets](/casos-practicos/cal-distribuido-sockets#readme)
 
 La arquitectura se puede resumir como:
 ```mermaid
@@ -132,7 +132,28 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como varios ejecutables (distribuidos) usando RPC
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio distribuido basado en RPC](/casos-practicos/cal-distribuido-rpc/README.md)
+  * [Servicio distribuido basado en RPC](/casos-practicos/cal-distribuido-rpc#readme)
+
+La arquitectura se puede resumir como:
+```mermaid
+sequenceDiagram
+    app-d          ->> lib-client.c: request lib.h API in a distributed way
+    lib-client.c   ->> lib-server.c: request remote API
+    lib-server.c   ->> lib.c: request lib.h API call
+    lib.c          ->> lib-server.c: return API call result
+    lib-server.c   ->> lib-client.c: return remote result
+    lib-client.c   ->> app-d: return result of the distributed API call
+```
+
+
+## Servicio distribuido basado en GSOAP
+
+Dicha abstracción se diseña e implementa inicialmente:
+  * En varios fichero fuente (librería y ejecutables) y
+  * Se despliega como varios ejecutables (distribuidos) usando GSOAP
+
+El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
+  * [Servicio distribuido basado en GSOAP](/casos-practicos/cal-distribuido-gsoap-standalone#readme)
 
 La arquitectura se puede resumir como:
 ```mermaid

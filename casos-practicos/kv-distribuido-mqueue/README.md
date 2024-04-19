@@ -7,7 +7,7 @@
 
 Hay que introducir:
 ```
-cd distribuido-mqueue
+cd kv-distribuido-mqueue
 make
 ```
 
