@@ -35,7 +35,7 @@ int main ( int argc, char *argv[] )
     printf("%d - %d = %d\n", N1, N2, val) ;
 
     // neg
-    val = add(N2) ;
+    val = neg(N2) ;
     printf("-%d = %d\n", N2, val) ;
 
     return 0 ;
@@ -58,6 +58,7 @@ para transformar a un servicio distribuidos, se aconseja seguir los siguientes p
     C -- mqueue   --> D[colas POSIX]
     C -- sockets  --> E[sockets]
     C -- RPC      --> F[RPC]
+    C -- GSOAP    --> G[GSOAP]
   ```
 
 La primera transformación consiste en que la abstracción esté en una librería y el programa principal haga uso de esta librería.
