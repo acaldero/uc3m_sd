@@ -37,9 +37,7 @@ int d_printf ( const char *format, ... )
      va_list ap ;
 
      va_start(ap, format) ;
-#ifdef DEBUG
      n = vprintf(format, ap) ;
-#endif
      va_end(ap) ;
      return n ;
 }

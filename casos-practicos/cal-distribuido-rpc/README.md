@@ -20,19 +20,22 @@
   1) Crear el archivo IDL usando lenguaje XDR (que es parecido a C pero no exactamente C). \
      Nuestro ejemplo de [message.x](message.x) es:
      ```
-     struct get_res 
+     struct result
      {
        int value ;
        int status ;
      } ;
-     program NANODT
+
+     program CALC
      {
-      	version NANODT_VERSION
-       {
-		        int            d_init ( string name, int N )            = 1 ;
-		        int            d_set  ( string name, int i, int value ) = 2 ;
-		        struct get_res d_get  ( string name, int i )            = 3 ;
-	      } = 1 ;
+
+        version CALC_VERSION
+        {
+                struct result  d_add    ( int a, int b ) = 1 ;
+                struct result  d_divide ( int a, int b ) = 2 ;
+                struct result  d_neg    ( int a )        = 3 ;
+        } = 1 ;
+
      } = 55555 ;
      ```
 
@@ -85,15 +88,15 @@
 
 * Y la salida debería ser similar a:
   ```
-  gcc -g -Wall -c app-d.c
-  gcc -g -Wall -c lib-client.c
-  gcc -g -Wall -c message_clnt.c
-  gcc -g -Wall -c message_xdr.c
-  gcc -g -Wall    app-d.o lib-client.o message_clnt.o message_xdr.o  -o app-d 
-  gcc -g -Wall -c lib.c
-  gcc -g -Wall -c lib-server.c
-  gcc -g -Wall -c message_svc.c
-  gcc -g -Wall    lib-server.o  lib.o  message_svc.o  message_xdr.o  -o lib-server 
+  gcc -g -Wall -I/usr/include/tirpc -c app-d.c
+  gcc -g -Wall -I/usr/include/tirpc -c lib-client.c
+  gcc -g -Wall -I/usr/include/tirpc -c message_clnt.c
+  gcc -g -Wall -I/usr/include/tirpc -c message_xdr.c
+  gcc -g -Wall -I/usr/include/tirpc lib-client.o app-d.o message_clnt.o message_xdr.o  -o app-d -lnsl -lpthread -ldl -ltirpc
+  gcc -g -Wall -I/usr/include/tirpc -c lib.c
+  gcc -g -Wall -I/usr/include/tirpc -c lib-server.c
+  gcc -g -Wall -I/usr/include/tirpc -c message_svc.c
+  gcc -g -Wall -I/usr/include/tirpc lib-server.o  lib.o  message_svc.o  message_xdr.o  -o lib-server -lnsl -lpthread -ldl -ltirpc
   ```
 
 #### (3) Ejecutar
@@ -118,9 +121,10 @@ $ ./lib-server
 <td>
 
 ```
-$ ./app-d localhost
-d_set("nombre", 1, 0x123)
-d_get("nombre", 1) -> 0x123
+$ env SERVER_IP=localhost ./app-d
+0 = add(30, 20, 10)
+0 = divide(2, 20, 10)
+0 = neg(-10, 10)
 ```
 
 </td>
@@ -128,9 +132,6 @@ d_get("nombre", 1) -> 0x123
 
 ```
 
- 1 = init(nombre, 10);
- 1 = set(nombre, 1, 0x123);
- 1 = get(nombre, 1, 0x123);
 ```
 
 </td>

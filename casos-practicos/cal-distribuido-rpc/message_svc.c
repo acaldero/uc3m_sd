@@ -17,35 +17,35 @@
 #endif
 
 int
-_d_init_1 (d_init_1_argument *argp, void *result, struct svc_req *rqstp)
+_d_add_1 (d_add_1_argument *argp, void *result, struct svc_req *rqstp)
 {
-	return (d_init_1_svc(argp->name, argp->N, result, rqstp));
+	return (d_add_1_svc(argp->a, argp->b, result, rqstp));
 }
 
 int
-_d_set_1 (d_set_1_argument *argp, void *result, struct svc_req *rqstp)
+_d_divide_1 (d_divide_1_argument *argp, void *result, struct svc_req *rqstp)
 {
-	return (d_set_1_svc(argp->name, argp->i, argp->value, result, rqstp));
+	return (d_divide_1_svc(argp->a, argp->b, result, rqstp));
 }
 
 int
-_d_get_1 (d_get_1_argument *argp, void *result, struct svc_req *rqstp)
+_d_neg_1 (int  *argp, void *result, struct svc_req *rqstp)
 {
-	return (d_get_1_svc(argp->name, argp->i, result, rqstp));
+	return (d_neg_1_svc(*argp, result, rqstp));
 }
 
 static void
 nanodt_1(struct svc_req *rqstp, register SVCXPRT *transp)
 {
 	union {
-		d_init_1_argument d_init_1_arg;
-		d_set_1_argument d_set_1_arg;
-		d_get_1_argument d_get_1_arg;
+		d_add_1_argument d_add_1_arg;
+		d_divide_1_argument d_divide_1_arg;
+		int d_neg_1_arg;
 	} argument;
 	union {
-		int d_init_1_res;
-		int d_set_1_res;
-		struct get_res d_get_1_res;
+		struct result d_add_1_res;
+		struct result d_divide_1_res;
+		struct result d_neg_1_res;
 	} result;
 	bool_t retval;
 	xdrproc_t _xdr_argument, _xdr_result;
@@ -56,22 +56,22 @@ nanodt_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		(void) svc_sendreply (transp, (xdrproc_t) xdr_void, (char *)NULL);
 		return;
 
-	case d_init:
-		_xdr_argument = (xdrproc_t) xdr_d_init_1_argument;
-		_xdr_result = (xdrproc_t) xdr_int;
-		local = (bool_t (*) (char *, void *,  struct svc_req *))_d_init_1;
+	case d_add:
+		_xdr_argument = (xdrproc_t) xdr_d_add_1_argument;
+		_xdr_result = (xdrproc_t) xdr_result;
+		local = (bool_t (*) (char *, void *,  struct svc_req *))_d_add_1;
 		break;
 
-	case d_set:
-		_xdr_argument = (xdrproc_t) xdr_d_set_1_argument;
-		_xdr_result = (xdrproc_t) xdr_int;
-		local = (bool_t (*) (char *, void *,  struct svc_req *))_d_set_1;
+	case d_divide:
+		_xdr_argument = (xdrproc_t) xdr_d_divide_1_argument;
+		_xdr_result = (xdrproc_t) xdr_result;
+		local = (bool_t (*) (char *, void *,  struct svc_req *))_d_divide_1;
 		break;
 
-	case d_get:
-		_xdr_argument = (xdrproc_t) xdr_d_get_1_argument;
-		_xdr_result = (xdrproc_t) xdr_get_res;
-		local = (bool_t (*) (char *, void *,  struct svc_req *))_d_get_1;
+	case d_neg:
+		_xdr_argument = (xdrproc_t) xdr_int;
+		_xdr_result = (xdrproc_t) xdr_result;
+		local = (bool_t (*) (char *, void *,  struct svc_req *))_d_neg_1;
 		break;
 
 	default:
@@ -102,15 +102,15 @@ main (int argc, char **argv)
 {
 	register SVCXPRT *transp;
 
-	pmap_unset (NANODT, NANODT_VERSION);
+	pmap_unset (CALC, CALC_VERSION);
 
 	transp = svcudp_create(RPC_ANYSOCK);
 	if (transp == NULL) {
 		fprintf (stderr, "%s", "cannot create udp service.");
 		exit(1);
 	}
-	if (!svc_register(transp, NANODT, NANODT_VERSION, nanodt_1, IPPROTO_UDP)) {
-		fprintf (stderr, "%s", "unable to register (NANODT, NANODT_VERSION, udp).");
+	if (!svc_register(transp, CALC, CALC_VERSION, nanodt_1, IPPROTO_UDP)) {
+		fprintf (stderr, "%s", "unable to register (CALC, CALC_VERSION, udp).");
 		exit(1);
 	}
 
@@ -119,8 +119,8 @@ main (int argc, char **argv)
 		fprintf (stderr, "%s", "cannot create tcp service.");
 		exit(1);
 	}
-	if (!svc_register(transp, NANODT, NANODT_VERSION, nanodt_1, IPPROTO_TCP)) {
-		fprintf (stderr, "%s", "unable to register (NANODT, NANODT_VERSION, tcp).");
+	if (!svc_register(transp, CALC, CALC_VERSION, nanodt_1, IPPROTO_TCP)) {
+		fprintf (stderr, "%s", "unable to register (CALC, CALC_VERSION, tcp).");
 		exit(1);
 	}
 

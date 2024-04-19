@@ -19,50 +19,21 @@
  *
  */
 
+#ifndef LIB_H
+#define LIB_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "lib.h"
+  #include <string.h>
+  #include <stdlib.h>
+  #include <stdio.h>
 
+  // Sumar: *r = a + b Y devuelve 0
+  int add ( int *r, int a, int b ) ;
 
-int   N = 10 ;
-char *A = "nombre" ;
+  // Divide dos números enteros: *r = a + b Y devuele (-1 si b==0 / 0 si b!=0)
+  int divide ( int *r, int a, int b ) ;
 
+  // Cambio de signo: *r = -a Y devuelve 0
+  int neg ( int *r, int a ) ;
 
-int main ( int argc, char *argv[] )
-{
-    int ret ;
-    int val ;
-
-    // init
-    ret = init(A, N) ;
-    if (ret < 0) {
-        printf("init: error code %d\n", ret) ;
-        exit(-1) ;
-    }
-
-    for (int i=0; i<N; i++)
-    {
-	    // set
-	    ret = set (A, 100+i, i) ;
-	    if (ret < 0) {
-		printf("set: error code %d\n", ret) ;
-		exit(-1) ;
-	    }
-	    printf("set(\"%s\", %d, 0x%x)\n", A, 100+i, i) ;
-    }
-
-    for (int i=0; i<N; i++)
-    {
-	    // get
-	    ret = get (A, 100+i, &val) ;
-	    if (ret < 0) {
-		printf("get: error code %d\n", ret) ;
-		exit(-1) ;
-	    }
-	    printf("get(\"%s\", %d) -> 0x%x\n", A, 100+i, val) ;
-    }
-
-    return 0 ;
-}
+#endif
 

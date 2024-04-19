@@ -19,53 +19,38 @@
  *
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <signal.h>
-#include <unistd.h>
 
 #include "lib.h"
-#include "message.h"
 
 
-bool_t d_init_1_svc ( char *name, int N, int *result, struct svc_req *rqstp )
+/*
+ * Internal functions
+ */
+
+
+// Sumar dos números enteros.
+int add ( int *r, int a, int b )
 {
-	bool_t ret ;
-
-	ret = TRUE ;
-        *result = init(name, N) ;
-
-	return ret ;
+    *r = a + b ;
+    return 0 ;
 }
 
-bool_t d_set_1_svc ( char *name, int i, int value, int *result, struct svc_req *rqstp)
+// Divide dos números enteros.
+int divide ( int *r, int a, int b )
 {
-	bool_t ret ;
+    if (0 == b) {
+        *r = 0 ;
+	return -1 ;
+    }
 
-	ret = TRUE ;
-        *result = set(name, i, value) ;
-
-	return ret ;
+    *r = a / b ;
+    return 0 ;
 }
 
-bool_t d_get_1_svc ( char *name, int i, struct get_res *result, struct svc_req *rqstp )
+// Cambio de signo de un número entero.
+int neg ( int *r, int a )
 {
-	bool_t ret ;
-
-	ret = TRUE ;
-        result->status = get(name, i, &(result->value)) ;
-
-	return ret ;
-}
-
-int nanodt_1_freeresult ( SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result )
-{
-	bool_t ret ;
-
-	ret = TRUE ;
-        xdr_free(xdr_result, result) ;
-
-	return ret ;
+    *r = -a ;
+    return 0 ;
 }
 
