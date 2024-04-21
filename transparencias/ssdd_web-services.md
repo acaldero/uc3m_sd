@@ -533,52 +533,58 @@ En lugar de mostrarse en la página Web el instante de tiempo cada segundo, se p
 
 ## Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)
 
-Usaremos el ejemplo disponible en [ws-gsoap-xml-wsdl](ws-gsoap-xml-wsdl/README.md)
+Usaremos un ejemplo basado en el servicio de calculadora disponible en: http://www.genivia.com/calc.wsdl
 
-Dicho ejemplo se basa en el servicio de calculadora que está en: http://www.genivia.com/calc.wsdl
+Los pasos principales a seguir son los siguientes:
+1. Primero hay que obtener el archivo calc.h con la interfaz del servicio a partir de la descripción del servicio dada en WSDL:
+    ```bash
+    wsdl2h -c -o calc.h http://www.dneonline.com/calculator.asmx?WSDL
+    ```
+2. A continuación hay que generar los resguardos (*stubs*) a partir de la interfaz de calc.h:
+    ```bash
+    soapcpp2 -CcL calc.h
+    ```
+3. Hay que crear la aplicación **`app-d.c`** que use el servicio:
+    ```c
+    #include "CalculatorSoap.nsmap"
+    #include "soapH.h"
 
-Los pasos a seguir habitualmente son los siguientes:
-* Primero hay que generar el archivo de cabecera calc.h con la interfaz del servicio a partir de la descripción del servicio dada en WSDL:
-  ```bash
-  wsdl2h -c -o calc.h http://www.genivia.com/calc.wsdl
-  ```
-* A continuación hay que generar los resguardos (stubs) a partir de la interfaz de calc.h:
-  ```bash
-  soapcpp2 -CL calc.h
-  ```
-* Hay que crear la aplicación **`app-d.c`** que use el servicio:
-  ```c
-  #include "calc.nsmap"
-  #include "soapH.h"
+    int main ( int argc, char *argv[] )
+    {
+      struct _tempuri__Add in ;
+      struct _tempuri__AddResponse out ;
+      struct soap *soap ;
 
-  int main ( int argc, char *argv[] )
-  {
-    double sum;
+      soap = soap_new();
+      if (NULL == soap) { return -1; }
 
-    struct soap *soap = soap_new();
-    if (NULL == soap) { return -1; }
+      in.intA = 1 ;
+      in.intB = 1 ;
+      int ret = soap_call___tempuri__Add(soap, NULL, NULL, &in, &out) ;
+      if (SOAP_OK != ret) { soap_print_fault(soap, stderr); exit(-1); }
 
-    int ret = soap_call_ns2__add(soap, NULL, NULL, 1.23, 4.56, &sum) ;
-    if (SOAP_OK != ret) { soap_print_fault(soap, stderr); exit(-1); }
+      printf("Sum = %d\n", out.AddResult);
 
-    printf("Sum = %g\n", sum);
-
-    soap_destroy(soap); soap_end(soap); soap_free(soap);
-    return 0;
-  }
-  ```
-* Hay que compilar todo, por ejemplo usando:
-  ```bash
-  gcc -o app-d \
-      -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ \
-      -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
-      app-d.c soapC.c soapClient.c -lgsoap
-  ```
-* La ejecución del ejemplo sería:
-  ```bash
-  $ ./app-d
-  Sum = 5.79
-  ```
+      soap_destroy(soap); soap_end(soap); soap_free(soap);
+      return 0;
+    }
+    ```
+4. Hay que compilar todo, por ejemplo usando:
+    ```bash
+    gcc -o app-d   app-d.c soapC.c soapClient.c -lgsoap
+    ```
+   En caso de tener, por ejemplo, instalado gsoap 2.8.127 con *brew*, se podría usar:
+    ```bash
+    gcc -o app-d \
+        -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ \
+        -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
+        app-d.c soapC.c soapClient.c -lgsoap
+    ```
+5. La ejecución del ejemplo sería:
+   ```bash
+   $ ./app-d
+   Sum = 2
+   ```
 
 
 ## Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)
