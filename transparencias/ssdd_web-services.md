@@ -583,69 +583,38 @@ Los pasos a seguir habitualmente son los siguientes:
 
 ## Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)
 
-Usaremos el ejemplo disponible en [ws-gsoap-xml-standalone](ws-gsoap-xml-standalone/README.md)
+El siguiente ejemplo está basado en el ejemplo de calculadora disponible en: https://www.genivia.com/dev.html#client-c
 
-Dicho ejemplo es el ejemplo de calculadora disponible en: https://www.genivia.com/dev.html#client-c
+En el proceso de creación de un servicio distribuido basado en gSOAP/XML que permita sumar y restar, <br>los pasos a seguir son:
 
-Los pasos a seguir habitualmente son los siguientes:
-* NUEVO: primero hay que generar el archivo de cabecera **`calc.h`** con la interfaz del servicio:
-  ```c
-   //gsoap ns service name: calc
-   //gsoap ns schema namespace: urn:calc
-   int ns__add(double a,double b,double *result);
-   int ns__sub(double a,double b,double *result);
-  ```
-* A continuación hay que generar los resguardos (stubs) a partir de la interfaz de calc.h:
-  ```bash
-  soapcpp2 -cL calc.h
-  ```
+1. Hay que generar el archivo de cabecera **`calc.h`** con la interfaz del servicio:
+   ```c
+    //gsoap ns service name: calc
+    //gsoap ns schema namespace: urn:calc
+    int ns__add(double a, double b, double *result);
+    int ns__sub(double a, double b, double *result);
+   ```
+2. Con *soapcpp2* (versión 2.8.91 o compatible) hay que generar los resguardos (*stubs*) a partir de la interfaz de calc.h:
+   ```bash
+   soapcpp2 -cL calc.h
+   ```
    Gracias al mandato soapcpp2 se han generado gran parte del trabajo, como se puede ver en la siguiente figura: <br/>
    <img src="https://www.genivia.com/images/flowchart.png" style="max-height:512" /><br/><br/>
-* Hay que crear la aplicación **`app-d.c`** que use el servicio:
-  ```c
-  #include "soapH.h"
-  #include "calc.nsmap"
+3. Hay que crear la parte que implementa el servicio, por ejemplo en el archivo **`lib-server.c`**:
+   ```c
+   #include "soapH.h"
+   #include "calc.nsmap"
 
-  int main(int argc, char **argv)
-  {
-     const char *server = "localhost:12345";
-     struct soap soap;
-     double result = 0.0;
-
-     if (argc < 3) {
-         printf("Usage: %s <a|s> <operand 1> <operand 2>\n", argv[0]);
-         exit(-1);
-     }
-
-     soap_init(&soap);
-     double a = strtod(argv[2], NULL);
-     double b = strtod(argv[3], NULL);
-     char   o = argv[1][0];
-
-     if ('a' == o)
-         soap_call_ns__add(&soap, server, "", a, b, &result);
-     else if ('s' == o)
-         soap_call_ns__sub(&soap, server, "", a, b, &result);
-     else printf("error en operación: %c\n", o) ;
-
-     if (soap.error)
-          soap_print_fault(&soap, stderr);
-     else printf("result = %g\n", result);
-
-     return 0;
-  }
-  ```
-* NUEVO: hay que crear la aplicación servidora **`lib-server.c`** que implementa el servicio:
-  ```c
-  #include "soapH.h"
-  #include "calc.nsmap"
-
-  int main(int argc, char **argv)
-  {
+   int main(int argc, char **argv)
+   {
       struct soap soap;
 
+      if (argc < 2) {
+          printf("Uso: %s <puerto>\n", argv[0]) ;
+          exit(-1);
+      }
       soap_init(&soap);
-      soap_bind(&soap,NULL,atoi(argv[1]), 100);
+      soap_bind(&soap, NULL, atoi(argv[1]), 100);
       while(1)
       {
         soap_accept(&soap);
@@ -654,38 +623,83 @@ Los pasos a seguir habitualmente son los siguientes:
       }
 
       return 0;
-  }
+   }
 
-  int ns2__add (struct soap *soap, double a, double b, double *result)
-  {
-      *result = a + b;
-      return SOAP_OK;
-  }
+   int ns__add ( struct soap *soap, double a, double b, double *result )
+   {
+       *result = a + b;
+       return SOAP_OK;
+   }
 
-  int ns2__sub (struct soap *soap, double a, double b, double *result)
-  {
+   int ns__sub ( struct soap *soap, double a, double b, double *result )
+   {
        *result = a - b;
        return SOAP_OK;
-  }
-  ```
-* NUEVO: Hay que compilar todo, por ejemplo usando:
-  ```bash
-   gcc -g -o app-d \
-       -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
-       app-d.c soapC.c soapClient.c -lgsoap
-   gcc -g -o lib-server \
-       -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
-       lib-server.c soapC.c soapServer.c -lgsoap
-  ```
-* Es posible ejecutar por un lado el servidor (lib-server) y por otro el cliente (app-d) de la siguiente manera:
-  ```bash
-  $ ./lib-server 12345 &
-  $ ./app-d a 1 2
-  result = 3
-  ```
+   }
+   ```
+4. Hay que crear la aplicación **`app-d.c`** que use el servicio:
+   ```c
+   #include "soapH.h"
+   #include "calc.nsmap"
+
+   int d_add ( double a, double b, double *r )
+   {
+       struct soap soap;
+
+       // env SERVER_IP=localhost:12345 ./app-d
+       char *host = getenv("SERVER_IP") ;
+       if (NULL == host) {
+           printf("ERROR: missing 'export SERVER_IP=<ip>:<port>'\n") ;
+           return -1 ;
+       }
+
+       soap_init(&soap);
+       soap_call_ns__add(&soap, host, "", a, b, r);
+       if (soap.error) {
+           soap_print_fault(&soap, stderr);
+           return -1 ;
+       }
+       soap_done(&soap) ;
+
+       return 0 ;
+   }
+
+   int main ( int argc, char **argv )
+   {
+       double result = 0 ;
+       int ret ;
+
+       ret = d_add(1.0, 2.0, &result) ;
+       if (ret < 0)
+            printf("result is not valid\n") ;
+       else printf("result = %g\n", result) ;
+
+       return 0;
+   }
+   ```
+5. Hay que compilar todo, por ejemplo usando:
+   ```bash
+    gcc -g -o app-d       app-d.c soapC.c soapClient.c -lgsoap
+    gcc -g -o lib-server  lib-server.c soapC.c soapServer.c -lgsoap
+   ```
+   En caso de tener, por ejemplo, instalado gsoap 2.8.127 con *brew*, se podría usar:
+   ```bash
+    gcc -g -o app-d \
+        -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
+        app-d.c soapC.c soapClient.c -lgsoap
+    gcc -g -o lib-server \
+        -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
+        lib-server.c soapC.c soapServer.c -lgsoap
+   ```   
+6. Es posible ejecutar por un lado el servidor (lib-server) y por otro el cliente (app-d) de la siguiente manera:
+   ```bash
+    $ ./lib-server 12345 &
+    $ env SERVER_IP=localhost:12345 ./app-d
+    result = 3
+    ```
 
 
-**Información adicional**:
-  * [t8_web-services.pdf](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t8_web-services.pdf)
+<br/>
 
-
+## Información adicional
+  * [Transparencias del tema 8: t8_web-services.pdf](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t8_web-services.pdf)
