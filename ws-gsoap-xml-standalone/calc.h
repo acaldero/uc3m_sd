@@ -1,6 +1,6 @@
 
 //gsoap ns service name: calc
 //gsoap ns schema namespace: urn:calc
-int ns__add(double a,double b,double *result);
-int ns__sub(double a,double b,double *result);
+int ns__suma  ( int a, int b, int *res ) ;
+int ns__resta ( int a, int b, int *res ) ;
 
