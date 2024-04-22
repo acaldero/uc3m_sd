@@ -5,7 +5,7 @@ CFLAGS=-g \
 
 
 all:
-	wsdl2h -c -o calc.h http://www.genivia.com/calc.wsdl
+	wsdl2h -c -o calc.h "http://www.dneonline.com/calculator.asmx?WSDL"
 	soapcpp2 -C -c calc.h
 	$(CC) $(CFLAGS) -c soapC.c          -o soapC.o
 	$(CC) $(CFLAGS) -c soapClientLib.c  -o soapClientLib.o
