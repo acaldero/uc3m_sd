@@ -13,6 +13,7 @@
   * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
   * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c)
   * [Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-apache-thrift-cliente-y-servidor-en-python)
+  * [Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-grpc-cliente-y-servidor-en-python)
 
 
 ## Introducción
@@ -798,6 +799,71 @@ En el proceso de creación de un servicio distribuido basado en Apache Thrift qu
     1+1=2
     sub(1,1)
     1-1=0
+    ```
+
+
+## Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)
+
+El siguiente ejemplo está basado en el ejemplo disponible en: https://medium.com/@coderviewer/simple-usage-of-grpc-with-python-f714d9f69daa
+
+En el proceso de creación de un servicio distribuido basado en gRPC que permita sumar y restar, <br>los pasos a seguir son:
+
+1. Hay que generar el archivo **`calc.proto`** con la interfaz del servicio:
+   ```c
+   syntax = "proto3";
+   package calculator;
+
+   service Calculator {
+     rpc Add (AddRequest) returns (AddResponse);
+   }
+
+   message AddRequest {
+     int32 num1 = 1;
+     int32 num2 = 2;
+   }
+
+   message AddResponse {
+     int32 result = 1;
+   }
+   ```
+2. Con *grpc_tools.protoc* (``pip3 install grpcio grpcio-tools``) hay que generar los resguardos (*stubs*) a partir de la interfaz de calc.proto:
+   ```bash
+   python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. calc.proto
+   ```
+3. Hay que crear la parte que implementa el servicio, por ejemplo en el archivo **`server.py`**:
+   ```python
+    import grpc
+    from concurrent import futures
+    import calc_pb2
+    import calc_pb2_grpc
+
+    class CalculatorServicer(calc_pb2_grpc.CalculatorServicer):
+        def Add(self, request, context):
+            result = request.num1 + request.num2
+            return calc_pb2.AddResponse(result=result)
+
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    calc_pb2_grpc.add_CalculatorServicer_to_server(CalculatorServicer(), server)
+    server.add_insecure_port('[::]:50051')
+    server.start()
+    server.wait_for_termination()
+   ```
+4. Hay que crear la parte cliente que use el servicio, por ejemplo en el archivo **`client.c`**:
+   ```python
+   import grpc
+   import calc_pb2
+   import calc_pb2_grpc
+
+   with grpc.insecure_channel('localhost:50051') as channel:
+       stub = calc_pb2_grpc.CalculatorStub(channel)
+       response = stub.Add(calc_pb2.AddRequest(num1=1, num2=2))
+   print(f"Result: {response.result}")
+   ```
+5. Es posible ejecutar el servidor y el cliente de la siguiente manera:
+   ```bash
+   $ python3 ./server &
+   $ python3 ./client
+   Result: 3
     ```
 
 
