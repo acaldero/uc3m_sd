@@ -10,7 +10,7 @@ all:
 	$(CC) $(CFLAGS) -c soapC.c          -o soapC.o
 	$(CC) $(CFLAGS) -c soapClientLib.c  -o soapClientLib.o
 	$(CC) $(CFLAGS) -c app-d.c          -o app-d.o
-	$(CC) -o client  $(CFLAGS)  app-d.o soapClientLib.o soapC.o  -lgsoap
+	$(CC) -o app-d  $(CFLAGS)  app-d.o soapClientLib.o soapC.o  -lgsoap
 
 install:
 	brew install gsoap
