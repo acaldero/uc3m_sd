@@ -3,32 +3,31 @@
 // https://www.genivia.com/dev.html#client-c
 //
 
-#include "calc.nsmap" // XML namespace mapping table (only needed once at the global level)
-#include "soapH.h"    // client stubs, serializers, etc.
+#include "calc.nsmap"
+#include "soapH.h"
 
 int main ( int argc, char *argv[] )
 {
-  struct soap *soap;
-  double sum;
-  int ret;
+  struct soap *soap ;
+  int ret ;
+  double res ;
 
-  soap = soap_new(); // allocate and initialize a context
+  soap = soap_new();
   if (NULL == soap) {
       return -1;
   }
 
-  ret = soap_call_ns2__add(soap, NULL, NULL, 1.23, 4.56, &sum) ;
-  if (SOAP_OK == ret) {
-      printf("Sum = %g\n", sum);
-  }
-  else {
+  ret = soap_call_ns2__add(soap, NULL, NULL, 1.2, 2.3, &res) ;
+  if (SOAP_OK != ret) {
       soap_print_fault(soap, stderr);
+      return -1;
   }
 
-  soap_destroy(soap); // delete managed deserialized C++ instances
-  soap_end(soap);     // delete other managed data
-  soap_free(soap);    // free the soap struct context data
+  printf("Sum = %g\n", res);
+
+  soap_destroy(soap);
+  soap_end(soap);
+  soap_free(soap);
 
   return 0;
 }
-
