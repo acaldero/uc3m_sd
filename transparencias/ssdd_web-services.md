@@ -12,6 +12,7 @@
   * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-sse-en-bash)
   * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
   * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c)
+  * [Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-apache-thrift-cliente-y-servidor-en-python)
 
 
 ## Introducción
@@ -392,7 +393,7 @@ Relativo al estándar OpenAPI:
   * Enlace: https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/link-example.yaml
   * Tienda de mascotas: https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml
 
-Relativo a las herramientas de ayuda en el deseño, desarrollo y pruebas:
+Relativo a las herramientas de ayuda en el diseño, desarrollo y pruebas:
 * Para diseñar el API se puede usar un editor en línea (*online*) como *Swagger Editor*: https://editor.swagger.io/
 * Para la generación de código (*client libraries*, *server stubs*, documentación) en diferentes lenguajes se puede usar *Swagger Codegen*: https://github.com/swagger-api/swagger-codegen
 
@@ -702,6 +703,101 @@ En el proceso de creación de un servicio distribuido basado en gSOAP/XML que pe
     $ ./lib-server 12345 &
     $ env SERVER_IP=localhost:12345 ./app-d
     result = 3
+    ```
+
+
+## Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)
+
+El siguiente ejemplo está basado en el ejemplo disponible en: https://github.com/apache/thrift/tree/master/tutorial/py
+
+En el proceso de creación de un servicio distribuido basado en Apache Thrift que permita sumar y restar, <br>los pasos a seguir son:
+
+1. Hay que generar el archivo **`calc.thrift`** con la interfaz del servicio:
+   ```c
+   service calc
+   {
+      i32 add(1:i32 a, 2:i32 b) ;
+      i32 sub(1:i32 a, 2:i32 b) ;
+   }
+   ```
+2. Con *thrift* (versión 0.13.0 o compatible) hay que generar los resguardos (*stubs*) a partir de la interfaz de calc.thrift:
+   ```bash
+   thrift -r --gen py calc.thrift
+   cd gen-py
+   ```
+3. Hay que crear la parte que implementa el servicio, por ejemplo en el archivo **`server.py`**:
+   ```python
+   from calc import calc
+   from calc.ttypes import *
+
+   from thrift.transport import TSocket
+   from thrift.transport import TTransport
+   from thrift.protocol  import TBinaryProtocol
+   from thrift.server    import TServer
+
+   class calcHandler:
+       def __init__(self):
+           self.log = {}
+       def add(self, n1, n2):
+           print('add(%d,%d)' % (n1, n2))
+           return n1 + n2
+       def sub(self, n1, n2):
+           print('sub(%d,%d)' % (n1, n2))
+           return n1 - n2
+
+   if __name__ == '__main__':
+       handler   = calcHandler()
+       processor = calc.Processor(handler)
+       transport = TSocket.TServerSocket(host='127.0.0.1', port=9090)
+       tfactory  = TTransport.TBufferedTransportFactory()
+       pfactory  = TBinaryProtocol.TBinaryProtocolFactory()
+
+       server = TServer.TSimpleServer(processor, transport, tfactory, pfactory)
+       # You could do one of these for a multithreaded server
+       # server = TServer.TThreadedServer  (processor, transport, tfactory, pfactory)
+       # server = TServer.TThreadPoolServer(processor, transport, tfactory, pfactory)
+
+       print('Starting the server on localhost:9090...')
+       server.serve()
+       print('done.')
+   ```
+4. Hay que crear la parte cliente que use el servicio, por ejemplo en el archivo **`client.c`**:
+   ```python
+   from calc import calc
+   from calc.ttypes import *
+
+   from thrift import Thrift
+   from thrift.transport import TSocket
+   from thrift.transport import TTransport
+   from thrift.protocol import TBinaryProtocol
+
+   def main():
+       transport = TSocket.TSocket('localhost', 9090)
+       transport = TTransport.TBufferedTransport(transport)
+       protocol  = TBinaryProtocol.TBinaryProtocol(transport)
+
+       transport.open()
+       client = calc.Client(protocol)
+       res_ = client.add(1, 1)
+       print('1+1=%d' % res_)
+       res_ = client.sub(1, 1)
+       print('1-1=%d' % res_)
+       transport.close()
+
+   if __name__ == '__main__':
+       try:
+           main()
+       except Thrift.TException as tx:
+           print('%s' % tx.message)
+   ```
+5. Es posible ejecutar el servidor y el cliente de la siguiente manera:
+   ```bash
+    $ python3 ./server &
+    $ python3 ./client
+    add(1,1)
+    1+1=2
+    sub(1,1)
+    1-1=0
     ```
 
 
