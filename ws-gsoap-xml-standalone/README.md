@@ -3,15 +3,10 @@
 
 ## Servicio distribuido basado en gSOAP
 
-#### Compilar
+#### Requisitos
 
-Hay que introducir:
-```
-cd ws-gsoap-xml-standalone
-make
-```
-
-Si no se tiene instalado gsoap, se puede instalar con:
+Hay que tener instalado gsoap.
+Si no se tiene instalado, se puede instalar con:
  * Linux (Ubuntu, Debian o similar):
    ```
    sudo apt-get install -y gsoap
@@ -21,12 +16,21 @@ Si no se tiene instalado gsoap, se puede instalar con:
    brew install gsoap
    ```
 
+
+#### Compilar
+
+Hay que introducir:
+```
+cd ws-gsoap-xml-standalone
+make
+```
+
 Y la salida debería ser similar a:
 ```
-soapcpp2 -cL calc.h
+soapcpp2 -c calc.h
 
-**  The gSOAP code generator for C and C++, soapcpp2 release 2.8.127
-**  Copyright (C) 2000-2023, Robert van Engelen, Genivia Inc.
+**  The gSOAP code generator for C and C++, soapcpp2 release 2.8.117
+**  Copyright (C) 2000-2021, Robert van Engelen, Genivia Inc.
 **  All Rights Reserved. This product is provided "as is", without any warranty.
 **  The soapcpp2 tool and its generated software are released under the GPL.
 **  ----------------------------------------------------------------------------
@@ -35,25 +39,32 @@ soapcpp2 -cL calc.h
 
 Saving soapStub.h annotated copy of the source interface header file
 Saving soapH.h serialization functions to #include in projects
-Using ns service name: calc
+Using ns service name: Service
 Using ns service style: document
 Using ns service encoding: literal
-Using ns schema namespace: urn:calc
-Saving calc.wsdl Web Service description
-Saving calc.add.req.xml sample SOAP/XML request
-Saving calc.add.res.xml sample SOAP/XML response
-Saving calc.sub.req.xml sample SOAP/XML request
-Saving calc.sub.res.xml sample SOAP/XML response
-Saving calc.nsmap namespace mapping table
+Using ns schema namespace: http://tempuri.org/ns.xsd
+Saving ns.wsdl Web Service description
+Saving ns.suma.req.xml sample SOAP/XML request
+Saving ns.suma.res.xml sample SOAP/XML response
+Saving ns.resta.req.xml sample SOAP/XML request
+Saving ns.resta.res.xml sample SOAP/XML response
 Saving ns.xsd XML schema
+Saving ns.nsmap namespace mapping table
 Saving soapClient.c client call stub functions
+Saving soapClientLib.c client stubs with serializers (use only for libs)
 Saving soapServer.c server request dispatcher
+Saving soapServerLib.c server request dispatcher with serializers (use only for libs)
 Saving soapC.c serialization functions
 
 Compilation successful 
 
-gcc -o app-d       -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ app-d.c      soapC.c soapClient.c -lgsoap
-gcc -o lib-server  -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ lib-server.c soapC.c soapServer.c -lgsoap
+gcc  -Wall -g  -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -I/opt/gsoap-linux-2.7/  -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ -c soapC.c        -o soapC.o
+gcc  -Wall -g  -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -I/opt/gsoap-linux-2.7/  -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ -c calcClient.c   -o calcClient.o
+gcc  -Wall -g  -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -I/opt/gsoap-linux-2.7/  -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ -c soapClient.c   -o soapClient.o
+gcc  -Wall -g  -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -I/opt/gsoap-linux-2.7/  -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ -c calcServer.c   -o calcServer.o
+gcc  -Wall -g  -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -I/opt/gsoap-linux-2.7/  -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ -c soapServer.c   -o soapServer.o
+gcc  -o client  calcClient.o  soapC.o  soapClient.o   -lgsoap
+gcc  -o server  calcServer.o  soapC.o  soapServer.o   -lgsoap
 ```
 
 #### Ejecutar
@@ -73,7 +84,7 @@ gcc -o lib-server  -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew
 <td>
 
 ```
-$ ./lib-server 12345
+$ ./server 12345
 ```
 
 </td>
@@ -84,8 +95,8 @@ $ ./lib-server 12345
 <td>
 
 ```
-$ ./app-d a 2 3
-result = 5
+$ ./client  localhost:12345 2 3
+Resultado = 5 
 ```
 
 </td>
