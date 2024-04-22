@@ -7,13 +7,13 @@
 
 * Se precisa tener instalado el paquete de python "zeep" para crear clientes:
   ```
-  pip install zeep 
+  pip3 install zeep 
   ```
   Suele tardar algún tiempo la instalación, hay que esperar.
 
 * A continuación hay que conocer la información del servicio Web usando "python -mzeep URL", siendo URL la asociada al WSDL:
   ```
-  python -mzeep http://www.dneonline.com/calculator.asmx?WSDL
+  python3 -mzeep http://www.dneonline.com/calculator.asmx?WSDL
   ```
 
 * El siguiente paso habitual es crear el archivo cliente de dicho servicio web (app-d.py en nuestro ejemplo):
