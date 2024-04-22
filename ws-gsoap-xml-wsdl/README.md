@@ -3,15 +3,10 @@
 
 ## Aplicación que usa un servicio distribuido basado en gSOAP/XML
 
-#### Compilar
+#### Requisitos
 
-Hay que introducir:
-```
-cd ws-gsoap-xml-wsdl
-make
-```
-
-Si no se tiene instalado gsoap, se puede instalar con:
+Tener instalado gSOAP.
+Si no se tiene instalado, se puede instalar con:
  * Linux (Ubuntu, Debian o similar):
    ```
    sudo apt-get install -y gsoap
@@ -21,31 +16,42 @@ Si no se tiene instalado gsoap, se puede instalar con:
    brew install gsoap
    ```
 
+
+#### Compilar
+
+Hay que introducir:
+```
+cd ws-gsoap-xml-wsdl
+make
+```
+
 Y la salida debería ser similar a:
 ```
-wsdl2h -c -o calc.h http://www.genivia.com/calc.wsdl
+wsdl2h -c -o calc.h "http://www.dneonline.com/calculator.asmx?WSDL"
 Saving calc.h
 
 
-**  The gSOAP WSDL/WADL/XSD processor for C and C++, wsdl2h release 2.8.127
-**  Copyright (C) 2000-2023 Robert van Engelen, Genivia Inc.
+**  The gSOAP WSDL/WADL/XSD processor for C and C++, wsdl2h release 2.8.117
+**  Copyright (C) 2000-2021 Robert van Engelen, Genivia Inc.
 **  All Rights Reserved. This product is provided "as is", without any warranty.
 **  The wsdl2h tool and its generated software are released under the GPL.
 **  ----------------------------------------------------------------------------
 **  A commercial use license is available from Genivia Inc., contact@genivia.com
 **  ----------------------------------------------------------------------------
 
-Reading type definitions from type map "/opt/homebrew/Cellar/gsoap/2.8.127/share/gsoap/WS/typemap.dat"
-Connecting to 'http://www.genivia.com/calc.wsdl' to retrieve WSDL/WADL or XSD... connected, receiving...
-Done reading 'http://www.genivia.com/calc.wsdl'
+Reading type definitions from type map "/usr/share/gsoap/WS/typemap.dat"
+Connecting to 'http://www.dneonline.com/calculator.asmx?WSDL' to retrieve WSDL/WADL or XSD... connected, receiving...
+Done reading 'http://www.dneonline.com/calculator.asmx?WSDL'
+
+Warning: 2 service bindings found, but collected as one service (use option -Nname to produce a separate service for each binding)
 
 To finalize code generation, execute:
 > soapcpp2 calc.h
 
-soapcpp2 -CL calc.h
+soapcpp2 -C -c calc.h
 
-**  The gSOAP code generator for C and C++, soapcpp2 release 2.8.127
-**  Copyright (C) 2000-2023, Robert van Engelen, Genivia Inc.
+**  The gSOAP code generator for C and C++, soapcpp2 release 2.8.117
+**  Copyright (C) 2000-2021, Robert van Engelen, Genivia Inc.
 **  All Rights Reserved. This product is provided "as is", without any warranty.
 **  The soapcpp2 tool and its generated software are released under the GPL.
 **  ----------------------------------------------------------------------------
@@ -54,28 +60,38 @@ soapcpp2 -CL calc.h
 
 Saving soapStub.h annotated copy of the source interface header file
 Saving soapH.h serialization functions to #include in projects
-Using ns2 service name: calc
-Using ns2 service style: document
-Using ns2 service encoding: literal
-Using ns2 service location: http://websrv.cs.fsu.edu/~engelen/calcserver.cgi
-Using ns2 schema namespace: urn:calc
-Saving calc.add.req.xml sample SOAP/XML request
-Saving calc.add.res.xml sample SOAP/XML response
-Saving calc.sub.req.xml sample SOAP/XML request
-Saving calc.sub.res.xml sample SOAP/XML response
-Saving calc.mul.req.xml sample SOAP/XML request
-Saving calc.mul.res.xml sample SOAP/XML response
-Saving calc.div.req.xml sample SOAP/XML request
-Saving calc.div.res.xml sample SOAP/XML response
-Saving calc.pow.req.xml sample SOAP/XML request
-Saving calc.pow.res.xml sample SOAP/XML response
-Saving calc.nsmap namespace mapping table
+Using tempuri service name: CalculatorSoap
+Using tempuri service style: document
+Using tempuri service encoding: literal
+Using tempuri service location: http://www.dneonline.com/calculator.asmx
+Using tempuri schema namespace: http://tempuri.org/
+Saving CalculatorSoap.Add.req.xml sample SOAP/XML request
+Saving CalculatorSoap.Add.res.xml sample SOAP/XML response
+Saving CalculatorSoap.Subtract.req.xml sample SOAP/XML request
+Saving CalculatorSoap.Subtract.res.xml sample SOAP/XML response
+Saving CalculatorSoap.Multiply.req.xml sample SOAP/XML request
+Saving CalculatorSoap.Multiply.res.xml sample SOAP/XML response
+Saving CalculatorSoap.Divide.req.xml sample SOAP/XML request
+Saving CalculatorSoap.Divide.res.xml sample SOAP/XML response
+Saving CalculatorSoap.Add.req.xml sample SOAP/XML request
+Saving CalculatorSoap.Add.res.xml sample SOAP/XML response
+Saving CalculatorSoap.Subtract.req.xml sample SOAP/XML request
+Saving CalculatorSoap.Subtract.res.xml sample SOAP/XML response
+Saving CalculatorSoap.Multiply.req.xml sample SOAP/XML request
+Saving CalculatorSoap.Multiply.res.xml sample SOAP/XML response
+Saving CalculatorSoap.Divide.req.xml sample SOAP/XML request
+Saving CalculatorSoap.Divide.res.xml sample SOAP/XML response
+Saving CalculatorSoap.nsmap namespace mapping table
 Saving soapClient.c client call stub functions
+Saving soapClientLib.c client stubs with serializers (use only for libs)
 Saving soapC.c serialization functions
 
 Compilation successful 
 
-gcc -o app-d  -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ app-d.c soapC.c soapClient.c -lgsoap
+gcc -g -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ -c soapC.c          -o soapC.o
+gcc -g -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ -c soapClientLib.c  -o soapClientLib.o
+gcc -g -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ -c app-d.c          -o app-d.o
+gcc -o app-d  -g -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/  app-d.o soapClientLib.o soapC.o  -lgsoap
 ```
 
 #### Ejecutar
@@ -90,7 +106,7 @@ gcc -o app-d  -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cell
 
 ```
 $ ./app-d 
-result = 5.79
+Sum = 3
 ```
 
 </td>
