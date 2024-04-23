@@ -707,6 +707,13 @@ En el proceso de creación de un servicio distribuido basado en gSOAP/XML que pe
     ```
 
 
+## Otras tecnologías además de REST y SOAP
+
+REST y SOAP han ido evolucionando, apareciendo distintas tecnologías nuevas.
+En el artículo https://blog.bytebytego.com/p/soap-vs-rest-vs-graphql-vs-rpc se muestra esta imagen que resume la evolución en el tiempo y la comparación de alguna de estas tecnologías:
+![Evolución de tecnologías Web](/transparencias/ssdd_web-services/altexsoft-blog-bytebytego-com-soap-vs-rest-vs-graphql-vs-rpc)
+
+
 ## Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)
 
 El siguiente ejemplo está basado en el ejemplo disponible en: https://github.com/apache/thrift/tree/master/tutorial/py
