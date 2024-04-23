@@ -12,6 +12,7 @@
   * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-sse-en-bash)
   * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
   * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c)
+  * [Otras tecnologías además de REST y SOAP](#otras-tecnologías-además-de-rest-y-soap)
   * [Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-apache-thrift-cliente-y-servidor-en-python)
   * [Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-grpc-cliente-y-servidor-en-python)
 
@@ -710,8 +711,18 @@ En el proceso de creación de un servicio distribuido basado en gSOAP/XML que pe
 ## Otras tecnologías además de REST y SOAP
 
 REST y SOAP han ido evolucionando, apareciendo distintas tecnologías nuevas.
-En el artículo https://blog.bytebytego.com/p/soap-vs-rest-vs-graphql-vs-rpc se muestra esta imagen que resume la evolución en el tiempo y la comparación de alguna de estas tecnologías:
-![Evolución de tecnologías Web](/transparencias/ssdd_web-services/altexsoft-blog-bytebytego-com-soap-vs-rest-vs-graphql-vs-rpc)
+La siguiente imagen resume la evolución en el tiempo y la comparación de las principales tecnologías:
+
+ ![Evolución de tecnologías Web](/transparencias/ssdd_web-services/altexsoft-blog-bytebytego-com-soap-vs-rest-vs-graphql-vs-rpc.jpg) <br/>
+ Figura de https://blog.bytebytego.com/p/soap-vs-rest-vs-graphql-vs-rpc
+
+Entre estas tecnologías hay que destacar dos:
+* **gRPC**, que es un proyecto creado por Google para su uso interno.
+* **Apache Thrift**, que es un proyecto originalmente creado por Facebook también para su uso interno.
+Ambas tecnologías permiten crear software en distintos lenguajes, y usar protocolos eficientes:
+
+![Evolución de tecnologías Web 2](https://www.mertech.com/hubfs/protocol%20comparison.webp) <br/>
+Figura de https://www.mertech.com/blog/know-your-api-protocols
 
 
 ## Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)
@@ -880,3 +891,4 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
   * [Transparencias del tema 8: t8_web-services.pdf](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t8_web-services.pdf)
   * [Know your API protocols: SOAP vs. REST vs. JSON-RPC vs. gRPC vs. GraphQL vs. Thrift](https://www.mertech.com/blog/know-your-api-protocols)
   * [A brief look at the evolution of interface protocols leading to modern APIs](https://www.soa4u.co.uk/2019/02/a-brief-look-at-evolution-of-interface.html)
+  * [Soap vs REST vs GrapQL vs gRPC](https://www.altexsoft.com/blog/soap-vs-rest-vs-graphql-vs-rpc/)
