@@ -43,13 +43,13 @@ El disponer de un repositorio de servicios web ofrecidos permite:
 
 #### Invocación remota usando la Web
 
-En el directorio se puede dar de alta el servicio (paso 0) y dar de baja. 
+En el directorio se puede dar de alta el servicio (paso 0) y dar de baja.
 Dar de alta un servicio puede suponer incluir en el directorio lo siguiente:
 * Identificación del servicio.
 * Dirección y puerto de la máquina donde se ofrece.
 * Una descripción del API que permite diseñar, implementar y probar un cliente (consumidor) que pida el servicio a un servidor (proveedor).
 
-A partir de la descripción del API puede ser posible generar los resguardos (stubs) que facilitan el despliegue de forma parecida a como `rpcgen` automatiza la generación de parte del código en las RPC. 
+A partir de la descripción del API puede ser posible generar los resguardos (stubs) que facilitan el despliegue de forma parecida a como `rpcgen` automatiza la generación de parte del código en las RPC.
 * La generación de código mediante una herramienta de este tipo permite garantizar que se ha validado dicho proceso de generación (en lugar de basarse en una generación de código basada en probabilidad que puede no funcionar como es el caso de herramientas puramente basadas en IA).
 
 
@@ -391,7 +391,7 @@ Es incluso posible usar el mandato `curl` como cliente del servicio web anterior
 Existe el estándard OpenAPI que permite describir un servicio REST, así como herramientas para ayudar en el desarrollo y pruebas de dicho servicio REST.
 Relativo al estándar OpenAPI:
 * La documentación del estándar OpenAPI 3.1 está disponible en: https://spec.openapis.org/oas/v3.1.0
-* Como ejemplos tenemos: 
+* Como ejemplos tenemos:
   * Enlace: https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/link-example.yaml
   * Tienda de mascotas: https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml
 
@@ -699,7 +699,7 @@ En el proceso de creación de un servicio distribuido basado en gSOAP/XML que pe
     gcc -g -o lib-server \
         -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
         lib-server.c soapC.c soapServer.c -lgsoap
-   ```   
+   ```
 6. Es posible ejecutar por un lado el servidor (lib-server) y por otro el cliente (app-d) de la siguiente manera:
    ```bash
     $ ./lib-server 12345 &
@@ -710,19 +710,25 @@ En el proceso de creación de un servicio distribuido basado en gSOAP/XML que pe
 
 ## Otras tecnologías además de REST y SOAP
 
-REST y SOAP han ido evolucionando, apareciendo distintas tecnologías nuevas.
+REST y SOAP han ido evolucionando, al igual que han apareciendo nuevas tecnologías.
 La siguiente imagen resume la evolución en el tiempo y la comparación de las principales tecnologías:
 
- ![Evolución de tecnologías Web](/transparencias/ssdd_web-services/altexsoft-blog-bytebytego-com-soap-vs-rest-vs-graphql-vs-rpc.jpg) <br/>
- Figura de https://blog.bytebytego.com/p/soap-vs-rest-vs-graphql-vs-rpc
+ ![Evolución de tecnologías Web](/transparencias/ssdd_web-services/ssdd_web-services-api-timeline.svg) <br/>
+
+La siguiente tabla resume los principales aspectos de algunas de las principales tecnologías:
+
+|                 | SOAP        | REST           | JSON-RPC   | gRPC | GraphQL | Thrift |
+|-----------------|-------------|----------------|------------|------|---------|--------|
+| Presentado      | fin 1990s   | 2000           | mitad 2000 | 2015 | 2015    | 2007   |
+| Formato         | XML         | JSON, XML, ... | JSON       | Protobuf, JSON, ... | JSON | JSON o binario |
+| Ventajas        | conocido    | Formato de intercambio flexible y simple | Simple de implementar | Permite cualquier tipo función | Estructuración flexible de datos | Adaptable a muchos casos de uso |
+| Casos de uso    | pagos, "legacy", ...   | API pública |        | HPC microservicios | API móvil |  |
+| Organización    | mensajes empaquetados | cumplir 6 restricciones |        | llamada a procedimiento | sistema tipado |  |
 
 Entre estas tecnologías hay que destacar dos:
 * **gRPC**, que es un proyecto creado por Google para su uso interno.
 * **Apache Thrift**, que es un proyecto originalmente creado por Facebook también para su uso interno.
-Ambas tecnologías permiten crear software en distintos lenguajes, y usar protocolos eficientes:
-
-![Evolución de tecnologías Web 2](https://www.mertech.com/hubfs/protocol%20comparison.webp) <br/>
-Figura de https://www.mertech.com/blog/know-your-api-protocols
+Ambas tecnologías permiten crear software en distintos lenguajes, y usar protocolos eficientes.
 
 
 ## Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)
@@ -892,3 +898,7 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
   * [Know your API protocols: SOAP vs. REST vs. JSON-RPC vs. gRPC vs. GraphQL vs. Thrift](https://www.mertech.com/blog/know-your-api-protocols)
   * [A brief look at the evolution of interface protocols leading to modern APIs](https://www.soa4u.co.uk/2019/02/a-brief-look-at-evolution-of-interface.html)
   * [Soap vs REST vs GrapQL vs gRPC](https://www.altexsoft.com/blog/soap-vs-rest-vs-graphql-vs-rpc/)
+  * [A brief look at the evolution of interface protocols leading to modern APIs](https://www.soa4u.co.uk/2019/02/a-brief-look-at-evolution-of-interface.html)
+  * [RPC Frameworks: gRPC vs Thrift vs RPyC for python](https://www.hardikp.com/2018/07/28/services/)
+
+
