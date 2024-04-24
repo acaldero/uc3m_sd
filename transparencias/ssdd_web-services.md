@@ -7,7 +7,7 @@
 ## Contenidos
 
   * [Motivación en el uso de servicios Web](#introducción)
-  * [Estilos de servicios web: SOAP vs REST](#estilos-de-servicios-web-soap-vs-rest)
+  * [Estilos de servicios: SOAP vs REST](#estilos-de-servicios-soap-vs-rest)
   * [Ejemplo simple de servicio web REST (servidor y cliente en Python)](#ejemplo-simple-de-servicio-web-rest-servidor-y-cliente-en-python)
   * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-sse-en-bash)
   * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
@@ -149,11 +149,16 @@ Un **servicio web** (*Web Service*) es un conjunto de protocolos y estándares q
      * Las organizaciones OASIS y W3C son los comités responsables de la arquitectura y reglamentación de los servicios Web.
 
 
-## Estilos de servicios web: SOAP vs REST
+## Estilos de servicios: SOAP vs REST
 
 Hay dos estilos principales:
  * Servicios web **SOAP** (*Simple Object Accces Protocol*)
  * **REST** (*RESTful Architecture Style*)
+
+Inicialmente apareció la idea de Servicio Web y se estandarizó con el uso de **SOAP**, lo que ofrece muchas funcionalidades para *business to business*.
+Con el paso del tiempo apareció otra necesidad complementaria: una versión simplificada que permita definir un API Web simple.
+En su tesis doctoral en el año 2000, Roy Fielding introduce la propuesta de REST, que proporciona un nivel relativamente alto de flexibilidad, escalabilidad y eficiencia para los/as desarrolladores/as.
+Las API REST se han popularizado, siendo el método común para conectar componentes y aplicaciones en una arquitectura de microservicios.
 
 <html>
 <table>
@@ -199,6 +204,13 @@ Hay dos estilos principales:
 </table>
 </html>
 
+Los [seis principios de diseño (o restricciones arquitectónicas)](https://www.ibm.com/topics/rest-apis) REST son:
+* Interfaz uniforme: Todas las solicitudes de API para el mismo recurso deben tener el mismo aspecto, independientemente de la procedencia de la solicitud. 
+* Desacoplamiento cliente-servidor: Las aplicaciones cliente y servidor deben ser completamente independientes entre sí, solo se interactúa con el API.
+* Sin estado: Las API REST son apátridas, lo que significa que cada solicitud debe incluir toda la información necesaria para procesarla. 
+* Cacheabilidad: En la medida de lo posible, los recursos deben poder almacenarse en caché en el cliente o en el servidor.
+* Arquitectura en capas: las llamadas y las respuestas pueden pasar por diferentes capas (no asumir que cliente y servidor se conectan directamente entre sí).
+* Código bajo demanda (opcional): Las API REST suelen enviar recursos estáticos, pero en algunos casos las respuestas también pueden contener código ejecutable (como applets de Java). En estos casos, el código solo debe ejecutarse bajo demanda.
 
 
 ### Ejemplo de comunicación con SOAP y REST
