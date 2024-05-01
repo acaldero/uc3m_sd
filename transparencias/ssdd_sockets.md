@@ -1792,7 +1792,7 @@ Las opciones más importantes son:
       return str
 
   def write_string(sock, str):
-         sock.sendall(str)
+      sock.sendall(str.encode() + b'\0')  
   ```
   </details>
 
@@ -1865,10 +1865,10 @@ Las opciones más importantes son:
       return(int(a,10))
 
   def write_string(sock, str):
-      sock.sendall(str)
+      sock.sendall(str.encode() + b'\0')  
 
   def write_number(sock, num):
-      a = str(num) + b'\0'
+      a = str(num)
       write_string(sock, a)
   ```
   </details>
