@@ -1643,7 +1643,7 @@ Las opciones más importantes son:
     } /* fin main */
    ```
 
-* <details>
+* <details open>
   <summary>En Python...</summary>
 
   ### Esqueleto de servidor-thread-tcp.py
@@ -1786,10 +1786,10 @@ Las opciones más importantes son:
       str = ''
       while True:
          msg = sock.recv(1)
+         str += msg.decode()
          if (msg == b'\0'):
              break;
-         str += msg.decode()
-         return str
+      return str
 
   def write_string(sock, str):
          sock.sendall(str)
@@ -1855,21 +1855,21 @@ Las opciones más importantes son:
       a = ''
       while True:
          msg = sock.recv(1)
+         a += msg.decode()
          if (msg == b'\0'):
              break;
-         a += msg.decode()
-         return a
+      return a
 
   def read_number(sock):
-         a = read_string(sock)
-         return(int(a,10))
+      a = read_string(sock)
+      return(int(a,10))
 
   def write_string(sock, str):
-         sock.sendall(str)
+      sock.sendall(str)
 
   def write_number(sock, num):
-         a = str(num) + b'\0'
-         write_string(sock, a)
+      a = str(num) + b'\0'
+      write_string(sock, a)
   ```
   </details>
 
