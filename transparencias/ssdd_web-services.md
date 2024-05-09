@@ -9,12 +9,14 @@
   * [Motivación en el uso de servicios Web](#introducción)
   * [Estilos de servicios: SOAP vs REST](#estilos-de-servicios-soap-vs-rest)
   * [Ejemplo simple de servicio web REST (servidor y cliente en Python)](#ejemplo-simple-de-servicio-web-rest-servidor-y-cliente-en-python)
-  * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-sse-en-bash)
+  * [Ejemplo de servicio web SOAP (cliente en Python)](#ejemplo-simple-de-servicio-web-soap-cliente-en-python)
+  * [Ejemplo simple de servicio web SOAP (cliente y servidor en Python)](#ejemplo-simple-de-servicio-web-soap-cliente-y-servidor-en-python)
   * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
   * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c)
   * [Otras tecnologías además de REST y SOAP](#otras-tecnologías-además-de-rest-y-soap)
   * [Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-apache-thrift-cliente-y-servidor-en-python)
   * [Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-grpc-cliente-y-servidor-en-python)
+  * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-sse-en-bash)
 
 
 ## Introducción
@@ -413,136 +415,134 @@ Relativo a las herramientas de ayuda en el diseño, desarrollo y pruebas:
 
 
 
-## Ejemplo simple de servicio web basado en SSE (en bash)
 
-El siguiente es un ejemplo de [Server Side Events](https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events) o eventos enviados por servidor. \
-Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).
+## Ejemplo simple de servicio web SOAP (cliente en Python)
 
-Este ejemplo está disponible en [ws-rest-sse-bash](/ws-rest-sse-bash/README.md) y está compuesto de 3 ficheros:
- * El script **`demo-server.sh`**: manda la salida del script **`demo.sh`** al mandato **nc** (*net cat*) que está escuchando en el puerto 8080.
+A la hora de crear un servicio Web en Python con SOAP hay múltiples entornos:
+  * https://wiki.python.org/moin/WebServices
+
+Ejemplos más conocidos son:
+* **Zeep**: para crear **clientes**
+   * Modelo basado en SOAP para Python.
+   * Hace uso de los diccionarios de Python para el manejo de XML.
+* **Spyne**: para crear **servicios**
+   * Modelo basado en SOAP para Python para creación de servicios.
+   * Despliegue del servidor.
+   * Generador de WDSL.
+
+El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) basado en Zeep:
+
+0. Primero se precisa comprobar que esté instalado el paquete python **zeep**. 
+    Se puede instalar mediante:
    ```bash
-   #!/bin/bash
-   set -x
-   ./demo.sh | nc -l -p 8080
+   pip3 install zeep 
    ```
- * El script **`demo.sh`**: se encarga de mandar las cabeceras de respuesta de un servidor web, y luego cada segundo manda el instante de tiempo dentro de un JSON.
+   Suele tardar algún tiempo la instalación, hay que esperar. 
+   Puede usar ```pip3 install zeep --user``` para instalar solo para el usuario actual.
+
+2. Hay que conocer la información del servicio Web usando ``python -mzeep <URL>``, siendo URL la asociada al WSDL:
    ```bash
-   #!/bin/bash
-   # (1) cabeceras
-   echo "HTTP/1.1 200 OK"
-   echo "Access-Control-Allow-Origin: *"
-   echo "Content-Type: text/event-stream"
-   echo "Cache-Control: no-cache"
-   echo ""
-   # (2) cada segundo manda "data: {'timestamp': <instante>}"
-   while [ 1 ]; do
-     T=$(date +%H:%M:%S)
-     echo "data: {'timestamp': $T}"
-     echo ""
-     echo ""
-     sleep 1
-   done
-   ```
- * La página web **`demo-client.html`**: se encarga de mostrar la información que va llegando en tiempo real.
-   ```html
-   <!DOCTYPE html>
-   <html>
-     <head><meta charset="utf-8" /></head>
-     <body>
-     <div id="msg1"></div><br>
-     <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div><br>
-     <script>
-       var s = new EventSource('http://localhost:8080');
-           s.onmessage = function(e) {
-               document.getElementById("msg1").innerHTML = e.data ;
-               var old_msg2 = document.getElementById("msg2").innerHTML ;
-               document.getElementById("msg2").innerHTML = e.data + '<br>' + old_msg2 ;
-           };
-     </script>
-     </body>
-   </html>
+   python3 -mzeep http://www.soapclient.com/xml/soapresponder.wsdl
    ```
 
-
-Los pasos para la ejecución típica son:
- * Ejecutar el servidor:
-   ```
-   ./demo-server.sh
-   ```
- * Ejecutar el cliente:
-   ```
-   firefox demo-client.html
-   ```
-
-
-En la página Web `demo-client.html` cada segundo llega un evento por parte del script `demo.sh` a través del mandato `nc`que simula un servidor web en el puerto 8080.
-En lugar de mostrarse en la página Web el instante de tiempo cada segundo, se puede mandar otro tipo de información (por ejemplo, valores de los sensores), con distinto tipo de periodicidad y distinto tipo de visualización o procesamiento.
-
-
-
-## Ejemplo simple de servicio web basado en SSE (en Python)
-
-El siguiente es un ejemplo de [Server Side Events](https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events) basado en Python. \
-Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).
-
-Este ejemplo está compuesto de 2 ficheros:
- * El archivo **`demo-server.py`**: servidor que cada segundo genera un mensaje con el instante de tiempo actual
+3. El siguiente paso habitual es crear el archivo cliente de dicho servicio web (ws-echo.py en nuestro ejemplo):
    ```python
-    import time, datetime
-    from flask import Flask, Response
-    from flask_cors import CORS
+   import zeep
 
-    app = Flask(__name__)
-    CORS(app)
-
-    @app.route("/")
-    def publish_data():
-        def stream():
-            while True:
-                ts  = datetime.datetime.now()
-                msg = f"data: " + str(ts) + "\n\n"
-                yield msg
-                time.sleep(1)
-
-        return Response(stream(), mimetype="text/event-stream")
-
-    if __name__ == "__main__":
-        app.run(debug=True, port=5000)
-   ```
- * La página web **`demo-client.html`**: se encarga de mostrar la información que va llegando en tiempo real.
-   ```html
-   <!DOCTYPE html>
-   <html>
-     <head><meta charset="utf-8" /></head>
-     <body>
-     <div id="msg1"></div><br>
-     <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div><br>
-     <script>
-       var s = new EventSource('http://localhost:5000');
-           s.onmessage = function(e) {
-               document.getElementById("msg1").innerHTML = e.data ;
-               var old_msg2 = document.getElementById("msg2").innerHTML ;
-               document.getElementById("msg2").innerHTML = e.data + '<br>' + old_msg2 ;
-           };
-     </script>
-     </body>
-   </html>
+   wsdl = 'http://www.soapclient.com/xml/soapresponder.wsdl'
+   client = zeep.Client(wsdl=wsdl)
+   print(client.service.Method1('Prueba', 'WebService'))
    ```
 
-
-Los pasos para la ejecución típica son:
- * Ejecutar el servidor:
+4. Para ejecutar:
    ```bash
-   python3 ./demo-server.py
+   $ python3 ./ws-echo.py
+   Your input parameters are Prueba and WebService
    ```
- * Ejecutar el cliente:
+
+
+
+## Ejemplo simple de servicio web SOAP (cliente y servidor en Python)
+
+A la hora de crear un servicio Web en Python con SOAP hay múltiples entornos:
+  * https://wiki.python.org/moin/WebServices
+
+Ejemplos más conocidos son:
+* **Zeep**: para crear **clientes**
+   * Modelo basado en SOAP para Python.
+   * Hace uso de los diccionarios de Python para el manejo de XML.
+* **Spyne**: para crear **servicios**
+   * Modelo basado en SOAP para Python para creación de servicios.
+   * Despliegue del servidor.
+   * Generador de WDSL.
+
+El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) basado en Spyne:
+
+0. Primero se precisa comprobar que estén instalados los paquetes python **spyne** y **zeep**. 
+    Se pueden instalar mediante:
    ```bash
-   firefox demo-client.html
+   pip3 install spyne zeep
+   ```
+   Suele tardar algún tiempo la instalación, hay que esperar. 
+   Puede usar ```pip3 install spyne zeep --user``` para instalar solo para el usuario actual.
+
+2. El primer paso habitual es crear el archivo servidor de dicho servicio web (ws-calc-servidor.py en nuestro ejemplo):
+   ```python
+   import time, logging
+   from wsgiref.simple_server import make_server
+   from spyne import Application, ServiceBase, Integer, Unicode, rpc
+   from spyne.protocol.soap import Soap11
+   from spyne.server.wsgi import WsgiApplication
+
+    class Calculadora(ServiceBase):
+        @rpc(Integer, Integer, _returns=Integer)
+        def add(ctx, a, b):
+            return a+b
+        @rpc(Integer, Integer, _returns=Integer)
+            def sub(ctx, a, b):
+            return a-b
+
+   application = Application(services=[Calculadora], tns='http://tests.python-zeep.org/’, in_protocol=Soap11(validator='lxml’), out_protocol=Soap11())
+   application = WsgiApplication(application)
+
+   if __name__ == '__main__’:
+       logging.basicConfig(level=logging.DEBUG)
+       logging.getLogger('spyne.protocol.xml').setLevel(logging.DEBUG)
+       logging.info("listening to http://127.0.0.1:8000; wsdl is at: http://localhost:8000/?wsdl ")
+       server = make_server('127.0.0.1', 8000, application)
+       server.serve_forever()
    ```
 
+3. El segundo paso es ejecutar el servidor:
+   ```bash
+   $ python3 ./ws-calc-servidor.py
+   ```
 
-En la página Web `demo-client.html` cada segundo llega un evento por parte de `demo-server.py`.
-En lugar de mostrarse en la página Web el instante de tiempo cada segundo, se puede mandar otro tipo de información (por ejemplo, valores de los sensores), con distinto tipo de periodicidad y distinto tipo de visualización o procesamiento.
+4. El siguiente paso es conocer la información del servicio Web usando ``python -mzeep <URL>``:
+   ```bash
+   $ python3 -mzeep http://localhost:8000/?wsdl
+   
+   Operations:
+      add(a: xsd:integer, b: xsd:integer) -> addResult: xsd:integer
+      sub(a: xsd:integer, b: xsd:integer) -> subResult: xsd:integer
+   ```
+
+5. El siguiente paso habitual es crear el archivo cliente de dicho servicio web (ws-calc-cliente.py en nuestro ejemplo):
+   ```python
+   import zeep
+
+   wsdl = "http://localhost:8000/?wsdl"
+   client = zeep.Client(wsdl=wsdl)
+   print(' 5+2 = ' + client.service.add(5, 2))
+   print(' 5-3 = ' + client.service.sub(5, 3))
+   ```
+
+6. Para ejecutar el cliente del servicio:
+   ```bash
+   $ python3 ./ws-calc-cliente.py
+    5+2 = 7
+    5-3 = 2
+   ```
 
 
 
@@ -903,6 +903,137 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
     ```
 
 
+## Ejemplo simple de servicio web basado en SSE (en bash)
+
+El siguiente es un ejemplo de [Server Side Events](https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events) o eventos enviados por servidor. \
+Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).
+
+Este ejemplo está disponible en [ws-rest-sse-bash](/ws-rest-sse-bash/README.md) y está compuesto de 3 ficheros:
+ * El script **`demo-server.sh`**: manda la salida del script **`demo.sh`** al mandato **nc** (*net cat*) que está escuchando en el puerto 8080.
+   ```bash
+   #!/bin/bash
+   set -x
+   ./demo.sh | nc -l -p 8080
+   ```
+ * El script **`demo.sh`**: se encarga de mandar las cabeceras de respuesta de un servidor web, y luego cada segundo manda el instante de tiempo dentro de un JSON.
+   ```bash
+   #!/bin/bash
+   # (1) cabeceras
+   echo "HTTP/1.1 200 OK"
+   echo "Access-Control-Allow-Origin: *"
+   echo "Content-Type: text/event-stream"
+   echo "Cache-Control: no-cache"
+   echo ""
+   # (2) cada segundo manda "data: {'timestamp': <instante>}"
+   while [ 1 ]; do
+     T=$(date +%H:%M:%S)
+     echo "data: {'timestamp': $T}"
+     echo ""
+     echo ""
+     sleep 1
+   done
+   ```
+ * La página web **`demo-client.html`**: se encarga de mostrar la información que va llegando en tiempo real.
+   ```html
+   <!DOCTYPE html>
+   <html>
+     <head><meta charset="utf-8" /></head>
+     <body>
+     <div id="msg1"></div><br>
+     <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div><br>
+     <script>
+       var s = new EventSource('http://localhost:8080');
+           s.onmessage = function(e) {
+               document.getElementById("msg1").innerHTML = e.data ;
+               var old_msg2 = document.getElementById("msg2").innerHTML ;
+               document.getElementById("msg2").innerHTML = e.data + '<br>' + old_msg2 ;
+           };
+     </script>
+     </body>
+   </html>
+   ```
+
+
+Los pasos para la ejecución típica son:
+ * Ejecutar el servidor:
+   ```
+   ./demo-server.sh
+   ```
+ * Ejecutar el cliente:
+   ```
+   firefox demo-client.html
+   ```
+
+
+En la página Web `demo-client.html` cada segundo llega un evento por parte del script `demo.sh` a través del mandato `nc`que simula un servidor web en el puerto 8080.
+En lugar de mostrarse en la página Web el instante de tiempo cada segundo, se puede mandar otro tipo de información (por ejemplo, valores de los sensores), con distinto tipo de periodicidad y distinto tipo de visualización o procesamiento.
+
+
+## Ejemplo simple de servicio web basado en SSE (en Python)
+
+El siguiente es un ejemplo de [Server Side Events](https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events) basado en Python. \
+Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).
+
+Este ejemplo está compuesto de 2 ficheros:
+ * El archivo **`demo-server.py`**: servidor que cada segundo genera un mensaje con el instante de tiempo actual
+   ```python
+    import time, datetime
+    from flask import Flask, Response
+    from flask_cors import CORS
+
+    app = Flask(__name__)
+    CORS(app)
+
+    @app.route("/")
+    def publish_data():
+        def stream():
+            while True:
+                ts  = datetime.datetime.now()
+                msg = f"data: " + str(ts) + "\n\n"
+                yield msg
+                time.sleep(1)
+
+        return Response(stream(), mimetype="text/event-stream")
+
+    if __name__ == "__main__":
+        app.run(debug=True, port=5000)
+   ```
+ * La página web **`demo-client.html`**: se encarga de mostrar la información que va llegando en tiempo real.
+   ```html
+   <!DOCTYPE html>
+   <html>
+     <head><meta charset="utf-8" /></head>
+     <body>
+     <div id="msg1"></div><br>
+     <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div><br>
+     <script>
+       var s = new EventSource('http://localhost:5000');
+           s.onmessage = function(e) {
+               document.getElementById("msg1").innerHTML = e.data ;
+               var old_msg2 = document.getElementById("msg2").innerHTML ;
+               document.getElementById("msg2").innerHTML = e.data + '<br>' + old_msg2 ;
+           };
+     </script>
+     </body>
+   </html>
+   ```
+
+
+Los pasos para la ejecución típica son:
+ * Ejecutar el servidor:
+   ```bash
+   python3 ./demo-server.py
+   ```
+ * Ejecutar el cliente:
+   ```bash
+   firefox demo-client.html
+   ```
+
+
+En la página Web `demo-client.html` cada segundo llega un evento por parte de `demo-server.py`.
+En lugar de mostrarse en la página Web el instante de tiempo cada segundo, se puede mandar otro tipo de información (por ejemplo, valores de los sensores), con distinto tipo de periodicidad y distinto tipo de visualización o procesamiento.
+
+
 <br/>
 
 ## Información adicional
@@ -912,5 +1043,4 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
   * [Soap vs REST vs GrapQL vs gRPC](https://www.altexsoft.com/blog/soap-vs-rest-vs-graphql-vs-rpc/)
   * [A brief look at the evolution of interface protocols leading to modern APIs](https://www.soa4u.co.uk/2019/02/a-brief-look-at-evolution-of-interface.html)
   * [RPC Frameworks: gRPC vs Thrift vs RPyC for python](https://www.hardikp.com/2018/07/28/services/)
-
 
