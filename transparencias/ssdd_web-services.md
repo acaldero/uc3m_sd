@@ -461,7 +461,6 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
    ```
 
 
-
 ## Ejemplo simple de servicio web SOAP (cliente y servidor en Python)
 
 A la hora de crear un servicio Web en Python con SOAP hay múltiples entornos:
@@ -494,18 +493,21 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
    from spyne.protocol.soap import Soap11
    from spyne.server.wsgi import WsgiApplication
 
-    class Calculadora(ServiceBase):
-        @rpc(Integer, Integer, _returns=Integer)
-        def add(ctx, a, b):
-            return a+b
-        @rpc(Integer, Integer, _returns=Integer)
-            def sub(ctx, a, b):
-            return a-b
+   class Calculadora(ServiceBase):
+       @rpc(Integer, Integer, _returns=Integer)
+       def add(ctx, a, b):
+           return a+b
+       @rpc(Integer, Integer, _returns=Integer)
+       def sub(ctx, a, b):
+           return a-b
 
-   application = Application(services=[Calculadora], tns='http://tests.python-zeep.org/’, in_protocol=Soap11(validator='lxml’), out_protocol=Soap11())
+   application = Application(services=[Calculadora],
+                             tns='http://tests.python-zeep.org/',
+                             in_protocol=Soap11(validator='lxml'),
+                             out_protocol=Soap11())
    application = WsgiApplication(application)
 
-   if __name__ == '__main__’:
+   if __name__ == '__main__':
        logging.basicConfig(level=logging.DEBUG)
        logging.getLogger('spyne.protocol.xml').setLevel(logging.DEBUG)
        logging.info("listening to http://127.0.0.1:8000; wsdl is at: http://localhost:8000/?wsdl ")
@@ -521,10 +523,13 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
 4. El siguiente paso es conocer la información del servicio Web usando ``python -mzeep <URL>``:
    ```bash
    $ python3 -mzeep http://localhost:8000/?wsdl
-   
-   Operations:
-      add(a: xsd:integer, b: xsd:integer) -> addResult: xsd:integer
-      sub(a: xsd:integer, b: xsd:integer) -> subResult: xsd:integer
+
+   ...
+   Service: Calculadora
+     Port: Application (Soap11Binding: {http://tests.python-zeep.org/}Application)
+         Operations:
+            add(a: xsd:integer, b: xsd:integer) -> addResult: xsd:integer
+            sub(a: xsd:integer, b: xsd:integer) -> subResult: xsd:integer   
    ```
 
 5. El siguiente paso habitual es crear el archivo cliente de dicho servicio web (ws-calc-cliente.py en nuestro ejemplo):
@@ -533,8 +538,12 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
 
    wsdl = "http://localhost:8000/?wsdl"
    client = zeep.Client(wsdl=wsdl)
-   print(' 5+2 = ' + client.service.add(5, 2))
-   print(' 5-3 = ' + client.service.sub(5, 3))
+
+   r = client.service.add(5, 2)
+   print(' 5+2 = ' + str(r))
+
+   r = client.service.sub(5, 3)
+   print(' 5-3 = ' + str(r))
    ```
 
 6. Para ejecutar el cliente del servicio:
@@ -543,7 +552,6 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
     5+2 = 7
     5-3 = 2
    ```
-
 
 
 ## Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)
