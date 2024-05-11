@@ -889,37 +889,6 @@ graph LR;
        return escritos ;
    }
 
-   int tratar_peticion ( int newsd )
-   {
-       char buffer[1024] ;
-       size_t escritos ;
-
-       // Preparar el mensaje a enviar: 1024 bytes con "hola mundo"
-       strcpy(buffer, "Hola mundo") ;
-
-       // Transferir datos sobre newsd
-       escritos = write_all(newsd, buffer, sizeof(buffer)) ;
-       if (escritos < 0) {
-           printf("Error al escribir buffer\n") ;
-       }
-
-       // <Ayuda a la depuración>
-       char sck_IP[32] ;
-       struct sockaddr_in sck_addr;
-       socklen_t size = sizeof(struct sockaddr_in) ;
-
-       // a partir del socket se puede obtener la dirección IP y puerto
-       // asignadas por bind()
-       bzero(&sck_addr, size);
-       getsockname(newsd, (struct sockaddr *) &sck_addr, &size);
-       inet_ntop(AF_INET, &(sck_addr.sin_addr), sck_IP, sizeof(sck_IP));
-       printf("s -> c: %ld bytes enviados desde %s:%d\n",
-               escritos, sck_IP, ntohs(sck_addr.sin_port));
-       // </Ayuda a la depuración>
-
-       return escritos ;
-   }
-
    int main ( int argc, char **argv )
    {
        int sd, newsd, ret;
@@ -933,7 +902,7 @@ graph LR;
 
        int puerto = atoi(argv[1]) ;
 
-       // (1) creación de un socket
+       // (1) Creación de un socket
        // * NO tiene dirección asignada aquí
        sd = socket(AF_INET, SOCK_STREAM, 0) ;
        if (sd < 0) {
@@ -941,13 +910,13 @@ graph LR;
            return -1;
        }
 
-       // (2) obtener la dirección
+       // (2) Obtener la dirección
        bzero((char *)&server_addr, sizeof(server_addr));
        server_addr.sin_family = AF_INET;
        server_addr.sin_port = htons(puerto);
        server_addr.sin_addr.s_addr = INADDR_ANY;
 
-       // (3) asigna dirección a un socket
+       // (3) Asigna dirección a un socket:
        // * host = INADDR_ANY -> cualquier dirección del host
        // * port = 0 -> el sistema selecciona el primer puerto libre
        // * port = 1...1023 -> puertos reservados (puede necesitar ser root la ejecución)
@@ -956,6 +925,15 @@ graph LR;
            perror("Error en bind: ") ;
            return -1 ;
        }
+
+       // Con bind(port=0...) se buscaría el primer puerto libre y con
+       // getsockname() se puede obtener el puerto asignado por bind
+       size = sizeof(struct sockaddr_in) ;
+       bzero(&client_addr, size);
+       getsockname(sd, (struct sockaddr *) &client_addr, &size);
+       printf("servidor: bind() asociado a %s:%d\n",
+               inet_ntoa(client_addr.sin_addr),
+               ntohs(client_addr.sin_port));
 
        // (4) preparar para aceptar conexiones
        // * listen permite definir el número máximo de peticiones pendientes a encolar
@@ -972,6 +950,7 @@ graph LR;
           // * bloquea al servidor hasta que se produce la conexión
           // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
           size = sizeof(struct sockaddr_in) ;
+          bzero(&client_addr, size);
           newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
           if (newsd < 0) {
               perror("Error en el accept");
@@ -979,13 +958,30 @@ graph LR;
           }
 
           // <Ayuda a la depuración>
-          printf("conexión aceptada de IP:%s y puerto:%d\n",
-                  inet_ntoa(client_addr.sin_addr),
-                      ntohs(client_addr.sin_port));
+             // a) dirección rellenada por llamada accept()
+             printf("conexión aceptada de IP:%s y puerto:%d\n",
+                     inet_ntoa(client_addr.sin_addr),
+                         ntohs(client_addr.sin_port));
+             // b) dirección asociada al socket newsd en otro extremo
+             char sck_IP[32] ;
+             size = sizeof(struct sockaddr_in) ;
+             getpeername(newsd, (struct sockaddr *)&client_addr, &size);
+             inet_ntop(AF_INET, &(client_addr.sin_addr), sck_IP, sizeof(sck_IP));
+             printf("conexión aceptada de IP:%s y puerto:%d\n",
+                     sck_IP, ntohs(client_addr.sin_port));
           // </Ayuda a la depuración>
 
           // (6) transferir datos sobre newsd
-          tratar_peticion(newsd) ;
+          char buffer[1024] ;
+          size_t escritos ;
+
+          // Preparar el mensaje a enviar: 1024 bytes con "hola mundo"
+          strcpy(buffer, "Hola mundo") ;
+          // Transferir datos sobre newsd
+          escritos = write_all(newsd, buffer, sizeof(buffer)) ;
+          if (escritos < 0) {
+              printf("Error al escribir buffer\n") ;
+          }
 
           // (7) cerrar socket conectado
           close(newsd);
