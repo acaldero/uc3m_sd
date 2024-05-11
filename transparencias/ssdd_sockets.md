@@ -909,10 +909,11 @@ graph LR;
        socklen_t size = sizeof(struct sockaddr_in) ;
 
        // a partir del socket se puede obtener la dirección IP y puerto
+       // asignadas por bind()
        bzero(&sck_addr, size);
        getsockname(newsd, (struct sockaddr *) &sck_addr, &size);
        inet_ntop(AF_INET, &(sck_addr.sin_addr), sck_IP, sizeof(sck_IP));
-       printf("s -> c: %ld bytes enviados a %s:%d\n",
+       printf("s -> c: %ld bytes enviados desde %s:%d\n",
                escritos, sck_IP, ntohs(sck_addr.sin_port));
        // </Ayuda a la depuración>
 
