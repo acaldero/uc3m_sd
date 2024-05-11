@@ -861,12 +861,14 @@ graph LR;
 **servidor-base-tcp.c**
    ```c
    #include <stdio.h>
+   #include <stdlib.h>
    #include <string.h>
    #include <unistd.h>
    #include <netinet/in.h>
    #include <sys/types.h>
    #include <arpa/inet.h>
    #include <sys/socket.h>
+
 
    int write_all ( int newsd, char *buffer, size_t total )
    {
@@ -883,6 +885,36 @@ graph LR;
 
           escritos = escritos + result ;
        }
+
+       return escritos ;
+   }
+
+   int tratar_peticion ( int newsd )
+   {
+       char buffer[1024] ;
+       size_t escritos ;
+
+       // Preparar el mensaje a enviar: 1024 bytes con "hola mundo"
+       strcpy(buffer, "Hola mundo") ;
+
+       // Transferir datos sobre newsd
+       escritos = write_all(newsd, buffer, sizeof(buffer)) ;
+       if (escritos < 0) {
+           printf("Error al escribir buffer\n") ;
+       }
+
+       // <Ayuda a la depuración>
+       char sck_IP[32] ;
+       struct sockaddr_in sck_addr;
+       socklen_t size = sizeof(struct sockaddr_in) ;
+
+       // a partir del socket se puede obtener la dirección IP y puerto
+       bzero(&sck_addr, size);
+       getsockname(newsd, (struct sockaddr *) &sck_addr, &size);
+       inet_ntop(AF_INET, &(sck_addr.sin_addr), sck_IP, sizeof(sck_IP));
+       printf("s -> c: %ld bytes enviados a %s:%d\n",
+               escritos, sck_IP, ntohs(sck_addr.sin_port));
+       // </Ayuda a la depuración>
 
        return escritos ;
    }
@@ -945,22 +977,14 @@ graph LR;
               return -1 ;
           }
 
-          // Para ayudar a la depuración,
-          // se imprime la IP y puerto del cliente que se conecta
-          // client_addr almacena la IP y el puerto del proceso cliente
+          // <Ayuda a la depuración>
           printf("conexión aceptada de IP:%s y puerto:%d\n",
                   inet_ntoa(client_addr.sin_addr),
                       ntohs(client_addr.sin_port));
-
-          // Preparar el mensaje a enviar: 1024 bytes con "hola mundo"
-          char buffer[1024] ;
-          strcpy(buffer, "Hola mundo") ;
+          // </Ayuda a la depuración>
 
           // (6) transferir datos sobre newsd
-          size_t escritos = write_all(newsd, buffer, sizeof(buffer)) ;
-          if (escritos < 0) {
-              printf("Error al escribir buffer\n") ;
-          }
+          tratar_peticion(newsd) ;
 
           // (7) cerrar socket conectado
           close(newsd);
