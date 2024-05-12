@@ -347,16 +347,18 @@ El siguiente ejemplo implementa un servidor de un servicio web en Python que per
           return precios[item], 201
        except Exception as e:
           return {"error": str(e)}, 415
+   
+   app.run(debug=False, host="0.0.0.0", port="5000")
    ```
 
  * Para *iniciar* la ejecución del servidor hay que usar lo siguiente:
    ```bash
-   FLASK_APP=app.py  FLASK_DEBUG=true  flask run &
+   python3 app.py &
    ```
 
  * Para *parar* la ejecución del servidor (cuando ya no se necesite el servicio) se puede usar lo siguiente:
    ```bash
-   kill $(pgrep -f flask)
+   kill $(pgrep -f app.py)
    ```
 
 
