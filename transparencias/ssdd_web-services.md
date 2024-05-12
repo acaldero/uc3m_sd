@@ -8,15 +8,17 @@
 
   * [Motivación en el uso de servicios Web](#introducción)
   * [Estilos de servicios: SOAP vs REST](#estilos-de-servicios-soap-vs-rest)
-  * [Ejemplo simple de servicio web REST (servidor y cliente en Python)](#ejemplo-simple-de-servicio-web-rest-servidor-y-cliente-en-python)
-  * [Ejemplo de servicio web SOAP (cliente en Python)](#ejemplo-simple-de-servicio-web-soap-cliente-en-python)
-  * [Ejemplo simple de servicio web SOAP (cliente y servidor en Python)](#ejemplo-simple-de-servicio-web-soap-cliente-y-servidor-en-python)
-  * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
-  * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c)
+  * Ejemplos RESTful y SOAP:
+    * [Ejemplo simple de servicio web REST (servidor y cliente en Python)](#ejemplo-simple-de-servicio-web-rest-servidor-y-cliente-en-python)
+    * [Ejemplo de servicio web SOAP (cliente en Python)](#ejemplo-simple-de-servicio-web-soap-cliente-en-python)
+    * [Ejemplo simple de servicio web SOAP (cliente y servidor en Python)](#ejemplo-simple-de-servicio-web-soap-cliente-y-servidor-en-python)
+    * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
+    * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c)
   * [Otras tecnologías además de REST y SOAP](#otras-tecnologías-además-de-rest-y-soap)
-  * [Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-apache-thrift-cliente-y-servidor-en-python)
-  * [Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-grpc-cliente-y-servidor-en-python)
-  * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-sse-en-bash)
+  * Ejemplos de otras tecnologías:
+    * [Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-apache-thrift-cliente-y-servidor-en-python)
+    * [Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-grpc-cliente-y-servidor-en-python)
+    * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-sse-en-bash)
 
 
 ## Introducción
