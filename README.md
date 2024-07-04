@@ -29,6 +29,7 @@
       <td>Paso de mensajes</td>
       <td><ul>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_pq.md">Colas de mensajes POSIX</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_mpi.md">MPI</a></li>
       </ul></td>
   </tr>
   <tr>
