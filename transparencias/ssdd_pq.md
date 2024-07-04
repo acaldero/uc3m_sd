@@ -8,14 +8,14 @@
 
  * Introducción a colas de mensajes POSIX
     * [Principales características](#colas-de-mensajes-posix)
- * Llamadas al sistema de POSIX para gestión de colas de mensajes:
-   * [Crear, abrir, cerrar y borrar](#llamadas-al-sistema-de-posix-para-gestión-de-colas-de-mensajes-13)
-      * [Ejemplo: crear, cerrar y borrar](#ejemplo-crear-cerrar-y-borrar)
-      * [Ejemplo: limpieza de colas NO borradas](#ejemplo-limpieza-de-colas-no-borradas)
-   * [Enviar y recibir](#llamadas-al-sistema-de-posix-para-gestión-de-colas-de-mensajes-23)
-      * [Ejemplo: Productor-consumidor con colas de mensajes](#ejemplo-productor-consumidor-con-colas-de-mensajes)
-   * [Consultar y cambiar atributos](#llamadas-al-sistema-de-posix-para-gestión-de-colas-de-mensajes-33)
-      * [Ejemplo: Imprimir los atributos de una cola POSIX](#ejemplo-imprimir-los-atributos-de-una-cola-posix)
+ * API para la gestión de colas de mensajes POSIX:
+   * [Crear, abrir, cerrar y borrar](#llamadas-posix-para-gestión-de-colas-de-mensajes-13)
+      * [Ejemplo en C: crear, cerrar y borrar](#ejemplo-en-c-crear-cerrar-y-borrar)
+      * [Ejemplo en C: limpieza de colas NO borradas](#ejemplo-en-c-limpieza-de-colas-no-borradas)
+   * [Enviar y recibir](#llamadas-posix-para-gestión-de-colas-de-mensajes-23)
+      * [Ejemplo en C: productor-consumidor con colas de mensajes](#ejemplo-en-c-productor-consumidor-con-colas-de-mensajes)
+   * [Consultar y cambiar atributos](#llamadas-posix-para-gestión-de-colas-de-mensajes-33)
+      * [Ejemplo en C: imprimir los atributos de una cola POSIX](#ejemplo-en-c-imprimir-los-atributos-de-una-cola-posix)
  * Otros modelos
    * [Otros modelos de colas de mensajes](#otros-modelos-de-colas-de-mensajes)
 
@@ -25,8 +25,14 @@
 
 - **Implementación** de paso de mensajes en POSIX
 - Mecanismo de comunicación **y** sincronización
+- API similar a la usada para ficheros:
+  * `mqd = mq_open("/almacen.txt", O_CREAT | O_WRONLY, 0777, &atributos) ;`
+  * `ret = mq_send    (mqd, (const char *)&dato, sizeof(int), 0) ;`
+  * `ret = mq_receive (mqd, (      char *)&dato, sizeof(int), 0) ;`
+  * `mq_close(mqd);`
+  * `mq_unlink("/almacen.txt");`
 - Nombrado:
-  - **Se asigna nombres de ficheros a las colas**
+  - **Se asigna nombres de ficheros a las colas** (`"/almacen.txt"` en los ejemplos anteriores de uso del API)
     - **Sólo procesos que comparten un mismo sistema de ficheros pueden utilizar colas de mensajes**
     -   El nombre de la cola permite compartir esta para que múltiples procesos puedan enviar y recibir datos
   - Nombrado indirecto
@@ -37,10 +43,10 @@
 - Comunicación:
   - Flujo de datos **unidireccional** (se precisan dos colas de mensajes para bidireccional)
   - Los mensajes se pueden etiquetar con prioridades
-  - Tamaño del mensaje variable
+  - Tamaño del mensaje *variable*
 
 
-### Llamadas al sistema de POSIX para gestión de colas de mensajes (1/3)
+### Llamadas POSIX para gestión de colas de mensajes (1/3)
 
 - **Crear** y **abrir** una cola de mensajes
    ```c
@@ -76,7 +82,7 @@
   * **Borrar después de cerrar** la cola de mensajes
 
 
-### Ejemplo: crear, cerrar y borrar
+### Ejemplo en C: crear, cerrar y borrar
 
 * Edición de ejemplo de crear una cola de mensajes
  
@@ -122,7 +128,7 @@
      ```
 
 
-### Ejemplo: limpieza de colas NO borradas
+### Ejemplo en C: limpieza de colas NO borradas
 
 * Es posible que un programa que trabaja con colas POSIX falle y deje una cola sin borrar. 
    Esto puede suponer un problema, por lo que vamos a estudiar cómo solucionarlo con un ejemplo (`mq_nounlink.c`).
@@ -195,7 +201,7 @@
      ```
 
 
-### Llamadas al sistema de POSIX para gestión de colas de mensajes (2/3)
+### Llamadas POSIX para gestión de colas de mensajes (2/3)
 
 - **Enviar** un mensaje a una cola
    ```c
@@ -228,7 +234,7 @@
      el proceso no se bloquea pero devuelve -1 (EAGAIN) 
 
 
-### Ejemplo: Productor-consumidor con colas de mensajes
+### Ejemplo en C: productor-consumidor con colas de mensajes
 
 Idea general de diseño:
 * A nivel de procesos
@@ -378,7 +384,7 @@ int main ( int argc, char *argv[] )
      ```
    
 
-### Llamadas al sistema de POSIX para gestión de colas de mensajes (3/3)
+### Llamadas POSIX para gestión de colas de mensajes (3/3)
 
 - **Modificar** los atributos de una cola
    ```c
@@ -407,7 +413,7 @@ int main ( int argc, char *argv[] )
       - `mq_flags`: Flags asociados a la cola
 
 
-### Ejemplo: Imprimir los atributos de una cola POSIX
+### Ejemplo en C: imprimir los atributos de una cola POSIX
 
 **mq_attr.c**
 ```c
@@ -453,7 +459,171 @@ int main ( int argc, char *argv[] )
      Longitud máxima del mensaje en la cola: 4
      Número de mensajes actualmente en la cola: 0
      ```
+
+
+### Cliente-servidor secuencial con colas POSIX
+
+Idea general del diseño:
+* A nivel de procesos:
+   ```mermaid
+   flowchart LR
+       Cliente <--struct peticion--> Servidor
+   ```
+* A nivel de código dentro de cada proceso:
+   <html>
+   <table border="1">
+   <tr>
+   <td>
+   <pre>
+  Cliente() 
+  {
+      peticion.cola_cliente <- nombre unívoco 
+      peticion.operacion  <- valor
+      peticion.argumentos <- valores 
+      ...
+      sq = mq_open(COLA_SERVIDOR, ...)
+      cq = mq_open(peticion.cola_cliente, ...)
+      <b>send</b>(sq, &peticion);
+      <b>receive</b>(cq, &respuesta, ...)
+      mq_close(sq)
+      mq_close(cq)
+      mq_unlink(peticion.cola_cliente)
+      ...
+      trabajar con respuesta...
+  }
+   </pre>
+   </td>
+   <td>
+   <pre>
+  Servidor()
+  {
+     sq = mq_open(COLA_SERVIDOR, ...)
+     while(1) {
+          <b>receive</b>(sq, &peticion, ...)
+          ...
+          respuesta <- procesar petición
+          ...
+          cq = mq_open(peticion.cola_cliente, ...)
+          <b>send</b>(cq, &respuesta, ...)
+          mq_close(cq)
+      } /* end for */
+  }
+   </pre>
+   </td>
+   </tr>
+   </table>
+   </html>
+   
+
+**mensaje.h**
+```c
+#define MAXSIZE 256
+#define SUMA   0
+#define RESTAR 1
+// . . .
+
+struct peticion {
+   int op; /* operación, 0 (+) 1 (-) */
+   int  a; /* operando 1 */
+   int  b; /* operando 2 */
+   char q_name[MAXSIZE]; /* nombre de la cola cliente
+                            donde debe enviar la respuesta el servidor */
+};
+```
+
+
+**servidor.c**
+```c
+#include "mensaje.h"
+#include <mqueue.h>
+
+int main ( int argc, char *argv[] )
+{
+   mqd_t q_servidor; /* cola de mensajes del servidor */
+   mqd_t q_cliente;  /* cola de mensajes del cliente */
+   struct mq_attr attr;
+   struct peticion pet;
+   int res;
+
+   attr.mq_maxmsg = 10;
+   attr.mq_msgsize = sizeof(struct peticion);
+   q_servidor = mq_open("/SERVIDOR_SUMA", O_CREAT|O_RDONLY, 0700, &attr);
+   while(1)
+   {
+      mq_receive(q_servidor, (char *) &pet, sizeof(pet), 0);
+      if (pet.op ==0) 
+           res = pet.a + pet.b;
+      else res = pet.a - pet.b;
+
+      /* se responde al cliente abriendo previamente su cola */
+      q_cliente = mq_open(pet.q_name, O_WRONLY);
+      mq_send(q_cliente, (const char *)&res, sizeof(int), 0);
+      mq_close(q_cliente);
+   }
+}
+```
+
+
+**cliente.c**
+```c
+#include <string.h>
+#include <stdio.h>
+#include <mqueue.h>
+#include <unistd.h>
+#include "mensaje.h"
+
+int main ( int argc, char *argv[] )
+{
+   mqd_t q_servidor; /* cola de mensajes del proceso servidor */
+   mqd_t q_cliente;  /* cola de mensajes para el proceso cliente */
+   struct mq_attr attr;
+   struct peticion pet;
+   int res; 
+   char queuename[MAXSIZE];
+
+   attr.mq_maxmsg = 1;
+   attr.mq_msgsize = sizeof(int);
+   sprintf(queuename, "/CLIENTE-%d", getpid()) ; /* generar un nombre único por cliente */
+   q_cliente  = mq_open(queuename, O_CREAT|O_RDONLY, 0700, &attr);
+   q_servidor = mq_open("/SERVIDOR_SUMA", O_WRONLY);
+
+   /* se rellena la petición y se envía */
+   pet.op = 0;
+   pet.a = 5;
+   pet.b = 2;
+   strcpy(pet.q_name, queuename);
+   mq_send(q_servidor, (const char *)&pet, sizeof(pet), 0);
+
+   /* se recepciona la respuesta y se imprime */
+   mq_receive(q_cliente, (char *) &res, sizeof(int), 0);
+   printf("Resultado = %d\n", res);
+
+   /* se cierra y borra las colas POSIX */
+   mq_close(q_servidor);
+   mq_close(q_cliente);
+   mq_unlink(queuename);
+
+   return 0;
+}
+```
+
+
+* Para compilar, se puede usar:
+     ```bash
+     gcc -Wall -g servidor.c -lrt -o servidor
+     gcc -Wall -g cliente.c -lrt -o cliente
+     ```
+
+* Para ejecutar, se puede usar:
+     ```bash
+     user$ ./servidor &
+     user$ ./cliente
+     Resultado = 7
      
+     user$  kill -9 %1
+     ```
+
+
 
 ### Otros modelos de colas de mensajes
 
