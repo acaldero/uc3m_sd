@@ -7,13 +7,15 @@
 ## Contenidos
 
  * Introducción a MPI
-     * [Principales características](#introduccion-a-mpi)
-     * [Ejemplo en C: Hola mundo](#ejemplo-en-chola-mundo)
+     * [Principales características](#introducción-a-mpi)
+     * [Ejemplo en C: Hola mundo](#ejemplo-en-c-hola-mundo)
  * Comunicación punto a punto y comunicación colectiva:
+    * [API de MPI](#comunicación-punto-a-punto-y-comunicación-colectiva)
     * [Ejemplo en C: send-receive](#ejemplo-en-c-send-receive)
     * [Ejemplo en C: broadcast y barrier](#ejemplo-en-c-broadcast-y-barrier)
   * Escalabilidad:
-    * [Ejemplo en C: cálculo de π con MPI](#ejemplo-calculo-de-π-con-mpi)
+    * [Ejemplo en C: cálculo de π con MPI](#ejemplo-en-c-cálculo-de-π-con-mpi)
+    * [Ejemplo en C: cálculo de π con OpenMP](#ejemplo-en-c-c%C3%A1lculo-de-%CF%80-con-openmp)
  
 
 ### Introducción a MPI
