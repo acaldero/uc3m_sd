@@ -16,6 +16,7 @@
       * [Ejemplo en C: productor-consumidor con colas de mensajes](#ejemplo-en-c-productor-consumidor-con-colas-de-mensajes)
    * [Consultar y cambiar atributos](#llamadas-posix-para-gestión-de-colas-de-mensajes-33)
       * [Ejemplo en C: imprimir los atributos de una cola POSIX](#ejemplo-en-c-imprimir-los-atributos-de-una-cola-posix)
+ * [Cliente-servidor secuencial con colas POSIX](#cliente-servidor-secuencial-con-colas-posix)
  * Otros modelos
    * [Otros modelos de colas de mensajes](#otros-modelos-de-colas-de-mensajes)
 
