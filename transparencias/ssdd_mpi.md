@@ -192,20 +192,46 @@ int main ( int argc, char **argv )
 ### Comunicación colectiva
 
 Principales primitivas de comunicación colectiva:
-- MPI_Barrier
-  - ![MPI_Barrier](transparencias/ssdd_mpi/mpi_barrier.svg)
-- MPI_Bcast
-  * ![MPI_Bcast](transparencias/ssdd_mpi/mpi_bcast.svg)
-- MPI_Scatter
-  * ![MPI_Scatter](transparencias/ssdd_mpi/mpi_scatter.svg)
-- MPI_Gather:
-   * ![MPI_Gather](transparencias/ssdd_mpi/mpi_gather.svg)
-- MPI_Allgather
-  * ![MPI_Allgather](transparencias/ssdd_mpi/mpi_allgather.svg)
-- MPI_Reduce
-  - ![MPI_Reduce](http://hustcat.github.io/assets/mpi/mpi_reduce_00.png)
-- MPI_Allreduce
-  - ![MPI_Allreduce](http://hustcat.github.io/assets/mpi/mpi_allreduce_00.png)
+* MPI_Barrier y MPI_Bcast:
+  <html>
+    <table border="0">
+        <tr>
+            <td><img alt="MPI_Barrier"   src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/transparencias/ssdd_mpi/mpi_barrier.svg" height="125"></td>
+            <td><img width="25" height="1"></td>
+            <td><img alt="MPI_Bcast"     src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/transparencias/ssdd_mpi/mpi_bcast.svg" height="150"></td>
+        </tr>
+    </table>
+  </html>
+* MPI_Scatter vs MPI_Gather:
+  <html>
+    <table border="0">
+        <tr>
+            <td><img alt="MPI_Scatter"   src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/transparencias/ssdd_mpi/mpi_scatter.svg" height="150"></td>
+            <td><img width="25" height="1"></td>
+            <td><img alt="MPI_Gather"    src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/transparencias/ssdd_mpi/mpi_gather.svg" height="150"></td>
+        </tr>
+    </table>
+  </html>
+* MPI_Gather vs MPI_Allgather:
+  <html>
+    <table border="0">
+        <tr>
+            <td><img alt="MPI_Gather"    src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/transparencias/ssdd_mpi/mpi_gather.svg" height="175"></td>
+            <td><img width="25" height="1"></td>
+            <td><img alt="MPI_Allgather" src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/transparencias/ssdd_mpi/mpi_allgather.svg" height="175"></td>
+        <tr>
+    </table>
+  </html>
+* MPI_Reduce vs MPI_Allreduce:
+  <html>
+    <table border="0">
+        </tr>
+            <td><img alt="MPI_Reduce"    src="http://hustcat.github.io/assets/mpi/mpi_reduce_00.png" height="150"></td>
+            <td><img width="25" height="1"></td>
+            <td><img alt="MPI_Allreduce" src="http://hustcat.github.io/assets/mpi/mpi_allreduce_00.png" height="150"></td>
+        </tr>
+    </table>
+  </html>
 
 
 ### Ejemplo en C: broadcast y barrier
