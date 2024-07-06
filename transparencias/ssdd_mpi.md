@@ -11,8 +11,9 @@
      * [Características principales](#características-principales)
      * [Ejemplo en C: Hola mundo](#ejemplo-en-c-hola-mundo)
  * Comunicación punto a punto y comunicación colectiva:
-    * [API de MPI](#comunicación-punto-a-punto-y-comunicación-colectiva)
+    * [API de MPI](#comunicación-punto-a-punto)
     * [Ejemplo en C: send y receive](#ejemplo-en-c-send-y-receive)
+    * [Comunicación colectiva](#comunicación-colectiva)
     * [Ejemplo en C: broadcast y barrier](#ejemplo-en-c-broadcast-y-barrier)
   * Escalabilidad:
     * [Ejemplo en C: cálculo de π con MPI](#ejemplo-en-c-cálculo-de-π-con-mpi)
@@ -109,7 +110,7 @@
     ```
 
 
-### Comunicación punto a punto y comunicación colectiva
+### Comunicación punto a punto
 
 El API de MPI incluye:
  - Estructuras de datos:
@@ -187,19 +188,22 @@ int main ( int argc, char **argv )
     [0 -> 1] num: 10
     ```
 
-### Comunicación punto a punto y comunicación colectiva
 
-Comunicación colectiva:
+### Comunicación colectiva
+
+Principales primitivas de comunicación colectiva:
 - MPI_Barrier
-  - ![MPI_Barrier](http://hustcat.github.io/assets/mpi/mpi_barrier_00.png)
-- MPI_Bcast y MPI_Scatter
-  * ![MPI_Bcast y MPI_Scatter](https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/broadcastvsscatter.png)
+  - ![MPI_Barrier](transparencias/ssdd_mpi/mpi_barrier.svg)
+- MPI_Bcast
+  * ![MPI_Bcast](transparencias/ssdd_mpi/mpi_bcast.svg)
+- MPI_Scatter
+  * ![MPI_Scatter](transparencias/ssdd_mpi/mpi_scatter.svg)
 - MPI_Gather:
-   * ![MPI_Gather](https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/gather.png)
+   * ![MPI_Gather](transparencias/ssdd_mpi/mpi_gather.svg)
 - MPI_Allgather
-  * ![MPI_Allgather](https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/allgather.png)
+  * ![MPI_Allgather](transparencias/ssdd_mpi/mpi_allgather.svg)
 - MPI_Reduce
-  -  ![MPI_Reduce](http://hustcat.github.io/assets/mpi/mpi_reduce_00.png)
+  - ![MPI_Reduce](http://hustcat.github.io/assets/mpi/mpi_reduce_00.png)
 - MPI_Allreduce
   - ![MPI_Allreduce](http://hustcat.github.io/assets/mpi/mpi_allreduce_00.png)
 
