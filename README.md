@@ -21,7 +21,8 @@
   <tr>
       <td>Repaso de concurrencia</td>
       <td><ul>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_threads.md">Concurrencia en sistemas distribuidos</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_threads_posix.md">Concurrencia en sistemas distribuidos (POSIX)</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_threads_c.md">Concurrencia en sistemas distribuidos (C11)</a></li>
       </ul></td>
   </tr>
   <tr>
