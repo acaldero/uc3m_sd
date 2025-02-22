@@ -35,7 +35,8 @@
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ssdd_mpi.md">MPI</a></li>
       </td>
       <td>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ejercicio_pasomensajes_vector.md">Ejercicio de paso de mensajes basado en colas POSIX</a>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ejercicio_pasomensajes_vector.md">Ejercicio de paso de mensajes (colas POSIX)</a>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/transparencias/ejercicio_pasomensajes_upgraded.md">Ejercicio de paso de mensajes (nombrado)</a></li>
       </td>
   </tr>
   <tr>
