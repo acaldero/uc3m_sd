@@ -62,20 +62,21 @@
 
  * Uno de los ingredientes es la transparencia de la invocación remota: se busca que código de invocación remota lo más transparente posible, de manera que se parezca a una invocación a una función local.
 
- * En el siguiente ejemplo a la izquierda se muestra los elementos de una aplicación no distribuida con llamada local a la función de sumar. A la izquierda se muestra la misma aplicación con una llamada remota a la función de sumar:
+ * En el siguiente ejemplo a la izquierda se muestra los elementos de una aplicación no distribuida con llamada local a la función de sumar. A la derecha se muestra la misma aplicación con una llamada remota a la función de sumar:
        ![Organización del código para invocación remota mediante colas POSIX](./ssdd_rpc/ssdd_rpc_drawio_10.svg)
 
-    * El código del stub_servidor y del stub_cliente oculta a la función "main(...)" los detalles de que la ejecución es remota.
-    * El componente biblioteca de la aplicación pasa a estar en otro proceso, y se comunican en este ejemplo usando colas POSIX.
+    * Sigue estando ```apliación.c``` y ```biblioteca.c```, y se añade ```stub_cliente.c``` y ```stub_servidor.c```
+    * El código del ```stub_cliente``` y del ```stub_servidor``` oculta a la función "main(...)" los detalles de que la ejecución es remota.
+    * El componente ```biblioteca``` de la aplicación pasa a estar en otro proceso, y se comunican en este ejemplo usando colas POSIX.
 
 
 ## (2/2) Generación automática
 
- * El otro ingrediente es la generación lo más automatizada posible del código de invocación remota, es decir, que el stub_servidor y stub_cliente se pueda obtener de forma automática a partir de la definición de la interfaz de las funciones remotas (sumar, etc. para el ejemplo anterior)
+ * El otro ingrediente es la generación lo más automatizada posible del código de invocación remota, es decir, que el ```stub_servidor``` y ```stub_cliente``` se pueda obtener de forma automática a partir de la definición de la interfaz de las funciones remotas (sumar, etc. para el ejemplo anterior)
 
  * De esta forma:
-    * Se facilita la generación de nuevas aplicaciones distribuidas así como transformar aplicaciones existentes a distribuidas
     * Se garantiza que el código generado que sirve de plantilla inicial se base en una gramática que puede validarse (y con ello asegurar que el código funcione).
+    * Se facilita la generación de nuevas aplicaciones distribuidas así como transformar aplicaciones existentes a distribuidas
 
 
 ## Breve historia de las RPC
