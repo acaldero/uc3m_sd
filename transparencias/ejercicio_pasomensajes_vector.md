@@ -385,7 +385,7 @@ Añadir concurrencia en el *proxy* en el lado servidor supone que por cada petic
          // En lugar de ejecutar "tratar_petición(&p);" aquí, se crea un hilo para ello
          pthread_create(&thid, &attr, tratar_petición, (void*)&p) ;
          
-         // Importante: parar el main hasta terminar 2 tareas: hilo creado y copia de parámetro "&p"
+         // Importante: parar el main hasta terminar 2 tareas en tratar_petición: hilo creado y copia de parámetro "&p"
          <código de espera a que se haya creado el hilo y copiado &p>
     }
    }
@@ -394,13 +394,16 @@ Añadir concurrencia en el *proxy* en el lado servidor supone que por cada petic
 La función **tratar_petición** se modifica para ser el código del hilo:
 
    ```c
+   pthread_mutex_t mutex_2 = PTHREAD_MUTEX_INITIALIZER; // API mutex
+
    void tratar_petición ( struct petición * p )
    {
       struct respuesta r ;
       
       // Importante: copiar parámetro "*p" y despertar al hilo main
       <código de sincronización para "p_local= *p" y señalizar que copiado>  
-    
+
+      pthread_mutex_lock(&mutex_2) ; // API lock
       switch (p->op)
       {
          case 0: // INIT
@@ -413,6 +416,7 @@ La función **tratar_petición** se modifica para ser el código del hilo:
               r.status= real_set(p->name, p->i, p->value) ;
               break ;
       }
+      pthread_mutex_unlock(&mutex_2) ; // API unlock
       
       int qr= mq_open(p->q_name, O_WRONLY, 0700, NULL) ;
       mq_send(qr, &r, sizeof(structrespuesta), 0) ; // prio== 0
@@ -468,6 +472,8 @@ Con dichos cambios, la función **main** quedará:
 La función **tratar_petición** se modifica para ser el código del hilo:
 
    ```c
+   pthread_mutex_t mutex_2 = PTHREAD_MUTEX_INITIALIZER; // API mutex
+
    void tratar_petición ( struct petición * p )
    {
       struct respuesta r ;
@@ -479,6 +485,7 @@ La función **tratar_petición** se modifica para ser el código del hilo:
            pthread_cond_signal(&sync_cond) ;
            pthread_mutex_unlock(&sync_mutex) ;    
 
+      pthread_mutex_lock(&mutex_2) ; // API lock
       switch (p->op)
       {
          case 0: // INIT
@@ -491,6 +498,7 @@ La función **tratar_petición** se modifica para ser el código del hilo:
               r.status= real_set(p->name, p->i, p->value) ;
               break ;
       }
+      pthread_mutex_unlock(&mutex_2) ; // API unlock
       
       int qr= mq_open(p->q_name, O_WRONLY, 0700, NULL) ;
       mq_send(qr, &r, sizeof(structrespuesta), 0) ; // prio== 0
