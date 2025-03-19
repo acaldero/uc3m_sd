@@ -293,26 +293,27 @@ Las principales *peculiaridades* que afectan inicialmente al diseño son:
    {
       struct petición p;
       struct respuesta r;
-      char qr_name[1024]; unsigned int prio= 0;  // Colas POSIX
-      
-      // inicialización colas POSIX
-      sprintf(qr_name, "%s%d", "/CLIENTE_", getpid()) ;
-      int qs= mq_open("/SERVIDOR", O_CREAT|O_WRONLY, 0700, NULL) ;
-      if (qs == -1) { return-1 ; }
-      int qr = mq_open(qr_name, O_CREAT|O_RDONLY) ;
-      if (qr == -1) { mq_close(qs) ; return-1; }
+      unsigned int prio= 0;  // Colas POSIX
       
       // preparar mensaje
-      p.op= 2; p.i= i;
-      strcpy(p.nombre, nombre);
-      strcpy(p.q_name, qr_name);
+      p.op = 2;  // el valor 2 identifica "get" en el ejemplo
+      p.i  = i;  // el valor i es la clave
+      strcpy(p.nombre, nombre); // nombre del vector
+      sprintf(p.q_name, "%s%d", "/CLIENTE_", getpid()) ;
 
-      // envío de petición y recepción de respuesta con colas POSIX
-      mq_send   (qs, (char *)&p, sizeof(structpetición),  0) ;
-      mq_receive(qr, (char *)&r, sizeof(structrespuesta), &prio) ;
-      // finalización colas POSIX
-      mq_close(qs); mq_close(qr);
-      mq_unlink(qr_name);
+        // inicialización colas POSIX
+        int qs = mq_open("/SERVIDOR", O_WRONLY, 0700, NULL) ;
+        if (qs == -1) { return-1 ; }
+        int qr = mq_open(p.q_name, O_CREAT|O_RDONLY, 0700, NULL) ;
+        if (qr == -1) { mq_close(qs) ; return-1; }
+      
+        // envío de petición y recepción de respuesta con colas POSIX
+        mq_send   (qs, (char *)&(p), sizeof(structpetición),  0) ;
+        mq_receive(qr, (char *)&(r), sizeof(structrespuesta), &prio) ;
+   
+        // finalización colas POSIX
+        mq_close(qs); mq_close(qr);
+        mq_unlink(qr_name);
       
       *valor = r.value;
       return (int)(r.status) ;
@@ -321,24 +322,27 @@ Las principales *peculiaridades* que afectan inicialmente al diseño son:
 
 1. *Proxy* en el lado del servidor:
    ```c
+   int fin_ejecutar = 0 ;
+   
    int main( int argc, char *argv[] )
    {
       struct petición p;
       unsigned int prio;
       
-      int qs= mq_open("/SERVIDOR", O_CREAT | O_RDONLY, 0700, NULL) ;
+      int qs = mq_open("/SERVIDOR", O_CREAT | O_RDONLY, 0700, NULL) ;
       if (qs == -1) { return-1 ; }
-      while(1)
+      while (fin_ejecutar != 1)
       {
-         mq_receive(qs, &p, sizeof(p), &prio) ;
-         tratar_petición(&p) ;
+          mq_receive(qs, &p, sizeof(p), &prio) ;
+          tratar_petición(&p) ;
       }
    }
 
    void tratar_petición ( struct petición * p )
    {
       struct respuesta r ;
-      
+   
+      // tratar petición...
       switch (p->op)
       {
          case 0: // INIT
@@ -351,8 +355,9 @@ Las principales *peculiaridades* que afectan inicialmente al diseño son:
               r.status= real_set(p->name, p->i, p->value) ;
               break ;
       }
-      
-      int qr= mq_open(p->q_name, O_CREAT|O_WRONLY, 0700, NULL) ;
+
+      // enviar respuesta de vuelta al cliente
+      int qr = mq_open(p->q_name, O_WRONLY, 0700, NULL) ;
       mq_send(qr, &r, sizeof(structrespuesta), 0) ; // prio== 0
       mq_close(qr);
    }
@@ -409,7 +414,7 @@ La función **tratar_petición** se modifica para ser el código del hilo:
               break ;
       }
       
-      int qr= mq_open(p->q_name, O_CREAT|O_WRONLY, 0700, NULL) ;
+      int qr= mq_open(p->q_name, O_WRONLY, 0700, NULL) ;
       mq_send(qr, &r, sizeof(structrespuesta), 0) ; // prio== 0
       mq_close(qr);
       
@@ -441,6 +446,7 @@ Con dichos cambios, la función **main** quedará:
         pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED) ;  
         int qs= mq_open("/SERVIDOR", O_CREAT | O_RDONLY, 0700, NULL) ;
         if (qs == -1) { return-1 ; }
+
         while (1)
         {
            mq_receive(qs, &p, sizeof(struct petición), &prio) ;
@@ -486,7 +492,7 @@ La función **tratar_petición** se modifica para ser el código del hilo:
               break ;
       }
       
-      int qr= mq_open(p->q_name, O_CREAT|O_WRONLY, 0700, NULL) ;
+      int qr= mq_open(p->q_name, O_WRONLY, 0700, NULL) ;
       mq_send(qr, &r, sizeof(structrespuesta), 0) ; // prio== 0
       mq_close(qr);
       
