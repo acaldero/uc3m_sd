@@ -64,14 +64,14 @@
         - `O_RDWR`: crea una cola para recibir y enviar
         - `O_NONBLOCK`: envío y recepción no bloqueante
     - Tercer argumento: permisos de acceso a la cola (sys/stat.h)
-        - `O_RDONLY`: solo lectura
-        - `O_WRONLY`: solo escritura
-        - `O_RDWR`: lectura y escritura
+        - `S_IRWXU`: lectura, escritura y ejecución para propietario/a
+        - `S_IRWXU | S_IRWXG`: lectura, escritura y ejecución para propietario/a y grupo al que pertenece
+        - `S_IRWXU | S_IRWXG | S_IRWXO`: lectura, escritura y ejecución para propietario/a, grupo al que pertenece y otras personas en la máquina
     - Cuarto argumento: atributos de la cola (```struct mq_attr attr```)
-        -  `attr.mq_maxmsg`: número máximo de mensajes
-        - `attr.mq_msgsize`: tamaño máximo del mensaje
+        -  `attr.mq_maxmsg`: número máximo de mensajes encolados
+        - `attr.mq_msgsize`: tamaño máximo del mensaje en bytes que se puede enviar a la cola
   - Devuelve:
-    - Un número entero que representa el descriptor de cola o -1 si hay error
+    - Un número entero que representa el descriptor de cola o ```(mqd_t) -1``` si hay error
 - **Cerrar** una cola de mensajes
    ```c
    int mq_close ( mqd_t mqdes ) ;
@@ -80,7 +80,7 @@
    ```c
    int mq_unlink ( char *name ) ;
    ```
-  * **Borrar después de cerrar** la cola de mensajes
+  * Recordar: **Borrar después de cerrar** la cola de mensajes
 
 
 ### Ejemplo en C: crear, cerrar y borrar
