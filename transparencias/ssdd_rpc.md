@@ -63,7 +63,7 @@
  * Uno de los ingredientes es la transparencia de la invocación remota: se busca que código de invocación remota lo más transparente posible, de manera que se parezca a una invocación a una función local.
 
  * En el siguiente ejemplo a la izquierda se muestra los elementos de una aplicación no distribuida con llamada local a la función de sumar. A la derecha se muestra la misma aplicación con una llamada remota a la función de sumar:
-       ![Organización del código para invocación remota mediante colas POSIX](./ssdd_rpc/ssdd_rpc_drawio_10.svg)
+       ![Organización del código para invocación remota mediante colas POSIX](./ssdd_rpc/ssdd_rpc_drawio_10a.svg)
 
     * Sigue estando ```apliación.c``` y ```biblioteca.c```, y se añade ```stub_cliente.c``` y ```stub_servidor.c```
     * El código del ```stub_cliente``` y del ```stub_servidor``` oculta a la función "main(...)" los detalles de que la ejecución es remota.
@@ -903,7 +903,7 @@ datos estándar
 
 ## Calculadora remota
 
-* En el proceso de desarrollo de un procedimiento remoto que devuelve la suma de dos enteros que se le pasan como parámetros, los pasos a seguir son:
+* En el proceso de desarrollo de un procedimiento remoto que devuelve la suma o resta de dos enteros que se le pasan como parámetros, los pasos a seguir son:
 
   1. Crear el archivo de interfaz suma.x
      ### suma.x
@@ -953,37 +953,58 @@ datos estándar
      ```c
       #include "suma.h"
 
-      void sumar_resta_1 ( char *host, int a, int b )
+      int sumar ( char *host, int a, int b )
       {
-        CLIENT *clnt;
-        enum clnt_stat retval_1;
-        int ret ;
+         int ret ;
+         CLIENT *clnt;
+         enum clnt_stat retval_1;
 
-        clnt = clnt_create (host, SUMAR, SUMAVER, "tcp");
-        if (clnt == NULL) {
-            clnt_pcreateerror (host); exit (-1);
-        }
-        retval_1 = suma_1(a, b, &ret, clnt);
-        if (retval_1 != RPC_SUCCESS) {
-            clnt_perror (clnt, "call failed"); exit (-1);
-        }
-        printf("1 + 2 = %d\n", ret) ;
-        retval_1 = resta_1(a, b, &ret, clnt);
-        if (retval_1 != RPC_SUCCESS) {
-            clnt_perror (clnt, "call failed"); exit (-1);
-  	    }
-        printf("1 - 2 = %d\n", ret) ;
-        clnt_destroy (clnt);
+         clnt = clnt_create (host, SUMAR, SUMAVER, "tcp");
+         if (clnt == NULL) {
+             clnt_pcreateerror (host); exit (-1);
+         }
+         retval_1 = suma_1(a, b, &ret, clnt);
+         if (retval_1 != RPC_SUCCESS) {
+             clnt_perror (clnt, "call failed"); exit (-1);
+         }
+         clnt_destroy (clnt);
+         return ret ;
+      }
+
+      int restar ( char *host, int a, int b )
+      {
+         int ret ;
+         CLIENT *clnt;
+         enum clnt_stat retval_1;
+
+         clnt = clnt_create (host, SUMAR, SUMAVER, "tcp");
+         if (clnt == NULL) {
+             clnt_pcreateerror (host); exit (-1);
+         }
+         retval_1 = resta_1(a, b, &ret, clnt);
+         if (retval_1 != RPC_SUCCESS) {
+             clnt_perror (clnt, "call failed"); exit (-1);
+         }
+         clnt_destroy (clnt);
+         return ret ;
       }
 
        int main ( int argc, char *argv[] )
        {
+          int res ;
+
           if (argc < 2) {
               printf ("usage: %s server_host\n", argv[0]);
               exit (1);
           }
-          sumar_resta_1 (argv[1], 1, 2);
-          exit (0);
+
+          res = sumar(argv[1], 1, 2) ;
+          printf("1 + 2 = %d\n", res) ;
+
+          res = restar(argv[1], 1, 2) ;
+          printf("1 - 2 = %d\n", res) ;
+
+          return 0;
        }
        ```
 
@@ -994,15 +1015,16 @@ datos estándar
      Dicho proceso de compilación suele suponer los siguientes pasos:
 
      ```bash
-     gcc -g  -D_REENTRANT  -o suma_clnt.o    -c suma_clnt.c
-     gcc -g  -D_REENTRANT  -o suma_client.o  -c suma_client.c
-     gcc -g  -D_REENTRANT  -o suma_xdr.o     -c suma_xdr.c
-     gcc -g  -D_REENTRANT  -o suma_svc.o     -c suma_svc.c
-     gcc -g  -D_REENTRANT  -o suma_server.o  -c suma_server.c
-     gcc -g  -D_REENTRANT  -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lnsl -lpthread
-     gcc -g  -D_REENTRANT  -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lnsl -lpthread
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_xdr.o     -c suma_xdr.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_clnt.o    -c suma_clnt.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_client.o  -c suma_client.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_svc.o     -c suma_svc.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_server.o  -c suma_server.c
+     gcc -g -D_REENTRANT                       -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lnsl -lpthread -ltirpc
+     gcc -g -D_REENTRANT                       -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lnsl -lpthread -ltirpc
       ```
-     * **NOTA**: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.
+     * **NOTA 1**: **mucho cuidado** con "make -f Makefile.suma clean" puesto que por defecto borra suma_server.c y suma_client.c perdiendo el trabajo realizado en dichos ficheros.
+     * **NOTA 2**: este ejemplo se basa en usar la librería ```tirpc``` en Linux/Ubuntu, puede que en otro sistema no sea necesaria o sea otra librería.
 
 * Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente.
    1. En una misma máquina, se puede usar como nombre de host *localhost*:
@@ -1129,6 +1151,7 @@ datos estándar
       bool_t first_1_svc ( char *arg1, char *result,  struct svc_req *rqstp )
       {
           *result = arg1[0] ;
+
           return TRUE ;
       }
 
@@ -1381,10 +1404,10 @@ datos estándar
      gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_clnt.o   -c vector_clnt.c
      gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_client.o -c vector_client.c
      gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_xdr.o    -c vector_xdr.c
-     gcc -g -D_REENTRANT                      -o vector_client vector_clnt.o vector_client.o vector_xdr.o -lnsl -lpthread -ltirpc
+     gcc -g -D_REENTRANT    -o vector_client vector_clnt.o vector_client.o vector_xdr.o -lnsl -lpthread -ltirpc
      gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_svc.o    -c vector_svc.c
      gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_server.o -c vector_server.c
-     gcc -g -D_REENTRANT                      -o vector_server vector_svc.o vector_server.o vector_xdr.o  -lnsl -lpthread -ltirpc
+     gcc -g -D_REENTRANT    -o vector_server vector_svc.o vector_server.o vector_xdr.o  -lnsl -lpthread -ltirpc
       ```
       * **NOTA 1**: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.
       * **NOTA 2**: este ejemplo se basa en usar la librería ```tirpc``` en Linux/Ubuntu, puede que en otro sistema no sea necesaria o sea otra librería.
@@ -1567,8 +1590,7 @@ Ejemplo de esqueleto con autenticación UNIX:
 
 Hay 3 detalles a comprobar en su instalación de Ubuntu:
 
-1) Hay que tener instalado los siguientes paquetes: libtirpc, rpcsvc-proto y rpcbind
-   Para la distribución Ubuntu de Linux se ha de ejecutar:
+1) Hay que tener instalado los siguientes paquetes: libtirpc, rpcsvc-proto y rpcbind. <br> Para la distribución Ubuntu de Linux se ha de ejecutar:
    ```bash
    sudo apt-get install  libtirpc-common libtirpc-dev libtirpc3 rpcsvc-proto rpcbind
    ```
