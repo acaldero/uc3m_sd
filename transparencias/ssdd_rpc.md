@@ -222,12 +222,13 @@
 
       ### Ejemplo: compilación individual
     ```bash
-    gcc -g  -D_REENTRANT  -o suma_client.o  -c suma_client.c
-    gcc -g  -D_REENTRANT  -o suma_xdr.o     -c suma_xdr.c
-    gcc -g  -D_REENTRANT  -o suma_svc.o     -c suma_svc.c
-    gcc -g  -D_REENTRANT  -o suma_server.o  -c suma_server.c
-    gcc -g  -D_REENTRANT  -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lnsl -lpthread
-    gcc -g  -D_REENTRANT  -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lnsl -lpthread
+    gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_xdr.o     -c suma_xdr.c
+    gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_clnt.o    -c suma_clnt.c
+    gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_client.o  -c suma_client.c
+    gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_svc.o     -c suma_svc.c
+    gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_server.o  -c suma_server.c
+    gcc -g -D_REENTRANT  -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lnsl -lpthread -ltirpc
+    gcc -g -D_REENTRANT  -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lnsl -lpthread -ltirpc
     ```
 
  6. Para la ejecución hay que primero ejecutar el servidor y luego el cliente.
@@ -418,10 +419,12 @@ datos estándar
     * Modelos **híbridos**
 
  * Tipos de indicaciones de error:
-   * Devolver un **código de error** (-1 / NULL)
-      * A evitar: que el código de error está dentro del rango de posibles valores, como por ejemplo -1 para sumar(a,b)
+   * Devolver un **código de error** (-1 / NULL) o el valor de salida
+      * A evitar: que el código de error está dentro del rango de posibles valores de salida, como por ejemplo -1 para ```sumar(a,b)```
    * **Elevar una excepción**
       * Precisa un lenguaje que tenga excepciones
+   * Devolver **dos valores**: el **estado de la operación** (OK / KO) y el **valor de salida**
+      * Mejor aunque resta transparencia: ```int res = sumar(a,b, &status)```
 
  * Estrategias ante fallos:
     * Cliente RPC
@@ -582,7 +585,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>   Entero sin signo		     </td>
+   <td>   Entero sin signo</td>
    <td><pre lang="c">
    unsigned a;
    </pre></td>
@@ -592,7 +595,7 @@ datos estándar
    </tr>
 
    <tr>
-   <td>   Coma flotante				     </td>
+   <td>   Coma flotante	</td>
    <td><pre lang="c">
    float a; double c;
    </pre></td>
@@ -603,7 +606,7 @@ datos estándar
 
    <tr>
    <td rowspan=6>Colecciones mismo tipo</td>
-   <td>   Cadena de longitud fija (1)		    </td>
+   <td>   Cadena de longitud fija (1)</td>
    <td><pre lang="c">
    string a<37>;
    </pre></td>
@@ -619,8 +622,8 @@ datos estándar
    </pre></td>
    <td><pre lang="c">
    struct {
-       u_int  b_len;
-       char  *b_val;
+      u_int  b_len;
+      char  *b_val;
    } b ;
    </pre></td>
    </tr>
@@ -665,9 +668,9 @@ datos estándar
    </pre></td>
    <td><pre lang="c">
    struct {
-      u_int  a_len;
-      char  *a_val;
-   } a ;
+      u_int  b_len;
+      char  *b_val;
+   } b ;
    </pre></td>
    </tr>
 
@@ -732,7 +735,7 @@ datos estándar
      AZUL = 2
    };
    typedef enum color color;
-   bool_t xdr_color (XDR *, colortype*);
+   bool_t xdr_color (XDR *, color*);
    </pre></td>
    </tr>
 
@@ -827,7 +830,7 @@ datos estándar
      void clnt_destroy ( CLIENT *clnt ) ;
     ```
     * Argumentos:
-      * **clnt**: manejador de RPC del cliente
+      * **clnt**: manejador de RPC del cliente (anteriormente creado con clnt_create)
 
  * Indicar el error en un fallo de RPC:
     ```c
@@ -900,7 +903,7 @@ datos estándar
 
 ## Calculadora remota
 
-* En el proceso de desarrollo de un procedimiento remoto que devuelve la suma los componentes de un vector de enteros que se le pase como parámetro, los pasos a seguir son:
+* En el proceso de desarrollo de un procedimiento remoto que devuelve la suma de dos enteros que se le pasan como parámetros, los pasos a seguir son:
 
   1. Crear el archivo de interfaz suma.x
      ### suma.x
@@ -945,8 +948,8 @@ datos estándar
      }
      ```
 
-  4. Hay que editar suma_cliente.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
-     ### suma_cliente.c
+  4. Hay que editar suma_client.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
+     ### suma_client.c
      ```c
       #include "suma.h"
 
@@ -991,6 +994,7 @@ datos estándar
      Dicho proceso de compilación suele suponer los siguientes pasos:
 
      ```bash
+     gcc -g  -D_REENTRANT  -o suma_clnt.o    -c suma_clnt.c
      gcc -g  -D_REENTRANT  -o suma_client.o  -c suma_client.c
      gcc -g  -D_REENTRANT  -o suma_xdr.o     -c suma_xdr.c
      gcc -g  -D_REENTRANT  -o suma_svc.o     -c suma_svc.c
@@ -1087,9 +1091,9 @@ datos estándar
        ```c
      program STRING {
         version STRINGVER {
-           int vocales(string) = 1;
-           char first(string) = 2;
-           string convertir(int n) = 3;
+           int    vocales   ( string ) = 1 ;
+           char   first     ( string ) = 2 ;
+           string convertir ( int n )  = 3 ;
         } = 1;
      } = 99;
      ```
@@ -1113,7 +1117,9 @@ datos estándar
          while (*arg1 != '\0')
          {
             pos = strchr(vowels, *arg1) ;
-            if (pos != NULL) (*result)++ ;
+            if (pos != NULL) {
+                (*result)++ ;
+            }
             arg1++;
          }
 
@@ -1129,7 +1135,10 @@ datos estándar
       bool_t convertir_1_svc ( int n, char **result,  struct svc_req *rqstp )
       {
           *result = (char *) malloc(256) ;
-          sprintf(*result, "%d", n) ;
+          if (*result != NULL) {
+              sprintf(*result, "%d", n) ;
+          }
+
           return TRUE ;
       }
 
@@ -1140,8 +1149,8 @@ datos estándar
       }
         ```
 
-  4. Hay que editar string_cliente.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
-     ### string_cliente.c
+  4. Hay que editar string_client.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
+     ### string_client.c
      ```c
      #include "string.h"
 
@@ -1203,15 +1212,15 @@ datos estándar
      Dicho proceso de compilación suele suponer los siguientes pasos:
 
      ```bash
-     gcc -g  -D_REENTRANT  -c -o string_clnt.o string_clnt.c
-     gcc -g  -D_REENTRANT  -c -o string_client.o string_client.c
-     gcc -g  -D_REENTRANT  -c -o string_xdr.o string_xdr.c
-     gcc -g  -D_REENTRANT -o string_client string_clnt.o string_client.o string_xdr.o -lnsl -lpthread
-     gcc -g  -D_REENTRANT  -c -o string_svc.o string_svc.c
-     gcc -g  -D_REENTRANT  -c -o string_server.o string_server.c
-     gcc -g  -D_REENTRANT -o string_server string_svc.o string_server.o string_xdr.o -lnsl -lpthread
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o string_clnt.o   -c string_clnt.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o string_client.o -c string_client.c
+     gcc -g -D_REENTRANT                       -o string_client string_clnt.o string_client.o  -lnsl -lpthread -ltirpc
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o string_svc.o    -c string_svc.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o string_server.o -c string_server.c
+     gcc -g -D_REENTRANT                       -o string_server string_svc.o string_server.o   -lnsl -lpthread -ltirpc
       ```
-      * **NOTA**: mucho cuidado con "make -f Makefile.string clean" puesto que por defecto borra string_server.c y string_client.c perdiendo el trabajo realizado en dichos ficheros.
+      * **NOTA 1**: mucho cuidado con "make -f Makefile.string clean" puesto que por defecto borra string_server.c y string_client.c perdiendo el trabajo realizado en dichos ficheros.
+      * **NOTA 2**: este ejemplo se basa en usar la librería ```tirpc``` en Linux/Ubuntu, puede que en otro sistema no sea necesaria o sea otra librería.
 
 * Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente:
    1. En una misma máquina, se puede usar como nombre de host *localhost*:
@@ -1282,8 +1291,8 @@ datos estándar
       Se va a traducir como:
      ```c
      typedef struct {
-           u_int t_vector_len;
-           int *t_vector_val;
+         u_int t_vector_len;
+         int *t_vector_val;
      } t_vector;
      ```
 
@@ -1312,8 +1321,8 @@ datos estándar
      }
       ```
 
-  4. Hay que editar vector_cliente.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
-     ### vector_cliente.c
+  4. Hay que editar vector_client.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
+     ### vector_client.c
      ```c
      #include "vector.h"
 
@@ -1369,15 +1378,16 @@ datos estándar
      Dicho proceso de compilación suele suponer los siguientes pasos:
 
      ```bash
-     gcc -g  -D_REENTRANT  -c -o vector_clnt.o vector_clnt.c
-     gcc -g  -D_REENTRANT  -c -o vector_client.o vector_client.c
-     gcc -g  -D_REENTRANT  -c -o vector_xdr.o vector_xdr.c
-     gcc -g  -D_REENTRANT -o vector_client vector_clnt.o vector_client.o vector_xdr.o -lnsl -lpthread
-     gcc -g  -D_REENTRANT  -c -o vector_svc.o vector_svc.c
-     gcc -g  -D_REENTRANT  -c -o vector_server.o vector_server.c
-     gcc -g  -D_REENTRANT -o vector_server vector_svc.o vector_server.o vector_xdr.o -lnsl -lpthread
+     gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_clnt.o   -c vector_clnt.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_client.o -c vector_client.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_xdr.o    -c vector_xdr.c
+     gcc -g -D_REENTRANT                      -o vector_client vector_clnt.o vector_client.o vector_xdr.o -lnsl -lpthread -ltirpc
+     gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_svc.o    -c vector_svc.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_server.o -c vector_server.c
+     gcc -g -D_REENTRANT                      -o vector_server vector_svc.o vector_server.o vector_xdr.o  -lnsl -lpthread -ltirpc
       ```
-      * **NOTA**: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.
+      * **NOTA 1**: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.
+      * **NOTA 2**: este ejemplo se basa en usar la librería ```tirpc``` en Linux/Ubuntu, puede que en otro sistema no sea necesaria o sea otra librería.
 
 * Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente:
    1. En una misma máquina, se puede usar como nombre de host *localhost*:
