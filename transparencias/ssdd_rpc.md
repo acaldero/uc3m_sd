@@ -328,19 +328,19 @@
    7. Borra dirección (fin del servicio)
 
      ```mermaid
-   flowchart TD
+   flowchart 
        subgraph id1 [ ]
        A["Cliente"]
        B["Servidor"]
        C["Binder"]
        end
+       B --->|"(2)"| C
+       B --->|"(7)"| C
+       A --->|"(3)"| C
+       C --->|"(4)"| A
+       A --->|"(5)"| B
+       B --->|"(6)"| A
        B -.->|"(1)"| B
-       B -->|"(2)"| C
-       B -->|"(7)"| C
-       A -->|"(3)"| C
-       C -->|"(4)"| A
-       A -->|"(5)"| B
-       B -->|"(6)"| A
      ```
 
 ## Tipos de fallos que pueden aparecer con las RPC
