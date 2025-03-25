@@ -227,8 +227,8 @@
     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_client.o  -c suma_client.c
     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_svc.o     -c suma_svc.c
     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_server.o  -c suma_server.c
-    gcc -g -D_REENTRANT  -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lnsl -lpthread -ltirpc
-    gcc -g -D_REENTRANT  -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lnsl -lpthread -ltirpc
+    gcc -g -D_REENTRANT    -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lnsl -lpthread -ltirpc
+    gcc -g -D_REENTRANT    -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lnsl -lpthread -ltirpc
     ```
 
  6. Para la ejecución hay que primero ejecutar el servidor y luego el cliente.
@@ -425,6 +425,10 @@ datos estándar
       * Precisa un lenguaje que tenga excepciones
    * Devolver **dos valores**: el **estado de la operación** (OK / KO) y el **valor de salida**
       * Mejor aunque resta transparencia: ```int res = sumar(a,b, &status)```
+   * Devolver **un puntero al valor**:
+      * Si el puntero es NULL es que hay error y no hay valor válido.
+      * Si el puntero no es NULL entonces al acceder a dicho puntero se tiene el valor buscado.
+      * Para entornos multi-hilo puede que el puntero apunte a una memoria dinámica que tras su uso hay que liberar.
 
  * Estrategias ante fallos:
     * Cliente RPC
@@ -544,7 +548,7 @@ datos estándar
               ```c
              int rutina_no_valida ( int arg[32] );
                ```
-             pero si es posible usar una estructura que contenga un campo que sea un array/vector de tamaño fijo,
+             pero puede ser posible en su lugar usar una estructura que contenga un campo que sea un array/vector de tamaño fijo,
              por ejemplo:  
              ```c
              struct arr_double_struct { double vector[32]; } ;
@@ -1020,8 +1024,8 @@ datos estándar
      gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_client.o  -c suma_client.c
      gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_svc.o     -c suma_svc.c
      gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_server.o  -c suma_server.c
-     gcc -g -D_REENTRANT                       -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lnsl -lpthread -ltirpc
-     gcc -g -D_REENTRANT                       -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lnsl -lpthread -ltirpc
+     gcc -g -D_REENTRANT       -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lnsl -lpthread -ltirpc
+     gcc -g -D_REENTRANT       -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lnsl -lpthread -ltirpc
       ```
      * **NOTA 1**: **mucho cuidado** con "make -f Makefile.suma clean" puesto que por defecto borra suma_server.c y suma_client.c perdiendo el trabajo realizado en dichos ficheros.
      * **NOTA 2**: este ejemplo se basa en usar la librería ```tirpc``` en Linux/Ubuntu, puede que en otro sistema no sea necesaria o sea otra librería.
@@ -1237,10 +1241,10 @@ datos estándar
      ```bash
      gcc -g -D_REENTRANT -I/usr/include/tirpc  -o string_clnt.o   -c string_clnt.c
      gcc -g -D_REENTRANT -I/usr/include/tirpc  -o string_client.o -c string_client.c
-     gcc -g -D_REENTRANT                       -o string_client string_clnt.o string_client.o  -lnsl -lpthread -ltirpc
+     gcc -g -D_REENTRANT       -o string_client string_clnt.o string_client.o  -lnsl -lpthread -ltirpc
      gcc -g -D_REENTRANT -I/usr/include/tirpc  -o string_svc.o    -c string_svc.c
      gcc -g -D_REENTRANT -I/usr/include/tirpc  -o string_server.o -c string_server.c
-     gcc -g -D_REENTRANT                       -o string_server string_svc.o string_server.o   -lnsl -lpthread -ltirpc
+     gcc -g -D_REENTRANT       -o string_server string_svc.o string_server.o   -lnsl -lpthread -ltirpc
       ```
       * **NOTA 1**: mucho cuidado con "make -f Makefile.string clean" puesto que por defecto borra string_server.c y string_client.c perdiendo el trabajo realizado en dichos ficheros.
       * **NOTA 2**: este ejemplo se basa en usar la librería ```tirpc``` en Linux/Ubuntu, puede que en otro sistema no sea necesaria o sea otra librería.
