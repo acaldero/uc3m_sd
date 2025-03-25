@@ -909,26 +909,26 @@ datos estándar
 
 * En el proceso de desarrollo de un procedimiento remoto que devuelve la suma o resta de dos enteros que se le pasan como parámetros, los pasos a seguir son:
 
-  1. Crear el archivo de interfaz suma.x
-     ### suma.x
+  1. Crear el archivo de interfaz calc.x
+     ### calc.x
      ```c
      program SUMAR {
         version SUMAVER {
            int SUMA  ( int a, int b ) = 1;
            int RESTA ( int a, int b ) = 2;
         } = 1;
-     } = 99;
+     } = 999;
      ```
 
-  2. Hay que usar rpcgen con suma.x:
+  2. Hay que usar rpcgen con calc.x:
      ```bash
-     rpcgen -NMa suma.x
+     rpcgen -N -M -a calc.x
      ```
 
-  3. Hay que editar suma_server.c y añadir el código de los servicios a ser invocados de forma remota:
-     ### suma_server.c
+  3. Hay que editar calc_server.c y añadir el código de los servicios a ser invocados de forma remota:
+     ### calc_server.c
      ```c
-     #include "suma.h"
+     #include "calc.h"
 
      bool_t suma_1_svc ( int a, int b, int *result,  struct svc_req *rqstp )
      {
@@ -945,17 +945,14 @@ datos estándar
      int sumar_1_freeresult (SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result)
      {
         xdr_free (xdr_result, result);
-
-        /* Insert additional freeing code here, if needed */
-
         return 1;
      }
      ```
 
-  4. Hay que editar suma_client.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
-     ### suma_client.c
+  4. Hay que editar calc_client.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.
+     ### calc_client.c
      ```c
-      #include "suma.h"
+      #include "calc.h"
 
       int sumar ( char *host, int a, int b )
       {
@@ -1014,26 +1011,26 @@ datos estándar
 
   5. Compilar el ejemplo con:
      ```bash
-     make -f Makefile.suma
+     make -f Makefile.calc
       ```
      Dicho proceso de compilación suele suponer los siguientes pasos:
 
      ```bash
-     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_xdr.o     -c suma_xdr.c
-     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_clnt.o    -c suma_clnt.c
-     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_client.o  -c suma_client.c
-     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_svc.o     -c suma_svc.c
-     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_server.o  -c suma_server.c
-     gcc -g -D_REENTRANT       -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lnsl -lpthread -ltirpc
-     gcc -g -D_REENTRANT       -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lnsl -lpthread -ltirpc
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o calc_xdr.o     -c calc_xdr.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o calc_clnt.o    -c calc_clnt.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o calc_client.o  -c calc_client.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o calc_svc.o     -c calc_svc.c
+     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o calc_server.o  -c calc_server.c
+     gcc -g -D_REENTRANT       -o calc_server  calc_svc.o  calc_server.o calc_xdr.o -lnsl -lpthread -ltirpc
+     gcc -g -D_REENTRANT       -o calc_client  calc_clnt.o calc_client.o calc_xdr.o -lnsl -lpthread -ltirpc
       ```
-     * **NOTA 1**: **mucho cuidado** con "make -f Makefile.suma clean" puesto que por defecto borra suma_server.c y suma_client.c perdiendo el trabajo realizado en dichos ficheros.
-     * **NOTA 2**: este ejemplo se basa en usar la librería ```tirpc``` en Linux/Ubuntu, puede que en otro sistema no sea necesaria o sea otra librería.
+     * **NOTA 1**: **mucho cuidado** con "make -f Makefile.calc clean" puesto que por defecto borra calc_server.c y calc_client.c perdiendo el trabajo realizado en dichos ficheros.
+     * **NOTA 2**: este ejemplo se basa en usar la librería ```tirpc``` en Linux (Debian/Ubuntu), puede que en otro sistema no sea necesaria o sea otra librería.
 
 * Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente.
    1. En una misma máquina, se puede usar como nombre de host *localhost*:
        ```bash
-      acaldero@docker1:~/sd$ ./suma_server &
+      acaldero@docker1:~/sd$ ./calc_server &
       acaldero@docker1:~/sd$ rpcinfo  -p localhost
       program vers proto   port  service
       100000    4   tcp    111  portmapper
@@ -1042,16 +1039,16 @@ datos estándar
       100000    4   udp    111  portmapper
       100000    3   udp    111  portmapper
       100000    2   udp    111  portmapper
-          99    1   udp  34654
-          99    1   tcp  41745
-      acaldero@docker1:~/sd$ ./suma_client  localhost
+         999    1   udp  34654
+         999    1   tcp  41745
+      acaldero@docker1:~/sd$ ./calc_client  localhost
       1 + 2 = 3
       1 - 2 = -1
       acaldero@docker1:~/sd$ kill -9 %1
       acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
-      [1]+  Killed                  ./suma_server
+      [1]+  Killed                  ./calc_server
       ```
-   2. Si funciona en una misma máquina, se puede probar en dos máquinas (docker1 para suma_server y docker2 para suma_client):
+   2. Si funciona en una misma máquina, se puede probar en dos máquinas (docker1 para calc_server y docker2 para calc_client):
        <html>
        <table>
        <tr>
@@ -1062,7 +1059,7 @@ datos estándar
        <td>
 
        ```bash
-      docker1:~/sd$ ./suma_server &
+      docker1:~/sd$ ./calc_server &
       ```
 
        </td>
@@ -1081,10 +1078,10 @@ datos estándar
       100000    4   udp    111  portmapper
       100000    3   udp    111  portmapper
       100000    2   udp    111  portmapper
-          99    1   udp  34654
-          99    1   tcp  41745
+         999    1   udp  34654
+         999    1   tcp  41745
 
-      @docker2:~/sd$ ./suma_client  docker1
+      @docker2:~/sd$ ./calc_client  docker1
       1 + 2 = 3
       1 - 2 = -1
       ```
@@ -1097,8 +1094,8 @@ datos estándar
        ```bash
       docker1:~/sd$ kill -9 %1
 
-      docker1:~/sd$ sudo rpcinfo -d 99 1
-      [1]+  Killed       ./suma_server
+      docker1:~/sd$ sudo rpcinfo -d 999 1
+      [1]+  Killed       ./calc_server
       ```
 
        </td>
