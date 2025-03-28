@@ -870,7 +870,8 @@ graph LR;
    #include <sys/socket.h>
 
 
-   int write_all ( int newsd, char *buffer, size_t total )
+   // escribe todos los 'total' bytes del buffer
+   int sendMessage ( int newsd, char *buffer, size_t total )
    {
        size_t escritos = 0 ;
        ssize_t result  = 0 ;
@@ -978,7 +979,7 @@ graph LR;
           // Preparar el mensaje a enviar: 1024 bytes con "hola mundo"
           strcpy(buffer, "Hola mundo") ;
           // Transferir datos sobre newsd
-          escritos = write_all(newsd, buffer, sizeof(buffer)) ;
+          escritos = sendMessage(newsd, buffer, sizeof(buffer)) ;
           if (escritos < 0) {
               printf("Error al escribir buffer\n") ;
           }
@@ -1004,7 +1005,8 @@ graph LR;
    #include <arpa/inet.h>
    #include <arpa/inet.h>
 
-   int read_all ( int sd, char *buffer, size_t total )
+   // lee todos los 'total' bytes y los guarda en el buffer
+   int recvMessage ( int sd, char *buffer, size_t total )
    {
        size_t  leidos = 0 ;
        ssize_t result = 0 ;
@@ -1070,7 +1072,7 @@ graph LR;
        strcpy(buffer, "") ;
 
        // (4) transferir datos sobre sd
-       size_t leidos = read_all(sd, buffer, sizeof(buffer)) ;
+       size_t leidos = recvMessage(sd, buffer, sizeof(buffer)) ;
        if (leidos < 0) {
            printf("Error al leer buffer\n") ;
        }
