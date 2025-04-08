@@ -8,8 +8,8 @@
 
 * Introducción a sistemas de ficheros  distribuidos:
   * [Sistema de ficheros](#sistema-de-ficheros)
-  * [Funcionamiento básico de un sistema de ficheros](#funcionamiento-basico-de-un-sistema-de-ficheros)
-  * [Arquitectura básica de un sistema de ficheros](#arquitectura-basica-de-un-sistema-de-ficheros)
+  * [Funcionamiento básico de un sistema de ficheros](#funcionamiento-básico-de-un-sistema-de-ficheros)
+  * [Arquitectura básica de un sistema de ficheros](#arquitectura-básica-de-un-sistema-de-ficheros)
   * [Posibles opciones para almacenamiento remoto](#posibles-opciones-para-almacenamiento-remoto)
 * Sistemas de almacenamiento distribuidos:
   * [Sistema de ficheros distribuido](#sistema-de-ficheros-distribuido)
@@ -21,15 +21,15 @@
 
 * En una máquina Von Neumann, tanto los datos como el código de un programa ha de estar cargado en memoria principal para ejecutar:
   ```mermaid
-  flowchart LR
+  flowchart TD
   A[CPU] <--> B(Memoria principal)
   ```
 
 * A día de hoy hay dos tecnologías principales para el almacenamiento:
   ```mermaid
-  flowchart LR
-  A[CPU] <--> B(Memoria)
-  B[Memoria] <--> C(Disco)
+  flowchart TD
+  A[CPU] <--> B(Memoria RAM)
+  B[Memoria RAM] <--> C(SSD, disco duro)
   ```
   * Memoria RAM
     * **Volátil** (se pierde contenido si falta electricidad)
@@ -40,35 +40,38 @@
     * **Mayor** capacidad (orden de Terabytes)
     * Direccionamiento a nivel de **bloque**
 
-* **Problema**: que los/as programadoras/es tengan que ocuparse de tratar con los bloques de disco para buscar en qué bloque están los datos, recuperar o guardar datos de un bloque, etc.
-* **Objetivo**: Ofrecer una abstracción de datos intermedia que se traduzca a bloques de manera que:
-  * Sea independiente del dispositivo físico.
-  * Ofrezca una visión lógica unificada.
-  * Sea lo suficientemente simple pero completa.
+* **Problema**:
+  * Que cada programador/a tengan que ocuparse de tratar con los bloques de disco para buscar en qué bloque están los datos que precisa su programa, recuperar o guardar datos de un bloque, etc.
+* **Objetivo**:
+  * En lugar de trabajar con bloques trabajar con una abstracción de datos intermedia de alto nivel que internamente se traduzca a bloques de manera que:
+    * Sea independiente del dispositivo físico.
+    * Ofrezca una visión lógica unificada.
+    * Sea lo suficientemente simple pero completa.
   ```mermaid
-  flowchart LR
+  flowchart TD
   A(Proceso)---|"(1) Abstracción de datos"|B("(2) Gestor de abstracción")
-  B --- C(Disco)
-  C -.- D("b1, b2, ...")
+  B --- C("Disco<br>(b1, b2, ...)")
   ```
 
 * El sistema operativo integra una <u>abstracción básica y genérica</u> (**ficheros y directorios**) y hay un componente en el sistema operativo que es el <u>gestor de dicha abstracción</u> (**sistema de ficheros**).
   ```mermaid
-  flowchart LR
+  flowchart TD
   A(Proceso)---|"ficheros y directorios"|B("sistema de ficheros")
-  B --- C(Disco)
-  C -.- D("b1, b2, ...")
+  B --- C("Disco<br>(b1, b2, ...)")
   ```
-  * Normalmente con la abstracción de **ficheros y directorios** que tiene el sistema operativo de serie es suficiente para el acceso habitual a los datos, y el propio sistema operativo usa dicha abstracción para la gestión de sus componentes (lo que demuestra su potencial).
-* Aunque hay otras soluciones alternativas, como una base de datos donde <u>la abstracción</u> **se basa en el uso de tablas** y hay un componente que es el <u>gestor de dicha abstracción</u> **que es el gestor de base de datos**.
+  * Normalmente con la abstracción de **ficheros y directorios** que tiene el sistema operativo de serie es suficiente para el acceso habitual a los datos
+  * El propio sistema operativo usa dicha abstracción de **ficheros y directorios** para la gestión de sus componentes, lo que ayuda a demostrar su potencial.
+* Aunque hay otras abstracciones, como una base de datos donde <u>la abstracción</u> **se basa en el uso de tablas** y hay un componente que es el <u>gestor de dicha abstracción</u> **que es el gestor de base de datos**.
   ```mermaid
-  flowchart LR
+  flowchart TD
   A(Proceso)---|"base de datos"|B("gestor BBDD")
-  B --- C(Disco)
-  C -.- D("b1, b2, ...")
+  B --- C("Disco<br>(b1, b2, ...)")
   ```
+* A día de hoy se trabajan con distintas abstracciones a la vez:
+   * Se pueden combinar el uso de abstracciones, por ejemplo en un gestor de canciones puede usar una base de datos para la gestión de autores, títulos, etc. y guardar en la base de dato el nombre del fichero donde está la propia canción.
+   * El sistema operativo habitualmente utiliza un sistema de ficheros específico pero ofrece varios sistemas de ficheros adicionales que es posible usar.
 * La *Storage Networking Industry Association* (SNIA) propone el [*The SNIA Shared Storage Model*](https://www.snia.org/education/storage_networking_primer/shared_storage_model):<br>
-   ![SNIA storage model v2](./ssdd_sfd/snia_model_v2.gif)<br>
+     ![SNIA storage model v2](./ssdd_sfd/snia_model_v2.gif)<br>
    * Donde una aplicación puede usar un gestor de base de datos, o bien un sistema de ficheros (o bien ambos, por ejemplo un reproductor de canciones con una base de datos con la información de las canciones del usuario y las propias canciones guardadas en archivos).
    * Sería posible sistemas gestores de base de datos que usan ficheros por debajo y también sería posible sistemas de ficheros que usan bases de datos por debajo.
    * Este subsistema de ficheros/registros utiliza por debajo un almacenamiento basado en bloques, donde los bloques pueden ser resultado de una agregación en tres niveles: dispositivo, SAN o *host*.
