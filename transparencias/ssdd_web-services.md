@@ -1,4 +1,5 @@
 
+
 # Sistemas Distribuidos: Servicios Web
 + **Felix García Carballeira y Alejandro Calderón Mateos**
 + Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
@@ -27,22 +28,25 @@ Los servicios web están al nivel de un servicio de red y un nivel más del para
 
    ![Paradigmas por niveles](/transparencias/ssdd_web-services/ssdd_web-services-drawio_4.svg)
 
-#### Transparencia de localización
+
 Los servicios web (y los servicios de red) son una extensión al paradigma de invocación de procedimientos remotos en el que se añade un servicio de directorio que proporcionan la referencia a los servicios disponibles:
 
    ![Transparencia de localización](/transparencias/ssdd_web-services/ssdd_web-services-drawio_5.svg)
 
 Este servicio de directorio permite *transparencia de localización*, lo que es un nivel de abstracción extra.
+
+#### Transparencia de localización
+
 Los pasos habituales para el uso del servicio de directorio (o registro) son:
-1. El proceso solicitante contacta con el servicio de directorio
+1. El proceso solicitante contacta con el servicio de directorio y busca un servicio
 2. El servicio de directorio devuelve la referencia al servicio solicitado
 3. Usando la referencia, el proceso solicitante interactúa con el servicio
 
-El disponer de un repositorio de servicios web ofrecidos permite:
-   * **Distintas aplicaciones de software** desarrolladas en lenguajes de programación diferentes, y ejecutadas sobre cualquier plataforma, pueden utilizar los servicios web para intercambiar datos.
-   * Una única **aplicación distribuida** puede descomponerse en servicios modulares independientes débilmente acoplados que pueden interoperar entre sí mediante el paradigma cliente/servidor.
-     * **Arquitectura SOA**: Arquitectura en la que el software se expone como “servicio”, que es invocado utilizando un protocolo estándar de comunicación
-     *  Es posible componer y combinar servicios web para generar nuevas aplicaciones distribuidas (por ejemplo: agencia de viajes que interactúa con hoteles, aviones, banco, etc.)
+Las principales diferencias con RPC son:
+   * En una RPC se busca el puerto de la máquina donde ejecuta el *"servicio de directorio"*
+     *  En servicios Web se busca por el listado de las URL (protocolo, máquina y puerto) donde está el servicio
+   * En una RPC se busca por un número identificador del servicio
+     * En servicios Web se podría buscar por su nombre, características del servicio, etc.
 
 
 #### Invocación remota usando la Web
@@ -54,7 +58,16 @@ Dar de alta un servicio puede suponer incluir en el directorio lo siguiente:
 * Una descripción del API que permite diseñar, implementar y probar un cliente (consumidor) que pida el servicio a un servidor (proveedor).
 
 A partir de la descripción del API puede ser posible generar los resguardos (stubs) que facilitan el despliegue de forma parecida a como `rpcgen` automatiza la generación de parte del código en las RPC.
-* La generación de código mediante una herramienta de este tipo permite garantizar que se ha validado dicho proceso de generación (en lugar de basarse en una generación de código basada en probabilidad que puede no funcionar como es el caso de herramientas puramente basadas en IA).
+* La generación de código mediante una herramienta de este tipo permite garantizar que se ha validado dicho proceso de generación (en lugar de basarse en una generación estocástica de código que puede no funcionar como es el caso de herramientas puramente basadas en IA).
+
+
+#### Qué ha facilitado los servicios Web
+
+El disponer de un repositorio de servicios web ofrecidos permite que:
+   * **Distintas aplicaciones de software** desarrolladas en lenguajes de programación diferentes, y ejecutadas sobre cualquier plataforma, pueden utilizar los servicios web para intercambiar datos.
+   * Una única **aplicación distribuida** puede descomponerse en servicios modulares independientes débilmente acoplados que pueden interoperar entre sí.
+     * **Arquitectura SOA**: Arquitectura en la que el software se expone como “servicio”, que es invocado utilizando un protocolo estándar de comunicación
+     *  Es posible componer y combinar servicios web para generar nuevas aplicaciones distribuidas (por ejemplo: agencia de viajes que interactúa con hoteles, aviones, banco, etc.)
 
 
 ## Primera generación de la WWW: contenido estático
@@ -209,9 +222,9 @@ Las API REST se han popularizado, siendo el método común para conectar compone
 </html>
 
 Los [seis principios de diseño (o restricciones arquitectónicas)](https://www.ibm.com/topics/rest-apis) REST son:
-* Interfaz uniforme: Todas las solicitudes de API para el mismo recurso deben tener el mismo aspecto, independientemente de la procedencia de la solicitud. 
+* Interfaz uniforme: Todas las solicitudes de API para el mismo recurso deben tener el mismo aspecto, independientemente de la procedencia de la solicitud.
 * Desacoplamiento cliente-servidor: Las aplicaciones cliente y servidor deben ser completamente independientes entre sí, solo se interactúa con el API.
-* Sin estado: Las API REST son apátridas, lo que significa que cada solicitud debe incluir toda la información necesaria para procesarla. 
+* Sin estado: Las API REST son apátridas, lo que significa que cada solicitud debe incluir toda la información necesaria para procesarla.
 * Cacheabilidad: En la medida de lo posible, los recursos deben poder almacenarse en caché en el cliente o en el servidor.
 * Arquitectura en capas: las llamadas y las respuestas pueden pasar por diferentes capas (no asumir que cliente y servidor se conectan directamente entre sí).
 * Código bajo demanda (opcional): Las API REST suelen enviar recursos estáticos, pero en algunos casos las respuestas también pueden contener código ejecutable (como applets de Java). En estos casos, el código solo debe ejecutarse bajo demanda.
@@ -327,6 +340,19 @@ Relación entre tecnologías
 </html>
 
 
+##  Ejemplos de servicio usando REST y SOAP
+
+A continuación se presentan 3 ejemplos simples en Python:
+   * Servicio web REST (servidor y cliente)
+   * Servicio web SOAP (cliente solo)
+   * Servicio web SOAP (cliente y servidor)
+
+Y posteriormente se presentan 2 ejemplos en C:
+   * Uso de servicio basado en gSOAP/XML (cliente solo)
+   * Creación de un servicio basado en gSOAP/XML (cliente y servidor)
+
+Con estos ejemplos se busca mostrar el uso de REST como SOAP, tanto en C como en Python.
+
 
 ## Ejemplo simple de servicio web REST (servidor y cliente en Python)
 
@@ -347,7 +373,7 @@ El siguiente ejemplo implementa un servidor de un servicio web en Python que per
           return precios[item], 201
        except Exception as e:
           return {"error": str(e)}, 415
-   
+
    app.run(debug=False, host="0.0.0.0", port="5000")
    ```
 
@@ -406,17 +432,22 @@ Es incluso posible usar el mandato `curl` como cliente del servicio web anterior
    123.5
    ```
 
-Existe el estándard OpenAPI que permite describir un servicio REST, así como herramientas para ayudar en el desarrollo y pruebas de dicho servicio REST.
+
+<br>
+
+### OpenAPI
+
+Existe el estándar OpenAPI que permite describir un servicio REST, así como herramientas para ayudar en el desarrollo y pruebas de dicho servicio REST.
+
 Relativo al estándar OpenAPI:
-* La documentación del estándar OpenAPI 3.1 está disponible en: https://spec.openapis.org/oas/v3.1.0
+* La documentación del estándar OpenAPI 3.1 está disponible en: https://spec.openapis.org/oas/v3.1.1
 * Como ejemplos tenemos:
-  * Enlace: https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/link-example.yaml
+  * Enlace: Enlace: https://learn.openapis.org/examples/v3.0/link-example.html
   * Tienda de mascotas: https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml
 
 Relativo a las herramientas de ayuda en el diseño, desarrollo y pruebas:
 * Para diseñar el API se puede usar un editor en línea (*online*) como *Swagger Editor*: https://editor.swagger.io/
 * Para la generación de código (*client libraries*, *server stubs*, documentación) en diferentes lenguajes se puede usar *Swagger Codegen*: https://github.com/swagger-api/swagger-codegen
-
 
 
 
@@ -436,20 +467,20 @@ Ejemplos más conocidos son:
 
 El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) basado en Zeep:
 
-0. Primero se precisa comprobar que esté instalado el paquete python **zeep**. 
+0. Primero se precisa comprobar que esté instalado el paquete python **zeep**.
     Se puede instalar mediante:
    ```bash
-   pip3 install zeep 
+   pip3 install zeep
    ```
-   Suele tardar algún tiempo la instalación, hay que esperar. 
+   Suele tardar algún tiempo la instalación, hay que esperar.
    Puede usar ```pip3 install zeep --user``` para instalar solo para el usuario actual.
 
-2. Hay que conocer la información del servicio Web usando ``python -mzeep <URL>``, siendo URL la asociada al WSDL:
+1. Hay que conocer la información del servicio Web usando ``python -mzeep <URL>``, siendo URL la asociada al WSDL:
    ```bash
    python3 -mzeep http://www.soapclient.com/xml/soapresponder.wsdl
    ```
 
-3. El siguiente paso habitual es crear el archivo cliente de dicho servicio web (ws-echo.py en nuestro ejemplo):
+2. El siguiente paso habitual es crear el archivo cliente de dicho servicio web (ws-echo.py en nuestro ejemplo):
    ```python
    import zeep
 
@@ -458,7 +489,7 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
    print(client.service.Method1('Prueba', 'WebService'))
    ```
 
-4. Para ejecutar:
+3. Para ejecutar:
    ```bash
    $ python3 ./ws-echo.py
    Your input parameters are Prueba and WebService
@@ -481,15 +512,15 @@ Ejemplos más conocidos son:
 
 El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) basado en Spyne:
 
-0. Primero se precisa comprobar que estén instalados los paquetes python **spyne** y **zeep**. 
+0. Primero se precisa comprobar que estén instalados los paquetes python **spyne** y **zeep**.
     Se pueden instalar mediante:
    ```bash
    pip3 install spyne zeep
    ```
-   Suele tardar algún tiempo la instalación, hay que esperar. 
+   Suele tardar algún tiempo la instalación, hay que esperar.
    Puede usar ```pip3 install spyne zeep --user``` para instalar solo para el usuario actual.
 
-2. El primer paso habitual es crear el archivo servidor de dicho servicio web (ws-calc-servidor.py en nuestro ejemplo):
+1. El primer paso habitual es crear el archivo servidor de dicho servicio web (ws-calc-servidor.py en nuestro ejemplo):
    ```python
    import time, logging
    from wsgiref.simple_server import make_server
@@ -519,12 +550,12 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
        server.serve_forever()
    ```
 
-3. El segundo paso es ejecutar el servidor:
+2. El segundo paso es ejecutar el servidor:
    ```bash
-   $ python3 ./ws-calc-servidor.py
+   python3 ./ws-calc-servidor.py
    ```
 
-4. El siguiente paso es conocer la información del servicio Web usando ``python -mzeep <URL>``:
+3. El siguiente paso es conocer la información del servicio Web usando ``python -mzeep <URL>``:
    ```bash
    $ python3 -mzeep http://localhost:8000/?wsdl
 
@@ -533,7 +564,7 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
      Port: Application (Soap11Binding: {http://tests.python-zeep.org/}Application)
          Operations:
             add(a: xsd:integer, b: xsd:integer) -> addResult: xsd:integer
-            sub(a: xsd:integer, b: xsd:integer) -> subResult: xsd:integer   
+            sub(a: xsd:integer, b: xsd:integer) -> subResult: xsd:integer
    ```
 
 5. El siguiente paso habitual es crear el archivo cliente de dicho servicio web (ws-calc-cliente.py en nuestro ejemplo):
