@@ -8,18 +8,18 @@
 ## Contenidos
 
   * [Motivación en el uso de servicios Web](#introducción)
-  * [Estilos de servicios: SOAP vs REST](#estilos-de-servicios-soap-vs-rest)
-  * Ejemplos RESTful y SOAP:
-    * [Ejemplo simple de servicio web REST (servidor y cliente en Python)](#ejemplo-simple-de-servicio-web-rest-servidor-y-cliente-en-python)
-    * [Ejemplo de servicio web SOAP (cliente en Python)](#ejemplo-simple-de-servicio-web-soap-cliente-en-python)
-    * [Ejemplo simple de servicio web SOAP (cliente y servidor en Python)](#ejemplo-simple-de-servicio-web-soap-cliente-y-servidor-en-python)
-    * [Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
-    * [Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)](#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c)
+  * [Estilos de servicios: SOAP vs RESTful](#estilos-de-servicios-soap-vs-rest)
+  * Ejemplos REST y SOAP:
+    * [Python - REST: Ejemplo simple de servicio web  (servidor y cliente)](#ejemplo-simple-de-servicio-web-rest-servidor-y-cliente-en-python)
+    * [Python - SOAP: Ejemplo de servicio web  (cliente)](#ejemplo-simple-de-servicio-web-soap-cliente-en-python)
+    * [Python - SOAP: Ejemplo simple de servicio web (cliente y servidor)](#ejemplo-simple-de-servicio-web-soap-cliente-y-servidor-en-python)
+    * [C - SOAP: Usar un servicio distribuido basado en gSOAP/XML (cliente solo)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
+    * [C - SOAP: Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor)](#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c)
   * [Otras tecnologías además de REST y SOAP](#otras-tecnologías-además-de-rest-y-soap)
   * Ejemplos de otras tecnologías:
+    * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-sse-en-bash)
     * [Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-apache-thrift-cliente-y-servidor-en-python)
     * [Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-grpc-cliente-y-servidor-en-python)
-    * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-sse-en-bash)
 
 
 ## Introducción
@@ -351,8 +351,6 @@ Y posteriormente se presentan 2 ejemplos en C:
    * Uso de servicio basado en gSOAP/XML (cliente solo)
    * Creación de un servicio basado en gSOAP/XML (cliente y servidor)
 
-Con estos ejemplos se busca mostrar el uso de REST como SOAP, tanto en C como en Python.
-
 
 ## Ejemplo simple de servicio web REST (servidor y cliente en Python)
 
@@ -442,7 +440,7 @@ Existe el estándar OpenAPI que permite describir un servicio REST, así como he
 Relativo al estándar OpenAPI:
 * La documentación del estándar OpenAPI 3.1 está disponible en: https://spec.openapis.org/oas/v3.1.1
 * Como ejemplos tenemos:
-  * Enlace: Enlace: https://learn.openapis.org/examples/v3.0/link-example.html
+  * Enlace: https://learn.openapis.org/examples/v3.0/link-example.html
   * Tienda de mascotas: https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml
 
 Relativo a las herramientas de ayuda en el diseño, desarrollo y pruebas:
@@ -786,6 +784,158 @@ Entre estas tecnologías hay que destacar dos:
 Ambas tecnologías permiten crear software en distintos lenguajes, y usar protocolos eficientes.
 
 
+### Motor de la evolución: servicios con más necesidades 
+
+A día de hoy, el estándar más usado como base de servicios Web es HTTP lo que hace que solo usando HTTP todo se tenga que basar en el modelo de interacción *petición/respuesta* y protocolo basado en mensajes de *texto*.
+En algunos casos puede que no sea el modelo ideal para construir algunos servicios lo que fuerza a adaptar dichos servicios al modelo y protocolo de una forma que complica tanto el diseño y como la eficiencia de ejecución.
+
+Algunos ejemplos de modelos de interacción diferentes al *petición/respuesta* se tienen:
+* **Fire-and-forget**. Este modelo es una optimización del modelo *petición/respuesta* que es útil cuando la respuesta no es necesaria. Por ejemplo si un cliente quiere usar un servicio no crítico de registro de eventos (*non-critical event logging*). Ahorra tanto recursos de uso en red (al no enviar la respuesta) y también recursos de procesamiento (al necesitar el procesamiento de la respuesta). También es común su uso en [sistemas de mensajería](https://dasunpubudumal.medium.com/distributed-systems-messaging-eee8e70c4a77)
+* **Request/stream**. Este modelo es una variante de *petición/respuesta* en el que la respuesta no es un único mensaje sino una colección de mensajes. Por ejemplo si un cliente pide la lista de productos de un catálogo.
+* **Event**. Este modelo es una variante de modelo *petición/respuesta* en el que no hay una petición y si una secuencia de  respuestas, son mensajes de respuesta asociados a eventos asíncronos. Por ejemplo si un cliente quiere estar suscrito a los comentarios que se vayan haciendo de una transmisión deportiva.
+
+
+## Ejemplos de otras tecnologías
+
+Como ejemplos de otras tecnologías se tienen los siguientes:
+* Python - SSE: Ejemplo simple de servicio web basado en SSE 
+* BASH - SSE: Ejemplo simple de servicio web basado en SSE 
+* Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)
+* Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)
+
+
+## Ejemplo simple de servicio web basado en SSE (en Python)
+
+El siguiente es un ejemplo de [Server Side Events](https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events) basado en Python. \
+Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).
+
+Este ejemplo está compuesto de 2 ficheros:
+ * El archivo **`demo-server.py`**: servidor que cada segundo genera un mensaje con el instante de tiempo actual
+   ```python
+    import time, datetime
+    from flask import Flask, Response
+    from flask_cors import CORS
+
+    app = Flask(__name__)
+    CORS(app)
+
+    @app.route("/")
+    def publish_data():
+        def stream():
+            while True:
+                ts  = datetime.datetime.now()
+                msg = f"data: " + str(ts) + "\n\n"
+                yield msg
+                time.sleep(1)
+
+        return Response(stream(), mimetype="text/event-stream")
+
+    if __name__ == "__main__":
+        app.run(debug=True, port=5000)
+   ```
+ * La página web **`demo-client.html`**: se encarga de mostrar la información que va llegando en tiempo real.
+   ```html
+   <!DOCTYPE html>
+   <html>
+     <head><meta charset="utf-8" /></head>
+     <body>
+     <div id="msg1"></div><br>
+     <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div><br>
+     <script>
+       var s = new EventSource('http://localhost:5000');
+           s.onmessage = function(e) {
+               document.getElementById("msg1").innerHTML = e.data ;
+               var old_msg2 = document.getElementById("msg2").innerHTML ;
+               document.getElementById("msg2").innerHTML = e.data + '<br>' + old_msg2 ;
+           };
+     </script>
+     </body>
+   </html>
+   ```
+
+
+Los pasos para la ejecución típica son:
+ * Ejecutar el servidor:
+   ```bash
+   python3 ./demo-server.py
+   ```
+ * Ejecutar el cliente:
+   ```bash
+   firefox demo-client.html
+   ```
+
+
+En la página Web `demo-client.html` cada segundo llega un evento por parte de `demo-server.py`.
+En lugar de mostrarse en la página Web el instante de tiempo cada segundo, se puede mandar otro tipo de información (por ejemplo, valores de los sensores), con distinto tipo de periodicidad y distinto tipo de visualización o procesamiento.
+
+
+## Ejemplo simple de servicio web basado en SSE (en bash)
+
+El siguiente es un ejemplo de [Server Side Events](https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events) o eventos enviados por servidor. \
+Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).
+
+Este ejemplo está disponible en [ws-rest-sse-bash](/ws-rest-sse-bash/README.md) y está compuesto de 3 ficheros:
+ * El script **`demo-server.sh`**: manda la salida del script **`demo.sh`** al mandato **nc** (*net cat*) que está escuchando en el puerto 8080.
+   ```bash
+   #!/bin/bash
+   set -x
+   ./demo.sh | nc -l -p 8080
+   ```
+ * El script **`demo.sh`**: se encarga de mandar las cabeceras de respuesta de un servidor web, y luego cada segundo manda el instante de tiempo dentro de un JSON.
+   ```bash
+   #!/bin/bash
+   # (1) cabeceras
+   echo "HTTP/1.1 200 OK"
+   echo "Access-Control-Allow-Origin: *"
+   echo "Content-Type: text/event-stream"
+   echo "Cache-Control: no-cache"
+   echo ""
+   # (2) cada segundo manda "data: {'timestamp': <instante>}"
+   while [ 1 ]; do
+     T=$(date +%H:%M:%S)
+     echo "data: {'timestamp': $T}"
+     echo ""
+     echo ""
+     sleep 1
+   done
+   ```
+ * La página web **`demo-client.html`**: se encarga de mostrar la información que va llegando en tiempo real.
+   ```html
+   <!DOCTYPE html>
+   <html>
+     <head><meta charset="utf-8" /></head>
+     <body>
+     <div id="msg1"></div><br>
+     <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div><br>
+     <script>
+       var s = new EventSource('http://localhost:8080');
+           s.onmessage = function(e) {
+               document.getElementById("msg1").innerHTML = e.data ;
+               var old_msg2 = document.getElementById("msg2").innerHTML ;
+               document.getElementById("msg2").innerHTML = e.data + '<br>' + old_msg2 ;
+           };
+     </script>
+     </body>
+   </html>
+   ```
+
+
+Los pasos para la ejecución típica son:
+ * Ejecutar el servidor:
+   ```
+   ./demo-server.sh
+   ```
+ * Ejecutar el cliente:
+   ```
+   firefox demo-client.html
+   ```
+
+
+En la página Web `demo-client.html` cada segundo llega un evento por parte del script `demo.sh` a través del mandato `nc`que simula un servidor web en el puerto 8080.
+En lugar de mostrarse en la página Web el instante de tiempo cada segundo, se puede mandar otro tipo de información (por ejemplo, valores de los sensores), con distinto tipo de periodicidad y distinto tipo de visualización o procesamiento.
+
+
+
 ## Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)
 
 El siguiente ejemplo está basado en el ejemplo disponible en: https://github.com/apache/thrift/tree/master/tutorial/py
@@ -946,135 +1096,7 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
     ```
 
 
-## Ejemplo simple de servicio web basado en SSE (en bash)
 
-El siguiente es un ejemplo de [Server Side Events](https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events) o eventos enviados por servidor. \
-Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).
-
-Este ejemplo está disponible en [ws-rest-sse-bash](/ws-rest-sse-bash/README.md) y está compuesto de 3 ficheros:
- * El script **`demo-server.sh`**: manda la salida del script **`demo.sh`** al mandato **nc** (*net cat*) que está escuchando en el puerto 8080.
-   ```bash
-   #!/bin/bash
-   set -x
-   ./demo.sh | nc -l -p 8080
-   ```
- * El script **`demo.sh`**: se encarga de mandar las cabeceras de respuesta de un servidor web, y luego cada segundo manda el instante de tiempo dentro de un JSON.
-   ```bash
-   #!/bin/bash
-   # (1) cabeceras
-   echo "HTTP/1.1 200 OK"
-   echo "Access-Control-Allow-Origin: *"
-   echo "Content-Type: text/event-stream"
-   echo "Cache-Control: no-cache"
-   echo ""
-   # (2) cada segundo manda "data: {'timestamp': <instante>}"
-   while [ 1 ]; do
-     T=$(date +%H:%M:%S)
-     echo "data: {'timestamp': $T}"
-     echo ""
-     echo ""
-     sleep 1
-   done
-   ```
- * La página web **`demo-client.html`**: se encarga de mostrar la información que va llegando en tiempo real.
-   ```html
-   <!DOCTYPE html>
-   <html>
-     <head><meta charset="utf-8" /></head>
-     <body>
-     <div id="msg1"></div><br>
-     <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div><br>
-     <script>
-       var s = new EventSource('http://localhost:8080');
-           s.onmessage = function(e) {
-               document.getElementById("msg1").innerHTML = e.data ;
-               var old_msg2 = document.getElementById("msg2").innerHTML ;
-               document.getElementById("msg2").innerHTML = e.data + '<br>' + old_msg2 ;
-           };
-     </script>
-     </body>
-   </html>
-   ```
-
-
-Los pasos para la ejecución típica son:
- * Ejecutar el servidor:
-   ```
-   ./demo-server.sh
-   ```
- * Ejecutar el cliente:
-   ```
-   firefox demo-client.html
-   ```
-
-
-En la página Web `demo-client.html` cada segundo llega un evento por parte del script `demo.sh` a través del mandato `nc`que simula un servidor web en el puerto 8080.
-En lugar de mostrarse en la página Web el instante de tiempo cada segundo, se puede mandar otro tipo de información (por ejemplo, valores de los sensores), con distinto tipo de periodicidad y distinto tipo de visualización o procesamiento.
-
-
-## Ejemplo simple de servicio web basado en SSE (en Python)
-
-El siguiente es un ejemplo de [Server Side Events](https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events) basado en Python. \
-Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).
-
-Este ejemplo está compuesto de 2 ficheros:
- * El archivo **`demo-server.py`**: servidor que cada segundo genera un mensaje con el instante de tiempo actual
-   ```python
-    import time, datetime
-    from flask import Flask, Response
-    from flask_cors import CORS
-
-    app = Flask(__name__)
-    CORS(app)
-
-    @app.route("/")
-    def publish_data():
-        def stream():
-            while True:
-                ts  = datetime.datetime.now()
-                msg = f"data: " + str(ts) + "\n\n"
-                yield msg
-                time.sleep(1)
-
-        return Response(stream(), mimetype="text/event-stream")
-
-    if __name__ == "__main__":
-        app.run(debug=True, port=5000)
-   ```
- * La página web **`demo-client.html`**: se encarga de mostrar la información que va llegando en tiempo real.
-   ```html
-   <!DOCTYPE html>
-   <html>
-     <head><meta charset="utf-8" /></head>
-     <body>
-     <div id="msg1"></div><br>
-     <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div><br>
-     <script>
-       var s = new EventSource('http://localhost:5000');
-           s.onmessage = function(e) {
-               document.getElementById("msg1").innerHTML = e.data ;
-               var old_msg2 = document.getElementById("msg2").innerHTML ;
-               document.getElementById("msg2").innerHTML = e.data + '<br>' + old_msg2 ;
-           };
-     </script>
-     </body>
-   </html>
-   ```
-
-
-Los pasos para la ejecución típica son:
- * Ejecutar el servidor:
-   ```bash
-   python3 ./demo-server.py
-   ```
- * Ejecutar el cliente:
-   ```bash
-   firefox demo-client.html
-   ```
-
-
-En la página Web `demo-client.html` cada segundo llega un evento por parte de `demo-server.py`.
-En lugar de mostrarse en la página Web el instante de tiempo cada segundo, se puede mandar otro tipo de información (por ejemplo, valores de los sensores), con distinto tipo de periodicidad y distinto tipo de visualización o procesamiento.
 
 
 <br/>
