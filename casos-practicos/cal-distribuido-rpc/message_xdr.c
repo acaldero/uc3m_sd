@@ -8,11 +8,12 @@
 bool_t
 xdr_result (XDR *xdrs, result *objp)
 {
+	// register int32_t *buf;
+
 	 if (!xdr_int (xdrs, &objp->value))
 		 return FALSE;
 	 if (!xdr_int (xdrs, &objp->status))
 		 return FALSE;
-
 	return TRUE;
 }
 
@@ -23,7 +24,6 @@ xdr_d_add_1_argument (XDR *xdrs, d_add_1_argument *objp)
 		 return FALSE;
 	 if (!xdr_int (xdrs, &objp->b))
 		 return FALSE;
-
 	return TRUE;
 }
 
@@ -34,7 +34,5 @@ xdr_d_divide_1_argument (XDR *xdrs, d_divide_1_argument *objp)
 		 return FALSE;
 	 if (!xdr_int (xdrs, &objp->b))
 		 return FALSE;
-
 	return TRUE;
 }
-

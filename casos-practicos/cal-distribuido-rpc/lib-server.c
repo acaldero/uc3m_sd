@@ -32,7 +32,7 @@ d_neg_1_svc(int a, struct result *result,  struct svc_req *rqstp)
 }
 
 int
-nanodt_1_freeresult (SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result)
+calc_1_freeresult (SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result)
 {
 	xdr_free (xdr_result, result);
 

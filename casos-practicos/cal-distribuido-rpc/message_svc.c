@@ -35,7 +35,7 @@ _d_neg_1 (int  *argp, void *result, struct svc_req *rqstp)
 }
 
 static void
-nanodt_1(struct svc_req *rqstp, register SVCXPRT *transp)
+calc_1(struct svc_req *rqstp, register SVCXPRT *transp)
 {
 	union {
 		d_add_1_argument d_add_1_arg;
@@ -91,7 +91,7 @@ nanodt_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		fprintf (stderr, "%s", "unable to free arguments");
 		exit (1);
 	}
-	if (!nanodt_1_freeresult (transp, _xdr_result, (caddr_t) &result))
+	if (!calc_1_freeresult (transp, _xdr_result, (caddr_t) &result))
 		fprintf (stderr, "%s", "unable to free results");
 
 	return;
@@ -109,7 +109,7 @@ main (int argc, char **argv)
 		fprintf (stderr, "%s", "cannot create udp service.");
 		exit(1);
 	}
-	if (!svc_register(transp, CALC, CALC_VERSION, nanodt_1, IPPROTO_UDP)) {
+	if (!svc_register(transp, CALC, CALC_VERSION, calc_1, IPPROTO_UDP)) {
 		fprintf (stderr, "%s", "unable to register (CALC, CALC_VERSION, udp).");
 		exit(1);
 	}
@@ -119,7 +119,7 @@ main (int argc, char **argv)
 		fprintf (stderr, "%s", "cannot create tcp service.");
 		exit(1);
 	}
-	if (!svc_register(transp, CALC, CALC_VERSION, nanodt_1, IPPROTO_TCP)) {
+	if (!svc_register(transp, CALC, CALC_VERSION, calc_1, IPPROTO_TCP)) {
 		fprintf (stderr, "%s", "unable to register (CALC, CALC_VERSION, tcp).");
 		exit(1);
 	}

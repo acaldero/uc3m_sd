@@ -46,7 +46,7 @@ extern  bool_t d_divide_1_svc(int , int , struct result *, struct svc_req *);
 #define d_neg 3
 extern  enum clnt_stat d_neg_1(int , struct result *, CLIENT *);
 extern  bool_t d_neg_1_svc(int , struct result *, struct svc_req *);
-extern int nanodt_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
+extern int calc_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
 #define d_add 1
@@ -58,7 +58,7 @@ extern  bool_t d_divide_1_svc();
 #define d_neg 3
 extern  enum clnt_stat d_neg_1();
 extern  bool_t d_neg_1_svc();
-extern int nanodt_1_freeresult ();
+extern int calc_1_freeresult ();
 #endif /* K&R C */
 
 /* the xdr functions */
