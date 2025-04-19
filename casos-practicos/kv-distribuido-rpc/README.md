@@ -1,15 +1,16 @@
+
 ## Materiales usados en ARCOS.INF.UC3M.ES con Licencia GPLv3.0
   * Felix García Carballeira y Alejandro Calderón Mateos
 
 ## Servicio distribuido basado en RPC
 
-### (0) Pasos iniciales para Ubuntu 22.04 o compatible:
+### (0) Pasos iniciales para tener las RPC en una distribución Linux compatible con Ubuntu 22.04:
 
-  1) Instalar pre-requisitos:
+  1) Instalar software y sus pre-requisitos:
      ```
-     sudo apt-get install libtirpc-common libtirpc-dev libtirpc3  rpcbind build-essential  
+     sudo apt-get install libtirpc-common libtirpc-dev libtirpc3  rpcbind build-essential
      ```
-  2) Configurar pre-requisitos:
+  2) Configurar software y pre-requisitos:
      ```
      sudo mkdir -p /run/sendsigs.omit.d/
      sudo /etc/init.d/rpcbind restart
@@ -17,63 +18,75 @@
 
 ### (1) Pasos para crear una aplicación distribuida con las RPC:
 
-  1) Crear el archivo IDL usando lenguaje XDR (que es parecido a C pero no exactamente C). \
-     Nuestro ejemplo de [message.x](message.x) es:
-     ```
-     struct get_res 
-     {
-       int value ;
-       int status ;
-     } ;
-     program NANODT
-     {
-      	version NANODT_VERSION
+  1) Crear el archivo IDL usando lenguaje XDR (que es parecido a C pero no exactamente C).
+     * Nuestro ejemplo de [message.x](message.x) es:
+       ```
+       struct result
        {
+         int value ;
+         int status ;
+       } ;
+       
+       program NANODT
+       {
+        	version NANODT_VERSION
+          {
 		        int            d_init ( string name, int N )            = 1 ;
 		        int            d_set  ( string name, int i, int value ) = 2 ;
 		        struct get_res d_get  ( string name, int i )            = 3 ;
-	      } = 1 ;
-     } = 55555 ;
-     ```
+	       } = 1 ;
+	       
+       } = 55555 ;
+       ```
 
-  2) Uso de rpcgen con archivo de IDL:
-     ```
-     rpcgen -a -N -M message.x
-     ```
-     NOTA: este mandato genera distintos ficheros, los siguientes no han de modificarse:
-     * **message.h**: definición de tipos y funciones a partir de lo indicado en message.x
-     * **message_clnt.c**: *stub* o suplente RPC en el lado del cliente.
-     * **message_svc.c**: *stub* o suplente RPC en el lado del servidor.
-     * **message_xdr.c**: encargado del *marshalling* y *unmarshalling* de los datos.
+  2) Uso de rpcgen con el archivo IDL:
+     * Para nuestro ejemplo es:
+       ```
+       rpcgen -a -N -M message.x
+       ```
+     * Este mandato debería generar los siguientes ficheros:
 
-  3) Solo en el caso de usar Ubuntu 22.04 o compatible, habría que editar Makefile.rpc y revisar que CFLAGS y LDFLAGS usan tirpc:
-     ```
-     ...
-     CFLAGS  += -g -I/usr/include/tirpc
-     LDFLAGS += -lnsl -lpthread -ldl -ltirpc
-     ...
-     ```
+       |    **Fichero**   	| **Debería editarse o usarse como plantilla**     	| **Dónde se utiliza** 	| **Significado**                                                                                                                             	|
+       |:----------------	|:------------------------------------------------:	|:--------------------:	|:------------------------------------------------------------------------------------------------------------------------------------------- |
+       | message.h        	|                        No                        	| Cliente y servidor   	| Definición de tipos y funciones a partir de lo indicado en message.x                                                                        	|
+       | message_xdr.c    	|                        No                        	| Cliente y servidor   	| Encargado del *marshalling* y *unmarshalling* de los datos                                                                                  	|
+       | message_clnt.c   	|                        No                        	| Cliente              	| *stub* o suplente RPC en el lado del cliente                                                                                                	|
+       | message_svc.c    	|                        No                        	| Servidor             	| *stub* o suplente RPC en el lado del servidor                                                                                               	|
+       | message_server.c 	|                        Si                        	| Servidor             	| Esqueleto para implementar la interfaz en el servidor.<br>Se utiliza como plantilla para lib-server.c                                       	|
+       | message_client.c 	|                        Si                        	| Cliente              	| Ejemplo de programa cliente que hace llamadas RPC                                                                                           	|
+       | Makefile.message 	|                        Si                        	| Para compilar        	| Plantilla para archivo de compilación.<br>Hay que añadir los archivos extras del proyecto y revisar que las opciones se ajusten al proyecto 	|
 
-  4) Hay que completar el código que rpcgen genera, para ello hay que:
-     * Añadir el código en el lado del servidor, que implementa el servicio RPC.
-     * Añadir el código en el lado del cliente, que usa el API del servicio RPC.
-     * Modificar Makefile para compilar nuestro proyecto.
-
-     NOTA: el mandato rpcgen nos ayuda en gran parte del trabajo al generar unos archivos que nos pueden servir de plantilla y que hay que modificar para nuestro proyecto:
-     * **message_server.c**: plantilla para el archivo lib-server.c que implementa la interfaz en el servidor.
-     * **message_client.c**: ejemplo de programa cliente que hace llamadas RPC
-     * **Makefile.message**: plantilla para archivo de compilación, hay que añadir los archivos extras que tenga el proyecto
-
-     En nuestro ejemplo usaremos los siguientes archivos en lugar de los generados por rpcgen:
-     * En el lado del servidor (lib-server.c + lib.c + lib.h):
-       * **[lib-server.c](lib-server.c)**: implementación de la interfaz RPC
+  3) Completar el código que rpcgen genera en el lado del **servidor**:
+     * En el ejemplo se tiene *lib-server.c + lib.c + lib.h*:
+       * **[lib-server.c](lib-server.c)**: implementación de la interfaz RPC usando **message_server.c** como plantilla inicial
        * **[lib.c](lib.c)**: implementación de la interfaz a ser usada en el lado del servidor
        * **[lib.h](lib.h)**: interfaz a ser usada en el lado del servidor
-     * En el lado del cliente (app-d.c):
-       * **[lib-client.c](lib-client.c)**: implementación del proxy que usa la interfaz RPC
+
+  4) Completar el código que rpcgen genera en el lado del **cliente**:
+     * En el ejemplo se tiene *lib-client.c + lib-client.h + app-d.c*:
+       * **[lib-client.c](lib-client.c)**: implementación del proxy que usa la interfaz RPC, usando fragmentos de **message_client.c**
+       * **[lib-client.h](lib-client.h)**: implementación de la interfaz de lib.h en el cliente, usando **lib.h**
        * **[app-d.c](app-d.c)**: implementación de programa cliente que usa la interfaz de lib-client.c (la de lib.h en el cliente)
-     * El Makefile.rpc para compilar:
-       * **[Makefile.rpc](Makefile.rpc)**: archivo para compilar todo
+
+  5) Crear **Makefile.rpc** usando **Makefile.message** como plantilla y revisar los siguientes aspectos:
+     * En el caso de usar Linux Ubuntu 22.04 o compatible, hay que revisar que CFLAGS y LDFLAGS usan tirpc:
+       ```
+       ...
+       CFLAGS  += -g -I/usr/include/tirpc         # añadir -I/usr/include/tirpc
+       LDFLAGS += -lnsl -lpthread -ldl -ltirpc    # añadir -ltirpc
+       ...
+       ```
+     * En la regla de "clean:" asegurarse de que **NO** tiene $(TARGETS):
+       ```
+       clean:
+               # $(RM) core $(TARGETS) $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER)
+                 $(RM) core            $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER)
+       ```
+     * Añadir los archivos adicionales necesarios para el proyecto:
+        ```
+       TARGETS_SVC.c  = lib-server.c lib.c    message_svc.c  message_xdr.c
+       TARGETS_CLNT.c = app-d.c lib-client.c  message_clnt.c message_xdr.c
+       ```
 
 
 ### (2) Compilar
@@ -85,18 +98,19 @@
 
 * Y la salida debería ser similar a:
   ```
-  gcc -g -Wall -c app-d.c
-  gcc -g -Wall -c lib-client.c
-  gcc -g -Wall -c message_clnt.c
-  gcc -g -Wall -c message_xdr.c
-  gcc -g -Wall    app-d.o lib-client.o message_clnt.o message_xdr.o  -o app-d 
-  gcc -g -Wall -c lib.c
-  gcc -g -Wall -c lib-server.c
-  gcc -g -Wall -c message_svc.c
-  gcc -g -Wall    lib-server.o  lib.o  message_svc.o  message_xdr.o  -o lib-server 
+  gcc -g -Wall -I/usr/include/tirpc -c app-d.c
+  gcc -g -Wall -I/usr/include/tirpc -c lib-client.c
+  gcc -g -Wall -I/usr/include/tirpc -c message_clnt.c
+  gcc -g -Wall -I/usr/include/tirpc -c message_xdr.c
+  gcc -g -Wall -I/usr/include/tirpc lib-client.o app-d.o message_clnt.o message_xdr.o  -o app-d -lnsl -lpthread -ldl -ltirpc
+  gcc -g -Wall -I/usr/include/tirpc -c lib.c
+  gcc -g -Wall -I/usr/include/tirpc -c lib-server.c
+  gcc -g -Wall -I/usr/include/tirpc -c message_svc.c
+  gcc -g -Wall -I/usr/include/tirpc lib-server.o  lib.o  message_svc.o  message_xdr.o  -o lib-server -lnsl -lpthread -ldl -ltirpc
   ```
 
-#### (3) Ejecutar
+### (3) Ejecutar
+
 
 <html>
 <table>

@@ -420,12 +420,13 @@ Es incluso posible usar el mandato `curl` como cliente del servicio web anterior
 
  * Y la salida sería:
    ```bash
-   127.0.0.1 - - [12/Mar/2024 02:42:00] "POST /precio HTTP/1.1" 201 -
+   127.0.0.1 - - [11/Mar/2025 12:42:00] "POST /precio HTTP/1.1" 201 -
    HTTP/1.0 201 CREATED
+   Server: Werkzeug/2.3.2 Python/3.10.12
+   Date: Tue, 11 Mar 2025 11:42:00 GMT
    Content-Type: text/html; charset=utf-8
    Content-Length: 5
-   Server: Werkzeug/2.0.3 Python/3.8.10
-   Date: Tue, 12 Mar 2024 01:42:00 GMT
+   Connection: close
 
    123.5
    ```
@@ -592,6 +593,11 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
 Usaremos un ejemplo basado en el servicio de calculadora disponible en: http://www.genivia.com/calc.wsdl
 
 Los pasos principales a seguir son los siguientes:
+0. Primero se precisa comprobar que estén instalados los paquetes **gsoap** y **libgsoap-dev**.
+    Se pueden instalar mediante:
+    ```bash
+    sudo apt install gsoap gsoap-doc libgsoap-dev
+    ```
 1. Primero hay que obtener el archivo calc.h con la interfaz del servicio a partir de la descripción del servicio dada en WSDL:
     ```bash
     wsdl2h -c -o calc.h http://www.dneonline.com/calculator.asmx?WSDL
@@ -812,25 +818,25 @@ Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar
 Este ejemplo está compuesto de 2 ficheros:
  * El archivo **`demo-server.py`**: servidor que cada segundo genera un mensaje con el instante de tiempo actual
    ```python
-    import time, datetime
-    from flask import Flask, Response
-    from flask_cors import CORS
+   import time, datetime
+   from flask import Flask, Response
+   from flask_cors import CORS
 
-    app = Flask(__name__)
-    CORS(app)
+   app = Flask(__name__)
+   CORS(app)
 
-    @app.route("/")
-    def publish_data():
-        def stream():
-            while True:
-                ts  = datetime.datetime.now()
-                msg = f"data: " + str(ts) + "\n\n"
-                yield msg
-                time.sleep(1)
+   @app.route("/")
+   def publish_data():
+       def stream():
+           while True:
+               ts  = datetime.datetime.now()
+               msg = f"data: " + str(ts) + "\n\n"
+               yield msg
+               time.sleep(1)
 
-        return Response(stream(), mimetype="text/event-stream")
+       return Response(stream(), mimetype="text/event-stream")
 
-    if __name__ == "__main__":
+   if __name__ == "__main__":
         app.run(debug=True, port=5000)
    ```
  * La página web **`demo-client.html`**: se encarga de mostrar la información que va llegando en tiempo real.
@@ -923,7 +929,8 @@ Este ejemplo está disponible en [ws-rest-sse-bash](/ws-rest-sse-bash/README.md)
 Los pasos para la ejecución típica son:
  * Ejecutar el servidor:
    ```
-   ./demo-server.sh
+   chmod a+x *.sh
+   ./demo-server.sh &
    ```
  * Ejecutar el cliente:
    ```
@@ -991,7 +998,7 @@ En el proceso de creación de un servicio distribuido basado en Apache Thrift qu
        server.serve()
        print('done.')
    ```
-4. Hay que crear la parte cliente que use el servicio, por ejemplo en el archivo **`client.c`**:
+4. Hay que crear la parte cliente que use el servicio, por ejemplo en el archivo **`client.py`**:
    ```python
    from calc import calc
    from calc.ttypes import *
@@ -1022,8 +1029,8 @@ En el proceso de creación de un servicio distribuido basado en Apache Thrift qu
    ```
 5. Es posible ejecutar el servidor y el cliente de la siguiente manera:
    ```bash
-    $ python3 ./server &
-    $ python3 ./client
+    $ python3 ./server.py &
+    $ python3 ./client.py
     add(1,1)
     1+1=2
     sub(1,1)
@@ -1061,23 +1068,23 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
    ```
 3. Hay que crear la parte que implementa el servicio, por ejemplo en el archivo **`server.py`**:
    ```python
-    import grpc
-    from concurrent import futures
-    import calc_pb2
-    import calc_pb2_grpc
+   import grpc
+   from concurrent import futures
+   import calc_pb2
+   import calc_pb2_grpc
 
-    class CalculatorServicer(calc_pb2_grpc.CalculatorServicer):
+   class CalculatorServicer(calc_pb2_grpc.CalculatorServicer):
         def Add(self, request, context):
             result = request.num1 + request.num2
             return calc_pb2.AddResponse(result=result)
 
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    calc_pb2_grpc.add_CalculatorServicer_to_server(CalculatorServicer(), server)
-    server.add_insecure_port('[::]:50051')
-    server.start()
-    server.wait_for_termination()
+   server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+   calc_pb2_grpc.add_CalculatorServicer_to_server(CalculatorServicer(), server)
+   server.add_insecure_port('[::]:50051')
+   server.start()
+   server.wait_for_termination()
    ```
-4. Hay que crear la parte cliente que use el servicio, por ejemplo en el archivo **`client.c`**:
+4. Hay que crear la parte cliente que use el servicio, por ejemplo en el archivo **`client.py`**:
    ```python
    import grpc
    import calc_pb2
@@ -1090,8 +1097,8 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
    ```
 5. Es posible ejecutar el servidor y el cliente de la siguiente manera:
    ```bash
-   $ python3 ./server &
-   $ python3 ./client
+   $ python3 ./server.py &
+   $ python3 ./client.py
    Result: 3
     ```
 
