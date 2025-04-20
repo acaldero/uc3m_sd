@@ -62,12 +62,13 @@
 
  * Uno de los ingredientes es la transparencia de la invocación remota: se busca que código de invocación remota lo más transparente posible, de manera que se parezca a una invocación a una función local.
 
- * En el siguiente ejemplo a la izquierda se muestra los elementos de una aplicación no distribuida con llamada local a la función de sumar. A la derecha se muestra la misma aplicación con una llamada remota a la función de sumar:
+ * En el siguiente ejemplo se muestra la forma de acercar esta transparencia:
+   * A la izquierda se muestra los elementos de una aplicación no distribuida con llamada local a la función de sumar. 
+   * A la derecha se muestra la misma aplicación con una llamada remota a la función de sumar:
+     * Sigue estando ```aplicación.c``` y ```biblioteca.c```. Se añade ```stub_cliente.c``` y ```stub_servidor.c```
+     * El código del ```stub_cliente``` y del ```stub_servidor``` oculta a la función "main(...)" los detalles de que la ejecución es remota.
+     * El componente ```biblioteca``` de la aplicación pasa a estar en otro proceso, y se comunican usando colas POSIX en este ejemplo. <br><br>
        ![Organización del código para invocación remota mediante colas POSIX](./ssdd_rpc/ssdd_rpc_drawio_10a.svg)
-
-    * Sigue estando ```apliación.c``` y ```biblioteca.c```, y se añade ```stub_cliente.c``` y ```stub_servidor.c```
-    * El código del ```stub_cliente``` y del ```stub_servidor``` oculta a la función "main(...)" los detalles de que la ejecución es remota.
-    * El componente ```biblioteca``` de la aplicación pasa a estar en otro proceso, y se comunican en este ejemplo usando colas POSIX.
 
 
 ## (2/2) Generación automática
@@ -122,40 +123,39 @@
 ## Desarrollando con las RPC
 
  1. Definir la interfaz de servicio un lenguaje de definición de interfaces (IDL):
-	 * Hay que definir cada operación, sus argumentos de entrada y salida, así como sus resultados
+    * Hay que definir cada operación, sus argumentos de entrada y salida, así como sus resultados
 
-      ### Ejemplo: suma.x
-     ```c
-     program SUMAR {
-        version SUMAVER {
-           int SUMA ( int a, int b ) = 1;
-        } = 1;
-     } = 99;
-    ```
+     ### Ejemplo: suma.x
+       ```c
+       program SUMAR {
+          version SUMAVER {
+             int SUMA ( int a, int b ) = 1;
+          } = 1;
+       } = 99;
+      ```
 
- 2. Compilación de la interfaz:
-	 * Se utiliza un compilador que a partir de la interfaz IDL genera los archivos que se encargan de las comunicaciones del lado del cliente y del servidor.
-
-
-      ### Ejemplo: rpcgen
-     ```bash
-     rpcgen -N -M -a suma.x
-     ```
-   	 * Opciones comunes son:
+ 2. Compilación de la interfaz IDL para generar los archivos encargados de las comunicaciones en cliente y servidor:
+ 	 * Opciones comunes son:
      	 * **-N** para procedimientos con múltiples argumentos.
-     	 * **-M** para codigo multithread.
-     	 * **-a** para que genere todos los ficheros (incluido un Makefile de plantilla para la compilación)
+     	 * **-M** para codigo que pueda ser usado por varios hilos.
+     	 * **-a** para que genere todos los ficheros, incluido un Makefile de plantilla para la compilación.
 
-   	 * A partir de la descripción de la interfaz del servicio en IDL, la utilidad rpcgen genera los archivos relacionados con la comunicación y genera una plantilla de los archivos que el/la programador/a ha de rellenar con la implementación y uso del servicio.
-   	 * Generación automática de archivos:
-     	 * Archivos en el lado del servidor: suma_svc.c y suma_server.c (este último ha de cambiarse con la implementación de la interfaz del servicio)
-    	 * Archivos en el lado del cliente: suma_clnt.c y suma_client.c (este último ha de cambiarse con la implementación del cliente que usará el servicio)
-    	 * Archivos comunes: suma_xdr.c y suma.h
+     ### Ejemplo: uso de rpcgen
+      ```bash
+      rpcgen -N -M -a suma.x
+      ```
+
+  	 * A partir de la descripción de la interfaz del servicio en IDL, la utilidad rpcgen genera de forma automática tanto los archivos relacionados con la comunicación como los archivos con una plantilla que el/la programador/a ha de rellenar con la implementación y uso del servicio:
+    	 * Archivos comunes en el lado del cliente y del servidor: **suma_xdr.c** y **suma.h**
+    	 * En el lado del servidor: **suma_svc.c** y **suma_server.c** (este último ha de cambiarse con la implementación de la interfaz del servicio)
+    	 * En el lado del cliente: **suma_clnt.c** y **suma_client.c** (este último ha de cambiarse con la implementación del cliente que usará el servicio)
+
 
        ![Archivos generados por rpcgen y archivos escritos por programador/a](./ssdd_rpc/ssdd_rpc_drawio_81.svg)
 
 
  3. Se implementa el servicio en el lado del servidor.
+ 	 * Se cambia el contenido de las funciones generadas en *sumar_server.c* por dado a continuación.
 
     ### Ejemplo: suma_server.c
     ```c
@@ -177,12 +177,31 @@
     ```
 
  4. Se implementación el cliente que hace uso de la interfaz en el lado del cliente.
+ 	 * Se cambia todo el contenido generado en *sumar_client.c* por dado a continuación.
+ 	 * En el ejemplo de sumar_cliente.c dado, para la función *main* la función *sumar_1* es una llamada local, aunque internamente suponga el uso de un servicio remoto.
 
     ### Ejemplo: suma_client.c
     ```c
     #include "suma.h"
 
-    int sumar_1 ( char *host, int a, int b )
+    char *host = NULL ;
+    int sumar_1 ( int a, int b ) ;
+    
+    int main ( int argc, char *argv[] )
+    {
+       if (argc < 2) {
+           printf ("Uso: %s <host>\n", argv[0]);
+           exit (-1);
+       }
+       host = argv[1] ;
+       
+       int ret = sumar_1(1, 2);
+       printf("Resultado de %d + %d es %d\n", 1, 2, ret) ;
+
+       return 0 ;
+    }
+
+    int sumar_1 ( int a, int b )
     {
        CLIENT *clnt ;
        enum clnt_stat retval ;
@@ -203,19 +222,6 @@
 
        return result ;
     }
-
-    int main ( int argc, char *argv[] )
-    {
-       if (argc < 2) {
-           printf ("Uso: %s <host>\n", argv[0]);
-           exit (-1);
-       }
-
-       int ret = sumar_1(argv[1], 1, 2);
-       printf("Resultado de %d + %d es %d\n", 1, 2, ret) ;
-
-       return 0 ;
-    }
     ```
 
  5. Se compila y genera los ejecutables en el lado del cliente y del servidor.
@@ -232,7 +238,8 @@
     ```
 
  6. Para la ejecución hay que primero ejecutar el servidor y luego el cliente.
-    Por ejemplo, para la misma máquina se puede usar *localhost*:
+ 
+       ### Ejemplo: ejecución del servidor 
        ```bash
       acaldero@docker1:~/sd$ ./suma_server &
 
@@ -246,10 +253,21 @@
       100000    2   udp    111  portmapper
           99    1   udp  34654
           99    1   tcp  41745
+      ```
 
+       ### Ejemplo: ejecución del cliente en la misma máquina usando *localhost*:
+
+       ```bash
       acaldero@docker1:~/sd$ ./suma_client  localhost
       Resultado de 1 + 2 es 3
 
+      acaldero@docker1:~/sd$ kill -9 %1
+      acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
+      [1]+  Killed                  ./suma_server
+      ```
+
+       ### Ejemplo: detener la ejecución del servidor y dar de baja el servicio 
+       ```bash
       acaldero@docker1:~/sd$ kill -9 %1
       acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
       [1]+  Killed                  ./suma_server
@@ -380,6 +398,7 @@
   *  Parámetro de salida (out)
      * El parámetro se envía del servidor al cliente
   *  Parámetro de entrada/salida (inout)
+     * El parámetro se envía tanto del cliente al servidor como luego del servidor al cliente
 
  * Modelos de RPC
     * RPC síncronas: petición y respuesta
@@ -490,13 +509,14 @@ datos estándar
    * Utiliza conversión de datos simétrica
    * Los datos se codifican en un flujo de bytes
    * Gestión de memoria: las RPC no reservan memoria dinámica.
-      * El servidor tiene que reservar memoria e implementarse xxx_freeresult(...) correspondiente.
-      * El cliente tiene que reservar memoria antes de invocar a la RPC y liberar luego con xdr_free(...)
+      * Si los argumentos de entrada y/o salida usan memoria dinámica entonces:
+        * El servidor puede tener que reservar memoria e implementarse el *xxx_freeresult(...)* correspondiente.
+        * El cliente puede tener que reservar memoria antes de invocar a la RPC y liberar luego con *xdr_free(...)*
 
 ## IDL: formato base
 
- * Ejemplos de definición de interfaz:
-   * Con un parámetro:
+#### Ejemplos de definición de interfaz:
+   * Con un parámetro de entrada y un parámetro de salida:
       ```c
       struct args {
           int a;
@@ -521,10 +541,28 @@ datos estándar
         } = 1;    // 1 es el número de versión
      } = 99;      // 99 es el número de programa
      ```
- * Una definición interfaz puede contener:
-    * <u>Definición de tipos de datos al principio</u>
-    * <u>Un conjunto de procedimientos remotos a continuación</u>:
-       * **Cada procedimiento remoto se identifica unívocamente mediante tres campos** codificados con enteros sin signo:  (NUM-PROG, NUM-VERSION, NUM-PROCEDURE)
+
+
+
+#### Una definición interfaz puede contener:
+   * <u>Definición de tipos de datos al principio del archivo</u>:
+        ```c
+         struct res {
+             int status;
+             int value;
+         };
+         ...
+        ```
+   * <u>Un conjunto de procedimientos remotos (a continuación de toda definición de tipos)</u>:
+        ```c
+         ...
+         program SUMAR {
+            version SUMAVER {
+               struct res SUMA  (int a, int b) = 1;  
+            } = 1;    
+         } = 99;      
+        ```
+     * **Cada procedimiento remoto se identifica unívocamente mediante tres campos** codificados con enteros sin signo:  (NUM-PROG, NUM-VERSION, NUM-PROCEDURE)
          * NUM-PROG es el número de programa remoto.
            * Se definen en la RFC 1831 (http://www.ietf.org/rfc/rfc1831.txt)
              * ```0x00000000 - 0x1fffffff``` --> definido por Sun
@@ -537,26 +575,29 @@ datos estándar
            * Cada vez que se hace un cambio en la interfaz IDL (se añaden/quitan/modifican procedimientos) se incrementa la versión.
          * NUM-PROCEDURE es el número de procedimiento remoto.
            * Los especifica el/la programador/a, y han de ser diferente para cada procedimiento.
-       * **Los parámetros de entrada**:
+     * **Los parámetros de entrada**:
           * Por defecto (sin usar la opción -N en rpcgen), los procedimientos sólo aceptan un parámetro de entrada. 
-          * Si hay más un un parámetro entonces **es posible encapsular todos los parámetros en una estructura y pasar dicha estructura (o bien se usa la opción -N si es posible)**
+          * Si hay más un un parámetro entonces es posible bien **encapsular todos los parámetros en una estructura y pasar dicha estructura** o bien **se usa la opción -N de rpcgen**
           * Pasar un puntero no tiene sentido puesto que apunta al espacio de direcciones local y a una zona arbitraria de datos en espacio remoto. Para resolver este problema un sistema RPC puede:
              * Prohibir el uso de punteros como argumentos.
-             * Permitir el uso de punteros, pero asegurarando que los datos referenciados y no el puntero es lo transmitido.
-           * Es posible que no se puede pasar un array/vector de tamaño fijo, 
+             * Permitir el uso de punteros, pero asegurarando de que lo que se transmite son los datos referenciados por el puntero y no el puntero en sí mismo.
+           * **Es posible que no se puede pasar un array/vector de tamaño fijo**, 
               por ejemplo:
               ```c
              int rutina_no_valida ( int arg[32] );
                ```
-             pero puede ser posible en su lugar usar una estructura que contenga un campo que sea un array/vector de tamaño fijo,
+             **pero puede ser posible en su lugar usar una estructura que contenga un campo que sea un array/vector de tamaño fijo**,
              por ejemplo:  
              ```c
              struct arr_double_struct { double vector[32]; } ;
              int rutina_valida ( struct arr_double arg );
                 ```
-       * **Los parámetros de salida**:
+     * **Los parámetros de salida**:
           * La función devuelve un único resultado (del tipo indicado a la izquierda del nombre de la función).
           * Si hay que devolver más, **es posible definir una estructura que contenga todos los valores a devolver y devolver dicha estructura**.
+     * **Los parámetros de entrada y salida**:
+          * No hay parámetros de entrada y luego salida a la vez.
+          * Para simular un parámetro de entrada y salida hay que usar dos parámetros en la definición IDL: uno de entrada (como un parámetro de entrada adicional) y uno de salida (que se une al resto de parámetros de salida que la función tenga que devolver).
 
 
 ## IDL: notación XDR usada
