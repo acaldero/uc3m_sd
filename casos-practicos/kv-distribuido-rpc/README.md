@@ -2,6 +2,7 @@
 ## Materiales usados en ARCOS.INF.UC3M.ES con Licencia GPLv3.0
   * Felix García Carballeira y Alejandro Calderón Mateos
 
+
 ## Servicio distribuido basado en RPC
 
 ### (0) Pasos iniciales para tener las RPC en una distribución Linux compatible con Ubuntu 22.04:
@@ -15,6 +16,7 @@
      sudo mkdir -p /run/sendsigs.omit.d/
      sudo /etc/init.d/rpcbind restart
      ```
+
 
 ### (1) Pasos para crear una aplicación distribuida con las RPC:
 
@@ -76,17 +78,23 @@
        LDFLAGS += -lnsl -lpthread -ldl -ltirpc    # añadir -ltirpc
        ...
        ```
-     * En la regla de "clean:" asegurarse de que **NO** tiene $(TARGETS):
-       ```
-       clean:
-               # $(RM) core $(TARGETS) $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER)
-                 $(RM) core            $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER)
-       ```
      * Añadir los archivos adicionales necesarios para el proyecto:
         ```
        TARGETS_SVC.c  = lib-server.c lib.c    message_svc.c  message_xdr.c
        TARGETS_CLNT.c = app-d.c lib-client.c  message_clnt.c message_xdr.c
        ```
+     * Cambiar el nombre de los archivos ejecutables:
+        ```
+       SERVER = lib-server   # message_server
+       CLIENT = app-d        # message_client
+       ```
+     * Si se modifica **message_server.c** y/o **message_client.c** entoces mejor quitar *$(TARGETS)* de la regla *clean:*:
+       ```
+       clean:
+               # $(RM) core $(TARGETS) $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER)
+                 $(RM) core            $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER)
+       ```
+       De otra forma cada vez que se haga "make clean" se borran los archivos modificados.
 
 
 ### (2) Compilar
@@ -108,6 +116,7 @@
   gcc -g -Wall -I/usr/include/tirpc -c message_svc.c
   gcc -g -Wall -I/usr/include/tirpc lib-server.o  lib.o  message_svc.o  message_xdr.o  -o lib-server -lnsl -lpthread -ldl -ltirpc
   ```
+
 
 ### (3) Ejecutar
 
