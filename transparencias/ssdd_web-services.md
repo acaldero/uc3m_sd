@@ -1,5 +1,4 @@
 
-
 # Sistemas Distribuidos: Servicios Web
 + **Felix García Carballeira y Alejandro Calderón Mateos**
 + Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
@@ -464,7 +463,7 @@ Ejemplos más conocidos son:
    * Despliegue del servidor.
    * Generador de WDSL.
 
-El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) basado en Zeep:
+El siguiente ejemplo implementa un cliente de saludar (``Hello + <nombre>``) basado en Zeep:
 
 0. Primero se precisa comprobar que esté instalado el paquete python **zeep**.
     Se puede instalar mediante:
@@ -476,24 +475,27 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
 
 1. Hay que conocer la información del servicio Web usando ``python -mzeep <URL>``, siendo URL la asociada al WSDL:
    ```bash
-   python3 -mzeep http://www.soapclient.com/xml/soapresponder.wsdl
+   python3 -mzeep https://apps.learnwebservices.com/services/hello?WSDL
    ```
 
 2. El siguiente paso habitual es crear el archivo cliente de dicho servicio web (ws-echo.py en nuestro ejemplo):
    ```python
    import zeep
 
-   wsdl = 'http://www.soapclient.com/xml/soapresponder.wsdl'
+   wsdl = 'https://apps.learnwebservices.com/services/hello?WSDL'
    client = zeep.Client(wsdl=wsdl)
-   print(client.service.Method1('Prueba', 'WebService'))
+   print(client.service.SayHello('Web Services'))
    ```
 
 3. Para ejecutar:
    ```bash
    $ python3 ./ws-echo.py
-   Your input parameters are Prueba and WebService
+   Hello Web Services!
    ```
 
+Puede probarse otros servicios WSDL disponibles gratis (al menos en el momento de escribir este tutoría) de la siguiente lista:
+* https://ngrashia.medium.com/compiled-list-of-free-and-working-wsdl-urls-a7a54be6b91
+<br>
 
 ## Ejemplo simple de servicio web SOAP (cliente y servidor en Python)
 
