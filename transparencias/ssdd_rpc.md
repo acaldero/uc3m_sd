@@ -581,23 +581,23 @@ datos estándar
           * Pasar un puntero no tiene sentido puesto que apunta al espacio de direcciones local y a una zona arbitraria de datos en espacio remoto. Para resolver este problema un sistema RPC puede:
              * Prohibir el uso de punteros como argumentos.
              * Permitir el uso de punteros, pero asegurarando de que lo que se transmite son los datos referenciados por el puntero y no el puntero en sí mismo.
-           * **Es posible que no se puede pasar un array/vector de tamaño fijo**, 
+          * **Es posible que no se puede pasar un array/vector de tamaño fijo**, 
               por ejemplo:
               ```c
              int rutina_no_valida ( int arg[32] );
                ```
-             **pero puede ser posible en su lugar usar una estructura que contenga un campo que sea un array/vector de tamaño fijo**,
+            **pero puede ser posible en su lugar usar una estructura que contenga un campo que sea un array/vector de tamaño fijo**,
              por ejemplo:  
              ```c
              struct arr_double_struct { double vector[32]; } ;
              int rutina_valida ( struct arr_double arg );
-                ```
+               ```
      * **Los parámetros de salida**:
           * La función devuelve un único resultado (del tipo indicado a la izquierda del nombre de la función).
           * Si hay que devolver más, **es posible definir una estructura que contenga todos los valores a devolver y devolver dicha estructura**.
      * **Los parámetros de entrada y salida**:
-          * No hay parámetros de entrada y luego salida a la vez.
-          * Para simular un parámetro de entrada y salida hay que usar dos parámetros en la definición IDL: uno de entrada (como un parámetro de entrada adicional) y uno de salida (que se une al resto de parámetros de salida que la función tenga que devolver).
+          * Es común que NO haya parámetros de entrada y luego salida a la vez en la definición IDL.
+          * **Para simular un parámetro de entrada y salida** hay que usar 2 parámetros en la definición IDL: uno de entrada (como un parámetro de entrada adicional) y uno de salida (que se une al resto de parámetros de salida que la función tenga que devolver).
 
 
 ## IDL: notación XDR usada
