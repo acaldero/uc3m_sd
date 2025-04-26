@@ -10,6 +10,7 @@
   * [Estilos de servicios: SOAP vs RESTful](#estilos-de-servicios-soap-vs-rest)
   * Ejemplos REST y SOAP:
     * [Python - REST: Ejemplo simple de servicio web  (servidor y cliente)](#ejemplo-simple-de-servicio-web-rest-servidor-y-cliente-en-python)
+    * [Python - REST: Ejemplo simple con OpenAPI (servidor y cliente)](#openapi)  
     * [Python - SOAP: Ejemplo de servicio web  (cliente)](#ejemplo-simple-de-servicio-web-soap-cliente-en-python)
     * [Python - SOAP: Ejemplo simple de servicio web (cliente y servidor)](#ejemplo-simple-de-servicio-web-soap-cliente-y-servidor-en-python)
     * [C - SOAP: Usar un servicio distribuido basado en gSOAP/XML (cliente solo)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
@@ -431,12 +432,7 @@ Es incluso posible usar el mandato `curl` como cliente del servicio web anterior
    ```
 
 
-<br>
 
-A partir de este ejemplo inicial nos podemos hacer algunas preguntas, como por ejemplo:
-* ¿Cómo vamos a documentar este servicio REST?
-* ¿Se podría describir en un formato simplificado de WSDL para generar código y documentación de forma automática?
-* ¿Cómo se podría validar o/y probar este servicio de forma automática?
 
 
 
@@ -444,15 +440,20 @@ A partir de este ejemplo inicial nos podemos hacer algunas preguntas, como por e
 
 ### OpenAPI
 
-Existe el estándar OpenAPI que permite describir un servicio REST:
-* La documentación del estándar OpenAPI 3.1 está disponible en: https://spec.openapis.org/oas/v3.1.1
-* Como ejemplos tenemos:
-  * Ejemplo simple: https://learn.openapis.org/examples/v3.0/link-example.html
-  * Tienda de mascotas: https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml
+A partir del ejemplo inicial anterior nos podemos hacer algunas preguntas, como por ejemplo:
+* ¿Cómo vamos a documentar este servicio REST?
+* ¿Se podría describir en un formato simplificado de WSDL para generar la documentación de forma automática?
+* ¿Y Se podría describir en un formato simplificado de WSDL para generar el código de forma automática?
 
-Basado en este estándar hay herramientas para ayudar en el diseño, desarrollo y pruebas de dicho servicio REST:
-* Para diseñar el API se puede usar un editor en línea (*online*) como *Swagger Editor*: https://editor.swagger.io/
-* Para la generación de código (*client libraries*, *server stubs*, documentación) en diferentes lenguajes se puede usar *Swagger Codegen*: https://github.com/swagger-api/swagger-codegen
+El estándar OpenAPI busca ayudar con las anteriores preguntas ya que:
+*  Permite describir un servicio REST:
+   * La documentación del estándar OpenAPI 3.1 está disponible en: https://spec.openapis.org/oas/v3.1.1
+   * Incluye ejemplos como:
+      * Ejemplo simple: https://learn.openapis.org/examples/v3.0/link-example.html
+      * Tienda de mascotas: https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml
+* Basado en este estándar hay herramientas para ayudar en el diseño, desarrollo y pruebas de dicho servicio REST:
+  * Para diseñar el API se puede usar un editor en línea (*online*) como *Swagger Editor*: https://editor.swagger.io/
+  * Para la generación de código (*client libraries*, *server stubs*, documentación) en diferentes lenguajes se puede usar *Swagger Codegen*: https://github.com/swagger-api/swagger-codegen
 
 
 ### Ejemplo simple de servicio web REST con OpenAPI
@@ -469,42 +470,172 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
    sudo python3 -m pip install fastapi uvicorn[standard] pydantic
    ```
    Suele tardar algún tiempo la instalación, hay que esperar.
-   Puede usar ```pip3 install --user fastapi uvicorn``` para instalar solo para el usuario actual.
-1. El siguiente paso sería crear el archivo servidor de dicho servicio web (ws-openapi.py en nuestro ejemplo):
+   Puede usar ```pip3 install --user fastapi uvicorn pydantic``` para instalar solo para el usuario actual.
+1. El siguiente paso sería crear el archivo **``ws-openapi.py``** con el servidor de dicho servicio web:
    ```python
-   from typing   import Optional
    from fastapi  import FastAPI
    from pydantic import BaseModel
    import uvicorn
 
-   # Key-Value: a cada clave hay una clase Item asociada
-   list_kv = {}
-
-   # pydantic se usa para describir esa clase Item asociada a cada clave
+   # Item asociado a cada clave
    class Item(BaseModel):
        name: str
-       description: Optional[str] = None
-       weight: Optional[float] = None
+       weight: float
+
+   # {10, {name:'', weight:0.0}, ...
+   list_kv = {}
 
    # fastAPI
    app = FastAPI()
 
    @app.put("/items/{key}")
-   async def create_item(key: int, item: Item):
+   async def add_item(key: int, item: Item):
        list_kv[key] = item
-       return { "key": key, **item.dict() }
+       return { "key": key, "item": item}
 
    @app.get("/items/{key}")
    async def select_item(key: int):
        try:
           item = list_kv[key]
        except:
-          item = { name:'', description:'', weight: 0.0 }
-       return { "key": key, **item.dict() }
+          item = { '', 0.0 }
+       return { "key": key, "item": item }
 
+   # Main
    if __name__ == "__main__":
-       uvicorn.run(app, host="127.0.0.1", port=8000)
+      uvicorn.run(app, host="127.0.0.1", port=8000)
    ```
+   El proceso de crear el anterior archivo tiene 3 pasos principales:
+   <html>
+   <table>
+   <tr>
+   <td>1 API clave-valor simple inicial</td>
+   <td>2 Añadir pydantic</td>
+   <td>3 Añadir fastAPI y uvicorn</td>
+   <tr>
+   <tr>
+   <td>
+   
+      ```python
+    
+    
+    
+
+   # Item asociado a cada clave
+   class Item:
+       name: str
+       weight: float
+
+   # {10, {name:'', weight:0.0}, ...
+   list_kv = {}
+
+
+   # API
+
+
+   def add_item(k: int, v: Item):
+       list_kv[k] = v
+       return { "key": k, "item": v }
+
+
+
+   def select_item(key: int):
+       try:
+          item = list_kv[key]
+       except:
+          item = { '', 0.0 }
+       return { "key": key, "item": item }
+
+   # Main
+   if __name__ == "__main__":
+       print(add_item(10, {'name', 0.0}))
+       print(select_item(10))
+
+   ```
+
+   </td>
+   <td>
+   
+      ```python
+   from pydantic import BaseModel
+ 
+
+
+   # Item asociado a cada clave
+   class Item(BaseModel):
+       name: str
+       weight: float
+
+   # {10, {name:'', weight:0.0}, ...
+   list_kv = {}
+
+
+   # API
+
+
+   def add_item(k: int, v: Item):
+       list_kv[k] = v
+       return { "key": k, "item": v}
+
+
+
+   def select_item(key: int):
+       try:
+          item = list_kv[key]
+       except:
+          item = { '', 0.0 }
+       return { "key": key, "item": item }
+
+   # Main
+   if __name__ == "__main__":
+       print(add_item(10, {'name', 0.0}))
+       print(select_item(10))
+
+   ```
+
+   </td>
+   <td>
+   
+      ```python
+   from fastapi  import FastAPI
+   from pydantic import BaseModel
+   import uvicorn
+
+   # Item asociado a cada clave
+   class Item(BaseModel):
+       name: str
+       weight: float
+
+   # {10, {name:'', weight:0.0}, ...
+   list_kv = {}
+
+   # fastAPI
+   app = FastAPI()
+
+   @app.put("/items/{key}")
+   async def add_item(k: int, v: Item):
+       list_kv[k] = v
+       return { "key": k, "item": v}
+
+   @app.get("/items/{key}")
+   async def select_item(key: int):
+       try:
+          item = list_kv[key]
+       except:
+          item = { '', 0.0 }
+       return {"key": key, "item": item}
+
+   # Main
+   if __name__ == "__main__":
+      h="127.0.0.1"
+      p=8000
+      uvicorn.run(app, host=h, port=p)
+   ```
+
+   </td>
+   </tr>
+   </table>
+   </html>
 2. Para ejecutar el servidor:
    ```bash
    python3 ws-openapi.py &
@@ -523,17 +654,26 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
     Esta interfaz permite tanto ver la documentación generada de forma automática como poder interactuar con el servicio:
    ![Interfaz swagger para ws-openapi](/transparencias/ssdd_web-services/ws-openapi-ui.png)
 
+   Es posible observar que hay un enlace a http://127.0.0.1:8000/openapi.json
+   Esta página Web permite acceder a la descripción usando OpenAPI del servicio implementado.
 
-El siguiente ejemplo implementa un pequeño cliente del servicio de almacen clave-valor anterior:
+Con la descripción basada en OpenAPI del servicio REST hay herramientas que permiten generar el código del cliente (e incluso del servidor) en distintos lenguajes.
+Como ejemplo de pasos para tener un cliente simple en Python del servicio de almacén clave-valor anterior de forma no automática:
 
-1. El primer paso es crear el archivo cliente de dicho servicio web (ws-openapi-clnt.py en nuestro ejemplo):
+1. El primer paso es crear el archivo cliente **``ws-openapi-clnt.py``** de dicho servicio web:
    ```python
    import requests
 
-   r = requests.put(url="http://127.0.0.1:8000/items/10",
-                    json   ={ "name": "string",   "description": "string",   "weight":0.0 },
-                    headers={ 'Content-type': 'application/json', 'accept': 'application/json' })
-   print(r.text)
+   def add_item(key, value):
+       http_url = "http://127.0.0.1:8000/items/" + str(key)
+       http_headers = { 'Content-type': 'application/json', 'accept': 'application/json' }
+       r = requests.put(url=http_url, json=value, headers=http_headers)
+       return r.text
+
+   key   = 10
+   value = { "name": "name", "weight":0.0 }
+   r = add_item(key,value)
+   print(r)
    ```
 2. Para ejecutar dicho cliente se usará:
    ```bash
@@ -541,19 +681,19 @@ El siguiente ejemplo implementa un pequeño cliente del servicio de almacen clav
    ```
 3. Y la salida podría ser similar a:
    ```bash
-   INFO:     127.0.0.1:57732 - "PUT /items/10 HTTP/1.1" 200 OK
-   {"key":10,"name":"string","description":"string","weight":0.0}
+   {"key":10,"item":{"name":"name","weight":0.0}}
    ```
-
+   Se puede apreciar que la función ``add_item`` en el cliente encapsula la invocación al servicio REST.
 
 <br>
 
-Aprovecho para agradecer a Pablo Velo Moreno la introducción al mundo de fastAPI y pydantic.
-Tambien comentar que pueden verse más ejemplos de uso en los siguientes interesantes artículos:
+Pueden verse más ejemplos de uso en los siguientes interesantes artículos:
 * https://data-ai.theodo.com/en/technical-blog/fastapi-pydantic-powerful-duo
 * https://medium.com/codenx/fastapi-pydantic-d809e046007f
 * https://www.geeksforgeeks.org/fastapi-pydantic/
 * https://realpython.com/fastapi-python-web-apis/
+
+Aprovecho para agradecer a Pablo Velo Moreno la introducción al mundo de fastAPI y pydantic.
 
 
 
