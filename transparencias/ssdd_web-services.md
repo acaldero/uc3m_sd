@@ -431,21 +431,109 @@ Es incluso posible usar el mandato `curl` como cliente del servicio web anterior
    ```
 
 
+
 <br>
 
 ### OpenAPI
 
-Existe el estándar OpenAPI que permite describir un servicio REST, así como herramientas para ayudar en el desarrollo y pruebas de dicho servicio REST.
-
-Relativo al estándar OpenAPI:
+Existe el estándar OpenAPI que permite describir un servicio REST:
 * La documentación del estándar OpenAPI 3.1 está disponible en: https://spec.openapis.org/oas/v3.1.1
 * Como ejemplos tenemos:
-  * Enlace: https://learn.openapis.org/examples/v3.0/link-example.html
+  * Ejemplo simple: https://learn.openapis.org/examples/v3.0/link-example.html
   * Tienda de mascotas: https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml
 
-Relativo a las herramientas de ayuda en el diseño, desarrollo y pruebas:
+Basado en este estándar hay herramientas para ayudar en el diseño, desarrollo y pruebas de dicho servicio REST:
 * Para diseñar el API se puede usar un editor en línea (*online*) como *Swagger Editor*: https://editor.swagger.io/
 * Para la generación de código (*client libraries*, *server stubs*, documentación) en diferentes lenguajes se puede usar *Swagger Codegen*: https://github.com/swagger-api/swagger-codegen
+
+
+### Ejemplo simple de servicio web REST con OpenAPI
+
+El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
+
+0. Primero se precisa comprobar que esté instalado los paquetes python **fastapi, uvicorn y pydantic**.
+    Se puede instalar mediante:
+   ```bash
+   pip3 install fastapi uvicorn[standard] pydantic
+   ```
+    O bien mediante:
+   ```bash
+   sudo python3 -m pip install fastapi uvicorn[standard] pydantic
+   ```
+   Suele tardar algún tiempo la instalación, hay que esperar.
+   Puede usar ```pip3 install --user fastapi uvicorn``` para instalar solo para el usuario actual.
+1. El siguiente paso sería crear el archivo servidor de dicho servicio web (ws-openapi.py en nuestro ejemplo):
+   ```python
+   from typing   import Optional
+   from fastapi  import FastAPI
+   from pydantic import BaseModel
+
+   # Key-Value: a cada clave hay una clase Item asociada
+   list_kv = {}
+
+   # pydantic se usa para describir esa clase Item asociada a cada clave
+   class Item(BaseModel):
+       name: str
+       description: Optional[str] = None
+       weight: Optional[float] = None
+
+   # fastAPI
+   app = FastAPI()
+
+   @app.put("/items/{key}")
+   async def create_item(key: int, item: Item):
+       list_kv[key] = item
+       return { "key": key, **item.dict() }
+
+   @app.get("/items/{key}")
+   async def select_item(key: int):
+       try:
+          item = list_kv[key]
+       except:
+          item = { name:'', description:'', weight: 0.0 }
+       return { "key": key, **item.dict() }
+   ```
+2. Para ejecutar el servidor:
+   ```bash
+   uvicorn ws-openapi:app --reload &
+   ```
+    Y la salida se parecerá a:
+   ```bash
+   INFO:     Will watch for changes in these directories: ['/home/acaldero/work/sd/ws']
+   INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+   INFO:     Started reloader process [65996] using WatchFiles
+   INFO:     Started server process [65998]
+   INFO:     Waiting for application startup.
+   INFO:     Application startup complete.   
+   ```
+3. Para ver la interfaz *swagger* con la documentación y cliente interactivo básico ha de usar un navegador web:
+   ```bash
+   firefox http://127.0.0.1:8000/docs
+   ```
+    Esta interfaz:
+   ![Interfaz swagger para ws-openapi](/transparencias/ssdd_web-services/ws-openapi-ui.png)
+
+
+El siguiente ejemplo implementa un pequeño cliente del servicio de almacen clave-valor anterior:
+
+1. El primer paso es crear el archivo cliente de dicho servicio web (ws-openapi-clnt.py en nuestro ejemplo):
+   ```python
+   import requests
+
+   r = requests.put(url="http://127.0.0.1:8000/items/10",
+                    json   ={ "name": "string",   "description": "string",   "weight":0.0 },
+                    headers={ 'Content-type': 'application/json', 'accept': 'application/json' })
+   print(r.text)
+   ```
+2. Para ejecutar dicho cliente se usará:
+   ```bash
+   python3 ws-openapi-clnt.py
+   ```
+3. Y la salida podría ser similar a:
+   ```bash
+   INFO:     127.0.0.1:57732 - "PUT /items/10 HTTP/1.1" 200 OK
+   {"key":10,"name":"string","description":"string","weight":0.0}
+   ```
 
 
 
@@ -595,6 +683,7 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
 Usaremos un ejemplo basado en el servicio de calculadora disponible en: http://www.genivia.com/calc.wsdl
 
 Los pasos principales a seguir son los siguientes:
+
 0. Primero se precisa comprobar que estén instalados los paquetes **gsoap** y **libgsoap-dev**.
     Se pueden instalar mediante:
     ```bash
