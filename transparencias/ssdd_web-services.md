@@ -431,6 +431,14 @@ Es incluso posible usar el mandato `curl` como cliente del servicio web anterior
    ```
 
 
+<br>
+
+A partir de este ejemplo inicial nos podemos hacer algunas preguntas, como por ejemplo:
+* ¿Cómo vamos a documentar este servicio REST?
+* ¿Se podría describir en un formato simplificado de WSDL para generar código y documentación de forma automática?
+* ¿Cómo se podría validar o/y probar este servicio de forma automática?
+
+
 
 <br>
 
@@ -467,6 +475,7 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
    from typing   import Optional
    from fastapi  import FastAPI
    from pydantic import BaseModel
+   import uvicorn
 
    # Key-Value: a cada clave hay una clase Item asociada
    list_kv = {}
@@ -492,25 +501,26 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
        except:
           item = { name:'', description:'', weight: 0.0 }
        return { "key": key, **item.dict() }
+
+   if __name__ == "__main__":
+       uvicorn.run(app, host="127.0.0.1", port=8000)
    ```
 2. Para ejecutar el servidor:
    ```bash
-   uvicorn ws-openapi:app --reload &
+   python3 ws-openapi.py &
    ```
     Y la salida se parecerá a:
    ```bash
-   INFO:     Will watch for changes in these directories: ['/home/acaldero/work/sd/ws']
-   INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-   INFO:     Started reloader process [65996] using WatchFiles
-   INFO:     Started server process [65998]
+   INFO:     Started server process [67103]
    INFO:     Waiting for application startup.
-   INFO:     Application startup complete.   
+   INFO:     Application startup complete.
+   INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
    ```
 3. Para ver la interfaz *swagger* con la documentación y cliente interactivo básico ha de usar un navegador web:
    ```bash
    firefox http://127.0.0.1:8000/docs
    ```
-    Esta interfaz:
+    Esta interfaz permite tanto ver la documentación generada de forma automática como poder interactuar con el servicio:
    ![Interfaz swagger para ws-openapi](/transparencias/ssdd_web-services/ws-openapi-ui.png)
 
 
@@ -534,6 +544,16 @@ El siguiente ejemplo implementa un pequeño cliente del servicio de almacen clav
    INFO:     127.0.0.1:57732 - "PUT /items/10 HTTP/1.1" 200 OK
    {"key":10,"name":"string","description":"string","weight":0.0}
    ```
+
+
+<br>
+
+Aprovecho para agradecer a Pablo Velo Moreno la introducción al mundo de fastAPI y pydantic.
+Tambien comentar que pueden verse más ejemplos de uso en los siguientes interesantes artículos:
+* https://data-ai.theodo.com/en/technical-blog/fastapi-pydantic-powerful-duo
+* https://medium.com/codenx/fastapi-pydantic-d809e046007f
+* https://www.geeksforgeeks.org/fastapi-pydantic/
+* https://realpython.com/fastapi-python-web-apis/
 
 
 
