@@ -1,6 +1,9 @@
 
-## Materiales usados en ARCOS.INF.UC3M.ES con Licencia CC BY-NC-SA 4.0
-  * Felix García Carballeira y Alejandro Calderón Mateos
+## Sistemas Distribuidos: materiales complementarios
++ **Felix García Carballeira y Alejandro Calderón Mateos**
++ [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
++ ARCOS.INF.UC3M.ES
+
 
 ## Servicio centralizado con librería
 

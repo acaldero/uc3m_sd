@@ -2,6 +2,13 @@
 ## Sistemas Distribuidos: materiales complementarios
 + **Felix García Carballeira y Alejandro Calderón Mateos**
 + [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
++ ARCOS.INF.UC3M.ES
+
+
+## Contents
+
+ * [Materiales de apoyo](#materiales-de-apoyo)
+ * [Casos prácticos](#casos-practicos)
 
 
 ## Materiales de apoyo
@@ -106,16 +113,16 @@
 
 ## Casos prácticos
 
-  * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida: almacenamiento clave-valor](/casos-practicos/kv_centralizado_a_distribuido.md)
-    * [Ejemplo de almacenamiento clave-valor centralizado monolítico](/casos-practicos/kv-centralizado-monolitico#readme)
-    * [Ejemplo de almacenamiento clave-valor distribuido basado en colas POSIX](/casos-practicos/kv-distribuido-mqueue#readme)
-    * [Ejemplo de almacenamiento clave-valor distribuido basado en sockets](/casos-practicos/kv-distribuido-sockets#readme)
-    * [Ejemplo de almacenamiento clave-valor distribuido basado en RPC](/casos-practicos/kv-distribuido-rpc#readme)
+  * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida: almacenamiento clave-valor](/cp-clavevalor/#readme)
+    * [Ejemplo de almacenamiento clave-valor centralizado monolítico](/cp-clavevalor/kv-centralizado-monolitico#readme)
+    * [Ejemplo de almacenamiento clave-valor distribuido basado en colas POSIX](/cp-clavevalor/kv-distribuido-mqueue#readme)
+    * [Ejemplo de almacenamiento clave-valor distribuido basado en sockets](/cp-clavevalor/kv-distribuido-sockets#readme)
+    * [Ejemplo de almacenamiento clave-valor distribuido basado en RPC](/cp-clavevalor/kv-distribuido-rpc#readme)
 
-  * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida: calculadora](/casos-practicos/cal_centralizado_a_distribuido.md)
-    * [Ejemplo de calculadora centralizado monolítico](/casos-practicos/cal-centralizado-monolitico#readme)
-    * [Ejemplo de calculadora distribuido basado en colas POSIX](/casos-practicos/cal-distribuido-mqueue#readme)
-    * [Ejemplo de calculadora distribuido basado en sockets](/casos-practicos/cal-distribuido-sockets#readme)
-    * [Ejemplo de calculadora distribuido basado en RPC](/casos-practicos/cal-distribuido-rpc#readme)
-    * [Ejemplo de calculadora distribuido basado en GSOAP](/casos-practicos/cal-distribuido-gsoap-standalone#readme)
+  * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida: calculadora](/cp-calculadora/#readme)
+    * [Ejemplo de calculadora centralizado monolítico](/cp-calculadora/cal-centralizado-monolitico#readme)
+    * [Ejemplo de calculadora distribuido basado en colas POSIX](/cp-calculadora/cal-distribuido-mqueue#readme)
+    * [Ejemplo de calculadora distribuido basado en sockets](/cp-calculadora/cal-distribuido-sockets#readme)
+    * [Ejemplo de calculadora distribuido basado en RPC](/cp-calculadora/cal-distribuido-rpc#readme)
+    * [Ejemplo de calculadora distribuido basado en GSOAP](/cp-calculadora/cal-distribuido-gsoap-standalone#readme)
 

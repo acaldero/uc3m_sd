@@ -1,6 +1,8 @@
 
-## Materiales usados en ARCOS.INF.UC3M.ES con Licencia CC BY-NC-SA 4.0
-  * Felix García Carballeira y Alejandro Calderón Mateos
+## Sistemas Distribuidos: materiales complementarios
++ **Felix García Carballeira y Alejandro Calderón Mateos**
++ [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
++ ARCOS.INF.UC3M.ES
 
 
 ## Servicio distribuido basado en RPC
@@ -25,19 +27,19 @@
        ```
        struct result
        {
-         int value ;
-         int status ;
+         int value ;   /* valor a devolver */
+         int status ;  /* ha ido bien o no el proceso de obtener el valor a devolver */
        } ;
-       
-       program NANODT
+
+       program CALC
        {
-        	version NANODT_VERSION
+          version CALC_VERSION
           {
-		        int            d_init ( string name, int N )            = 1 ;
-		        int            d_set  ( string name, int i, int value ) = 2 ;
-		        struct get_res d_get  ( string name, int i )            = 3 ;
-	       } = 1 ;
-	       
+                struct result  d_add    ( int a, int b ) = 1 ;
+                struct result  d_divide ( int a, int b ) = 2 ;
+                struct result  d_neg    ( int a )        = 3 ;
+          } = 1 ;
+
        } = 55555 ;
        ```
 
@@ -97,6 +99,7 @@
        De otra forma cada vez que se haga "make clean" se borran los archivos modificados.
 
 
+
 ### (2) Compilar
 
 * A continuación hay que compilar:
@@ -120,7 +123,6 @@
 
 ### (3) Ejecutar
 
-
 <html>
 <table>
 <tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
@@ -141,9 +143,10 @@ $ ./lib-server
 <td>
 
 ```
-$ ./app-d localhost
-d_set("nombre", 1, 0x123)
-d_get("nombre", 1) -> 0x123
+$ env SERVER_IP=localhost ./app-d
+0 = add(30, 20, 10)
+0 = divide(2, 20, 10)
+0 = neg(-10, 10)
 ```
 
 </td>
@@ -151,9 +154,6 @@ d_get("nombre", 1) -> 0x123
 
 ```
 
- 1 = init(nombre, 10);
- 1 = set(nombre, 1, 0x123);
- 1 = get(nombre, 1, 0x123);
 ```
 
 </td>
