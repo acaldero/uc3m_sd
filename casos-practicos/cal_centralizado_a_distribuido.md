@@ -1,7 +1,7 @@
 
 # Ejemplo de transformación de aplicación monolítica a aplicación distribuida
 + **Felix García Carballeira y Alejandro Calderón Mateos**
-+ Licencia [GPLv3.0](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
++ [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
 ## Aplicación centralizado inicial

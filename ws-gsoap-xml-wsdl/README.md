@@ -1,4 +1,5 @@
-## Materiales usados en ARCOS.INF.UC3M.ES con Licencia GPLv3.0
+
+## Materiales usados en ARCOS.INF.UC3M.ES con Licencia CC BY-NC-SA 4.0
   * Felix García Carballeira y Alejandro Calderón Mateos
 
 ## Aplicación que usa un servicio distribuido basado en gSOAP/XML

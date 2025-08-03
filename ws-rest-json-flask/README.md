@@ -1,4 +1,5 @@
-## Materiales usados en ARCOS.INF.UC3M.ES con Licencia GPLv3.0
+
+## Materiales usados en ARCOS.INF.UC3M.ES con Licencia CC BY-NC-SA 4.0
   * Felix García Carballeira y Alejandro Calderón Mateos
 
 ## Servicio distribuido basado en REST con Python Flask
