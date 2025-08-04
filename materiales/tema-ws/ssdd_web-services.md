@@ -26,12 +26,12 @@
 
 Los servicios web están al nivel de un servicio de red y un nivel más del paradigma de procedimiento remoto:
 
-   ![Paradigmas por niveles](/transparencias/ssdd_web-services/ssdd_web-services-drawio_4.svg)
+   ![Paradigmas por niveles](/materiales/tema-ws/ssdd_web-services/ssdd_web-services-drawio_4.svg)
 
 
 Los servicios web (y los servicios de red) son una extensión al paradigma de invocación de procedimientos remotos en el que se añade un servicio de directorio que proporcionan la referencia a los servicios disponibles:
 
-   ![Transparencia de localización](/transparencias/ssdd_web-services/ssdd_web-services-drawio_5.svg)
+   ![Transparencia de localización](/materiales/tema-ws/ssdd_web-services/ssdd_web-services-drawio_5.svg)
 
 Este servicio de directorio permite *transparencia de localización*, lo que es un nivel de abstracción extra.
 
@@ -215,8 +215,8 @@ Las API REST se han popularizado, siendo el método común para conectar compone
 </tr>
 <tr>
 <td>Registro</td>
-<td><img src="/transparencias/ssdd_web-services/ssdd_web-services-drawio_soap.svg"></td>
-<td><img src="/transparencias/ssdd_web-services/ssdd_web-services-drawio_rest.svg"></td>
+<td><img src="/materiales/tema-ws/ssdd_web-services/ssdd_web-services-drawio_soap.svg"></td>
+<td><img src="/materiales/tema-ws/ssdd_web-services/ssdd_web-services-drawio_rest.svg"></td>
 </tr>
 </table>
 </html>
@@ -329,10 +329,10 @@ Principales tecnologías (protocolos, etc.)
 Relación entre tecnologías
 </td>
 <td>
-<img src="/transparencias/ssdd_web-services/ssdd_web-services-drawio_10_soap.svg" alt="Pila de protocolos habitual en servicios web basados en SOAP">
+<img src="/materiales/tema-ws/ssdd_web-services/ssdd_web-services-drawio_10_soap.svg" alt="Pila de protocolos habitual en servicios web basados en SOAP">
 </td>
 <td>
-<img src="/transparencias/ssdd_web-services/ssdd_web-services-drawio_10_rest.svg" alt="Pila de protocolos habitual en servicios web basados en REST">
+<img src="/materiales/tema-ws/ssdd_web-services/ssdd_web-services-drawio_10_rest.svg" alt="Pila de protocolos habitual en servicios web basados en REST">
 </td>
 </tr>
 
@@ -652,7 +652,7 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
    firefox http://127.0.0.1:8000/docs
    ```
     Esta interfaz permite tanto ver la documentación generada de forma automática como poder interactuar con el servicio:
-   ![Interfaz swagger para ws-openapi](/transparencias/ssdd_web-services/ws-openapi-ui.png)
+   ![Interfaz swagger para ws-openapi](/materiales/tema-ws/ssdd_web-services/ws-openapi-ui.png)
 
    Es posible observar que hay un enlace a http://127.0.0.1:8000/openapi.json
    Esta página Web permite acceder a la descripción usando OpenAPI del servicio implementado.
@@ -1023,7 +1023,7 @@ En el proceso de creación de un servicio distribuido basado en gSOAP/XML que pe
 REST y SOAP han ido evolucionando, al igual que han apareciendo nuevas tecnologías.
 La siguiente imagen resume la evolución en el tiempo y la comparación de las principales tecnologías:
 
- ![Evolución de tecnologías Web](/transparencias/ssdd_web-services/ssdd_web-services-api-timeline.svg) <br/>
+ ![Evolución de tecnologías Web](/materiales/tema-ws/ssdd_web-services/ssdd_web-services-api-timeline.svg) <br/>
 
 La siguiente tabla resume los principales aspectos de algunas de las principales tecnologías:
 
@@ -1360,7 +1360,7 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
 <br/>
 
 ## Información adicional
-  * [Transparencias del tema 8: t8_web-services.pdf](https://github.com/acaldero/uc3m_sd/blob/main/transparencias/t8_web-services.pdf)
+  * [Transparencias del tema 8: t8_web-services.pdf](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-ws/t8_web-services.pdf)
   * [Know your API protocols: SOAP vs. REST vs. JSON-RPC vs. gRPC vs. GraphQL vs. Thrift](https://www.mertech.com/blog/know-your-api-protocols)
   * [A brief look at the evolution of interface protocols leading to modern APIs](https://www.soa4u.co.uk/2019/02/a-brief-look-at-evolution-of-interface.html)
   * [Soap vs REST vs GrapQL vs gRPC](https://www.altexsoft.com/blog/soap-vs-rest-vs-graphql-vs-rpc/)

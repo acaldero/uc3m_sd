@@ -113,7 +113,7 @@
   <table>
   <tr>
   <td>
-    <img src="/transparencias/ssdd_sfd/ssdd_sfd_intro_1.svg">
+    <img src="/materiales/tema-sfd/ssdd_sfd/ssdd_sfd_intro_1.svg">
   </td>
   <td>
 
