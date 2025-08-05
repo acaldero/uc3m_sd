@@ -7,7 +7,7 @@
 ## Contents
 
  * [Materiales de apoyo](#materiales-de-apoyo)
- * [Casos prácticos](#casos-practicos)
+ * [Casos prácticos](#casos-prácticos)
  * [Ejercicios](#ejercicios)
 
 
@@ -37,8 +37,8 @@
       <td>Paso de mensajes</td>
       <td>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_pq.md">Colas de mensajes POSIX</a></li>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.md">MPI</a></li>
-        <li> <a href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.ipynb">Ejercicios de uso básico de MPI</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.md">Introducción a MPI</a>
+             <a href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.ipynb">(notebook)</a>  </li>
       </td>
   </tr>
   <tr>
@@ -65,7 +65,6 @@
       <td>Servicios Web</td>
       <td>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-ws/ssdd_web-services.md">Introducción a servicios web</a></li>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-ws/t8_web-services.pdf">t8_web-services.pdf</a> :notebook_with_decorative_cover:</li>
       </td>
   </tr>
   <tr><td>9</td>
