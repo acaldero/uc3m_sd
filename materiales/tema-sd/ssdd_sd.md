@@ -39,7 +39,6 @@
   * Diagramas espacio-tiempo
   ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_diagrama_eventos.svg)
 
-
 ### Modelos síncronos y asíncronos
 
  * Sistemas distribuidos **asíncronos**
@@ -183,7 +182,6 @@
 
 ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rf_berkeley.svg)
 
-
 #### Network time protocol (NTP)
 
 * Servicio para **sincronizar a máquinas en Internet** con el UTC
@@ -193,6 +191,7 @@
    * **simétrico**: entre pares de procesos
 * Se utilizan servidores localizados a través de Internet con mensajes **UDP**
 
+
 ### Relojes lógicos
 
 * Dado que no se pueden sincronizar perfectamente los relojes físicos en un sistema distribuido, no se pueden utilizar relojes físicos para ordenar eventos
@@ -201,4 +200,93 @@
 
 ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_diagrama_eventos.svg)
 
+#### Causalidad potencial
+
+* En ausencia de un reloj global la **relación causa-efecto** es la única posibilidad de ordenar eventos
+* Relación de causalidad potencial (**Lamport,1978**) se basa en dos observaciones:
+  1. Si dos eventos ocurren en el mismo proceso (pi(i=1..N)), entonces ocurrieron en el mismo orden en que se observaron
+  2. Si un proceso hace **send(m)** y otro **receive(m)**, entonces send  se produjo antes que el evento **receive**
+* Entonces, Lamport define la relación de causalidad potencial
+  * **Precede a** (**&rarr;**) entre cualquier par de eventos del SD
+     * Ej: a -> b
+* **Orden parcial**: reflexiva, anti-simétrica y transitiva
+  * Dos eventos son **concurrentes** (a || b) si **no se puede deducir** entre ellos una relación de causalidad potencial
+
+#### Importancia de la causalidad potencial
+
+* Sincronización de relojes lógicos
+* Depuración distribuida
+* Registro de estados globales
+* Monitorización
+* Entrega causal
+* Actualización de réplicas
+
+#### Relojes lógicos (algoritmo de Lamport)
+
+* Útiles para **ordenar eventos** en ausencia de un reloj común
+* **Algoritmo de Lamport** (1978):
+  * Cada proceso **P** mantiene una variable entera **RL<sub>p</sub>**  (reloj lógico)
+  * Cuando un proceso **P** genera un evento, **RL<sub>p</sub>=RL<sub>p+1</sub>**
+  * Cuando un proceso **envía** un **mensaje m**  a otro le añade el valor de su reloj
+  * Cuando un proceso **Q**  **recibe** un **mensaje m** con un valor de **tiempo t**, el proceso actualiza su reloj, **RL<sub>p</sub>=max(RL<sub>p</sub>,t) + 1**
+  * El algoritmo asegura que si **a &rarr; b** entonces  **RL(a) < RL(b)**
+  * **Lo contrario no se puede demostrar**
+
+![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rl_o.svg)
+![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rl_no.svg)
+
+
+#### Relojes lógicos totalmente ordenados
+
+* Los relojes lógicos de Lamport imponen sólo una relación **de orden parcial**:
+   * Eventos de distintos procesos pueden tener asociado una misma marca de tiempo
+* Se puede extender la relación de orden para conseguir una relación de orden total añadiendo el **identificador de proceso**:
+   * (T<sub>a</sub> , P<sub>a</sub>): marca de tiempo del evento a del proceso P
+* (T<sub>a</sub>, P<sub>a</sub>) < (T<sub>b</sub>, P<sub>b</sub>) sí y solo si:
+   * T<sub>a</sub> < T<sub>b</sub>  o
+   * T<sub>a</sub>=Tb y P<sub>a</sub><P<sub>b</sub>
+
+#### Problemas de los relojes lógicos
+
+* No bastan para caracterizar la causalidad
+  * Dados RL(a) y RL(b) no podemos saber:
+     * si a precede a b
+     * si b precede a a
+     * si a y b son concurrentes
+* Se necesita una relación (F(e), <) tal que:
+  * a &rarr; b si y sólo si F(a) < F(b)
+  * Los **relojes vectoriales** permiten representar de forma precisa la relación de **causalidad potencial**
+
+![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_prl.svg)
+
+Problemas de los relojes lógicos:
+* C(e11) < C(e22),  y e11 -> e22  es cierto
+* C(e11) < C(e32),  pero e11 -> e32  es falso (son concurrentes)
+
+
+### Relojes vectoriales
+
+* Desarrollado independientemente por **Fidge**, **Mattern** y **Schmuck**
+* Todo proceso lleva asociado un vector de enteros **RV**
+* **RV<sub>i</sub>[a]** es el valor del reloj vectorial del proceso i cuando ejecuta el evento a
+* Mantenimiento de los relojes vectoriales
+   * Inicialmente RV<sub>i</sub>= 0   &forall; i
+   * Cuando un proceso i genera un evento
+     * RV<sub>i</sub>[ i ] = RV<sub>i</sub>[ i ] + 1
+   * Todos los mensajes llevan el RV del envío
+   * Cuando un proceso j recibe un mensaje con RV<sub>i</sub>
+     * RV<sub>j</sub>  = max( RV<sub>j</sub> , RV<sub>i</sub> ) (componente a componente)
+     * RV<sub>j</sub>[ j ] = RV<sub>j</sub>[ j ] + 1 (evento de recepción)
+
+![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rv.svg)
+
+#### Propiedades de los relojes vectoriales
+
+* RV < RV´ si y solo si
+   * RV  &ne; RV´ y
+   * RV[i ] &le; RV´[i ], &forall; i
+* Dados dos eventos a y b
+   * a &rarr; b si y solo si RV(a) < RV(b)
+   * a y b son concurrentes cuando
+     * Ni RV(a) &le; RV(b)  ni  RV(b ) &le; RV(a)
 
