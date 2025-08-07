@@ -1,0 +1,78 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6">
+  <diagram name="Página-1" id="XujemnZle68zyRtYgfiv">
+    <mxGraphModel dx="943" dy="616" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="iwSl_xSSISw74PKzgaMx-1" value="Cliente" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="177" y="90" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-3" value="Servidor de tiempos" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="436" y="80" width="206" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-4" value="T&lt;sub&gt;0&lt;/sub&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="177" y="160" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-5" value="T&lt;sub&gt;1&lt;/sub&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="177" y="350" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-6" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="iwSl_xSSISw74PKzgaMx-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="407" y="310" as="sourcePoint" />
+            <mxPoint x="527" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-9" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="507" y="227" width="40" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-7" value="" style="curved=1;endArrow=none;html=1;rounded=0;endFill=0;" edge="1" parent="iwSl_xSSISw74PKzgaMx-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="16.470588235294116" y="30" as="sourcePoint" />
+            <mxPoint x="24.313725490196077" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="40" y="30" />
+              <mxPoint x="0.7843137254901961" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-8" value="" style="curved=1;endArrow=none;html=1;rounded=0;endFill=0;" edge="1" parent="iwSl_xSSISw74PKzgaMx-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="15.686274509803921" y="60" as="sourcePoint" />
+            <mxPoint x="23.52941176470588" y="30" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="39.21568627450981" y="60" />
+              <mxPoint y="30" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-10" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="531" y="293" as="sourcePoint" />
+            <mxPoint x="237" y="363" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-11" value="I" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="537" y="242" width="50" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-12" value="" style="endArrow=classic;html=1;rounded=0;dashed=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="148" y="170" as="sourcePoint" />
+            <mxPoint x="148" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-13" value="Petición" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;rotation=11;" vertex="1" parent="1">
+          <mxGeometry x="347" y="160" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-14" value="Respuesta (tiempo)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;rotation=346;" vertex="1" parent="1">
+          <mxGeometry x="307" y="336" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-15" value="Tiempo" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;rotation=-90;fontColor=#CC6600;" vertex="1" parent="1">
+          <mxGeometry x="98.00006046520986" y="250.00345874741163" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iwSl_xSSISw74PKzgaMx-16" value="Tiempo del manejador de interrupciones" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;rotation=0;fontColor=#CC6600;" vertex="1" parent="1">
+          <mxGeometry x="560" y="227" width="190" height="68" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
