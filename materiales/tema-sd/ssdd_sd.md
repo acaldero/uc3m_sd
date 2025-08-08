@@ -232,8 +232,11 @@
   * El algoritmo asegura que si **a &rarr; b** entonces  **RL(a) < RL(b)**
   * **Lo contrario no se puede demostrar**
 
-![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rl_o.svg)
-![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rl_no.svg)
++ Ejemplo:
+  * Ordenado:
+    ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rl_o.svg)
+  * No ordenado:
+    ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rl_no.svg)
 
 
 #### Relojes lógicos totalmente ordenados
@@ -289,4 +292,132 @@ Problemas de los relojes lógicos:
    * a &rarr; b si y solo si RV(a) < RV(b)
    * a y b son concurrentes cuando
      * Ni RV(a) &le; RV(b)  ni  RV(b ) &le; RV(a)
+
+
+## Exclusión mutua distribuida
+
+* Los procesos ejecutan el siguiente fragmento de código:
+    ```c
+    entrada()
+    SECCIÓN CRÍTICA
+    salida()
+    ```
+* Requisitos para resolver el problema de la sección crítica
+   * **Exclusión mutua**
+   * **Progreso**
+   * **Espera acotada**
+* Algoritmos
+   * Algoritmo **centralizado**
+      * Existe un proceso coordinador
+      * Problemas: 
+        * Cuello de botella 
+          * Posible arreglo: reparto estático entre número prefijado de coordinadores
+        * Punto único de fallo
+          * Posible arreglo: uso de temporizadores: el cerrojo se libera transcurrido un cierto tiempo
+   * Algoritmo **distribuido**
+     * Algoritmo de **Ricart y Agrawala**
+       * Requiere la existencia de  un orden total de todos los mensajes en el sistema
+       * Estudiar bibliografía para más detalles
+   * **Anillo con testigo**
+     * Los procesos se ordenan conceptualmente como un anillo
+     * Por el anillo circula un testigo
+     * Cuando un proceso quiere entrar en la SC debe esperar a recoger el testigo
+     * Cuando sale de la SC envía el testigo al nuevo proceso del anillo
+   * Algoritmo basado en **quorum**
+     * Algoritmo de **Maekawa**
+       * Estudiar bibliografía para más detalles
+
+
+## Algoritmos de elección
+
+* Útil en aplicaciones donde es necesario la existencia de un coordinador
+* El algoritmo debe ejecutarse cuando **falla el coordinador**
+* El objetivo del algoritmo es que la elección sea única aunque el algoritmo se inicie de forma concurrente en varios procesos
+* Algoritmos **de elección**
+   * **Algoritmo del matón**
+       * Estudiar bibliografía para más detalles
+   * **Algoritmo basado en anillo**
+       * Estudiar bibliografía para más detalles
+
+
+#### Interbloqueo distribuido
+
+* **Interbloqueos** en la **asignación de recursos**.
+   Existe interbloqueo cuando se cumplen las siguientes condiciones:
+   * Exclusión mutua
+   * Retención y espera
+   * No expulsión
+   * Condición de espera circular
+* **Interbloqueos** en el **mal uso de operaciones de sincronización**
+* **Interbloqueos** en **las comunicaciones**
+  * Todos los procesos están esperando un mensaje de otro miembro del grupo y no hay mensajes de camino
+
+
+## Comunicación multicast
+
+* Tipos de comunicación:
+  * **Punto a punto** (uno a uno)
+    * Las primitivas de comunicación básicas soportan la comunicación uno a uno
+  * **Multipunto** (uno a varios, varios a uno o varios a varios) 
+    * Estas operaciones se implementan normalmente mediante operaciones punto a punto (aunque pueden estar optimizadas por el hardware subyacente)
+    * Tipos más conocidos:
+      * *Broadcast*: el emisor envía un mensaje a todos los nodos del sistema 
+      * *Multicast*: el emisor envía un mensaje a un subconjunto de todos los nodos
+
++ Utilidad de la comunicación multipunto:
+  + **Servidores  replicados**:
+     + Un servicio replicado consta de un grupo de servidores.
+     + Las peticiones de los clientes se envían a todos los miembros del grupo.
+        Aunque algún miembro del grupo falle la operación se realizará.
+  + **Mejor rendimiento**:
+     + Replicando datos.
+     + Cuando se cambia un dato, el nuevo valor se envía a todos los procesos que gestionan las réplicas.
+     
+* Tipos de multicast:
+  + **Multicast no fiable**: no hay garantía de que el mensaje se entregue a todos los nodos.
+  + **Multicast  fiable**: el mensaje es recibido por todos los nodos en funcionamiento.
+  + **Multicast  atómico**: el protocolo asegura que todos los miembros del grupo recibirán los mensajes de diferentes nodos en el mismo orden.
+     + Preciso en, por ejemplo, transacciones bancarias donde el orden importa.
+  + **Multicast  causal**: asegura que los mensaje se entregan de acuerdo con las relaciones de causalidad.
+
++ Implementación de un multicast:
+    * Estudiar bibliografía para más detalles
+
+
+## Problemas de consenso
+
+* Dado un conjunto de proceso P<sub>1</sub>….P<sub>n</sub>  que se comunican  mediante paso de mensajes, el  objetivo es alcanzar un acuerdo  sobre un determinado valor aun  en  presencia de fallos
+
++ Implementación de consenso:
+    * Estudiar bibliografía para más detalles
+
+
+## Servicio de nombres
+
+* Objetivo: descubrir recursos en sistemas distribuido
+* Tipos de recursos:
+  * Ficheros, usuarios, grupos, procesos, dispositivos, máquinas, …
+* El nombre del recurso permite referirse a una entidad única en un sistema distribuido (aunque pueda estar replicada y haya varios nombres para la misma entidad)
+  * Ejemplo: en sockets se identifica con IP + puerto
+
++ Los **nombres** utilizados en sistemas distribuidos son específicos de algún **servicio** concreto
++ Ejemplos:
+   + Nombre de fichero
+   + Nombres de usuarios
+   + Nombres de hosts
+   + Nombres de objetos remotos o servicios remotos en caso de servicios de llamadas a procedimientos remotos o invocaciónón de métodos remotos
+
+* URI (Uniform  Resource  Identifier): identifica recursos en Internet
+   * URL (Uniform  Resource  locators): URI que proporcionan información para localizar recursos
+      * Puede verse afectado si el recurso se mueve
+   * URN (Uniform  resource  names)
+      * URI que solo utilizan nombres sin incluir información de localización
+      * Requiere un proceso de traducción
+   * Ejemplos:
+      * urn:ietf:rfc:3187
+      * http://tools.ietf.org/html/rfc3187.html
+
++ Implementación de un servicio de nombres:
+    * Estudiar bibliografía para más detalles
+
 
