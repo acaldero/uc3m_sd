@@ -30,7 +30,9 @@
       <td>Paso de mensajes</td>
       <td>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_pq.md">Colas de mensajes POSIX</a></li>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.md">MPI</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.md">Introducción a MPI</a>
+             <a href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.ipynb">(notebook)</a>  </li>
+
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_vector.md">Ejercicio de paso de mensajes (colas POSIX)</a> </li>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e1-pasomensajes-v2a.pdf">Ejercicio de paso de mensajes (colas POSIX) en PDF</a> </li>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_upgraded.md">Ejercicio de paso de mensajes (nombrado)</a></li>
@@ -42,6 +44,14 @@
       <td>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-sockets/ssdd_sockets.md">Sockets</a></li>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-sockets/ejercicio_sockets_calculadora.md">Ejercicio de calculadora distribuida basada en Sockets</a>
+      </td>
+  </tr>
+  <tr>
+      <td rowspan="1">5</td>
+      <td>Servicios distribuidos</td>
+      <td>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-sd/ssdd_sd.md">Principales servicios distribuidos</a>
+             <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-sd/ssdd_sd.ipynb">(notebook)</a> </li>
       </td>
   </tr>
   <tr>

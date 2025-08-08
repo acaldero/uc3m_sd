@@ -279,16 +279,18 @@ Problemas de los relojes lógicos:
 * Desarrollado independientemente por **Fidge**, **Mattern** y **Schmuck**
 * Todo proceso lleva asociado un vector de enteros **RV**
 * **RV<sub>i</sub>[a]** es el valor del reloj vectorial del proceso i cuando ejecuta el evento a
-* Mantenimiento de los relojes vectoriales:
-   * Inicialmente RV<sub>i</sub>= 0   &forall; i
+* Mantenimiento de los relojes vectoriales (RV<sub>i</sub>):
+   * Inicialmente:
+     * RV<sub>i</sub>= 0   &forall; i
    * Cuando un proceso i genera un evento:
      * RV<sub>i</sub>[ i ] = RV<sub>i</sub>[ i ] + 1
    * Todos los mensajes llevan el RV del envío
-   * Cuando un proceso j recibe un mensaje con RV<sub>i</sub>:
+   * Cuando un proceso **j** recibe un mensaje con RV<sub>i</sub>:
      * RV<sub>j</sub>  = max( RV<sub>j</sub> , RV<sub>i</sub> ) (componente a componente)
      * RV<sub>j</sub>[ j ] = RV<sub>j</sub>[ j ] + 1 (evento de recepción)
+* Ejemplo:
 
-![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rv.svg)
+   ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rv.svg)
 
 #### Propiedades de los relojes vectoriales
 
@@ -309,11 +311,14 @@ Problemas de los relojes lógicos:
     SECCIÓN CRÍTICA
     salida()
     ```
-* Requisitos para resolver el problema de la sección crítica
+* Requisitos para resolver el problema de la sección crítica:
    * **Exclusión mutua**
    * **Progreso**
    * **Espera acotada**
-* Algoritmos
+/
+
+#### Principales algoritmos para la exclusión mutua distribuida
+
    * Algoritmo **centralizado**:
       * Existe un proceso coordinador
       * Problemas: 
@@ -395,7 +400,34 @@ Problemas de los relojes lógicos:
 
 * Dado un conjunto de proceso P<sub>1</sub>….P<sub>n</sub>  que se comunican  mediante paso de mensajes, el  objetivo es alcanzar un acuerdo  sobre un determinado valor aun  en  presencia de fallos
 
-+ Implementación de consenso:
+- Tipos de fallo:
+   * Fallo parada: el sistema que falla deja de funcionar
+   * Fallo con recuperación: el sistema que falla vuelve a funcionar en algún momento
+   * Fallos bizantinos: el componente que falla genera fallos arbitrarios
+
+### Acuerdo bizantino
+
+* En la mayoría de las ocasiones cuando un componente o sistema falla, su funcionamiento es arbitrario.
+   * Pueden enviar información diferente a diferentes componentes con los que se comunica.
+   * Alcanzar un acuerdo entre las observaciones que hacen diferentes componentes puede ser complicado en presencia de fallos.
+* El **objetivo** con **acuerdo bizantino** es alcanzar un **acuerdo sobre un determinado valor** **en un sistema donde los componentes pueden fallar** de forma arbitraria**.
+* Importancia:
+   * Permite enmascarar fallos arbitrarios.
+   * Permite construir procesadores con fallos de tipo fallo-parada
+
++ Definición del problema: Problema de los Generales Bizantinos
+   * Sistema distribuido compuesto por una serie de nodos (generales) que intercambian información entre ellos.
+   * Los componentes pueden exhibir fallos bizantinos (generales traidores)
+     * Un nodo con fallo puede enviar información diferente a diferentes nodos (para un mismo dato).
+   * **Objetivo**: que los nodos sin fallo alcancen un acuerdo o consenso sobre un determinado valor (ataque, retirada, espera). Es decir que vean el mismo valor para un dato.
+   * ¿Cuántos nodos hacen falta para hacer frente a m fallos?
+     * Se necesitan **3*m + 1** nodos para hacer frente a m fallos bizantinos.
+     * Utilizando 3 nodos, si uno falla el problema no puede resolverse.
+
+
+</br>
+
+Implementación de consenso:
     * Estudiar bibliografía para más detalles
 
 ## Servicio de nombres
@@ -475,4 +507,5 @@ Problemas de los relojes lógicos:
 * Localización del servicio de nombres
 
 -- Estudiar bibliografía para más detalles
+
 
