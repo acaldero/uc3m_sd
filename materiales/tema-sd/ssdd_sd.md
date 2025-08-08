@@ -6,11 +6,11 @@
 
 ## Contenidos
 
- * [Sincronización en sistemas distribuidos](#sincronizacion-en-sistemas-distribuidos)
- * [Relojes físicos y lógicos](#relojes-fisicos-y-logicos)
- * [Exclusión mutua distribuida](#exclusion-mutua-distribuida)
- * [Algoritmos de elección](#algoritmos-de-eleccion)
- * [Comunicación multicast](#comunicacion-multicast)
+ * [Sincronización en sistemas distribuidos](#sincronización-en-sistemas-distribuidos)
+ * [Relojes físicos y lógicos](#relojes-físicos-y-lógicos)
+ * [Exclusión mutua distribuida](#exclusión-mutua-distribuida)
+ * [Algoritmos de elección](#algoritmos-de-elección)
+ * [Comunicación multicast](#comunicación-multicast)
  * [Problemas de consenso](#problemas-de-consenso)
  * [Servicio de nombres](#servicio-de-nombres)
 
@@ -30,23 +30,23 @@
  * Eventos en P<sub>i</sub>
     * E<sub>i</sub> = {e<sub>i1</sub>, e<sub>i2</sub>, ...e<sub>in</sub>}
     * Historia(P<sub>i</sub>) = h<sub>i</sub> =  <e<sub>i0</sub>, e<sub>i1</sub>, e<sub>i2</sub>, ... > donde  e<sub>ik</sub>  ->  e<sub>i(k+1)</sub>
-  * Tipos de eventos
+  * Tipos de eventos:
      * Internos (cambios en el estado de un proceso)
-     * Comunicación
+     * Comunicación:
         * Envío
         * Recepción
            * e<sub>02</sub>  ->  e<sub>12</sub>
-  * Diagramas espacio-tiempo
-  ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_diagrama_eventos.svg)
+  * Diagramas espacio-tiempo:  
+     ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_diagrama_eventos.svg)
 
 ### Modelos síncronos y asíncronos
 
- * Sistemas distribuidos **asíncronos**
+ * Sistemas distribuidos **asíncronos**:
     * **No hay un reloj común**
     * No hacen ninguna suposición sobre las velocidades relativas de los procesos.
     * Los canales son fiables pero no existe un límite a la entrega de mensajes
     * La comunicación entre procesos es la única forma de sincronización
- * Sistemas  síncronos
+ * Sistemas  síncronos:
     * Hay una perfecta **sincronización**
     * Hay límites en las latencias de comunicación
     * Los sistemas del mundo real no son síncronos
@@ -59,7 +59,7 @@
 
 ### Tiempo en sistemas distribuidos
 
- * Dificultades en el diseño de aplicaciones distribuidas
+ * Dificultades en el diseño de aplicaciones distribuidas:
    * Paralelismo entre los procesadores
    * Velocidades arbitrarias de procesadores
    * No determinismo en el retardo de los mensajes. Fallos
@@ -68,17 +68,17 @@
 
 ## Relojes físicos y lógicos
 
-* Marcas de tiempo (timestamps)
-  * Relojes físicos
-  * Relojes lógicos
++ Marcas de tiempo (*timestamps*):
+  + Relojes físicos
+  + Relojes lógicos
 
 ### Relojes físicos
 
 * Para ordenar dos eventos de un proceso basta con asignarles una **marca de tiempo**
 * Para un instante físico **t**:
-   * H<sub>i</sub>(t): valor del reloj HW (oscilador)
-   * C<sub>i</sub>(t): valor del reloj SW (generado por el SO)
-      * C<sub>i</sub>(t) = a x H<sub>i</sub>(t) + b
+   * H<sub>i</sub>(t): valor del reloj **hardware** (oscilador)
+   * C<sub>i</sub>(t): valor del reloj **software** (generado por el sistema operativo):
+      * C<sub>i</sub>(t) = a * H<sub>i</sub>(t) + b
          * Ej: cantidad de milisegundos o nanosegundos transcurridos desde una fecha de referencia
       * Resolución del reloj: periodo entre actualizaciones de C<sub>i</sub>(t)
         * Determina la ordenación de eventos
@@ -87,14 +87,16 @@
 
 #### Tiempo del sistema (Linux)
 
-```c
- struct  timespec {
-    time_t  tv_sec;  /* seconds */
-    long    tv_nsec; /* nanoseconds */
- } ;
+* Uso de la función ```clock_gettime``` y la estructura ```struct timespec``` :
+  ```c
+   struct  timespec {
+      time_t  tv_sec;  /* seconds */
+      long    tv_nsec; /* nanoseconds */
+   } ;
 
- int clock_gettime(clockid_t  clk_id, struct  timespec *tp);
-```
+   int clock_gettime (clockid_t         clk_id, 
+                      struct timespec * tp);
+  ```
 
 * La función ```clock_gettime```:
   * Devuelve el número de segundos  transcurridos  **desde 1 de Enero de 1970** y el número de nanosegundos dentro del actual segundo
@@ -102,13 +104,15 @@
      * **CLOCK_REALTIME**: Reloj del sistema. Este reloj puede sufrir ajustes para corregir la fecha.
      * **CLOCK_MONOTONIC**: Igual que CLOCK_REALTIME pero no se realizan ajustes, por tanto su cuenta es creciente sin saltos bruscos. Útil para medir duraciones de eventos
 
-+ Uso de la función ```clock_gettime```:
++ Ejemplo de uso de la función ```clock_gettime```:
   ```c
+  /* 1) Medición antes y después */
   struct timespec  T_ini, T_fin ;
   clock_gettime(CLOCK_MONOTONIC , &T_ini);
   /* <tarea a medir> */
   clock_gettime(CLOCK_MONOTONIC , &T_fin);
   
+  /* 2) Cálculo de diferencia de tiempos */
   double A1, A2, Tiempo ;
   A1 = (T_fin.tv_sec  – T_ini.tv_sec);
   A2 = (T_fin.tv_nsec – T_ini.tv_nsec) / (double)1000000000;
@@ -119,16 +123,17 @@
 #### Sincronización de relojes físicos
 
 * Los computadores de un **sistema distribuido** poseen **relojes** que **no están sincronizados** (**derivas**)
- * Importante asegurar una correcta sincronización
+ * Importante asegurar una correcta sincronización:
    * En **aplicaciones de tiempo real**
    * Ordenación natural de eventos distribuidos (fechas de ficheros)
    * **Análisis de rendimiento**
-* Tradicionalmente se han empleado protocolos de sincronización que intercambian mensajes
-* Actualmente se puede mejorar mediante GPS
-  * Los computadores de un sistema poseen todos un GPS
-  * Uno o dos computadores utilizan un GPS y el resto se sincroniza mediante protocolos clásicos
+* Sincronización:
+  * Tradicionalmente se han empleado protocolos de sincronización que intercambian mensajes
+  * Actualmente se puede mejorar mediante GPS:
+    * Los computadores de un sistema poseen todos un GPS
+    * Uno o dos computadores utilizan un GPS y el resto se sincroniza mediante protocolos clásicos
 
-#### Sincronización externa vs interna
+#### Sincronización externa versus interna
 
 * **D**: Cota máxima de sincronización
 * **S**: fuente del tiempo UTC, t
@@ -136,7 +141,7 @@
 * **Sincronización  externa**:
    * Los relojes están sincronizados si **|S(t) - C<sub>i</sub>(t)| < D**
    * Los relojes se consideran sincronizados dentro de D
-* **Sincronización interna** entre los relojes de los computadores de un sistema distribuido
+* **Sincronización interna** entre los relojes de los computadores de un sistema distribuido:
    * Los relojes están sincronizados si **|C<sub>i</sub>(t) - C<sub>j</sub>(t)| < D**
    * Dados dos eventos de dos computadores se puede establecer su orden en función de sus relojes si están sincronizados
 * Sincronización externa -> sincronización interna (ok sí) pero <br>Sincronización externa <-/- sincronización interna (ko no solo sí)
@@ -150,7 +155,7 @@
 
 #### Sincronización en un sistema síncrono
 
-* **P1** envía el valor de su reloj local t a **P2**
+* **P1** envía el valor de su reloj local t a **P2**:
    * P2 puede actualizar su reloj al valor **t + T<sub>transmit</sub>  si T<sub>transmit</sub>** es el tiempo que lleva enviar un mensaje
    * Sin embargo, T<sub>transmit</sub>  puede desconocerse
      * Se compite por el uso de la red
@@ -185,7 +190,7 @@
 #### Network time protocol (NTP)
 
 * Servicio para **sincronizar a máquinas en Internet** con el UTC
-* 3 modos de sincronización
+* 3 modos de sincronización:
    * **multicast**: para redes LAN de alta velocidad
    * **RPC**: similar al algoritmo de Cristian
    * **simétrico**: entre pares de procesos
@@ -234,8 +239,10 @@
 
 + Ejemplo:
   * Ordenado:
+  
     ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rl_o.svg)
   * No ordenado:
+  
     ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rl_no.svg)
 
 
@@ -251,7 +258,7 @@
 
 #### Problemas de los relojes lógicos
 
-* No bastan para caracterizar la causalidad
+* No bastan para caracterizar la causalidad:
   * Dados RL(a) y RL(b) no podemos saber:
      * si a precede a b
      * si b precede a a
@@ -263,8 +270,8 @@
 ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_prl.svg)
 
 Problemas de los relojes lógicos:
-* C(e11) < C(e22),  y e11 -> e22  es cierto
-* C(e11) < C(e32),  pero e11 -> e32  es falso (son concurrentes)
+ * C(e11) < C(e22),  y e11 -> e22  es cierto
+ * C(e11) < C(e32),  pero e11 -> e32  es falso (son concurrentes)
 
 
 ### Relojes vectoriales
@@ -272,12 +279,12 @@ Problemas de los relojes lógicos:
 * Desarrollado independientemente por **Fidge**, **Mattern** y **Schmuck**
 * Todo proceso lleva asociado un vector de enteros **RV**
 * **RV<sub>i</sub>[a]** es el valor del reloj vectorial del proceso i cuando ejecuta el evento a
-* Mantenimiento de los relojes vectoriales
+* Mantenimiento de los relojes vectoriales:
    * Inicialmente RV<sub>i</sub>= 0   &forall; i
-   * Cuando un proceso i genera un evento
+   * Cuando un proceso i genera un evento:
      * RV<sub>i</sub>[ i ] = RV<sub>i</sub>[ i ] + 1
    * Todos los mensajes llevan el RV del envío
-   * Cuando un proceso j recibe un mensaje con RV<sub>i</sub>
+   * Cuando un proceso j recibe un mensaje con RV<sub>i</sub>:
      * RV<sub>j</sub>  = max( RV<sub>j</sub> , RV<sub>i</sub> ) (componente a componente)
      * RV<sub>j</sub>[ j ] = RV<sub>j</sub>[ j ] + 1 (evento de recepción)
 
@@ -285,10 +292,10 @@ Problemas de los relojes lógicos:
 
 #### Propiedades de los relojes vectoriales
 
-* RV < RV´ si y solo si
+* RV < RV´ si y solo si:
    * RV  &ne; RV´ y
    * RV[i ] &le; RV´[i ], &forall; i
-* Dados dos eventos a y b
+* Dados dos eventos a y b:
    * a &rarr; b si y solo si RV(a) < RV(b)
    * a y b son concurrentes cuando
      * Ni RV(a) &le; RV(b)  ni  RV(b ) &le; RV(a)
@@ -307,23 +314,23 @@ Problemas de los relojes lógicos:
    * **Progreso**
    * **Espera acotada**
 * Algoritmos
-   * Algoritmo **centralizado**
+   * Algoritmo **centralizado**:
       * Existe un proceso coordinador
       * Problemas: 
         * Cuello de botella 
           * Posible arreglo: reparto estático entre número prefijado de coordinadores
         * Punto único de fallo
           * Posible arreglo: uso de temporizadores: el cerrojo se libera transcurrido un cierto tiempo
-   * Algoritmo **distribuido**
+   * Algoritmo **distribuido**:
      * Algoritmo de **Ricart y Agrawala**
        * Requiere la existencia de  un orden total de todos los mensajes en el sistema
        * Estudiar bibliografía para más detalles
-   * **Anillo con testigo**
+   * **Anillo con testigo**:
      * Los procesos se ordenan conceptualmente como un anillo
      * Por el anillo circula un testigo
      * Cuando un proceso quiere entrar en la SC debe esperar a recoger el testigo
      * Cuando sale de la SC envía el testigo al nuevo proceso del anillo
-   * Algoritmo basado en **quorum**
+   * Algoritmo basado en **quorum**:
      * Algoritmo de **Maekawa**
        * Estudiar bibliografía para más detalles
 
@@ -333,7 +340,7 @@ Problemas de los relojes lógicos:
 * Útil en aplicaciones donde es necesario la existencia de un coordinador
 * El algoritmo debe ejecutarse cuando **falla el coordinador**
 * El objetivo del algoritmo es que la elección sea única aunque el algoritmo se inicie de forma concurrente en varios procesos
-* Algoritmos **de elección**
+* Algoritmos **de elección**:
    * **Algoritmo del matón**
        * Estudiar bibliografía para más detalles
    * **Algoritmo basado en anillo**
@@ -391,7 +398,6 @@ Problemas de los relojes lógicos:
 + Implementación de consenso:
     * Estudiar bibliografía para más detalles
 
-
 ## Servicio de nombres
 
 * Objetivo: descubrir recursos en sistemas distribuido
@@ -407,17 +413,66 @@ Problemas de los relojes lógicos:
    + Nombres de hosts
    + Nombres de objetos remotos o servicios remotos en caso de servicios de llamadas a procedimientos remotos o invocaciónón de métodos remotos
 
-* URI (Uniform  Resource  Identifier): identifica recursos en Internet
-   * URL (Uniform  Resource  locators): URI que proporcionan información para localizar recursos
+
+
+* Estructura general: 
+   * Cliente: precisa localizar un servidor usando un servidor de nombre
+   * Servidor: servidor a ser usado por un cliente
+   * Servidor de nombre:
+     * Un servicio de nombres almacena de forma  general pares <nombre, atributos>
+
+* Funcionamiento general: 
+   * Registro: el servidor contacta con el *servicio de nombre* para almacenar su identificador unívoco (información fija) y su dirección IP, etc. (información variable)
+   * Búsqueda: el cliente cuando precisa contactar con el servidor primero pregunta al *servicio de nombre* por el registro asociado (par <nombre, atributos>). 
+      El *servicio de nombre* contesta con la información o error en caso de no haber registro asociado.
+    * El cliente contacta con el servidor y pide los servicios (no intervención del  *servicio de nombre* )
+    * Dar de baja: antes del servidor dejar de estar activo para los clientes, se da de baja en el  *servicio de nombre*.
+
+
+#### Espacio de nombres
+
+* El espacio de nombres es el conjunto de nombres válidos reconocidos por un servicio particular
+   * Plano
+   * Jerárquico
+
+- Ejemplo de nombrado jerárquico: URI
+   * URI (*Uniform Resource Identifier*): 
+      * Una URI identifica recursos en Internet
+      * URI = URL | URN (puede ser una URL o un URN)
+   * URL (*Uniform Resource locators*): 
+      * URI que proporcionan información para localizar recursos
       * Puede verse afectado si el recurso se mueve
-   * URN (Uniform  resource  names)
+      * Ejemplo: http://tools.ietf.org/html/rfc3187.html
+   * URN (*Uniform  resource  names*)
       * URI que solo utilizan nombres sin incluir información de localización
       * Requiere un proceso de traducción
-   * Ejemplos:
-      * urn:ietf:rfc:3187
-      * http://tools.ietf.org/html/rfc3187.html
+      * Ejemplo: urn:ietf:rfc:3187
 
-+ Implementación de un servicio de nombres:
-    * Estudiar bibliografía para más detalles
+#### Resolución de nombres
 
+* Proceso  iterativo que permite a un cliente obtener  los  atributos de interés a partir de un determinado nombre:
+  * Resolución iterativa guiada por el cliente
+  * Resolución guiada por el servidor
+* Empleo de cachés en el cliente
+
+#### Ejemplos de servicios de nombres
+
+* **DNS**: traduce nombres de dominio a direcciones IP 
+  * Base de datos  jerárquica que almacena información sobre nombres de dominio
+* **LDAP (Lighweight  Directory Access Protocol)**: servicio de directorio que consta de una base de datos con información sobre nombres de personas. Habitualmente almacena información de autenticación (usuario y contraseña)
+* **portmapper**: servidor de nombres utilizado en RPC. Obtiene el puerto asociado a servicios RPC registrados
+* **rmiregistry**: servicio de registro de objetos remotos en Java
+
+
+</br>
+
+####  Implementación de un servicio de nombres
+
+* Almacenamiento de la información: servicio de directorios, base de datos
+* Migración del servicio de nombres
+* Replicación del servicio
+* Cache de la información en los clientes
+* Localización del servicio de nombres
+
+-- Estudiar bibliografía para más detalles
 
