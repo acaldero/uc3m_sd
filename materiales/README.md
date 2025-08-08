@@ -50,7 +50,7 @@
       <td>Servicios distribuidos</td>
       <td>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-sd/ssdd_sd.md">Principales servicios distribuidos</a>
-             <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-sd/ssdd_sd.ipynb">(notebook)</a> </li>
+             <a href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materiales/tema-sd/ssdd_sd.ipynb">(notebook)</a> </li>
       </td>
   </tr>
   <tr>
