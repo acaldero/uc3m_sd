@@ -32,8 +32,7 @@
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_pq.md">Colas de mensajes POSIX</a></li>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.md">Introducción a MPI</a>
              <a href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.ipynb">(notebook)</a>  </li>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_vector.md">Ejercicio de paso de mensajes (colas POSIX)</a> </li>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e1-pasomensajes-v2a.pdf">Ejercicio de paso de mensajes (colas POSIX) en PDF</a> </li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_vector.md">Ejercicio de paso de mensajes (colas POSIX)</a> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e1-pasomensajes-v2a.pdf">en PDF</a> </li>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_upgraded.md">Ejercicio de paso de mensajes (nombrado)</a></li>
       </td>
   </tr>

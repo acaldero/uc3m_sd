@@ -37,7 +37,7 @@
         * Recepción
            * e<sub>02</sub>  ->  e<sub>12</sub>
   * Diagramas espacio-tiempo:  
-     ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_diagrama_eventos.svg)
+     ![Ejemplo de diagrama de eventos en el tiempo](/materiales/tema-sd/ssdd_sd/ssdd_sd_diagrama_eventos.svg)
 
 ### Modelos síncronos y asíncronos
 
@@ -166,7 +166,7 @@
    * El problema es que en un sistema asíncrono T<sub>transmit</sub>  no está acotado
 
 #### Algoritmo de Cristian
-  ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rf_cristian.svg)
+  ![Algoritmo de Cristian](/materiales/tema-sd/ssdd_sd/ssdd_sd_rf_cristian.svg)
 
 * El cliente realiza una petición para obtener el tiempo
 * El servidor responde con el tiempo de su reloj (T<sub>s</sub>)
@@ -185,7 +185,7 @@
 * El **servidor de tiempo** realiza un **muestreo periódico** de todas las máquinas para pedirles el tiempo
 * **Calcula el tiempo promedio** y le indica a todas las máquinas que avancen su reloj a la nueva hora o que disminuyan la velocidad de actualización
 
-![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rf_berkeley.svg)
+![Algoritmo de Berkeley](/materiales/tema-sd/ssdd_sd/ssdd_sd_rf_berkeley.svg)
 
 #### Network time protocol (NTP)
 
@@ -203,7 +203,7 @@
 * ¿Podemos ordenar los eventos de otra forma?
   * Empleando el concepto de reloj lógico
 
-![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_diagrama_eventos.svg)
+![Ejemplo de diagrama de eventos](/materiales/tema-sd/ssdd_sd/ssdd_sd_diagrama_eventos.svg)
 
 #### Causalidad potencial
 
@@ -240,10 +240,10 @@
 + Ejemplo:
   * Ordenado:
   
-    ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rl_o.svg)
+    ![Ejemplo de eventos vistos de forma ordenada](/materiales/tema-sd/ssdd_sd/ssdd_sd_rl_o.svg)
   * No ordenado:
   
-    ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rl_no.svg)
+    ![Ejemplo de eventos vistos de forma NO ordenada](/materiales/tema-sd/ssdd_sd/ssdd_sd_rl_no.svg)
 
 
 #### Relojes lógicos totalmente ordenados
@@ -267,7 +267,7 @@
   * a &rarr; b si y sólo si F(a) < F(b)
   * Los **relojes vectoriales** permiten representar de forma precisa la relación de **causalidad potencial**
 
-![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_prl.svg)
+![Problema de los relojes lógicos](/materiales/tema-sd/ssdd_sd/ssdd_sd_prl.svg)
 
 Problemas de los relojes lógicos:
  * C(e11) < C(e22),  y e11 -> e22  es cierto
@@ -290,7 +290,7 @@ Problemas de los relojes lógicos:
      * RV<sub>j</sub>[ j ] = RV<sub>j</sub>[ j ] + 1 (evento de recepción)
 * Ejemplo:
 
-   ![Paradigmas por niveles](/materiales/tema-sd/ssdd_sd/ssdd_sd_rv.svg)
+   ![Ejemplo de relojes vectoriales](/materiales/tema-sd/ssdd_sd/ssdd_sd_rv.svg)
 
 #### Propiedades de los relojes vectoriales
 

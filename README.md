@@ -4,7 +4,7 @@
 + [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
-## Contents
+## Contenidos
 
  * [Materiales de apoyo](#materiales-de-apoyo)
  * [Casos prácticos](#casos-prácticos)
@@ -104,8 +104,7 @@
 ## Ejercicios
 
   * Paso de mensajes
-    * [Ejercicio de paso de mensajes (colas POSIX)](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_vector.md)
-    * [Ejercicio de paso de mensajes (colas POSIX) en PDF](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e1-pasomensajes-v2a.pdf)
+    * [Ejercicio de paso de mensajes (colas POSIX)](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_vector.md) [en PDF](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e1-pasomensajes-v2a.pdf)
     * [Ejercicio de paso de mensajes (nombrado)](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_upgraded.md)
   * Sockets
     * [Ejercicio de calculadora distribuida basada en Sockets](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-sockets/ejercicio_sockets_calculadora.md)
