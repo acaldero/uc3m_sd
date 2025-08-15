@@ -103,11 +103,12 @@
     ``` bash
     mpirun -np 2 -machinefile machines ./mpi_hola
     ```
-     * La salida sería similar a:
-    ``` bash
-    El proceso 0 de 2 procesos (kiwi)
-    El proceso 1 de 2 procesos (kiwi)
-    ```
+
+* La salida sería similar a:
+  ``` bash
+  El proceso 0 de 2 procesos (kiwi)
+  El proceso 1 de 2 procesos (kiwi)
+  ```
 
 
 ### Comunicación punto a punto
@@ -183,10 +184,11 @@ int main ( int argc, char **argv )
     ``` bash
     mpirun -np 2 ./mpi_p2p
     ```
-   * La salida sería similar a:
-    ``` bash
-    [0 -> 1] num: 10
-    ```
+
+* La salida sería similar a:
+  ``` bash
+  [0 -> 1] num: 10
+  ```
 
 
 ### Comunicación colectiva
@@ -283,11 +285,12 @@ int main ( int argc, char **argv )
     ``` bash
     mpirun -np 2 ./mpi_coll
     ```
-   * La salida sería similar a:
-    ``` bash
-    El proceso 0 tiene num: 5
-    El proceso 1 tiene num: 5
-    ```
+
+* La salida sería similar a:
+  ``` bash
+  El proceso 0 tiene num: 5
+  El proceso 1 tiene num: 5
+  ```
 
 
 ### Ejemplo en C: cálculo de π con MPI
@@ -328,9 +331,9 @@ int main(int argc, char* argv[])
 ```
 
 * Se puede compilar usando `mpicc`:
-   ``` bash
+  ``` bash
   mpicc -Wall -g pi_mpi.c -lm -o pi_mpi
-   ```
+  ```
 
 * Se puede ejecutar en la máquina local usando `mpirun`:
   * Primero hay que crear un archivo `machines` con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
@@ -344,10 +347,11 @@ int main(int argc, char* argv[])
     ``` bash
     mpirun -np 2 -machinefile machines ./pi_mpi
     ```
-   * La salida sería similar a:
-     ``` bash
-     np =  2; PI = 3.141593
-     ```
+
+* La salida sería similar a:
+  ``` bash
+  np =  2; PI = 3.141593
+  ```
 
 
 ### Ejemplo en C: cálculo de π con OpenMP
@@ -383,15 +387,20 @@ int main ( int argc, char* argv[] )
 ```
 
 * Se puede compilar usando:
-   ``` bash
+  ``` bash
   gcc -o pi_omp -fopenmp pi_omp.c -lm
-   ```
-     * Se precisa la librería de OpenMP `libopenmp.a` y la librería matemática `libm.a`
+  ```
+  * Se precisa la librería de OpenMP `libopenmp.a` y la librería matemática `libm.a`
 
 * Se puede ejecutar mediante:
    ``` bash
   user$ ./pi_omp
    ```
+
+* La salida sería similar a:
+  ``` bash
+  PI = 3.141593
+  ```
 
 
 ### Lecturas adicionales
