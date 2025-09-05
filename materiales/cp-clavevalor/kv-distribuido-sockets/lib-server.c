@@ -55,29 +55,29 @@ void tratar_peticion ( int arg )
      {
          case 1: // INIT
                  pr.status = init(pr.name, pr.value) ;
-		 d_printf(" %d = init(%s, %d);\n",    pr.status, pr.name, pr.value) ;
+                 d_printf(" %d = init(%s, %d);\n",    pr.status, pr.name, pr.value) ;
                  break ;
          case 2: // SET
                  pr.status = set(pr.name, pr.i, pr.value) ;
-		 d_printf(" %d = set(%s, %d, 0x%x);\n", pr.status, pr.name, pr.i, pr.value) ;
+                 d_printf(" %d = set(%s, %d, 0x%x);\n", pr.status, pr.name, pr.i, pr.value) ;
                  break ;
          case 3: // GET
                  pr.status = get(pr.name, pr.i, &(pr.value)) ;
-		 d_printf(" %d = get(%s, %d, 0x%x);\n", pr.status, pr.name, pr.i, pr.value) ;
+                 d_printf(" %d = get(%s, %d, 0x%x);\n", pr.status, pr.name, pr.i, pr.value) ;
                  break ;
 	 default:
-		 d_printf(" unknown(%s, %d, %d);\n", pr.name, pr.i, pr.value) ;
+                 d_printf(" unknown(%s, %d, %d);\n", pr.name, pr.i, pr.value) ;
                  break ;
      }
 
      ret = write(sd_client, (char *)&pr, sizeof(struct message)) ;
      if (ret < 0) {
-	 perror("write: ") ;
+         perror("write: ") ;
      }
 
      ret = close(sd_client);
      if (ret < 0) {
-	 perror("close: ") ;
+         perror("close: ") ;
      }
 }
 
@@ -95,18 +95,21 @@ int main ( int argc, char *argv[] )
      int sd_server, sd_client ;
      struct sigaction new_action, old_action;
      struct sockaddr_in address;
-     int opt = 1;
+     int opt ;
      int addrlen = sizeof(address);
 
      // open server sockets
-     if ((sd_server = socket(AF_INET, SOCK_STREAM, 0)) == 0)
+     sd_server = socket(AF_INET, SOCK_STREAM, 0) ;
+     if (sd_server < 0)
      {
         perror("socket: ");
         exit(-1);
      }
 
      // socket options...
-     if (setsockopt(sd_server, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
+     opt = 1;
+     ret = setsockopt(sd_server, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)) ;
+     if (ret < 0)
      {
          perror("setsockopt: ");
          exit(-1);
@@ -117,21 +120,24 @@ int main ( int argc, char *argv[] )
      address.sin_addr.s_addr = INADDR_ANY ;
      address.sin_port        = htons(4200) ;
 
-     if (bind(sd_server, (struct sockaddr *)&address,  sizeof(address)) < 0)
+     ret = bind(sd_server, (struct sockaddr *)&address,  sizeof(address)) ;
+     if (ret < 0)
      {
          perror("bind: ");
          exit(-1);
      }
-     if (listen(sd_server, 3) < 0)
+     ret = listen(sd_server, 3) ;
+     if (ret < 0)
      {
          perror("listen: ") ;
          exit(-1);
      }
 
      // signal handler
-     new_action.sa_handler = sigHandler ;
      sigemptyset (&new_action.sa_mask) ;
      new_action.sa_flags = 0 ;
+     new_action.sa_handler = sigHandler ;
+	
      sigaction (SIGINT, NULL, &old_action) ;
      if (old_action.sa_handler != SIG_IGN) {
          sigaction (SIGINT, &new_action, NULL);
@@ -140,23 +146,22 @@ int main ( int argc, char *argv[] )
      // receive and treat requests
      while (0 == do_exit)
      {
-	  sd_client = accept(sd_server, (struct sockaddr *)&address,  (socklen_t*)&addrlen) ;
-	  if (sd_client <= 0)
-	  {
-		perror("accept");
-		exit(-1);
-	  }
+	    sd_client = accept(sd_server, (struct sockaddr *)&address,  (socklen_t*)&addrlen) ;
+	    if (sd_client <= 0)
+	    {
+            perror("accept");
+            exit(-1);
+	    }
 
-          tratar_peticion(sd_client) ;
+        tratar_peticion(sd_client) ;
      }
 
      // end
      ret = close(sd_server) ;
      if (ret < 0) {
-	 perror("close: ") ;
+         perror("close: ") ;
      }
 
      printf("The End.\n") ;
      return 0 ;
 }
-
