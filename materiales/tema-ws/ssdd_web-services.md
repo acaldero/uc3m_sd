@@ -509,9 +509,9 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
    <html>
    <table>
    <tr>
-   <td>1 API clave-valor simple inicial</td>
-   <td>2 Añadir pydantic</td>
-   <td>3 Añadir fastAPI y uvicorn</td>
+   <td>(1) API clave-valor simple inicial</td>
+   <td>(2) Añadir pydantic</td>
+   <td>(3) Añadir fastAPI y uvicorn</td>
    <tr>
    <tr>
    <td>
@@ -535,7 +535,8 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
 
    def add_item(k: int, v: Item):
        list_kv[k] = v
-       return { "key": k, "item": v }
+       return { "key": k,
+                "item": v }
 
 
 
@@ -544,7 +545,8 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
           item = list_kv[key]
        except:
           item = { '', 0.0 }
-       return { "key": key, "item": item }
+       return { "key": key,
+                "item": item }
 
    # Main
    if __name__ == "__main__":
@@ -575,7 +577,8 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
 
    def add_item(k: int, v: Item):
        list_kv[k] = v
-       return { "key": k, "item": v}
+       return { "key": k,
+                "item": v }
 
 
 
@@ -584,7 +587,8 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
           item = list_kv[key]
        except:
           item = { '', 0.0 }
-       return { "key": key, "item": item }
+       return { "key": key,
+                "item": item }
 
    # Main
    if __name__ == "__main__":
@@ -615,7 +619,8 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
    @app.put("/items/{key}")
    async def add_item(k: int, v: Item):
        list_kv[k] = v
-       return { "key": k, "item": v}
+       return { "key": k,
+                "item": v }
 
    @app.get("/items/{key}")
    async def select_item(key: int):
@@ -623,7 +628,8 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
           item = list_kv[key]
        except:
           item = { '', 0.0 }
-       return {"key": key, "item": item}
+       return { "key": key,
+                "item": item }
 
    # Main
    if __name__ == "__main__":
@@ -1354,16 +1360,200 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
     ```
 
 
+## Ejemplo de JSON-RPC sobre HTTP: servidor MCP de calculadora simple (cliente y servidor, en Python)
+
+* Para implementar un ejemplo básico de uso del protocolo MCP se usará uvicorn y las bibliotecas ```FastMCP``` y ```FastAPI```:
+  ```bash
+  sudo apt install uvicorn -y
+  pip3 install fastmcp fastapi --break-system-packages
+  ```
+
+* Un **servicio basado en MCP ofrece principalmente cuatro tipos de funciones**:
+  * *Tools*: las utilidades son funciones que el cliente puede invocar para realizar acciones o accesos a sistemas externos.
+  * *Resources*: los recursos exponen fuentes de datos que el cliente puede leer.
+  * *Resource templates*: las plantillas de recursos son recursos parametrizados que permiten al cliente pedir un dato específico.
+  * *Prompts*: Las entradas son plantillas de mensajes reusables para guiar a un LLM.
+
+
+* Ejemplo ```mcp_server_calc.py``` en Python de un servidor de calculadora simple:
+  ```python
+  from fastapi import FastAPI
+  from fastmcp import FastMCP
+  import uvicorn
+  
+  # A. Initialize FastMCP
+  mcp = FastMCP("calculator")
+  
+  ## A.1. Utilidades (*tools*)
+  @mcp.tool()
+  def add(a: int, b: int) -> int:
+      """Add two numbers and return the result."""
+      return a + b
+  
+  @mcp.tool()
+  def sub(a: int, b: int) -> int:
+      """Substract two numbers and return the result."""
+      return a - b
+  
+  @mcp.tool()
+  def mul(a: int, b: int) -> int:
+      """Multiply two numbers and return the result."""
+      return a * b
+  
+  @mcp.tool()
+  def div(a: int, b: int) -> int:
+      """Divide two numbers and return the result."""
+      return a / b
+  
+  # A.2. Entradas (*prompts*)
+  @mcp.prompt()
+  def calculator_prompt(a: float, b: float, operation: str) -> str:
+      if operation == "add":
+          return f"The result of adding {a} and {b} is {add(a, b)}"
+      elif operation == "subtract":
+          return f"The result of subtracting {b} from {a} is {sub(a, b)}"
+      elif operation == "multiply":
+          return f"The result of multiplying {a} and {b} is {mul(a, b)}"
+      elif operation == "divide":
+          try:
+              return f"The result of dividing {a} by {b} is {div(a, b)}"
+          except ValueError as e:
+              return str(e)
+      else:
+          return "Invalid operation. Please choose add, subtract, multiply, or divide."
+  
+  # B. Initialize FastAPI
+  mcp_app = mcp.http_app(path="/")
+  api = FastAPI(lifespan=mcp_app.lifespan)
+  
+  ## B.1. Get status
+  @api.get("/api/status")
+  def status():
+      return {"status": "ok"}
+  
+  # C. Mount MCP on FastAPI at "/mcp"  and run on (IP=ANY, port=8000)
+  api.mount("/mcp", mcp_app)
+  
+  if __name__ == "__main__":
+      uvicorn.run(api, host="0.0.0.0", port=8000)
+  ```
+
+
+* Ejemplo ```mcp_client_calc.py``` en Python de un cliente de la calculadora simple:
+  ```python
+  import asyncio
+  from fastmcp import Client
+
+  async def main():
+    # Conectar al servidor MCP vía HTTP
+    client = Client("http://127.0.0.1:8000/mcp/")
+
+    # Abrir sesión
+    async with client:
+        # Listar herramientas disponibles
+        tools = await client.list_tools()
+        print("Herramientas disponibles:")
+        for tool in tools:
+            print("-", tool.name)
+        print("\n")
+
+        # Llamar a add(1,2)
+        result = await client.call_tool("add", {"a": 1, "b": 2})
+        print("Resultado de add(1,2):")
+        print(result)
+
+  if __name__ == "__main__":
+     asyncio.run(main())
+  ```
+
+* Ejemplo de ejecución:
+
+<html>
+<table>
+<tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
+<tr>
+<td>1</td>
+<td></td>
+<td>
+
+```
+$ python3 ./mcp_server_calc.py &
+
+INFO:     Started server process [172886]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>
+
+```
+$ python3 ./mcp_client_calc.py
+
+  ...
+  Herramientas disponibles:
+  - add
+  - sub
+  - mul
+  - div
+
+  Resultado de add(1,2):
+  CallToolResult(content=[TextContent(type='text', text='3', annotations=None, meta=None)], structured_content={'result': 3}, meta=None, data=3, is_error=False)
+  ...
+```
+
+</td>
+<td>
+
+```
+INFO:     127.0.0.1:48316 - "POST /mcp/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48320 - "POST /mcp/ HTTP/1.1" 202 Accepted
+INFO:     127.0.0.1:48336 - "GET /mcp/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48342 - "POST /mcp/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48358 - "POST /mcp/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48364 - "DELETE /mcp/ HTTP/1.1" 200 OK
+```
+
+</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td></td>
+<td>
+
+```
+^C
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [181555]
+```
+
+</td>
+</tr>
+</table>
+</html>
 
 
 
 <br/>
 
 ## Información adicional
-  * [Transparencias del tema 8: t8_web-services.pdf](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-ws/t8_web-services.pdf)
-  * [Know your API protocols: SOAP vs. REST vs. JSON-RPC vs. gRPC vs. GraphQL vs. Thrift](https://www.mertech.com/blog/know-your-api-protocols)
-  * [A brief look at the evolution of interface protocols leading to modern APIs](https://www.soa4u.co.uk/2019/02/a-brief-look-at-evolution-of-interface.html)
-  * [Soap vs REST vs GrapQL vs gRPC](https://www.altexsoft.com/blog/soap-vs-rest-vs-graphql-vs-rpc/)
-  * [A brief look at the evolution of interface protocols leading to modern APIs](https://www.soa4u.co.uk/2019/02/a-brief-look-at-evolution-of-interface.html)
-  * [RPC Frameworks: gRPC vs Thrift vs RPyC for python](https://www.hardikp.com/2018/07/28/services/)
+  * Transparencias:
+    * [Tema 8: t8_web-services.pdf](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-ws/t8_web-services.pdf)
+  * SOAP, REST, gRPC, etc.:
+    * [Know your API protocols: SOAP vs. REST vs. JSON-RPC vs. gRPC vs. GraphQL vs. Thrift](https://www.mertech.com/blog/know-your-api-protocols)
+    * [A brief look at the evolution of interface protocols leading to modern APIs](https://www.soa4u.co.uk/2019/02/a-brief-look-at-evolution-of-interface.html)
+    * [Soap vs REST vs GrapQL vs gRPC](https://www.altexsoft.com/blog/soap-vs-rest-vs-graphql-vs-rpc/)
+    * [A brief look at the evolution of interface protocols leading to modern APIs](https://www.soa4u.co.uk/2019/02/a-brief-look-at-evolution-of-interface.html)
+    * [RPC Frameworks: gRPC vs Thrift vs RPyC for python](https://www.hardikp.com/2018/07/28/services/)
+  * MCP:
+    * [Ejemplo de Servidor MCP server](https://gofastmcp.com/tutorials/create-mcp-server)
+    * [How to Build an MCP Server in Python: A Complete Guide](https://scrapfly.io/blog/posts/how-to-build-an-mcp-server-in-python-a-complete-guide)
 
