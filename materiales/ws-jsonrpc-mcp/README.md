@@ -4,17 +4,23 @@
 + [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
-## Servicio distribuido REST basado en OpenAPI
+## Servicio distribuido JSON-RPC sobre HTTP: servidor MCP de calculadora simple
 
-#### Preparación
+### Preparación
 
-Hay que introducir:
-```
-cd ws-jsonrpc-mcp
-```
+* Hay que introducir:
+  ```bash
+  cd ws-jsonrpc-mcp
+  ```
+
+* Se usará uvicorn y las bibliotecas ```fastapi``` y ```fastmcp```:
+  ```bash
+  sudo apt install uvicorn -y
+  pip3 install fastmcp fastapi --break-system-packages
+  ```
 
 
-#### Ejecutar
+### Ejecutar
 
 <html>
 <table>
@@ -24,8 +30,8 @@ cd ws-jsonrpc-mcp
 <td></td>
 <td>
 
-```
-$ python3 ./mcp_server_calc.py &
+```bash
+$ python3 ./mcp_server_calc.py
 ```
 
 </td>
@@ -35,26 +41,29 @@ $ python3 ./mcp_server_calc.py &
 <td>2</td>
 <td>
 
-```
+```bash
 $ python3 ./mcp_client_calc.py
-```
 
-</td>
-<td>
-
-```
-  ...
-  Herramientas disponibles:
+...
+Herramientas disponibles:
   - add
   - sub
   - mul
   - div
 
-  Resultado de add(1,2):
-  CallToolResult(content=[TextContent(type='text', text='3', annotations=None, meta=None)], structured_content={'result': 3}, meta=None, data=3, is_error=False)
-  ...
+Resultado de add(1,2):
+CallToolResult(content=[TextContent(type='text', text='3',
+                                      annotations=None,
+                                      meta=None)],
+                          structured_content={'result': 3},
+                          meta=None,
+                          data=3,
+                          is_error=False)
+...
 ```
 
+</td>
+<td>
 </td>
 </tr>
 
@@ -63,8 +72,9 @@ $ python3 ./mcp_client_calc.py
 <td></td>
 <td>
 
-```
+```bash
 ^C
+
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
