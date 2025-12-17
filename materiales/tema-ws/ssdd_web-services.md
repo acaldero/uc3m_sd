@@ -1537,7 +1537,7 @@ INFO: 127.0.0.1:48364 - "DELETE /mcp/ HTTP/1.1" 200 OK
 <td>
 
 ```bash
-^C
+$ killall python3
 
 INFO: Shutting down
 INFO: Waiting for application shutdown.
