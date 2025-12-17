@@ -1,0 +1,10 @@
+{
+  "servers": {
+    "calculator": {
+      "type": "stdio",
+      "command": "python3",
+      "args": ["${workspaceFolder}/calc.py"]
+    }
+  }
+}
+
