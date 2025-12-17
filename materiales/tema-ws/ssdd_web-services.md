@@ -20,6 +20,7 @@
     * [Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)](#ejemplo-simple-de-servicio-web-basado-en-sse-en-bash)
     * [Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-apache-thrift-cliente-y-servidor-en-python)
     * [Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)](#creación-de-un-servicio-distribuido-basado-en-grpc-cliente-y-servidor-en-python)
+    * [Ejemplo de JSON-RPC sobre HTTP: servidor MCP de calculadora simple (cliente y servidor, en Python)](#ejemplo-de-json-rpc-sobre-http-servidor-mcp-de-calculadora-simple-cliente-y-servidor-en-python)
 
 
 ## Introducción
@@ -1362,111 +1363,109 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
 
 ## Ejemplo de JSON-RPC sobre HTTP: servidor MCP de calculadora simple (cliente y servidor, en Python)
 
-* Para implementar un ejemplo básico de uso del protocolo MCP se usará uvicorn y las bibliotecas ```FastMCP``` y ```FastAPI```:
-  ```bash
-  sudo apt install uvicorn -y
-  pip3 install fastmcp fastapi --break-system-packages
-  ```
-
 * Un **servicio basado en MCP ofrece principalmente cuatro tipos de funciones**:
   * *Tools*: las utilidades son funciones que el cliente puede invocar para realizar acciones o accesos a sistemas externos.
   * *Resources*: los recursos exponen fuentes de datos que el cliente puede leer.
   * *Resource templates*: las plantillas de recursos son recursos parametrizados que permiten al cliente pedir un dato específico.
   * *Prompts*: Las entradas son plantillas de mensajes reusables para guiar a un LLM.
 
-
-* Ejemplo ```mcp_server_calc.py``` en Python de un servidor de calculadora simple:
-  ```python
-  from fastapi import FastAPI
-  from fastmcp import FastMCP
-  import uvicorn
-  
-  # A. Initialize FastMCP
-  mcp = FastMCP("calculator")
-  
-  ## A.1. Utilidades (*tools*)
-  @mcp.tool()
-  def add(a: int, b: int) -> int:
-      """Add two numbers and return the result."""
-      return a + b
-  
-  @mcp.tool()
-  def sub(a: int, b: int) -> int:
-      """Substract two numbers and return the result."""
-      return a - b
-  
-  @mcp.tool()
-  def mul(a: int, b: int) -> int:
-      """Multiply two numbers and return the result."""
-      return a * b
-  
-  @mcp.tool()
-  def div(a: int, b: int) -> int:
-      """Divide two numbers and return the result."""
-      return a / b
-  
-  # A.2. Entradas (*prompts*)
-  @mcp.prompt()
-  def calculator_prompt(a: float, b: float, operation: str) -> str:
-      if operation == "add":
-          return f"The result of adding {a} and {b} is {add(a, b)}"
-      elif operation == "subtract":
-          return f"The result of subtracting {b} from {a} is {sub(a, b)}"
-      elif operation == "multiply":
-          return f"The result of multiplying {a} and {b} is {mul(a, b)}"
-      elif operation == "divide":
-          try:
-              return f"The result of dividing {a} by {b} is {div(a, b)}"
-          except ValueError as e:
-              return str(e)
-      else:
-          return "Invalid operation. Please choose add, subtract, multiply, or divide."
-  
-  # B. Initialize FastAPI
-  mcp_app = mcp.http_app(path="/")
-  api = FastAPI(lifespan=mcp_app.lifespan)
-  
-  ## B.1. Get status
-  @api.get("/api/status")
-  def status():
-      return {"status": "ok"}
-  
-  # C. Mount MCP on FastAPI at "/mcp"  and run on (IP=ANY, port=8000)
-  api.mount("/mcp", mcp_app)
-  
-  if __name__ == "__main__":
-      uvicorn.run(api, host="0.0.0.0", port=8000)
+* Para trabajar con el protocolo MCP se usará uvicorn y las bibliotecas ```FastMCP``` y ```FastAPI```:
+  ```bash
+  sudo apt install uvicorn -y
+  pip3 install fastmcp fastapi --break-system-packages
   ```
 
+* En [ws-jsonrpc-mcp](/ws-jsonrpc-mcp/README.md) está disponible un ejemplo compuesto de 2 ficheros:
+  * El servidor **```mcp_server_calc.py```** en Python de una calculadora simple:
+    ```python
+    from fastapi import FastAPI
+    from fastmcp import FastMCP
+    import uvicorn
+  
+    # A. Initialize FastMCP
+    mcp = FastMCP("calculator")
+  
+    ## A.1. Utilidades (*tools*)
+    @mcp.tool()
+    def add(a: int, b: int) -> int:
+        """Add two numbers and return the result."""
+        return a + b
+  
+    @mcp.tool()
+    def sub(a: int, b: int) -> int:
+        """Substract two numbers and return the result."""
+        return a - b
+  
+    @mcp.tool()
+    def mul(a: int, b: int) -> int:
+        """Multiply two numbers and return the result."""
+        return a * b
+  
+    @mcp.tool()
+    def div(a: int, b: int) -> int:
+        """Divide two numbers and return the result."""
+        return a / b
+  
+    # A.2. Entradas (*prompts*)
+    @mcp.prompt()
+    def calculator_prompt(a: float, b: float, operation: str) -> str:
+        if operation == "add":
+            return f"The result of adding {a} and {b} is {add(a, b)}"
+        elif operation == "subtract":
+            return f"The result of subtracting {b} from {a} is {sub(a, b)}"
+        elif operation == "multiply":
+            return f"The result of multiplying {a} and {b} is {mul(a, b)}"
+        elif operation == "divide":
+            try:
+                return f"The result of dividing {a} by {b} is {div(a, b)}"
+            except ValueError as e:
+                return str(e)
+        else:
+            return "Invalid operation. Please choose add, subtract, multiply, or divide."
+  
+    # B. Initialize FastAPI
+    mcp_app = mcp.http_app(path="/")
+    api = FastAPI(lifespan=mcp_app.lifespan)
+  
+    ## B.1. Get status
+    @api.get("/api/status")
+    def status():
+        return {"status": "ok"}
+  
+    # C. Mount MCP on FastAPI at "/mcp"  and run on (IP=ANY, port=8000)
+    api.mount("/mcp", mcp_app)
+  
+    if __name__ == "__main__":
+        uvicorn.run(api, host="0.0.0.0", port=8000)
+    ```
+  * El cliente **```mcp_client_calc.py```** en Python de una la calculadora simple:
+    ```python
+    import asyncio
+    from fastmcp import Client
 
-* Ejemplo ```mcp_client_calc.py``` en Python de un cliente de la calculadora simple:
-  ```python
-  import asyncio
-  from fastmcp import Client
+    async def main():
+      # Conectar al servidor MCP vía HTTP
+      client = Client("http://127.0.0.1:8000/mcp/")
 
-  async def main():
-    # Conectar al servidor MCP vía HTTP
-    client = Client("http://127.0.0.1:8000/mcp/")
+      # Abrir sesión
+      async with client:
+          # Listar herramientas disponibles
+          tools = await client.list_tools()
+          print("Herramientas disponibles:")
+          for tool in tools:
+              print("-", tool.name)
+          print("\n")
 
-    # Abrir sesión
-    async with client:
-        # Listar herramientas disponibles
-        tools = await client.list_tools()
-        print("Herramientas disponibles:")
-        for tool in tools:
-            print("-", tool.name)
-        print("\n")
+          # Llamar a add(1,2)
+          result = await client.call_tool("add", {"a": 1, "b": 2})
+          print("Resultado de add(1,2):")
+          print(result)
 
-        # Llamar a add(1,2)
-        result = await client.call_tool("add", {"a": 1, "b": 2})
-        print("Resultado de add(1,2):")
-        print(result)
+    if __name__ == "__main__":
+       asyncio.run(main())
+    ```
 
-  if __name__ == "__main__":
-     asyncio.run(main())
-  ```
-
-* Ejemplo de ejecución:
+### Ejemplo de ejecución:
 
 <html>
 <table>
@@ -1476,13 +1475,15 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
 <td></td>
 <td>
 
-```
+```bash
 $ python3 ./mcp_server_calc.py &
 
-INFO:     Started server process [172886]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+...
+INFO: Started server process [172886]
+INFO: Waiting for application startup.
+INFO: Application startup complete.
+INFO: Uvicorn running on http://0.0.0.0:8000
+      (Press CTRL+C to quit)
 ```
 
 </td>
@@ -1492,31 +1493,39 @@ INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 <td>2</td>
 <td>
 
-```
+```bash
 $ python3 ./mcp_client_calc.py
 
-  ...
-  Herramientas disponibles:
+...
+Herramientas disponibles:
   - add
   - sub
   - mul
   - div
 
-  Resultado de add(1,2):
-  CallToolResult(content=[TextContent(type='text', text='3', annotations=None, meta=None)], structured_content={'result': 3}, meta=None, data=3, is_error=False)
-  ...
+Resultado de add(1,2):
+CallToolResult(content=[TextContent(type='text',
+                                   text='3',
+                                   annotations=None,
+                                   meta=None)],
+                 structured_content={'result': 3},
+                 meta=None, data=3,
+                 is_error=False)
+...
 ```
 
 </td>
 <td>
 
-```
-INFO:     127.0.0.1:48316 - "POST /mcp/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48320 - "POST /mcp/ HTTP/1.1" 202 Accepted
-INFO:     127.0.0.1:48336 - "GET /mcp/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48342 - "POST /mcp/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48358 - "POST /mcp/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48364 - "DELETE /mcp/ HTTP/1.1" 200 OK
+```bash
+...
+INFO: 127.0.0.1:48316 - "POST /mcp/ HTTP/1.1" 200 OK
+INFO: 127.0.0.1:48320 - "POST /mcp/ HTTP/1.1" 202 Accepted
+INFO: 127.0.0.1:48336 - "GET /mcp/ HTTP/1.1" 200 OK
+INFO: 127.0.0.1:48342 - "POST /mcp/ HTTP/1.1" 200 OK
+INFO: 127.0.0.1:48358 - "POST /mcp/ HTTP/1.1" 200 OK
+INFO: 127.0.0.1:48364 - "DELETE /mcp/ HTTP/1.1" 200 OK
+...
 ```
 
 </td>
@@ -1527,12 +1536,13 @@ INFO:     127.0.0.1:48364 - "DELETE /mcp/ HTTP/1.1" 200 OK
 <td></td>
 <td>
 
-```
+```bash
 ^C
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [181555]
+
+INFO: Shutting down
+INFO: Waiting for application shutdown.
+INFO: Application shutdown complete.
+INFO: Finished server process [181555]
 ```
 
 </td>
