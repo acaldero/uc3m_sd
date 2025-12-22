@@ -1,5 +1,0 @@
-fastmcp
-fastapi
-httpx
-uvicorn
-starlette
