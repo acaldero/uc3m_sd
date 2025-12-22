@@ -1,21 +1,21 @@
 
-##
-## Import
-##
+#
+# Import
+#
 
 from fastapi import FastAPI
 from fastmcp import FastMCP
 import uvicorn
 
 
-##
-## Defime "mcp" object
-##
+#
+# A. Defime the "mcp" object
+#
 
-# Initialize FastMCP
+## Initialize FastMCP
 mcp = FastMCP("calculator")
 
-## Utilidades (*tools*)
+## Definie utilidades (*tools*)
 @mcp.tool()
 def add(a: int, b: int) -> int:
     """Add two numbers and return the result."""
@@ -36,7 +36,7 @@ def div(a: int, b: int) -> float:
     """Divide two numbers and return the result."""
     return a / b
 
-# Entradas (*prompts*)
+## Define entradas (*prompts*)
 @mcp.prompt()
 def calculator_prompt(a: float, b: float, operation: str) -> str:
     """Prompt for calculator."""
@@ -55,11 +55,11 @@ def calculator_prompt(a: float, b: float, operation: str) -> str:
          return "Invalid operation. Please choose add, subtract, multiply, or divide."
 
 
-##
-## Defime "api" object
-##
+#
+# B. Defime "api" object
+#
 
-# Initialize FastAPI
+## Initialize FastAPI
 mcp_app = mcp.http_app(path="/")
 api = FastAPI(lifespan=mcp_app.lifespan)
 
@@ -68,7 +68,7 @@ api = FastAPI(lifespan=mcp_app.lifespan)
 def status():
     return {"status": "ok"}
 
-# Monta MCP Streamable HTTP en "/mcp"
+## Monta MCP Streamable HTTP en "/mcp"
 api.mount("/mcp", mcp_app)
 
 

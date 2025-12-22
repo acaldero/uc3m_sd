@@ -1,5 +1,15 @@
+
+#
+# Import
+#
+
 import asyncio
 from fastmcp import Client
+
+
+#
+# Define cliente
+#
 
 async def main():
     # Conectar al servidor MCP vía HTTP
@@ -21,6 +31,10 @@ async def main():
 
         print("\nResultado:")
         print(result)
+
+#
+# Main
+#
 
 if __name__ == "__main__":
     asyncio.run(main())

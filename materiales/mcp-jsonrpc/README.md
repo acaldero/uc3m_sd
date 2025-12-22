@@ -8,16 +8,25 @@
 
 ### Preparación
 
-* Hay que introducir:
+* Hay que ir al directorio de trabaja (si es necesario):
   ```bash
   cd mcp-jsonrpc
   ```
 
-* Se usará uvicorn y las bibliotecas ```fastapi``` y ```fastmcp```:
-  ```bash
-  sudo apt install uvicorn -y
-  pip3 install fastmcp fastapi --break-system-packages
-  ```
+* Hay que instalar los prerrequisitos:
+  * El programa ```uvicorn```:
+    ```bash
+    sudo apt install uvicorn -y
+    ```
+    O también:
+    ```bash
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```
+  * Las bibliotecas ```fastapi``` y ```fastmcp```:
+    ```bash
+    touch pyproject.toml
+    uv add --dev -r requirements.txt
+    ```
 
 
 ### Ejecutar servidor y cliente
@@ -52,9 +61,10 @@ Herramientas disponibles:
   - div
 
 Resultado de add(1,2):
-CallToolResult(content=[TextContent(type='text', text='3',
-                                      annotations=None,
-                                      meta=None)],
+CallToolResult(content=[TextContent(type='text',
+                                    text='3',
+                                    annotations=None,
+                                    meta=None)],
                           structured_content={'result': 3},
                           meta=None,
                           data=3,
@@ -85,6 +95,36 @@ INFO:     Finished server process [171901]
 </tr>
 </table>
 </html>
+
+
+### Ejecutar servidor y cliente en VCode
+
+* Hay que ejecutar primero el servidor:
+  ```bash
+  $ python3 ./mcp_server_calc.py
+  ```
+* La primera vez, hay que configurar el servicio MCP en VCode:
+  * Hay que abrir la paleta de comandos con Ctrl-Alt-P y seleccionar añadir servidor:
+    ![Paso 1](images/cfg1.png) 
+  * A continuación, hay que seleccionar servidor HTTP:
+    ![Paso 2](images/cfg2.png) 
+  * A continuación, hay que indicar la dirección URL:
+    ![Paso 3](images/cfg3.png) 
+  * A continuación, hay que indicar el nombre:
+    ![Paso 4](images/cfg4.png) 
+  * Y finalmente, hacer global (o local al espacio de trabajo):
+    ![Paso 5](images/cfg5.png) 
+* Para usar el servicio en VCode:
+  * Hay que hacer click en herramientas en el chat:
+    ![Paso 1](images/clt1.png) 
+  * Hay que activar el servidor my-mcp-server (y las utilidades):
+    ![Paso 2](images/clt2.png) 
+  * Hay que indicar en el chat que se quiere "add 1 and 2 with my-mcp-server":
+    ![Paso 3](images/clt3.png) 
+  * Hay que dar permisos ("Allow") para usar el servicio:
+    ![Paso 4](images/clt4.png) 
+  * Se tiene el resultado:
+    ![Paso 5](images/clt5.png) 
 
 
 ## Información adicional

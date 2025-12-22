@@ -1375,7 +1375,7 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
   pip3 install fastmcp fastapi --break-system-packages
   ```
 
-* En [ws-jsonrpc-mcp](/ws-jsonrpc-mcp/README.md) está disponible un ejemplo compuesto de 2 ficheros:
+* En [ws-jsonrpc-mcp](/materiales/mcp-jsonrpc/README.md) está disponible un ejemplo compuesto de 2 ficheros:
   * El servidor **```mcp_server_calc.py```** en Python de una calculadora simple:
     ```python
     from fastapi import FastAPI
