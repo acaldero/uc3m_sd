@@ -7,7 +7,7 @@
   <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div>
   <br>
   <script>
-    var s = new EventSource('http://localhost:8080');
+    var s = new EventSource('http://localhost:5000');
         s.onmessage = function(e) {
             document.getElementById("msg1").innerHTML = e.data ;
             var old_msg2 = document.getElementById("msg2").innerHTML ;

@@ -25,12 +25,7 @@ cd ws-rest-sse-bash
 <td>
 
 ```
-$ python3 ./demo-server.py
-
- * Serving Flask app 'demo-server'
- * Debug mode: off
- * Running on http://127.0.0.1:5000
-Press CTRL+C to quit
+$ ./demo-server.sh
 ```
 
 </td>
@@ -61,7 +56,7 @@ $ firefox demo-client.html
 <td>
 
 ```
-^C
+^Caccept: Interrupted system call
 ```
 
 </td>
@@ -74,8 +69,10 @@ $ firefox demo-client.html
 
 ```mermaid
 sequenceDiagram
-    demo-client.html  ->> demo-server.py: request API get (event stream)
-    demo-server.py    ->> demo-client.html: return API get
+    demo-client.html  ->> demo-server.sh: request API get (event stream)
+    demo-server.sh    ->> demo.sh: request timestamp
+    demo.sh           ->> demo-server.sh: return timestamp
+    demo-server.sh    ->> demo-client.html: return API get
 ```
 
 
