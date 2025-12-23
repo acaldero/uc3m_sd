@@ -47,26 +47,26 @@
     ```
 
 
-### Ejecutar servidor y cliente
+### Ejecutar servidor ```mcp_server_calc.py``` y cliente ```mcp_client_calc.py```
 
-<html>
-<table>
-<tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
-<tr>
-<td>1</td>
-<td></td>
-<td>
+* Los pasos para ejecutar el servidor ```mcp_server_calc.py``` y cliente ```mcp_client_calc.py``` serían: <br><br>
+  <html>
+  <table>
+  <tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
+  <tr>
+  <td>1</td>
+  <td></td>
+  <td>
 
 ```bash
 $ python3 ./mcp_server_calc.py
 ```
 
-</td>
-</tr>
-
-<tr>
-<td>2</td>
-<td>
+  </td>
+  </tr>
+  <tr>
+  <td>2</td>
+  <td>
 
 ```bash
 $ python3 ./mcp_client_calc.py
@@ -90,15 +90,14 @@ CallToolResult(content=[TextContent(type='text',
 ...
 ```
 
-</td>
-<td>
-</td>
-</tr>
-
-<tr>
-<td>3</td>
-<td></td>
-<td>
+  </td>
+  <td>
+  </td>
+  </tr>
+  <tr>
+  <td>3</td>
+  <td></td>
+  <td>
 
 ```bash
 ^C
@@ -109,13 +108,13 @@ INFO:   Application shutdown complete.
 INFO:   Finished server process [171901]
 ```
 
-</td>
-</tr>
-</table>
-</html>
+  </td>
+  </tr>
+  </table>
+  </html>
 
 
-### Ejecutar servidor y cliente en VCode
+### Ejecutar servidor ```mcp_server_calc.py``` y cliente "Visual Studio Code"
 
 1. Primero hay que ejecutar el servidor MCP:
    ```bash
