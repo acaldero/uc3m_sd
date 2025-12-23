@@ -15,13 +15,31 @@
 
 * Hay que instalar los prerrequisitos:
   * El programa ```uvicorn```:
+    <html>
+    <table>
+    <tr>
+    <td>Para todos los usuarios/as</td>
+    <td>Para usuario/a actual</td>
+    </tr>
+
+    <tr>
+    <td>
+
     ```bash
-    sudo apt install uvicorn -y
+    sudo apt install uvicorn -y     
     ```
-    O también:
+            
+    </td>
+    <td>
+
     ```bash
-    curl -LsSf https://astral.sh/uv/install.sh | sh
+    curl -LsSf https://astral.sh/uv/install.sh | sh     
     ```
+
+    </td>
+    </tr>
+    </table>
+    </html>
   * Las bibliotecas ```fastapi``` y ```fastmcp```:
     ```bash
     touch pyproject.toml
@@ -65,10 +83,10 @@ CallToolResult(content=[TextContent(type='text',
                                     text='3',
                                     annotations=None,
                                     meta=None)],
-                          structured_content={'result': 3},
-                          meta=None,
-                          data=3,
-                          is_error=False)
+               structured_content={'result': 3},
+               meta=None,
+               data=3,
+               is_error=False)
 ...
 ```
 
@@ -85,10 +103,10 @@ CallToolResult(content=[TextContent(type='text',
 ```bash
 ^C
 
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [171901]
+INFO:   Shutting down
+INFO:   Waiting for application shutdown.
+INFO:   Application shutdown complete.
+INFO:   Finished server process [171901]
 ```
 
 </td>
@@ -99,36 +117,57 @@ INFO:     Finished server process [171901]
 
 ### Ejecutar servidor y cliente en VCode
 
-* Hay que ejecutar primero el servidor:
-  ```bash
-  $ python3 ./mcp_server_calc.py
-  ```
-* La primera vez, hay que configurar el servicio MCP en VCode:
-  * Hay que abrir la paleta de comandos con Ctrl-Alt-P y seleccionar añadir servidor:
-    ![Paso 1](images/cfg1.png) 
-  * A continuación, hay que seleccionar servidor HTTP:
-    ![Paso 2](images/cfg2.png) 
-  * A continuación, hay que indicar la dirección URL:
-    ![Paso 3](images/cfg3.png) 
-  * A continuación, hay que indicar el nombre:
-    ![Paso 4](images/cfg4.png) 
-  * Y finalmente, hacer global (o local al espacio de trabajo):
-    ![Paso 5](images/cfg5.png) 
-* Para usar el servicio en VCode:
-  * Hay que hacer click en herramientas en el chat:
-    ![Paso 1](images/clt1.png) 
-  * Hay que activar el servidor my-mcp-server (y las utilidades):
-    ![Paso 2](images/clt2.png) 
-  * Hay que indicar en el chat que se quiere "add 1 and 2 with my-mcp-server":
-    ![Paso 3](images/clt3.png) 
-  * Hay que dar permisos ("Allow") para usar el servicio:
-    ![Paso 4](images/clt4.png) 
-  * Se tiene el resultado:
-    ![Paso 5](images/clt5.png) 
+1. Primero hay que ejecutar el servidor MCP:
+   ```bash
+   $ python3 ./mcp_server_calc.py
+   ```
+2. Si no se ha hecho antes, hay que configurar el servicio MCP en el cliente "Visual Studio Code":
+   <html>
+   <table>
+   <tr> <td>1.</td>
+        <td>Hay que abrir la paleta de comandos con Ctrl-Alt-P y seleccionar "MCP: añadir servidor":<br>  
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg1.png" height="125"></td> </tr>
+   <tr> <td>2.</td>
+        <td>A continuación, hay que seleccionar servidor HTTP:<br>  
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg2.png" height="200"></td> </tr>
+   <tr> <td>3.</td>
+        <td>A continuación, hay que indicar la dirección URL:<br>  
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg3.png" height="100"></td> </tr>
+   <tr> <td>4.</td>  <td>A continuación, hay que indicar el nombre:<br>  
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg4.png" height="125"></td> </tr>
+   <tr> <td>5.</td>  <td>Y finalmente, hacer global (o local al espacio de trabajo):<br>  
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg5.png" height="125"></td> </tr>
+   </table>
+   </html>
+3. Una vez configurado, para usar el servicio en "Visual Studio Code":
+   <html>
+   <table>
+   <tr> <td>1.</td>
+        <td>Hay que hacer click en herramientas en el chat:<br>  
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/clt1.png" height="110"></td> </tr>
+   <tr> <td>2.</td>
+        <td>Hay que activar el servidor my-mcp-server (y las utilidades):<br>
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/clt2.png" height="250"></td> </tr>
+   <tr> <td>3.</td>
+        <td>Hay que indicar en el chat que se quiere "add 1 and 2 with my-mcp-server":<br>
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/clt3.png" height="250"></td> </tr>
+   <tr> <td>4.</td>
+        <td>Puede ser necesario dar permisos ("Allow") para usar el servicio:<br>
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/clt4.png" height="250"></td> </tr>
+   <tr> <td>5.</td>
+        <td>Se tiene el resultado:<br>
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/clt5.png" height="225"></td> </tr>
+   </table>
+   </html>
 
 
 ## Información adicional
 
-* [Ejemplo de Servidor MCP server](https://gofastmcp.com/tutorials/create-mcp-server)
-* [How to Build an MCP Server in Python: A Complete Guide](https://scrapfly.io/blog/posts/how-to-build-an-mcp-server-in-python-a-complete-guide)
-
+* Tutorial
+  * [How to Build an MCP Server in Python: A Complete Guide](https://scrapfly.io/blog/posts/how-to-build-an-mcp-server-in-python-a-complete-guide)
+  * [Building a StreamableHTTP MCP server](https://mcpcat.io/guides/building-streamablehttp-mcp-server/)
+  * [Use MCP servers in VS Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
+* Ejemplo
+  * [Ejemplo de Servidor MCP server](https://gofastmcp.com/tutorials/create-mcp-server)
+  * [MCP server (SSE) for weather information for a specified location](https://github.com/justjoehere/mcp-weather-sse)
+  * [Let's write a Remote MCP Server](https://shivdeepak.com/posts/lets-write-a-remote-mcp-server/)
