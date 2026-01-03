@@ -6,15 +6,14 @@
 
 ## Servicio distribuido JSON-RPC sobre HTTP: servidor MCP de calculadora simple
 
+ * [Preparación](#preparaci%C3%B3n)
+ * [Ejecutar servidor mcp_server_calc.py y cliente mcp_client_calc.py](#ejecutar-servidor-mcp_server_calcpy-y-cliente-mcp_client_calcpy)
+ * [Ejecutar servidor mcp_server_calc.py y cliente Visual Studio Code](#ejecutar-servidor-mcp_server_calcpy-y-cliente-visual-studio-code)
+
+
 ### Preparación
 
-* Hay que ir al directorio de trabaja (si es necesario):
-  ```bash
-  cd mcp-jsonrpc
-  ```
-
-* Hay que instalar los prerrequisitos:
-  * El programa ```uvicorn```:
+* Hay que instalar el programa ```uvicorn```:
     <html>
     <table>
     <tr>
@@ -40,17 +39,24 @@
     </tr>
     </table>
     </html>
-  * Las bibliotecas ```fastapi``` y ```fastmcp```:
+    
+* Hay que instalar los prerrequisitos:
     ```bash
+    cd mcp-jsonrpc
     touch pyproject.toml
     uv add --dev -r requirements.txt
     ```
 
+<br>
 
 ### Ejecutar servidor ```mcp_server_calc.py``` y cliente ```mcp_client_calc.py```
 
-* Los pasos para ejecutar el servidor ```mcp_server_calc.py``` y cliente ```mcp_client_calc.py``` serían: <br><br>
-  <html>
+* Los pasos generales para ejecutar son:
+  * Ejecutar el servidor ```mcp_server_calc.py```
+  * Ejecutar el cliente ```mcp_client_calc.py``` s
+  * Parar la ejecución del servidor<br><br>
+
+<html>
   <table>
   <tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
   <tr>
@@ -114,31 +120,99 @@ INFO:   Finished server process [171901]
   </html>
 
 
+<br>
+
+### Ejecutar servidor ```mcp_server_calc.py``` y cliente ```gemini cli```
+
+1. Primero hay que instalar ```gemini cli``` si no está ya instalado:
+   ```bash
+   $ npm install -g @google/gemini-cli
+   ```
+2. Hay que ejecutar el servidor ```mcp_server_calc.py``` y luego ```gemini cli``` como cliente:
+
+<html>
+   <table>
+   <tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
+   <tr>
+   <td>1</td>
+   <td></td>
+   <td>
+
+```bash
+$ python3 ./mcp_server_calc.py
+```
+
+   </td>
+   </tr>
+   <tr>
+   <td>2</td>
+   <td>
+
+```bash
+$ gemini mcp add \
+         --transport http mcp-calc \
+         http://localhost:8000/mcp
+
+echo "Allow and /quit to end"
+$ gemini -i "add 2 + 3"
+```
+
+   </td>
+   <td>
+   </td>
+   </tr>
+   <tr>
+   <td>3</td>
+   <td></td>
+   <td>
+
+```bash
+^C
+
+INFO:   Shutting down
+INFO:   Waiting for application shutdown.
+INFO:   Application shutdown complete.
+INFO:   Finished server process [171932]
+```
+
+   </td>
+   </tr>
+   </table>
+  </html>
+
+
+<br>
+
 ### Ejecutar servidor ```mcp_server_calc.py``` y cliente "Visual Studio Code"
 
 1. Primero hay que ejecutar el servidor MCP:
    ```bash
    $ python3 ./mcp_server_calc.py
    ```
-2. Si no se ha hecho antes, hay que configurar el servicio MCP en el cliente "Visual Studio Code":
-   <html>
-   <table>
-   <tr> <td>1.</td>
-        <td>Hay que abrir la paleta de comandos con Ctrl-Alt-P y seleccionar "MCP: añadir servidor":<br>  
-        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg1.png" height="125"></td> </tr>
-   <tr> <td>2.</td>
-        <td>A continuación, hay que seleccionar servidor HTTP:<br>  
-        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg2.png" height="200"></td> </tr>
-   <tr> <td>3.</td>
-        <td>A continuación, hay que indicar la dirección URL:<br>  
-        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg3.png" height="100"></td> </tr>
-   <tr> <td>4.</td>  <td>A continuación, hay que indicar el nombre:<br>  
-        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg4.png" height="125"></td> </tr>
-   <tr> <td>5.</td>  <td>Y finalmente, hacer global (o local al espacio de trabajo):<br>  
-        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg5.png" height="125"></td> </tr>
-   </table>
-   </html>
-3. Una vez configurado, para usar el servicio en "Visual Studio Code":
+2. Si no se ha hecho antes, hay que dar de alta el servicio MCP en el cliente "Visual Studio Code":
+   * From command line:
+     <pre>
+     code --add-mcp "{\"servers\":{\"mcp_calc\":{\"url\":\"http://localhost:8000/mcp/\",\"type\":\"http\"}}}"
+     </pre>
+   * Manual:
+     <html>
+     <table>
+     <tr> <td>1.</td>
+          <td>Hay que abrir la paleta de comandos con Ctrl-Alt-P y seleccionar "MCP: añadir servidor":<br>  
+          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg1.png" height="125"></td> </tr>
+     <tr> <td>2.</td>
+          <td>A continuación, hay que seleccionar servidor HTTP:<br>  
+          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg2.png" height="200"></td> </tr>
+     <tr> <td>3.</td>
+          <td>A continuación, hay que indicar la dirección URL:<br>  
+          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg3.png" height="100"></td> </tr>
+     <tr> <td>4.</td>  <td>A continuación, hay que indicar el nombre:<br>  
+          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg4.png" height="125"></td> </tr>
+     <tr> <td>5.</td>  <td>Y finalmente, hacer global (o local al espacio de trabajo):<br>  
+          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg5.png" height="125"></td> </tr>
+     </table>
+     </html>
+4. Una vez configurado, para usar el servicio en "Visual Studio Code":
    <html>
    <table>
    <tr> <td>1.</td>
@@ -170,3 +244,4 @@ INFO:   Finished server process [171901]
   * [Ejemplo de Servidor MCP server](https://gofastmcp.com/tutorials/create-mcp-server)
   * [MCP server (SSE) for weather information for a specified location](https://github.com/justjoehere/mcp-weather-sse)
   * [Let's write a Remote MCP Server](https://shivdeepak.com/posts/lets-write-a-remote-mcp-server/)
+
