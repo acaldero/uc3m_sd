@@ -8,12 +8,13 @@
 
  * [Preparación](#preparaci%C3%B3n)
  * [Ejecutar servidor mcp_server_calc.py y cliente mcp_client_calc.py](#ejecutar-servidor-mcp_server_calcpy-y-cliente-mcp_client_calcpy)
+ * [Ejecutar servidor mcp_server_calc.py y cliente gemini cli](#ejecutar-servidor-mcp_server_calcpy-y-cliente-gemini-cli)
  * [Ejecutar servidor mcp_server_calc.py y cliente Visual Studio Code](#ejecutar-servidor-mcp_server_calcpy-y-cliente-visual-studio-code)
 
 
 ### Preparación
 
-* Hay que instalar el programa ```uvicorn```:
+1. Hay que instalar el programa ```uvicorn```:
     <html>
     <table>
     <tr>
@@ -25,29 +26,28 @@
     <td>
 
     ```bash
-    sudo apt install uvicorn -y     
+    sudo apt install uvicorn -y
     ```
-            
+
     </td>
     <td>
 
     ```bash
-    curl -LsSf https://astral.sh/uv/install.sh | sh     
+    curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
     </td>
     </tr>
     </table>
     </html>
-    
-* Hay que instalar los prerrequisitos:
+
+2. Hay que instalar los prerrequisitos:
     ```bash
     cd mcp-jsonrpc
     touch pyproject.toml
     uv add --dev -r requirements.txt
     ```
 
-<br>
 
 ### Ejecutar servidor ```mcp_server_calc.py``` y cliente ```mcp_client_calc.py```
 
@@ -55,8 +55,8 @@
   * Ejecutar el servidor ```mcp_server_calc.py```
   * Ejecutar el cliente ```mcp_client_calc.py``` s
   * Parar la ejecución del servidor<br><br>
-
-<html>
+* Un ejemplo de ejecución podría ser:
+  <html>
   <table>
   <tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
   <tr>
@@ -76,7 +76,8 @@ $ python3 ./mcp_server_calc.py
 
 ```bash
 $ python3 ./mcp_client_calc.py
-
+```
+```bash
 ...
 Herramientas disponibles:
   - add
@@ -86,9 +87,9 @@ Herramientas disponibles:
 
 Resultado de add(1,2):
 CallToolResult(content=[TextContent(type='text',
-                                    text='3',
-                                    annotations=None,
-                                    meta=None)],
+                              text='3',
+                              annotations=None,
+                              meta=None)],
                structured_content={'result': 3},
                meta=None,
                data=3,
@@ -107,7 +108,8 @@ CallToolResult(content=[TextContent(type='text',
 
 ```bash
 ^C
-
+```
+```bash
 INFO:   Shutting down
 INFO:   Waiting for application shutdown.
 INFO:   Application shutdown complete.
@@ -128,9 +130,19 @@ INFO:   Finished server process [171901]
    ```bash
    $ npm install -g @google/gemini-cli
    ```
-2. Hay que ejecutar el servidor ```mcp_server_calc.py``` y luego ```gemini cli``` como cliente:
+   <details>
+   <summary markdown=span>To install node and npm...</summary>
 
-<html>
+   ```bash
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+   source $HOME/.local/bin/env
+   nvm install --lts
+   npm install -g npm@latest
+   ```
+   </details>
+3. Hay que ejecutar el servidor ```mcp_server_calc.py``` y luego ```gemini cli``` como cliente:
+
+   <html>
    <table>
    <tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
    <tr>
@@ -152,9 +164,13 @@ $ python3 ./mcp_server_calc.py
 $ gemini mcp add \
          --transport http mcp-calc \
          http://localhost:8000/mcp
-
-echo "Allow and /quit to end"
+$ echo '{ "mcpServers": { "mcp-calc": { "url": "http://localhost:8000/mcp" } } }' > .gemini/settings.json
+```
+```bash
 $ gemini -i "add 2 + 3"
+```
+```bash
+: "Allow once" and "/quit" to end
 ```
 
    </td>
@@ -198,17 +214,17 @@ INFO:   Finished server process [171932]
      <html>
      <table>
      <tr> <td>1.</td>
-          <td>Hay que abrir la paleta de comandos con Ctrl-Alt-P y seleccionar "MCP: añadir servidor":<br>  
+          <td>Hay que abrir la paleta de comandos con Ctrl-Alt-P y seleccionar "MCP: añadir servidor":<br>
           <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg1.png" height="125"></td> </tr>
      <tr> <td>2.</td>
-          <td>A continuación, hay que seleccionar servidor HTTP:<br>  
+          <td>A continuación, hay que seleccionar servidor HTTP:<br>
           <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg2.png" height="200"></td> </tr>
      <tr> <td>3.</td>
-          <td>A continuación, hay que indicar la dirección URL:<br>  
+          <td>A continuación, hay que indicar la dirección URL:<br>
           <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg3.png" height="100"></td> </tr>
-     <tr> <td>4.</td>  <td>A continuación, hay que indicar el nombre:<br>  
+     <tr> <td>4.</td>  <td>A continuación, hay que indicar el nombre:<br>
           <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg4.png" height="125"></td> </tr>
-     <tr> <td>5.</td>  <td>Y finalmente, hacer global (o local al espacio de trabajo):<br>  
+     <tr> <td>5.</td>  <td>Y finalmente, hacer global (o local al espacio de trabajo):<br>
           <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg5.png" height="125"></td> </tr>
      </table>
      </html>
@@ -216,7 +232,7 @@ INFO:   Finished server process [171932]
    <html>
    <table>
    <tr> <td>1.</td>
-        <td>Hay que hacer click en herramientas en el chat:<br>  
+        <td>Hay que hacer click en herramientas en el chat:<br>
         <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/clt1.png" height="110"></td> </tr>
    <tr> <td>2.</td>
         <td>Hay que activar el servidor my-mcp-server (y las utilidades):<br>

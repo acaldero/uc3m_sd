@@ -18,41 +18,41 @@ mcp = FastMCP("calculator")
 ## Definie utilidades (*tools*)
 @mcp.tool()
 def add(a: int, b: int) -> int:
-    """Add two numbers and return the result."""
+    """Add two numbers (param a and param b) and return the result."""
     return a + b
 
 @mcp.tool()
 def sub(a: int, b: int) -> int:
-    """Substract two numbers and return the result."""
+    """Substract two numbers (param a and param b) and return the result."""
     return a - b
 
 @mcp.tool()
 def mul(a: int, b: int) -> int:
-    """Multiply two numbers and return the result."""
+    """Multiply two numbers (param a and param b) and return the result."""
     return a * b
 
 @mcp.tool()
 def div(a: int, b: int) -> float:
-    """Divide two numbers and return the result."""
+    """Divide two numbers (param a and param b) and return the result."""
     return a / b
 
 ## Define entradas (*prompts*)
 @mcp.prompt()
-def calculator_prompt(a: float, b: float, operation: str) -> str:
-    """Prompt for calculator."""
-    if   operation == "add":
-         return f"The result of adding {a} and {b} is {add(a, b)}"
-    elif operation == "subtract":
-         return f"The result of subtracting {b} from {a} is {sub(a, b)}"
-    elif operation == "multiply":
-         return f"The result of multiplying {a} and {b} is {mul(a, b)}"
-    elif operation == "divide":
-         try:
-            return f"The result of dividing {a} by {b} is {div(a, b)}"
-         except ValueError as e:
-            return str(e)
-    else:
-         return "Invalid operation. Please choose add, subtract, multiply, or divide."
+def use_calculator(action: str, a: float, b: float) -> str:
+    """Provide a template to use the calculator MCP server with two numbers (param a and param b)."""
+    return f"Check that the {action} is add, substract or multiply over two numbers {a} and {b}." \
+            "It can also be divide {a} by {b} if and only if {b} is no zero." \
+            "If {b} is zero the result is NaN (not a number)." \
+            "Use the add, sub, mul div tools to compute the result." \
+            "If you don't know how to compute the result, instead of making up an answer, say that you don't know."
+
+## Define recursos (*resources*)
+@mcp.resource("file://readme")
+def read_readme() -> str:
+    """Read the readme markdown."""
+    with open('README.md', 'r') as file:
+         content = file.read()
+    return content
 
 
 #
