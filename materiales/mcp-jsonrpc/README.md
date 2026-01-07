@@ -14,7 +14,7 @@
 
 ### Preparación
 
-1. Hay que instalar el programa ```uvicorn```:
+1. Hay que instalar ```uvicorn``` si no se tiene ya instalado:
     <html>
     <table>
     <tr>
@@ -41,12 +41,27 @@
     </table>
     </html>
 
-2. Hay que instalar los prerrequisitos:
+2. Estando en el directorio **mcp-jsonrpc**, hay que instalar los prerrequisitos usando ```uv```:
     ```bash
-    cd mcp-jsonrpc
     touch pyproject.toml
     uv add --dev -r requirements.txt
     ```
+
+3. Hay que instalar **node 24.12** si no se tiene ya instalado:
+   ```bash
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+   export NVM_DIR="$HOME/.nvm"
+   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+   nvm install --lts
+   npm install -g npm@latest  
+   ```
+
+4. Hay que instalar ```gemini-cli``` si no se tiene ya instalado:
+   ```bash
+   $ npm install -g @google/gemini-cli
+   ```
 
 
 ### Ejecutar servidor ```mcp_server_calc.py``` y cliente ```mcp_client_calc.py```
@@ -126,22 +141,12 @@ INFO:   Finished server process [171901]
 
 ### Ejecutar servidor ```mcp_server_calc.py``` y cliente ```gemini cli```
 
-1. Primero hay que instalar ```gemini cli``` si no está ya instalado:
-   ```bash
-   $ npm install -g @google/gemini-cli
-   ```
-   <details>
-   <summary markdown=span>To install node and npm...</summary>
-
-   ```bash
-   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-   source $HOME/.local/bin/env
-   nvm install --lts
-   npm install -g npm@latest
-   ```
-   </details>
-3. Hay que ejecutar el servidor ```mcp_server_calc.py``` y luego ```gemini cli``` como cliente:
-
+* Los pasos generales para ejecutar son:
+  * Ejecutar el servidor ```mcp_server_calc.py```
+  * Configurar ```gemini cli``` para que pueda conectarse a ```mcp_server_calc.py```
+  * Ejecutar ```gemini cli``` como cliente
+  * Parar la ejecución del cliente y luego del servidor<br><br>
+* Un ejemplo de ejecución podría ser:
    <html>
    <table>
    <tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
@@ -151,7 +156,7 @@ INFO:   Finished server process [171901]
    <td>
 
 ```bash
-python3 ./mcp_server_calc.py
+python3 ./mcp_server_calc.py &
 ```
 
    </td>
@@ -165,25 +170,34 @@ gemini mcp add \
          --transport http mcp-calc \
          http://localhost:8000/mcp
 
-echo '{'                                 > .gemini/settings.json
-echo ' "mcpServers":'                   >> .gemini/settings.json
-echo ' {'                               >> .gemini/settings.json
-echo '   "mcp-calc":'                   >> .gemini/settings.json
-echo '   {'                             >> .gemini/settings.json
-echo '     "url":'                      >> .gemini/settings.json
-echo '     "http://localhost:8000/mcp"' >> .gemini/settings.json
-echo '   }'                             >> .gemini/settings.json
-echo ' }'                               >> .gemini/settings.json
-echo '}'                                >> .gemini/settings.json
+echo '{'                               > .gemini/settings.json
+echo ' "mcpServers":'                 >> .gemini/settings.json
+echo ' {'                             >> .gemini/settings.json
+echo '   "mcp-calc":'                 >> .gemini/settings.json
+echo '   {'                           >> .gemini/settings.json
+echo '   "url":'                      >> .gemini/settings.json
+echo '   "http://localhost:8000/mcp"' >> .gemini/settings.json
+echo '   }'                           >> .gemini/settings.json
+echo ' }'                             >> .gemini/settings.json
+echo '}'                              >> .gemini/settings.json
 
 ```
+
+   </td>
+   <td>
+   </td>
+   </tr>  
+   <tr>
+   <td>3</td>
+   <td>
+
 ```bash
 gemini -i "add 2 + 3"
 ```
-```bash
-: "Allow all server tools for this session"
-: Use "/quit" to end the working session
-```
+
+  * La primera vez que se ejecuta: "Login with Google"
+  * Hay que seleccionar "Allow all server tools for this session"
+  * Para terminar hay que usar "/quit"
 
    </td>
    <td>
@@ -195,7 +209,7 @@ gemini -i "add 2 + 3"
    <td>
 
 ```bash
-^C
+killall python3
 
 INFO:   Shutting down
 INFO:   Waiting for application shutdown.
