@@ -151,7 +151,7 @@ INFO:   Finished server process [171901]
    <td>
 
 ```bash
-$ python3 ./mcp_server_calc.py
+python3 ./mcp_server_calc.py
 ```
 
    </td>
@@ -161,16 +161,28 @@ $ python3 ./mcp_server_calc.py
    <td>
 
 ```bash
-$ gemini mcp add \
+gemini mcp add \
          --transport http mcp-calc \
          http://localhost:8000/mcp
-$ echo '{ "mcpServers": { "mcp-calc": { "url": "http://localhost:8000/mcp" } } }' > .gemini/settings.json
+
+echo '{'                                 > .gemini/settings.json
+echo ' "mcpServers":'                   >> .gemini/settings.json
+echo ' {'                               >> .gemini/settings.json
+echo '   "mcp-calc":'                   >> .gemini/settings.json
+echo '   {'                             >> .gemini/settings.json
+echo '     "url":'                      >> .gemini/settings.json
+echo '     "http://localhost:8000/mcp"' >> .gemini/settings.json
+echo '   }'                             >> .gemini/settings.json
+echo ' }'                               >> .gemini/settings.json
+echo '}'                                >> .gemini/settings.json
+
 ```
 ```bash
-$ gemini -i "add 2 + 3"
+gemini -i "add 2 + 3"
 ```
 ```bash
-: "Allow once" and "/quit" to end
+: "Allow all server tools for this session"
+: Use "/quit" to end the working session
 ```
 
    </td>
