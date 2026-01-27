@@ -9,7 +9,7 @@
 Los principales requisitos son:
 * Tener conexión a Internet para consultar documentación.
 * Tener acceso a una máquina con Linux.
-  * -> se recuerda que el Laboratorio del Departamento de Informática ofrece unas Aulas Virtuales en: ["https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/](https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/)
+  * -> se recuerda que el Laboratorio del Departamento de Informática ofrece unas Aulas Virtuales en:<br> ["https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/](https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/)
 * Tener instalado el software para desarrollo que sea preciso en la máquina con Linux:
   * sudo apt-get install build-essential gdb ddd
 
@@ -22,14 +22,14 @@ El lenguaje C estándar es compilado (y no interpretado como Python) por lo que 
   ```mermaid
     stateDiagram-v2
     direction LR
-    state "Editor"                  as s_edit
-    state "Compilador"              as s_cc
-    state "Ejecutar"                as s_exe
+    state "Editor"           as s_edit
+    state "Compilador"       as s_cc
+    state "Cargador"         as s_exe
 
-    [*]       --> s_edit:   editar   ->\n  gedit main.c
-    s_edit    --> s_cc:     compilar ->\n  gcc -o main ...
-    s_cc      --> s_exe:    ejecutar ->\n  ./main
-    s_exe     --> [*]:      ejecución\n correcta
+    [*]       --> s_edit:   editar   <br>-><br>  gedit main.c &
+    s_edit    --> s_cc:     compilar <br>-><br>  gcc -o main ...
+    s_cc      --> s_exe:    ejecutar <br>-><br>  ./main
+    s_exe     --> [*]:      ejecución<br> correcta
   ```
 
 Como ejemplo usaremos el siguiente archivo:
