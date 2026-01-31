@@ -4,6 +4,24 @@
 + [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
+## Contenidos
+
+ * [Requisitos](#requisitos)
+ * A. Flujo de trabajo habitual:
+   * [Proceso de compilación y ejecución](#a1--proceso-de-compilaci%C3%B3n-y-ejecuci%C3%B3n)
+   * [Depuración](#a2-y-si-hay-problemas-depuramos)
+ * B. Sentencias de control organizadas:
+   * [Sentencias de control](#b1--sentencias-de-control-de-flujo-en-c)
+ * C. Registros en C y peculiaridades:
+   * [struct en C](#c1--uso-de-estructuras-struct-en-c)
+ * D. Punteros:
+   * [Qué es un puntero](#d1--uso-de-punteros-i-qu%C3%A9-es-un-puntero)
+   * [Memoria dinámica](#d2--uso-de-punteros-ii-memoria-din%C3%A1mica)
+   * [Paso de parámetros](#d3--uso-de-punteros-iii-paso-de-par%C3%A1metros-a-funciones)
+ * E. Proyectos de varios ficheros: librerías dinámicas y estáticas:
+   * [Archivos de cabecera y proyectos multificheros](#e1--archivos-de-cabecera-y-proyectos-de-varios-archivos)
+
+
 ## Requisitos
 
 Los principales requisitos son:
@@ -14,7 +32,9 @@ Los principales requisitos son:
   * sudo apt-get install build-essential gdb ddd
 
 
-## 1.- Proceso de compilación
+## A. Flujo de trabajo habitual
+
+## A.1.- Proceso de compilación y ejecución
 
 El lenguaje C estándar es compilado (y no interpretado como Python) por lo que a partir del código fuente hay que primero compilar para generar un código ejecutable que es el que se ejecuta.
 
@@ -74,7 +94,7 @@ Para ejecutar usaremos:
 ```
 
 
-### 1.1 Y si hay problemas... depuramos
+## A.2 Y si hay problemas... depuramos
 
 La premisa es que todo vaya bien y no haya problemas.
 Pero nuestro trabajo incluye tratar con problemas para resolverlos de la mejor forma posible.
@@ -153,7 +173,11 @@ El proceso de trabajo en general incluyendo el tratamiento de problemas sería e
 </details>
 
 
-## 2.- Sentencias de control de flujo en C
+<br>
+
+## B. Sentencias de control organizadas
+
+## B.1.- Sentencias de control de flujo en C
 
 Como ejemplo de uso de sentencias de control de flujo en C, usaremos el siguiente archivo:
 * main.c
@@ -238,8 +262,11 @@ Recordatorios:
   * [Sentencias de control (youtube)](http://www.youtube.com/watch?embed=no&v=ux_J98WmjPA&feature=related)
 
 
+<br>
 
-## 3.- Uso de estructuras (struct) en C
+## C. Registros en C y peculiaridades
+
+## C.1.- Uso de estructuras (struct) en C
 
 Como ejemplo de (array de) structs, usaremos el siguiente archivo:
 * main.c
@@ -317,8 +344,11 @@ Aclaraciones:
 * [Array y Struct en C (youtube)](http://www.youtube.com/watch?embed=no&v=o5Jl_Dzga88&feature=related)
 
 
+<br>
 
-## 4.- Uso de punteros I (qué es un puntero)
+## D. Punteros
+
+## D.1.- Uso de punteros I (qué es un puntero)
 
 Como ejemplo inicial de qué representa un puntero en C, usaremos el siguiente archivo:
 * main.c
@@ -373,7 +403,7 @@ A recordar:
 
 
 
-## 4.- Uso de punteros II (memoria dinámica)
+## D.2.- Uso de punteros II (memoria dinámica)
 
 Como ejemplo de uso de punteros para memoria dinámica, usaremos el siguiente archivo:
 * main.c
@@ -492,7 +522,7 @@ A recordar en C:
 
 
 
-## 5.- Uso de punteros III (paso de parámetros a funciones)
+## D.3.- Uso de punteros III (paso de parámetros a funciones)
 
 Es importante tener presente que en lenguaje C:
 * Los valores con los que se llama a una función se llaman **argumentos reales**:
@@ -680,8 +710,11 @@ Como ejemplo de paso por parámetros de punteros por referencia, usaremos el sig
 * [Paso de parámetros a funciones (youtube)](https://youtu.be/mS0gnJ-su_Y&t=7m33s)
 
 
+<br>
 
-## 6.- Archivos de cabecera y proyectos de varios archivos
+## E. Proyectos de varios ficheros: librerías dinámicas y estáticas
+
+## E.1.- Archivos de cabecera y proyectos de varios archivos
 
 Como ejemplo de cómo compilar un proyecto con varios ficheros usaremos estos tres archivos:
 
