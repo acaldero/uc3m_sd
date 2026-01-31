@@ -4,14 +4,27 @@
 + [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
+## Contenidos
+
+ * Puesta en marcha:
+   * [Requisitos](#requisitos)
+   * [Ejemplo de código para compilar con Makefile](#ejemplo-de-c%C3%B3digo-para-compilar-con-makefile)
+ * De la compilación a mano al uso de Makefile con reglas:
+   * [Compilación SIN Makefile](#compilaci%C3%B3n-sin-makefile-compilaci%C3%B3n-manual)
+   * [Compilación con Makefile sencillo](#compilaci%C3%B3n-con-makefile-primera-versi%C3%B3n)
+   * [Compilación con Makefile con variables](#compilaci%C3%B3n-con-makefile-segunda-versi%C3%B3n-con-variables)
+   * [Compilación con Makefile con reglas](#compilaci%C3%B3n-con-makefile-tercera-versi%C3%B3n-con-reglas)
+   * [Compilación con Makefile con reglas especiales](#compilaci%C3%B3n-con-makefile-cuarta-versi%C3%B3n-con-reglas-especiales)
+ * [Materiales adicionales](#material-recomendado)
+
 ## Requisitos
 
-Los principales requisitos son:
-* Tener conexión a Internet para consultar documentación.
-* Tener acceso a una máquina con Linux con software de desarrollo instalado:
-  * Puede usar las Aulas Virtuales del Laboratorio del Departamento de Informática:
-    * ["https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/](https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/)
-  * Puede usar su Debian/Ubuntu con: sudo apt-get install build-essential gdb ddd
+ Los principales requisitos son:
+ * Tener conexión a Internet para consultar documentación.
+ * Tener acceso a una máquina con Linux con software de desarrollo instalado:
+   * Puede usar las Aulas Virtuales del Laboratorio del Departamento de Informática:
+     * ["https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/](https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/)
+   * Puede usar su Debian/Ubuntu con: ```sudo apt-get install build-essential gdb ddd```
 
 
 ## Ejemplo de código para compilar con Makefile
@@ -52,9 +65,12 @@ gcc -g -Wall -c main.c     -o main.o
 gcc -g -Wall -o main main.o lib_hola.o
 ```
 
+
 ## Compilación con Makefile (primera versión)
 
-* Archivo Makefile inicial:
+Usaremos el siguiente archivo inicialmente:
+
+* Makefile:
   ```bash
   all:
   	gcc -g -Wall -c lib_hola.c -o lib_hola.o
@@ -63,9 +79,11 @@ gcc -g -Wall -o main main.o lib_hola.o
   ```
 
 Para usar el archivo Makefile hay que ejecutar:
-```bash
-make
-```
+  ```bash
+  make
+  ```
+
+### Estructura básica del archivo Makefile
 
 El esqueleto del Makefile anterior es:
 ```bash
@@ -77,12 +95,14 @@ targets: prerequisites
 Donde para obtener un objetivo (targets) se indica 2 elementos:
   * Prerequisitos (prerequisites): que son objetivos que hay que cumplir primero
   * Mandatos (command 1/2/3): una vez se tengan los prerequisitos la forma de tener el objetivo es ejecutar los mandatos uno detrás de otro
-  * Importante: no vale usar espacios en blanco antes de cada "gcc -g ...", solo vale tabuladores.
+    > Importante: no vale usar espacios en blanco antes de cada "gcc -g ...", solo vale tabuladores.
 
 
 ## Compilación con Makefile (segunda versión con variables)
 
-* Archivo Makefile:
+Usaremos el siguiente archivo makefile:
+
+* Makefile:
   ```bash
   CC=gcc
   CFLAGS=-g -Wall
@@ -98,9 +118,26 @@ Para usar el archivo Makefile hay que ejecutar:
 make
 ```
 
+### Variables en el archivo Makefile
+
+Para definir una variable se puede utilizar:
+```bash
+VARIABLE=valor
+```
+
+Para usar el valor de la variable hay que usar:
+```bash
+$(VARIABLE)
+```
+
+> Importante: El nombre de la variable no puede tener espacios.
+
+
 ## Compilación con Makefile (tercera versión con reglas)
 
-* Archivo Makefile:
+Usaremos el siguiente archivo makefile:
+
+* Makefile:
   ```bash
   CC=gcc
   CFLAGS=-g -Wall
