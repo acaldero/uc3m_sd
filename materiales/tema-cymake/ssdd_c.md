@@ -29,16 +29,19 @@ Los principales requisitos son:
 * Tener acceso a una máquina con Linux.
   * -> se recuerda que el Laboratorio del Departamento de Informática ofrece unas Aulas Virtuales en:<br> ["https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/](https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/)
 * Tener instalado el software para desarrollo que sea preciso en la máquina con Linux:
-  * sudo apt-get install build-essential gdb ddd
+  ```bash
+   sudo apt-get install build-essential gdb ddd
+  ```
 
 
 ## A. Flujo de trabajo habitual
 
 ## A.1.- Proceso de compilación y ejecución
 
-El lenguaje C estándar es compilado (y no interpretado como Python) por lo que a partir del código fuente hay que primero compilar para generar un código ejecutable que es el que se ejecuta.
+* El lenguaje C estándar es compilado (y no interpretado como Python)
+  * Hay que primero compilar el código fuente para generar un código ejecutable antes de ejecutar.
 
-**Si todo va bien**, el proceso de trabajo en general es:
+* **Si todo va bien**, el proceso de trabajo en general es:
   ```mermaid
     stateDiagram-v2
     direction LR
@@ -260,6 +263,144 @@ Recordatorios:
 
 **Información recomendada**:
   * [Sentencias de control (youtube)](http://www.youtube.com/watch?embed=no&v=ux_J98WmjPA&feature=related)
+
+
+## B.2.- Sentencias de control organizadas
+
+El siguiente ejemplo permite guardar diez veces un mensaje en un fichero cuyo nombre se indica en el argumento:
+
+* main.c:
+  ```c
+  #include <stdio.h>
+
+  int main ( int argc, char *argv[] )
+  {
+     int   i ;
+     FILE *fd ;
+
+     fd = fopen(argv[1], "w") ;
+     for (i=0; i<10; i++) {
+          fprintf(fd, "Hola mundo\n") ;
+     }
+     fclose(fd) ;
+     return 0 ;
+  }
+  ```
+
+Como ejemplo inicial de programación defensiva, tenemos la siguiente versión:
+
+* main.c
+  ```c
+  #include <stdio.h>
+
+  int main ( int argc, char *argv[] )
+  {
+     int i ;
+     FILE *fd ;
+
+     if (argc == 1)
+     {
+         printf("ERROR: falta nombre\n") ; //
+     }
+     else
+     {
+         fd = fopen(argv[1], "w") ;
+         if (fd == NULL) 
+         {
+             printf("ERROR: al abrir el fichero\n") ;
+         }
+         else
+         {
+             for (i=0; i<10; i++) {
+                  fprintf(fd, "Hola mundo\n") ;
+             }
+
+             fclose(fd) ;
+         }
+     }
+
+     return 0 ;
+  }
+  ```
+
+Se puede compilar y ejecutar de la siguiente forma:
+```bash
+gcc -g -Wall -c main.c -o main.o
+gcc -g -Wall -o main      main.o
+
+./main fichero.txt
+```
+
+Este código inicial es un ejemplo en el que se muestra un código difícil de leer y entender:
+* La anidación de ```if-else``` para detectar errores no ayuda:
+  ```c
+     if (**caso de error X**) 
+     {
+         printf("ERROR: **explicación**") ;
+     }
+     else
+     {
+         if (**caso de error Y**) 
+         {
+             printf("ERROR: **explicación**") ;
+         }
+         else
+         {
+             **más código**
+         }
+     }
+  ```
+* No se hace comprobación de todas las llamadas al sistema o bien no se usa ```perror``` o similar para informar de la razón del error:
+  ```c
+     fd = fopen(argv[1], "w") ;
+     if (fd == NULL) 
+     {
+         printf("ERROR: al abrir fichero\n") ;
+     }
+  ```
+
+Una versión que se recomienda más sería:
+
+* main.c
+  ```c
+  #include <stdio.h>
+  #include <stdlib.h>
+
+  int main ( int argc, char *argv[] )
+  {
+     int   ret, i ;
+     FILE *fd ;
+
+     // check arguments
+     if (1 == argc) {
+         printf("Usage: %s <fichero.txt>\n", argv[0]) ;
+         exit(-1) ;
+     }
+
+     // try to open file
+     fd = fopen(argv[1], "w") ;
+     if (NULL == fd) {
+         perror("fopen: ") ;
+         exit(-1) ;
+     }
+
+     // do task
+     for (i=0; i<10; i++) {
+          ret = fprintf(fd, "Hola mundo\n") ;
+          if (ret < 0) {
+              perror("fprintf: ") ;
+          }
+     }
+
+     // cleanup
+     ret = fclose(fd) ;
+     if (ret < 0) {
+         perror("fclose: ") ;
+     }
+
+     return 0 ;
+  }
+  ```
 
 
 <br>
