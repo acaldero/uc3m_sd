@@ -89,6 +89,7 @@ ssdd_docker_machines_create ()
 
      # directories
      mkdir -p export/nfs
+     mkdir -p work
 
      # session mode
      echo $MODE > .ssdd_docker_worksession
@@ -103,6 +104,7 @@ ssdd_docker_machines_remove ()
 
      # directories
      rmdir -fail-on-non-empty export/nfs/* >& /dev/null
+     rmdir -fr export/nfs
 
      # Remove session file...
      rm -fr .ssdd_docker_worksession

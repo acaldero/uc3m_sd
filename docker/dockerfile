@@ -113,7 +113,7 @@ RUN /home/lab/bin/install-openmpi.sh  /home/lab
 USER root
 RUN mkdir -p /shared
 RUN mkdir -p /srv
-RUN ln -s /shared /home/lab/work
+RUN ln -s /shared/work /home/lab/work
 
 ADD docker/base-srv     /tmp/base-srv/
 RUN mv /tmp/base-srv/*   /srv

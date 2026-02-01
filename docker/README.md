@@ -80,4 +80,3 @@ cd uc3m_sd
 
 ![Example of using 2 containers in Linux, and using each one with netcat](u20-example1.gif)
 
-
