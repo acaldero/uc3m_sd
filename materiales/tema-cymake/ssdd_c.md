@@ -305,7 +305,7 @@ Como ejemplo inicial de programación defensiva, tenemos la siguiente versión:
      else
      {
          fd = fopen(argv[1], "w") ;
-         if (fd == NULL) 
+         if (fd == NULL)
          {
              printf("ERROR: al abrir el fichero\n") ;
          }
@@ -334,13 +334,13 @@ gcc -g -Wall -o main      main.o
 Este código inicial es un ejemplo en el que se muestra un código difícil de leer y entender:
 * La anidación de ```if-else``` para detectar errores no ayuda:
   ```c
-     if (**caso de error X**) 
+     if (**caso de error X**)
      {
          printf("ERROR: **explicación**") ;
      }
      else
      {
-         if (**caso de error Y**) 
+         if (**caso de error Y**)
          {
              printf("ERROR: **explicación**") ;
          }
@@ -353,7 +353,7 @@ Este código inicial es un ejemplo en el que se muestra un código difícil de l
 * No se hace comprobación de todas las llamadas al sistema o bien no se usa ```perror``` o similar para informar de la razón del error:
   ```c
      fd = fopen(argv[1], "w") ;
-     if (fd == NULL) 
+     if (fd == NULL)
      {
          printf("ERROR: al abrir fichero\n") ;
      }
@@ -448,11 +448,6 @@ Como ejemplo de (array de) structs, usaremos el siguiente archivo:
                personas[i].letra) ;
      }
 
-     /* El tamaño de un struct puede no ser la suma del tamaño de los campos que la componen: puede haber rellenos */
-     printf(" * Tamaño en bytes del tipo DNI: %ld\n", sizeof(struct dni)) ;
-     printf(" * Tamaño en bytes de los campos del tipo DNI: %ld, %ld, %ld\n",
-                sizeof(personas[0].nombre), sizeof(personas[0].letra), sizeof(personas[0].id)) ;
-
      return 0 ;
   }
   ```
@@ -483,6 +478,63 @@ Aclaraciones:
 
 **Información recomendada**:
 * [Array y Struct en C (youtube)](http://www.youtube.com/watch?embed=no&v=o5Jl_Dzga88&feature=related)
+
+
+## C.2.- Particularidades de las estructuras (struct) en C
+
+Como ejemplo de structs, usaremos el siguiente archivo:
+* main.c
+  ```c
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+
+  struct dni {
+     int  id ;
+     char letra ;
+     char nombre[128] ;
+  } ;
+
+  struct dni personas ;
+
+  int main ( int argc, char *argv[] )
+  {
+     /* Rellenar personas con valores por defecto (persona 0,1...) */
+     personas[i].id    = i ;
+     personas[i].letra = 'A' ;
+     sprintf(personas[i].nombre,  /* cadena destino */
+             "persona %d",        /* formato */
+             personas[i].id) ;    /* %d */
+
+     /* El tamaño de un struct puede no ser la suma del tamaño de los campos que la componen: puede haber rellenos */
+     printf("* Tamaño del tipo DNI vs suma tamaño de los campos:\n") ;
+     printf("  + Tamaño en bytes del tipo DNI: %ld\n", sizeof(struct dni)) ;
+     printf("  + Tamaño en bytes de los campos del tipo DNI: %ld, %ld, %ld\n",
+                 sizeof(personas.nombre), sizeof(personas.letra), sizeof(personas.id)) ;
+
+     /* El tamaño de un string no es la longitud */
+     printf("* Tamaño de la cadena de caracteres no es la longitud:\n") ;
+     printf("  + Tamaño en bytes de la cadena: %ld\n", sizeof(personas.nombre)) ;
+     printf("  + Longitud de la cadena:        %ld\n", strlen(personas.nombre)) ;
+
+     return 0 ;
+  }
+  ```
+
+* Sobre structs:
+  * *Padding*
+    * El tamaño de un struct puede no ser la suma del tamaño de los campos que la componen.
+    * Puede haber rellenos (*padding*) para alinear tipos.
+
+* Sobre los campos de los structs:
+  * *sizeof(string) != strlen(string)*
+    * El tamaño de un string es el espacio reservado en memoria.
+    * La longitud es el espacio en uso que debe ser menor al reservado.
+  * *sizeof(int) != strlen(int)*
+    * El tamaño de un entero puede depender de la plataforma: 32 bits vs 64 bits.
+    * Mejor usar [https://en.cppreference.com/w/c/types/integer.html](tipos fijos) como por ejemplo ```int32_t```, ```int64_t```, etc.
+  * *Endianess*
+    * Los tipos enteros de más de un byte (e.g.: entero) puede tener orden distinto de bytes: *big endian* vs *little endian*.
 
 
 <br>
