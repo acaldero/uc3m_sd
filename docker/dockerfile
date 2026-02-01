@@ -1,0 +1,124 @@
+ARG UBUNTU_VERSION=24.04
+FROM ubuntu:${UBUNTU_VERSION} AS base
+
+ARG UID
+ARG GID
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# A) Install software
+
+## Install *base* software
+RUN apt-get update && apt-get install -y --allow-change-held-packages \
+        aptitude apt-utils \
+        zlib1g-dev ca-certificates pkg-config \
+        software-properties-common gpg-agent \
+        \
+        curl libcurl3-dev lynx \
+        wget rsync \
+        sudo vim \
+        lshw htop lsof \
+        \
+        inetutils-ping \
+        netcat-traditional \
+        nmap net-tools hping3 \
+        iftop nload \
+        \
+        zip unzip unrar p7zip-full p7zip-rar \
+        \
+        kmod \
+	rpcbind \
+        nfs-common nfs-kernel-server \
+        \
+        ubuntu-restricted-extras \
+        imagemagick \
+        && \
+    apt-get clean
+
+## Install *development* software
+RUN apt-get update && apt-get install -y --allow-change-held-packages \
+        \
+        build-essential \
+        autoconf cmake g++ git \
+        gdb valgrind strace \
+        man-db doxygen \
+        libtool \
+        \
+        jq yamllint \
+	libjson-c-dev \
+        nasm \
+        \
+        openjdk-21-jdk \
+        \
+        python3-pip jupyter \
+        && \
+    apt-get clean
+
+
+# B) Install and configure OpenSSH
+
+## Install SSH
+RUN apt-get install -y openssh-client openssh-server
+RUN mkdir -p /var/run/sshd
+
+## Allow Root login
+RUN sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g'  /etc/pam.d/sshd
+RUN sed -i 's/PermitRootLogin prohibit-password/#PermitRootLogin prohibit-password/'    /etc/ssh/sshd_config
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+
+## Allow to talk to containers without asking for confirmation
+RUN cat /etc/ssh/ssh_config | grep -v StrictHostKeyChecking > /etc/ssh/ssh_config.new && \
+    echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config.new && \
+    mv /etc/ssh/ssh_config.new /etc/ssh/ssh_config
+
+
+# C) Setup lab user
+
+## New lab using/reusing $UID/GID
+RUN getent group  "$GID" > /dev/null || addgroup --gid $GID lab
+RUN getent group  "$GID" > /dev/null && export GNAME=$(getent group  "$GID" | cut -d: -f1) && sudo groupmod -n lab "$GNAME"
+RUN getent passwd "$UID" > /dev/null || adduser  --uid $UID --gid $GID --disabled-password --gecos "" lab
+RUN getent passwd "$UID" > /dev/null && export UNAME=$(getent passwd "$UID" | cut -d: -f1) && sudo usermod  -l lab -m -d /home/lab "$UNAME"
+
+## sudo
+RUN echo 'lab ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+RUN echo 'lab:lab' | sudo chpasswd
+
+
+# D) Home for user lab
+
+## Populate initial home
+ADD docker/base-lab          /tmp/base-lab/
+RUN mv /tmp/base-lab/*       /home/lab
+RUN chown -R lab:lab         /home/lab
+
+## User keygen
+USER lab
+ RUN mkdir -p  /home/lab/.ssh
+ RUN chmod 700 /home/lab/.ssh
+ RUN ssh-keygen -q -t rsa -N "" -f /home/lab/.ssh/id_rsa
+ RUN ssh-keygen -q -t dsa -N "" -f /home/lab/.ssh/id_dsa
+ RUN cat /home/lab/.ssh/id_dsa.pub >> /home/lab/.ssh/authorized_keys
+ RUN cat /home/lab/.ssh/id_rsa.pub >> /home/lab/.ssh/authorized_keys
+ RUN sudo chown -R lab:lab /home/lab
+
+
+# E) Laboratories: MPI
+
+USER lab
+RUN /home/lab/bin/install-openmpi.sh  /home/lab
+
+
+# F) Container start-up
+USER root
+RUN mkdir -p /shared
+RUN mkdir -p /srv
+RUN ln -s /shared /home/lab/work
+
+ADD docker/base-srv     /tmp/base-srv/
+RUN mv /tmp/base-srv/*   /srv
+WORKDIR /home/lab
+
+EXPOSE 22
+CMD ["/srv/dockerstart.sh"]
+

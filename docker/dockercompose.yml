@@ -1,0 +1,31 @@
+
+networks:
+  b0:
+    driver: bridge
+
+services:
+  node:
+    build:
+      context: ../
+      dockerfile: ./docker/dockerfile
+      args:
+        UID: ${HOST_UID}
+        GID: ${HOST_GID}
+    image: ssdd-docker
+    volumes:
+      - type: bind
+        source: ..
+        target: /shared
+      - type: bind
+        source: /lib/modules
+        target: /lib/modules
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - b0
+    environment:
+      - HOST_UID=${HOST_UID}
+      - HOST_GID=${HOST_GID}
+    privileged: true
+    cap_add:
+      - ALL
+
