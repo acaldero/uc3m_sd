@@ -55,7 +55,8 @@
    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
    nvm install --lts
-   npm install -g npm@latest  
+   npm install -g npm@latest
+   nvm use 24.12
    ```
 
 4. Hay que instalar ```gemini-cli``` si no se tiene ya instalado:
