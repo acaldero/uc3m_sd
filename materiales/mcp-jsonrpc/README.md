@@ -12,7 +12,9 @@
  * [Ejecutar servidor mcp_server_calc.py y cliente Visual Studio Code](#ejecutar-servidor-mcp_server_calcpy-y-cliente-visual-studio-code)
 
 
-### Preparación
+## Preparación
+
+#### 🧩 Preparación del soporte MCP de Python3 a usar
 
 1. Hay que instalar ```uvicorn``` si no se tiene ya instalado:
     <html>
@@ -41,13 +43,15 @@
     </table>
     </html>
 
-2. Estando en el directorio **mcp-jsonrpc**, hay que instalar los prerrequisitos usando ```uv```:
+2. Estando en el directorio **materiales/mcp-jsonrpc**, hay que instalar los prerrequisitos usando ```uv```:
     ```bash
     touch pyproject.toml
     uv add --dev -r requirements.txt
     ```
 
-3. Hay que instalar **node 24.12** si no se tiene ya instalado:
+#### 🧩 Preparación de ```gemini cli```
+
+1. \[si no se tiene ya instalado\] hay que instalar **node 24.12**:
    ```bash
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
    export NVM_DIR="$HOME/.nvm"
@@ -56,21 +60,29 @@
 
    nvm install --lts
    npm install -g npm@latest
-   nvm use 24.12
+   nvm use --lts
    ```
 
-4. Hay que instalar ```gemini-cli``` si no se tiene ya instalado:
+2. \[si no se tiene ya instalado\] hay que instalar ```gemini-cli```:
    ```bash
-   $ npm install -g @google/gemini-cli
+   npm install -g @google/gemini-cli
    ```
 
+3. Ejecutar ```gemini``` y hacer "Login with Google":
+   ```bash
+   gemini
+   ```
 
-### Ejecutar servidor ```mcp_server_calc.py``` y cliente ```mcp_client_calc.py```
+4. Salir de ```gemini-cli``` tras hacer "Login with Google" correctamente.
+
+
+## 🧪 Ejecutar servidor ```mcp_server_calc.py``` y cliente ```mcp_client_calc.py```
 
 * Los pasos generales para ejecutar son:
   * Ejecutar el servidor ```mcp_server_calc.py```
-  * Ejecutar el cliente ```mcp_client_calc.py``` s
-  * Parar la ejecución del servidor<br><br>
+  * Ejecutar el cliente ```mcp_client_calc.py``` 
+  * Parar la ejecución del servidor<br>
+  
 * Un ejemplo de ejecución podría ser:
   <html>
   <table>
@@ -81,7 +93,7 @@
   <td>
 
 ```bash
-$ python3 ./mcp_server_calc.py
+python3 ./mcp_server_calc.py
 ```
 
   </td>
@@ -91,7 +103,7 @@ $ python3 ./mcp_server_calc.py
   <td>
 
 ```bash
-$ python3 ./mcp_client_calc.py
+python3 ./mcp_client_calc.py
 ```
 ```bash
 ...
@@ -140,17 +152,15 @@ INFO:   Finished server process [171901]
 
 <br>
 
-### Ejecutar servidor ```mcp_server_calc.py``` y cliente ```gemini cli```
+
+## 🧪 Ejecutar servidor ```mcp_server_calc.py``` y cliente ```gemini cli```
 
 * Los pasos generales para ejecutar son:
-  * La primera vez:
-    * Ejecutar ```gemini``` y conectarse con la cuenta de google ("Login with Google")
-    * Salir una vez configurada la cuenta
-  * Las siguientes veces:
-    * Ejecutar el servidor ```mcp_server_calc.py```
-    * Configurar ```gemini cli``` para que pueda conectarse a ```mcp_server_calc.py```
-    * Ejecutar ```gemini cli``` como cliente
-    * Parar la ejecución del cliente y luego del servidor<br><br>
+  * Ejecutar el servidor ```mcp_server_calc.py```
+  * Configurar ```gemini cli``` para que pueda conectarse a ```mcp_server_calc.py```
+  * Ejecutar ```gemini cli``` como cliente
+  * Parar la ejecución del cliente y luego del servidor<br>
+  
 * Un ejemplo de ejecución podría ser:
    <html>
    <table>
@@ -176,18 +186,18 @@ gemini mcp add \
          http://localhost:8000/mcp
 ```
 
-  * La acción ```gemini mcp add``` crea el archivo ```.gemini/settings.json``` con el siguiente contenido:
+  * Con ```mcp add``` crea el archivo ```.gemini/settings.json```:
     ```bash
-    echo '{'                               > .gemini/settings.json
-    echo ' "mcpServers":'                 >> .gemini/settings.json
-    echo ' {'                             >> .gemini/settings.json
-    echo '   "mcp-calc":'                 >> .gemini/settings.json
-    echo '   {'                           >> .gemini/settings.json
-    echo '   "url":'                      >> .gemini/settings.json
-    echo '   "http://localhost:8000/mcp"' >> .gemini/settings.json
-    echo '   }'                           >> .gemini/settings.json
-    echo ' }'                             >> .gemini/settings.json
-    echo '}'                              >> .gemini/settings.json
+    { 
+        "mcpServers":
+        {
+           "mcp-calc":
+           {
+              "url":
+              "http://localhost:8000/mcp"
+           }
+        }
+    }
     ```
 
    </td>
@@ -232,11 +242,12 @@ INFO:   Finished server process [171932]
 
 <br>
 
-### Ejecutar servidor ```mcp_server_calc.py``` y cliente "Visual Studio Code"
+
+## 🧪 Ejecutar servidor ```mcp_server_calc.py``` y cliente "Visual Studio Code"
 
 1. Primero hay que ejecutar el servidor MCP:
    ```bash
-   $ python3 ./mcp_server_calc.py
+   python3 ./mcp_server_calc.py
    ```
 2. Si no se ha hecho antes, hay que dar de alta el servicio MCP en el cliente "Visual Studio Code":
    * From command line:
