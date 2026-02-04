@@ -267,139 +267,192 @@ Recordatorios:
 
 ## B.2.- Sentencias de control organizadas
 
-El siguiente ejemplo permite guardar diez veces un mensaje en un fichero cuyo nombre se indica en el argumento:
+Uno de los usos de las sentencias de control "alternativas" es para programación "defensiva":
+* Se comprueba que todos los argumentos tienen unos valores correctos.
+* Se comprueba para toda llamada al sistema operativo si ha devuelto un valor indicando error.
 
-* main.c:
-  ```c
-  #include <stdio.h>
+A la izquierda se muestra un ejemplo ```main-v1.c``` de programa que guarda diez veces un mensaje en un fichero cuyo nombre se indica en el argumento sin hacer ningún tipo de comprobación.<br>
+A la derecha se tiene ```main-v2.c``` con programación "defensiva".
 
-  int main ( int argc, char *argv[] )
-  {
-     int   i ;
-     FILE *fd ;
+<html>
+  <table>
+  <tr>
+  <td>
 
-     fd = fopen(argv[1], "w") ;
-     for (i=0; i<10; i++) {
-          fprintf(fd, "Hola mundo\n") ;
-     }
-     fclose(fd) ;
-     return 0 ;
-  }
+   ```c
+    #include <stdio.h>
+
+
+    int main ( int argc, char *argv[] )
+    {
+       int   i ;
+       FILE *fd ;
+
+       fd = fopen(argv[1], "w") ;
+
+       for (i=0; i<10; i++) {
+            fprintf(fd, "Hola mundo\n") ;
+       }
+
+       fclose(fd) ;
+
+       return 0 ;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ```
+
+  </td>
+  <td>
+
+   ```c
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   int main ( int argc, char *argv[] )
+   {
+      int   ret, i ;
+      FILE *fd ;
+
+      // check arguments
+      if (1 == argc) {
+          printf("Usage: %s <fichero.txt>\n", argv[0]) ;
+          exit(-1) ;
+      }
+
+      // try to open file
+      fd = fopen(argv[1], "w") ;
+      if (NULL == fd) {
+          perror("fopen: ") ;
+          exit(-1) ;
+      }
+
+      // do task
+      for (i=0; i<10; i++) {
+           ret = fprintf(fd, "Hola mundo\n") ;
+           if (ret < 0) {
+               perror("fprintf: ") ;
+           }
+      }
+
+      // cleanup
+      ret = fclose(fd) ;
+      if (ret < 0) {
+          perror("fclose: ") ;
+      }
+
+      return 0 ;
+   }
+   ```
+
+  </td>
+  </tr>
+  </table>
+</html>
+
+A la hora de compilar y ejecutar se tiene lo siguiente:
+
+<html>
+  <table>
+  <tr>
+  <td>
+
+* Para compilar la versión inicial ```main-v1.c```:
+  ```bash
+  gcc -g -Wall -c main-v1.c -o main-v1.o
+  gcc -g -Wall -o main-v1      main-v1.o
   ```
 
-Como ejemplo inicial de programación defensiva, tenemos la siguiente versión:
+* Para ejecutar ```main-v1``` con y sin argumento:
+  ```bash
+  ./main-v1 fichero.txt
+  ./main-v1
+  ```
 
-* main.c
+* Pero ```main-v1``` sin parámetros no ejecuta:
+  ```bash
+  Segmentation fault (core dumped)
+  ```
+
+  </td>
+  <td>
+
+* Para compilar la versión "defensiva" ```main-v2.c```:
+  ```bash
+  gcc -g -Wall -c main-v2.c -o main-v2.o
+  gcc -g -Wall -o main-v2      main-v2.o
+  ```
+
+* Para ejecutar ```main-v2``` con y sin argumento:
+  ```bash
+  ./main-v2 fichero.txt
+  ./main-v2
+  ```
+
+* Y sin argumentos, no hay un error grave:
+  ```bash
+  Usage: ./main-v2 <fichero.txt>
+  ```
+
+
+  </td>
+  </tr>
+  </table>
+</html>
+
+
+Dos detalles a recordar:
+* 1. Hay que evitar la anidación de ```if-else``` para detectar errores porque hace difícil de leer y entender el código.
+  Ejemplo:
   ```c
-  #include <stdio.h>
-
-  int main ( int argc, char *argv[] )
-  {
-     int i ;
-     FILE *fd ;
-
-     if (argc == 1)
-     {
-         printf("ERROR: falta nombre\n") ; //
-     }
-     else
-     {
-         fd = fopen(argv[1], "w") ;
-         if (fd == NULL)
-         {
-             printf("ERROR: al abrir el fichero\n") ;
-         }
-         else
-         {
-             for (i=0; i<10; i++) {
-                  fprintf(fd, "Hola mundo\n") ;
+    if (**caso de error X**)
+    {
+        printf("ERROR: **explicación**") ;
+    }
+    else
+    {
+        if (**caso de error Y**)
+        {
+            printf("ERROR: **explicación**") ;
+        }
+        else
+        {
+             if (**caso de error Z**)
+             {
+                 printf("ERROR: **explicación**") ;
              }
-
-             fclose(fd) ;
-         }
-     }
-
-     return 0 ;
-  }
+             else
+             {
+                  **más código ...**
+             } 
+        }
+    }
   ```
-
-Se puede compilar y ejecutar de la siguiente forma:
-```bash
-gcc -g -Wall -c main.c -o main.o
-gcc -g -Wall -o main      main.o
-
-./main fichero.txt
-```
-
-Este código inicial es un ejemplo en el que se muestra un código difícil de leer y entender:
-* La anidación de ```if-else``` para detectar errores no ayuda:
+* 2. Hay que comprobar el valor devuelto por todas las llamadas al sistema (se puede usar ```perror``` o similar para informar de la razón del error):
   ```c
-     if (**caso de error X**)
-     {
-         printf("ERROR: **explicación**") ;
-     }
-     else
-     {
-         if (**caso de error Y**)
-         {
-             printf("ERROR: **explicación**") ;
-         }
-         else
-         {
-             **más código**
-         }
-     }
-  ```
-* No se hace comprobación de todas las llamadas al sistema o bien no se usa ```perror``` o similar para informar de la razón del error:
-  ```c
-     fd = fopen(argv[1], "w") ;
-     if (fd == NULL)
-     {
-         printf("ERROR: al abrir fichero\n") ;
-     }
-  ```
-
-Una versión que se recomienda más sería:
-
-* main.c
-  ```c
-  #include <stdio.h>
-  #include <stdlib.h>
-
-  int main ( int argc, char *argv[] )
-  {
-     int   ret, i ;
-     FILE *fd ;
-
-     // check arguments
-     if (1 == argc) {
-         printf("Usage: %s <fichero.txt>\n", argv[0]) ;
-         exit(-1) ;
-     }
-
-     // try to open file
-     fd = fopen(argv[1], "w") ;
-     if (NULL == fd) {
-         perror("fopen: ") ;
-         exit(-1) ;
-     }
-
-     // do task
-     for (i=0; i<10; i++) {
-          ret = fprintf(fd, "Hola mundo\n") ;
-          if (ret < 0) {
-              perror("fprintf: ") ;
-          }
-     }
-
-     // cleanup
-     ret = fclose(fd) ;
-     if (ret < 0) {
-         perror("fclose: ") ;
-     }
-
-     return 0 ;
-  }
+    fd = fopen(argv[1], "w") ;
+    if (NULL == fd)
+    {
+        perror("fopen: ") ;
+    }
   ```
 
 
