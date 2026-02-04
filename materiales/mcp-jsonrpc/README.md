@@ -143,10 +143,14 @@ INFO:   Finished server process [171901]
 ### Ejecutar servidor ```mcp_server_calc.py``` y cliente ```gemini cli```
 
 * Los pasos generales para ejecutar son:
-  * Ejecutar el servidor ```mcp_server_calc.py```
-  * Configurar ```gemini cli``` para que pueda conectarse a ```mcp_server_calc.py```
-  * Ejecutar ```gemini cli``` como cliente
-  * Parar la ejecución del cliente y luego del servidor<br><br>
+  * La primera vez:
+    * Ejecutar ```gemini``` y conectarse con la cuenta de google ("Login with Google")
+    * Salir una vez configurada la cuenta
+  * Las siguientes veces:
+    * Ejecutar el servidor ```mcp_server_calc.py```
+    * Configurar ```gemini cli``` para que pueda conectarse a ```mcp_server_calc.py```
+    * Ejecutar ```gemini cli``` como cliente
+    * Parar la ejecución del cliente y luego del servidor<br><br>
 * Un ejemplo de ejecución podría ser:
    <html>
    <table>
@@ -170,19 +174,21 @@ python3 ./mcp_server_calc.py &
 gemini mcp add \
          --transport http mcp-calc \
          http://localhost:8000/mcp
-
-echo '{'                               > .gemini/settings.json
-echo ' "mcpServers":'                 >> .gemini/settings.json
-echo ' {'                             >> .gemini/settings.json
-echo '   "mcp-calc":'                 >> .gemini/settings.json
-echo '   {'                           >> .gemini/settings.json
-echo '   "url":'                      >> .gemini/settings.json
-echo '   "http://localhost:8000/mcp"' >> .gemini/settings.json
-echo '   }'                           >> .gemini/settings.json
-echo ' }'                             >> .gemini/settings.json
-echo '}'                              >> .gemini/settings.json
-
 ```
+
+  * La acción ```gemini mcp add``` crea el archivo ```.gemini/settings.json``` con el siguiente contenido:
+    ```bash
+    echo '{'                               > .gemini/settings.json
+    echo ' "mcpServers":'                 >> .gemini/settings.json
+    echo ' {'                             >> .gemini/settings.json
+    echo '   "mcp-calc":'                 >> .gemini/settings.json
+    echo '   {'                           >> .gemini/settings.json
+    echo '   "url":'                      >> .gemini/settings.json
+    echo '   "http://localhost:8000/mcp"' >> .gemini/settings.json
+    echo '   }'                           >> .gemini/settings.json
+    echo ' }'                             >> .gemini/settings.json
+    echo '}'                              >> .gemini/settings.json
+    ```
 
    </td>
    <td>
@@ -196,7 +202,7 @@ echo '}'                              >> .gemini/settings.json
 gemini -i "add 2 + 3"
 ```
 
-  * La primera vez que se ejecuta: "Login with Google"
+  * La primera vez puede ser necesario conectarse con la cuenta de google ("Login with Google")
   * Hay que seleccionar "Allow all server tools for this session"
   * Para terminar hay que usar "/quit"
 
