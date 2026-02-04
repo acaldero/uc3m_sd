@@ -12,8 +12,10 @@
    * [Depuración](#a2-y-si-hay-problemas-depuramos)
  * B. Sentencias de control organizadas:
    * [Sentencias de control](#b1--sentencias-de-control-de-flujo-en-c)
+   * [Sentencias alternativas organizadas](#b2--sentencias-de-control-organizadas)
  * C. Registros en C y peculiaridades:
    * [struct en C](#c1--uso-de-estructuras-struct-en-c)
+   * [Particularidades del uso de struct](#c2--particularidades-de-las-estructuras-struct-en-c)
  * D. Punteros:
    * [Qué es un puntero](#d1--uso-de-punteros-i-qu%C3%A9-es-un-puntero)
    * [Memoria dinámica](#d2--uso-de-punteros-ii-memoria-din%C3%A1mica)
@@ -574,20 +576,16 @@ Como ejemplo de structs, usaremos el siguiente archivo:
   }
   ```
 
-* Sobre structs:
-  * *Padding*
-    * El tamaño de un struct puede no ser la suma del tamaño de los campos que la componen.
-    * Puede haber rellenos (*padding*) para alinear tipos.
-
-* Sobre los campos de los structs:
-  * *sizeof(string) != strlen(string)*
-    * El tamaño de un string es el espacio reservado en memoria.
-    * La longitud es el espacio en uso que debe ser menor al reservado.
-  * *sizeof(int) != strlen(int)*
-    * El tamaño de un entero puede depender de la plataforma: 32 bits vs 64 bits.
-    * Mejor usar [https://en.cppreference.com/w/c/types/integer.html](tipos fijos) como por ejemplo ```int32_t```, ```int64_t```, etc.
-  * *Endianess*
+Hay 2 tipos de particularidades a recordar:
+1. *Endianess*
     * Los tipos enteros de más de un byte (e.g.: entero) puede tener orden distinto de bytes: *big endian* vs *little endian*.
+2. Tamaños en bytes...:
+   * El tamaño del struct NO siempre es la suma del tamaño de los campos: puede haber rellenos o *padding* para alinear tipos de datos en memoria.
+     * Consejo: el tamaño de "struct X" se tiene con "sizeof(struct X)"
+   * El tamaño de un entero en C no es portable: en una plataforma de 32 bits es distinto al de una plataforma de 64 bits
+     * Consejo: mejor usar [https://en.cppreference.com/w/c/types/integer.html](tipos fijos) como por ejemplo ```int32_t```, ```int64_t```, etc.
+   * El tamaño de un array de caracteres es el espacio reservado en memoria, se use o no todo:
+     * Consejo: diferenciar entre *sizeof(string)*, *strlen(string)* y *strlen(string)+1* según el contexto.
 
 
 <br>
