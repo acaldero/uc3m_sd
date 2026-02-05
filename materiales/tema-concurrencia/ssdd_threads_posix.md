@@ -91,9 +91,9 @@ Recordatorios
               exit(-1) ;
            }
 
-           th_args.arg1 = 'a' ;
-           th_args.arg2 = 33  ;
-           th_args.arg3 = j  ;
+           th_args->arg1 = 'a' ;
+           th_args->arg2 = 33  ;
+           th_args->arg3 = j  ;
            ...
 
            int rc = pthread_create(&(threads[t]), NULL, th_function, (void *)th_args) ;
@@ -110,7 +110,7 @@ Recordatorios
         struct thread_arguments *th_args = (struct thread_arguments *) arg ;
 
         ...
-        printf("Hello world from thread #%d!\n", th_args.arg3) ;
+        printf("Hello world from thread #%d!\n", th_args->arg3) ;
         ...
 
         free(th_args) ;
@@ -128,8 +128,7 @@ Recordatorios
 
 ## 2.- <ins>Qué son y como se usan los **mutex**: para cuando (1) dos o más hilos (2) comparten una variable (3) al menos uno modifica la variable (4) y se hace de forma no atómica</ins>
 
-
-Cuando (1) dos o más hilos (2) comparten una variable (3) al menos uno modifica la variable (4) y se hace de forma no atómica se presenta el problema llamado "condición de carrera".
+Cuando (1) dos o más hilos (2) comparten una variable (3) al menos uno modifica la variable (4) y se hace de forma no atómica entonces se presenta el problema llamado "condición de carrera".
 La zona de código en la que cada hilo accede a la variable compartida (ya sea para consultar o para modificar) se llama "sección crítica".
 
 Como ejemplo, este programa soluciona una condición de carrera entre dos hilos mediante el uso de un mutex "mutex_1".
@@ -337,11 +336,14 @@ Como ejemplo, este programa sincroniza el hilo main y los hilos creados con pthr
 
   #define NUM_THREADS  5
 
-    /// var + mutex + condition /////
-    int             is_copied = 0; // boleano que indica "se ha copiado"
-    pthread_mutex_t mutex_1;       // mutex que protege la variable global "is_copied":
-                                   // compartida por 2 o más hilos, modificada por alguno y no de forma atómica.
-    pthread_cond_t  cond_cp;       // condition para esperar si el boleano dice que hay que esperar
+    /// variable + mutex + condition /////
+    int             is_copied = 0;   // (1/3) boleano que indica "se ha copiado"
+    pthread_mutex_t mutex_1;         // (2/3) mutex que protege la variable global "is_copied":
+                                     //       * por 2 o más hilos,
+                                     //       * la variable es compartida 
+                                     //       * modificada por alguno
+                                     //       * y no de forma atómica la modificación.
+    pthread_cond_t  cond_cp;         // (3/3) condition para esperar si el boleano pide esperar
     /////////////////////////////////
 
   void *th_function ( void *arg )
