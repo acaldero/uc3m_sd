@@ -54,6 +54,9 @@
    ```
 
 4. Salir de ```gemini-cli``` tras hacer "Login with Google" correctamente.
+   ```bash
+   /quit
+   ```
 
 
 ## 🧪 Ejecutar servidor ```mcp_server_calc.py``` y cliente ```mcp_client_calc.py```

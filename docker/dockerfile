@@ -103,8 +103,13 @@ USER lab
  RUN sudo chown -R lab:lab /home/lab
 
 
-# E) Laboratories: MPI
+# E) Laboratories
 
+## fastAPI
+RUN apt install uvicorn python3-fastapi python3-httpx python3-starlette -y
+RUN python3 -m pip install fastmcp --break-system-packages
+
+## MPI
 USER lab
 RUN /home/lab/bin/install-openmpi.sh  /home/lab
 
