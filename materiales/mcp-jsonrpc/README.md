@@ -16,32 +16,12 @@
 
 #### 🧩 Preparación del soporte MCP de Python3 a usar
 
-1. Hay que instalar ```uvicorn``` si no se tiene ya instalado:
-    <html>
-    <table>
-    <tr>
-    <td>Para todos los usuarios/as</td>
-    <td>Para usuario/a actual</td>
-    </tr>
-
-    <tr>
-    <td>
-
+1. Hay que instalar ```uvicorn``` y ```uv```si no se tiene ya instalado:
     ```bash
     sudo apt install uvicorn -y
-    ```
-
-    </td>
-    <td>
-
-    ```bash
     curl -LsSf https://astral.sh/uv/install.sh | sh
+    source $HOME/.local/bin/env 
     ```
-
-    </td>
-    </tr>
-    </table>
-    </html>
 
 2. Estando en el directorio **materiales/mcp-jsonrpc**, hay que instalar los prerrequisitos usando ```uv```:
     ```bash
