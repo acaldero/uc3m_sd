@@ -103,8 +103,8 @@ ssdd_docker_machines_remove ()
      rm -fr machines_horovod
 
      # directories
-     rmdir -fail-on-non-empty export/nfs/* >& /dev/null
-     rmdir -fr export/nfs
+     rmdir -fail-on-non-empty         export/nfs/* >& /dev/null
+     rmdir --ignore-fail-on-non-empty export/nfs   >& /dev/null
 
      # Remove session file...
      rm -fr .ssdd_docker_worksession
@@ -357,12 +357,12 @@ ssdd_docker_bash ()
      if [ $CO_ID -lt 1 ]; then
              echo "ERROR: Container ID $CO_ID out of range (1...$CO_NC)"
              shift
-             continue
+             exit
      fi
      if [ $CO_ID -gt $CO_NC ]; then
              echo "ERROR: Container ID $CO_ID out of range (1...$CO_NC)"
              shift
-             continue
+             exit
      fi
 
      # get current session mode
