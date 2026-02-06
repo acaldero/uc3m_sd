@@ -18,20 +18,7 @@
 
 1. Hay que instalar ```uvicorn``` si no se tiene ya instalado:
     ```bash
-    sudo apt install uvicorn python3-fastapi python3-httpx python3-starlette -y
-    python3 -m pip install fastmcp --break-system-packages
-    ```
-
-2. Hay que instalar ```uv``` si no se tiene ya instalado:
-    ```bash
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    source $HOME/.local/bin/env
-    ```
-
-3. Estando en el directorio **materiales/mcp-jsonrpc**, hay que instalar los prerrequisitos usando ```uv```:
-    ```bash
-    touch pyproject.toml
-    uv add --dev -r requirements.txt
+    python3 -m pip install -U fastapi fastmcp httpx starlette uvicorn --break-system-packages
     ```
 
 #### 🧩 Preparación de ```gemini cli```
