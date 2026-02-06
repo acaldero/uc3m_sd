@@ -106,7 +106,7 @@ USER lab
 # E) Laboratories
 
 ## fastAPI
-RUN apt install uvicorn python3-fastapi python3-httpx python3-starlette -y
+RUN sudo apt install uvicorn python3-fastapi python3-httpx python3-starlette -y
 RUN python3 -m pip install fastmcp --break-system-packages
 
 ## MPI

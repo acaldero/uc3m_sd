@@ -16,14 +16,19 @@
 
 #### 🧩 Preparación del soporte MCP de Python3 a usar
 
-1. Hay que instalar ```uvicorn``` y ```uv```si no se tiene ya instalado:
+1. Hay que instalar ```uvicorn``` si no se tiene ya instalado:
     ```bash
-    sudo apt install uvicorn -y
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    source $HOME/.local/bin/env 
+    sudo apt install uvicorn python3-fastapi python3-httpx python3-starlette -y
+    python3 -m pip install fastmcp --break-system-packages
     ```
 
-2. Estando en el directorio **materiales/mcp-jsonrpc**, hay que instalar los prerrequisitos usando ```uv```:
+2. Hay que instalar ```uv``` si no se tiene ya instalado:
+    ```bash
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    source $HOME/.local/bin/env
+    ```
+
+3. Estando en el directorio **materiales/mcp-jsonrpc**, hay que instalar los prerrequisitos usando ```uv```:
     ```bash
     touch pyproject.toml
     uv add --dev -r requirements.txt
@@ -63,7 +68,7 @@
 
 * Los pasos generales para ejecutar son:
   * Ejecutar el servidor ```mcp_server_calc.py```
-  * Ejecutar el cliente ```mcp_client_calc.py``` 
+  * Ejecutar el cliente  ```mcp_client_calc.py``` 
   * Parar la ejecución del servidor<br>
   
 * Un ejemplo de ejecución podría ser:
