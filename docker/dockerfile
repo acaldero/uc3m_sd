@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 ## Install *base* software
 RUN apt-get update && apt-get install -y --allow-change-held-packages \
-        aptitude apt-utils psmisc \
+        aptitude apt-utils \
         zlib1g-dev ca-certificates pkg-config \
         software-properties-common gpg-agent \
         \
@@ -32,6 +32,7 @@ RUN apt-get update && apt-get install -y --allow-change-held-packages \
         \
         ubuntu-restricted-extras \
         imagemagick \
+        psmisc bash-completion \
         && \
     apt-get clean
 

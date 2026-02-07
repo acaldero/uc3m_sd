@@ -200,7 +200,7 @@ ssdd_docker_build ()
      # Check params
      if [ ! -f docker/dockerfile ]; then
          echo ": The docker/dockerfile file is not found."
-         echo ": * Did you execute git clone https://github.com/acaldero/uc3m_ssdd.git ?."
+         echo ": * Did you execute git clone https://github.com/acaldero/uc3m_sd.git ?."
          echo ""
          exit
      fi
@@ -210,13 +210,13 @@ ssdd_docker_build ()
      HOST_GID=$2
      CACHE=$3
 
-     docker image build ${CACHE} -t uc3m_ssdd --build-arg UID=$HOST_UID --build-arg GID=$HOST_GID -f docker/dockerfile .
+     docker image build ${CACHE} -t ssdd-docker --build-arg UID=$HOST_UID --build-arg GID=$HOST_GID -f docker/dockerfile .
 }
 
 ssdd_docker_save ()
 {
-     echo "Saving uc3m_ssdd image..."
-     docker image save uc3m_ssdd | gzip -5 > ssdd_docker.tgz 
+     echo "Saving ssdd-docker image..."
+     docker image save ssdd-docker | gzip -5 > ssdd_docker.tgz
 }
 
 ssdd_docker_load ()
@@ -229,14 +229,14 @@ ssdd_docker_load ()
         exit
      fi
 
-     echo "Loading uc3m_ssdd image..."
+     echo "Loading ssdd-docker image..."
      cat ssdd_docker.tgz | gunzip - | docker image load
 }
 
 ssdd_docker_pull ()
 {
-     echo "Pulling uc3m_ssdd image..."
-     docker pull uc3m_ssdd
+     echo "Pulling ssdd-docker image..."
+     docker pull ssdd-docker
 }
 
 ssdd_docker_start ()
@@ -269,7 +269,7 @@ ssdd_docker_start ()
                 HOST_UID=$HOST_UID_VALUE HOST_GID=$HOST_GID_VALUE docker compose -f docker/dockercompose.yml -p $DOCKER_PREFIX_NAME up -d --scale node=$N_ELTOS
                 if [ $? -gt 0 ]; then
                     echo ": The docker compose command failed to spin up containers."
-                    echo ": * Did you execute git clone https://github.com/acaldero/uc3m_ssdd.git ?."
+                    echo ": * Did you execute git clone https://github.com/acaldero/uc3m_sd.git ?."
                     echo ""
                     exit
                 fi
@@ -325,7 +325,7 @@ ssdd_docker_stop ()
           HOST_UID=$HOST_UID_VALUE HOST_GID=$HOST_GID_VALUE docker compose -f docker/dockercompose.yml -p $DOCKER_PREFIX_NAME down
           if [ $? -gt 0 ]; then
               echo ": The 'docker compose' command failed to stop containers."
-              echo ": * Did you execute git clone https://github.com/acaldero/uc3m_ssdd.git ?."
+              echo ": * Did you execute git clone https://github.com/acaldero/uc3m_sd.git ?."
               echo ""
               exit
           fi
@@ -336,7 +336,7 @@ ssdd_docker_stop ()
           docker service rm ssdd_docker_node
           if [ $? -gt 0 ]; then
               echo ": The 'docker service' command failed to stop containers."
-              echo ": * Did you execute git clone https://github.com/acaldero/uc3m_ssdd.git ?."
+              echo ": * Did you execute git clone https://github.com/acaldero/uc3m_sd.git ?."
               echo ""
               exit
           fi
@@ -462,13 +462,13 @@ do
 
              image-load)
                 echo "Loading image..."
-                
+
                 ssdd_docker_load
              ;;
 
              image-pull)
                 echo "Pulling image..."
-                
+
                 ssdd_docker_pull
              ;;
 
@@ -512,7 +512,7 @@ do
                 HOST_UID=$(id -u) HOST_GID=$(id -g) docker compose -f docker/dockercompose.yml -p $DOCKER_PREFIX_NAME kill
                 if [ $? -gt 0 ]; then
                     echo ": The docker compose command failed to stop containers."
-                    echo ": * Did you execute git clone https://github.com/acaldero/uc3m_ssdd.git ?."
+                    echo ": * Did you execute git clone https://github.com/acaldero/uc3m_sd.git ?."
                     echo ""
                     exit
                 fi
@@ -533,7 +533,7 @@ do
              ;;
 
              cleanup)
-                # Removing everything (warning) 
+                # Removing everything (warning)
                 echo "Removing containers and images..."
                 docker rm      -f $(docker ps     -a -q)
                 docker rmi     -f $(docker images -a -q)
@@ -554,7 +554,7 @@ do
 
                 # Check params
                 if [ "x$CNAME" == "x" ]; then
-                    echo ": There is not a running uc3m_ssdd container."
+                    echo ": There is not a running ssdd-docker container."
                     exit
                 fi
 

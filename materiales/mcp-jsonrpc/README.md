@@ -6,57 +6,24 @@
 
 ## Servicio distribuido JSON-RPC sobre HTTP: servidor MCP de calculadora simple
 
- * [Preparación](#preparaci%C3%B3n)
  * [Ejecutar servidor mcp_server_calc.py y cliente mcp_client_calc.py](#ejecutar-servidor-mcp_server_calcpy-y-cliente-mcp_client_calcpy)
  * [Ejecutar servidor mcp_server_calc.py y cliente gemini cli](#ejecutar-servidor-mcp_server_calcpy-y-cliente-gemini-cli)
  * [Ejecutar servidor mcp_server_calc.py y cliente Visual Studio Code](#ejecutar-servidor-mcp_server_calcpy-y-cliente-visual-studio-code)
 
 
-## Preparación
-
-#### 🧩 Preparación del soporte MCP de Python3 a usar
-
-1. Hay que instalar ```uvicorn``` si no se tiene ya instalado:
-    ```bash
-    python3 -m pip install -U fastapi fastmcp httpx starlette uvicorn --break-system-packages
-    ```
-
-#### 🧩 Preparación de ```gemini cli```
-
-1. \[si no se tiene ya instalado\] hay que instalar **node 24.12**:
-   ```bash
-   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-   export NVM_DIR="$HOME/.nvm"
-   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-   nvm install --lts
-   npm install -g npm@latest
-   nvm use --lts
-   ```
-
-2. \[si no se tiene ya instalado\] hay que instalar ```gemini-cli```:
-   ```bash
-   npm install -g @google/gemini-cli
-   ```
-
-3. Ejecutar ```gemini``` y hacer "Login with Google":
-   ```bash
-   gemini
-   ```
-
-4. Salir de ```gemini-cli``` tras hacer "Login with Google" correctamente.
-   ```bash
-   /quit
-   ```
-
-
 ## 🧪 Ejecutar servidor ```mcp_server_calc.py``` y cliente ```mcp_client_calc.py```
+
+* Preparación:
+  1. \[si no se tiene ya instalado\] hay que instalar los paquetes de Python de soporte MCP necesarios:
+      ```bash
+      python3 -m pip install -U fastapi fastmcp httpx starlette uvicorn --break-system-packages
+      ```
 
 * Los pasos generales para ejecutar son:
   * Ejecutar el servidor ```mcp_server_calc.py```
   * Ejecutar el cliente  ```mcp_client_calc.py``` 
   * Parar la ejecución del servidor<br>
+
   
 * Un ejemplo de ejecución podría ser:
   <html>
@@ -130,12 +97,39 @@ INFO:   Finished server process [171901]
 
 ## 🧪 Ejecutar servidor ```mcp_server_calc.py``` y cliente ```gemini cli```
 
+* Preparación de gemini-cli:
+  1. \[si no se tiene ya instalado\] hay que instalar **node 24.12** y **npm**:
+     ```bash
+     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+     export NVM_DIR="$HOME/.nvm"
+     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+     nvm install --lts
+     npm install -g npm@latest
+     nvm use --lts
+     ```
+  2. \[si no se tiene ya instalado\] hay que instalar ```gemini-cli```:
+     ```bash
+     npm install -g @google/gemini-cli
+     ```
+  3. Ejecutar ```gemini``` y hacer "Login with Google":
+     ```bash
+     gemini
+     ```
+  4. Salir de ```gemini-cli``` tras hacer "Login with Google" correctamente.
+     ```bash
+     /quit
+     ```
+
+
 * Los pasos generales para ejecutar son:
   * Ejecutar el servidor ```mcp_server_calc.py```
   * Configurar ```gemini cli``` para que pueda conectarse a ```mcp_server_calc.py```
   * Ejecutar ```gemini cli``` como cliente
   * Parar la ejecución del cliente y luego del servidor<br>
   
+
 * Un ejemplo de ejecución podría ser:
    <html>
    <table>
@@ -187,8 +181,8 @@ gemini mcp add \
 gemini -i "add 2 + 3"
 ```
 
-  * La primera vez puede ser necesario conectarse con la cuenta de google ("Login with Google")
-  * Hay que seleccionar "Allow all server tools for this session"
+  * Puede ser necesario conectarse con la cuenta de google ("Login with Google")
+  * Seleccione "Allow all server tools for this session"
   * Para terminar hay que usar "/quit"
 
    </td>
