@@ -6,12 +6,12 @@
 
 ## Servicio distribuido JSON-RPC sobre HTTP: servidor MCP de calculadora simple
 
- * [Ejecutar servidor mcp_server_calc.py y cliente mcp_client_calc.py](#ejecutar-servidor-mcp_server_calcpy-y-cliente-mcp_client_calcpy)
- * [Ejecutar servidor mcp_server_calc.py y cliente gemini cli](#ejecutar-servidor-mcp_server_calcpy-y-cliente-gemini-cli)
- * [Ejecutar servidor mcp_server_calc.py y cliente Visual Studio Code](#ejecutar-servidor-mcp_server_calcpy-y-cliente-visual-studio-code)
+ * [1. Ejecutar servidor mcp_server_calc.py y cliente mcp_client_calc.py](#-1-ejecutar-servidor-mcp_server_calcpy-y-cliente-mcp_client_calcpy)
+ * [2. Ejecutar servidor mcp_server_calc.py y cliente gemini cli](#-2-ejecutar-servidor-mcp_server_calcpy-y-cliente-gemini-cli)
+ * [3. Ejecutar servidor mcp_server_calc.py y cliente Visual Studio Code](#-3-ejecutar-servidor-mcp_server_calcpy-y-cliente-visual-studio-code)
 
 
-## 🧪 Ejecutar servidor ```mcp_server_calc.py``` y cliente ```mcp_client_calc.py```
+## 🧪 1. Ejecutar servidor ```mcp_server_calc.py``` y cliente ```mcp_client_calc.py```
 
 * Preparación:
   1. \[si no se tiene ya instalado\] hay que instalar los paquetes de Python de soporte MCP necesarios:
@@ -95,10 +95,14 @@ INFO:   Finished server process [171901]
 <br>
 
 
-## 🧪 Ejecutar servidor ```mcp_server_calc.py``` y cliente ```gemini cli```
+## 🧪 2. Ejecutar servidor ```mcp_server_calc.py``` y cliente ```gemini cli```
 
 * Preparación de gemini-cli:
-  1. \[si no se tiene ya instalado\] hay que instalar **node 24.12** y **npm**:
+  1. \[si no se tiene ya instalado\] hay que instalar los paquetes de Python de soporte MCP necesarios:
+      ```bash
+      python3 -m pip install -U fastapi fastmcp httpx starlette uvicorn --break-system-packages
+      ```
+  2. \[si no se tiene ya instalado\] hay que instalar **node 24.12** y **npm**:
      ```bash
      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
      export NVM_DIR="$HOME/.nvm"
@@ -109,18 +113,19 @@ INFO:   Finished server process [171901]
      npm install -g npm@latest
      nvm use --lts
      ```
-  2. \[si no se tiene ya instalado\] hay que instalar ```gemini-cli```:
+  3. \[si no se tiene ya instalado\] hay que instalar ```gemini-cli```:
      ```bash
      npm install -g @google/gemini-cli
      ```
-  3. Ejecutar ```gemini``` y hacer "Login with Google":
+  4. Ejecutar ```gemini``` y hacer "Login with Google":
      ```bash
      gemini
      ```
-  4. Salir de ```gemini-cli``` tras hacer "Login with Google" correctamente.
+  5. Salir de ```gemini-cli``` tras hacer "Login with Google" correctamente.
      ```bash
      /quit
      ```
+     Es posible que tras pegar el token se pueda quedar bloqueado. En ese caso hay que usar otro terminal y hacer un kill al proceso.
 
 
 * Los pasos generales para ejecutar son:
@@ -212,7 +217,7 @@ INFO:   Finished server process [171932]
 <br>
 
 
-## 🧪 Ejecutar servidor ```mcp_server_calc.py``` y cliente "Visual Studio Code"
+## 🧪 3. Ejecutar servidor ```mcp_server_calc.py``` y cliente "Visual Studio Code"
 
 1. Primero hay que ejecutar el servidor MCP:
    ```bash
