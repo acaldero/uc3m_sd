@@ -2,7 +2,7 @@
 #set -x
 
 #
-#  Copyright 2019-2025 Alejandro Calderon Mateos, Felix Garcia Carballeira
+#  Copyright 2019-2026 Alejandro Calderon Mateos, Felix Garcia Carballeira
 #
 #  This file is part of SPyD-Docker proyect.
 #

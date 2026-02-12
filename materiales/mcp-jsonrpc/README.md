@@ -183,12 +183,10 @@ gemini mcp add \
    <td>
 
 ```bash
-gemini -i "add 2 + 3"
+gemini --model gemini-2.5-flash-lite \
+       --allowed-tools="add,sub,mul,div" \
+       --prompt "suma 2 y 5 y da el resultado" 
 ```
-
-  * Puede ser necesario conectarse con la cuenta de google ("Login with Google")
-  * Seleccione "Allow all server tools for this session"
-  * Para terminar hay que usar "/quit"
 
    </td>
    <td>
