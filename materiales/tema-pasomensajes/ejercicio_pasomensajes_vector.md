@@ -69,8 +69,8 @@ Para dicho diseño haremos los siguientes pasos:
    char * a_keys[100] ;   // = [ "key1", "key2", ... "keyN" ] ;
    ```
 
-2. Funciones auxiliares de
-    (a) buscar un nombre en el array *a_keys* de claves y 
+2. Funciones auxiliares de<br>
+    (a) buscar un nombre en el array *a_keys* de claves y <br>
     (b) insertar un nuevo array con *nombre* y *N* elementos de tipo entero:
    ```c
    int buscar ( char *nombre )
@@ -104,7 +104,7 @@ Para dicho diseño haremos los siguientes pasos:
    }
    ```
 
-3. Funciones pedidas
+3. Funciones pedidas (basadas en lo desarrollado anteriormente):
    ```c
    // Inicializar un array distribuido de N números enteros.
    int init ( char *nombre, int N )
@@ -191,8 +191,9 @@ graph LR;
     PXS <--->|set| L2
 ```
 
-Como se puede apreciar, la aplicación **main** en lugar de interactuar con vector directamente lo va a hacer con un nuevo componente llamado *proxy* en el lado del cliente que tiene la misma interfaz que **vector**. Para **main** se le hace creer que está actuando con **vector** pero en su lugar lo hace con la parte cliente del *proxy*. 
-Este cliente *proxy* se encarga de enviar uan petición remota a otro componente nuevo llamado *proxy* en el lado del servidor al que le pide que haga la petición de **main** en su nombre y le devuelva el resultado. 
+Como se puede apreciar, la aplicación **main** en lugar de interactuar con vector directamente lo va a hacer con un nuevo componente llamado *proxy* en el lado del cliente que tiene la misma interfaz que **vector**. 
+Para **main** se le hace creer que está actuando con **vector** pero en su lugar lo hace con la parte cliente del *proxy*. <br>
+Este cliente *proxy* se encarga de enviar una petición remota a otro componente nuevo llamado *proxy* en el lado del servidor al que le pide que haga la petición de **main** en su nombre y le devuelva el resultado. 
 El *proxy* en el lado del servidor tiene acceso a la biblioteca **vector** original del diseño monolítico y se encarga de recibir las peticiones del *proxy* en el lado del cliente y hacer la invocación en su nombre, para enviar de vuelta el resultado de dicha invocación.
 
 De esta forma es posible transformar una parte de una aplicación monolítica en una parte distribuida, facilitando las pruebas dado que los componentes **main** y **vector** son los mismos de la aplicación monolítica, que ya han sido probados.
@@ -260,13 +261,13 @@ Para dicho diseño haremos los siguientes pasos:
 
 ## Distribuido general a distribuido con colas de mensajes POSIX
 
-Las colas de mensajes POSIX permiten interconectar dos procesos de forma distribuida, pero tienen unas peculiaridades que hace que haya que adaptar el diseño anterior que es un para un sistema distribuido genérico.
+Las colas de mensajes POSIX permiten interconectar dos procesos de forma distribuida, pero tienen unas peculiaridades que hace que haya que adaptar el diseño anterior que es un para un sistema distribuido genérico. <br>
 Las principales *peculiaridades* que afectan inicialmente al diseño son:
 * Son unidireccionales
 * Para simplificar su uso se precisa diseñar un mismo mensaje que valga para todas las operaciones
 * Usan el sistema de ficheros de la máquina donde se ejecutan los procesos (lo que no lo hace tan distribuido pero sirve de comienzo)
 
-
+Para dicho diseño se pueden usar los siguientes pasos:
 1. Los tipo de datos principales a utilizar son una estructura para petición (que será una fusión de todos los campos necesarios en todas las operaciones) y otra para respuesta (que será también una fusión de todas respuestas):
    ```c
    // petición = op + q_name + (nombre, N) + (nombre, i, valor) + (nombre, i)
@@ -324,7 +325,9 @@ Las principales *peculiaridades* que afectan inicialmente al diseño son:
 1. *Proxy* en el lado del servidor:
    ```c
    int fin_ejecutar = 0 ;
-   
+
+   void tratar_petición ( struct petición * p ) ;
+
    int main( int argc, char *argv[] )
    {
       struct petición p;
@@ -374,28 +377,32 @@ Añadir concurrencia en el *proxy* en el lado servidor supone que por cada petic
     {
         struct petición p;
         unsigned int prio; // y algunas variables más…
-    
-    pthread_attr_init(&attr) ;
-    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED) ;  
-    int qs= mq_open("/SERVIDOR", O_CREAT | O_RDONLY, 0700, NULL) ;
-    if (qs == -1) { return-1 ; }
-    while(1)
-    {
-         mq_receive(qs, &p, sizeof(struct petición), &prio) ;
 
-         // En lugar de ejecutar "tratar_petición(&p);" aquí, se crea un hilo para ello
-         pthread_create(&thid, &attr, tratar_petición, (void*)&p) ;
+        ///// Inicializar atributos para hilos a crear
+        pthread_attr_init(&attr) ;
+        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED) ;  
+
+        // crear cola de servidor para leer peticiones
+        int qs= mq_open("/SERVIDOR", O_CREAT | O_RDONLY, 0700, NULL) ;
+        if (qs == -1) { return-1 ; }
+
+        while(1)
+        {
+            mq_receive(qs, &p, sizeof(struct petición), &prio) ;
+
+            ///// En lugar de ejecutar "tratar_petición(&p);" aquí, se crea un hilo para ello
+            pthread_create(&thid, &attr, tratar_petición, (void*)&p) ;
          
-         // Importante: parar el main hasta terminar 2 tareas en tratar_petición: hilo creado y copia de parámetro "&p"
-         <código de espera a que se haya creado el hilo y copiado &p>
-    }
+            ///// Importante: parar el main hasta terminar 2 tareas en tratar_petición: hilo creado y copia de parámetro "&p"
+            <código de espera a que se haya creado el hilo y copiado &p>
+        }
    }
    ```
 
 La función **tratar_petición** se modifica para ser el código del hilo:
 
    ```c
-   pthread_mutex_t mutex_2 = PTHREAD_MUTEX_INITIALIZER; // API mutex
+   pthread_mutex_t mutex_2 = PTHREAD_MUTEX_INITIALIZER; ///// API mutex
 
    void tratar_petición ( struct petición * p )
    {
@@ -404,7 +411,7 @@ La función **tratar_petición** se modifica para ser el código del hilo:
       // Importante: copiar parámetro "*p" y despertar al hilo main
       <código de sincronización para "p_local= *p" y señalizar que copiado>  
 
-      pthread_mutex_lock(&mutex_2) ; // API lock
+      pthread_mutex_lock(&mutex_2) ; ///// API lock
       switch (p->op)
       {
          case 0: // INIT
@@ -417,7 +424,7 @@ La función **tratar_petición** se modifica para ser el código del hilo:
               r.status= real_set(p->name, p->i, p->value) ;
               break ;
       }
-      pthread_mutex_unlock(&mutex_2) ; // API unlock
+      pthread_mutex_unlock(&mutex_2) ; ///// API unlock
       
       int qr= mq_open(p->q_name, O_WRONLY, 0700, NULL) ;
       mq_send(qr, &r, sizeof(structrespuesta), 0) ; // prio== 0
@@ -430,15 +437,16 @@ La función **tratar_petición** se modifica para ser el código del hilo:
 La siguiente tabla detalla dichos puntos:
 
 | <código de espera a que se haya <br>creado el hilo y copiado &p>  | Código de sincronización para <br>"p_local= *p" y señalizar que copiado |
-|---------------------------------------------------------------|---------------------------------------------------------------------|
-| pthread_mutex_lock(&sync_mutex);                              |                                                                     |
-| while (sync_copied == FALSE) {                                | pthread_mutex_lock(&sync_mutex);                                    |
-| &nbsp;&nbsp;&nbsp;pthread_cond_wait(&sync_cond, &sync_mutex); | p_local = *p;                                                       |
-| }                                                             | sync_copied = TRUE;                                                 |
-| sync_copied = FALSE;                                          | pthread_cond_signal(&sync_cond);                                    |
-| pthread_mutex_unlock(&sync_mutex);                            | pthread_mutex_unlock(&sync_mutex);                                  |
+|-------------------------------------------------------------------|-----------------------------------------------------------------------|
+| pthread_mutex_lock(&sync_mutex);                                    |                                                                     |
+| while (sync_copied == FALSE) {                                      | pthread_mutex_lock(&sync_mutex);                                    |
+| &nbsp;&nbsp;&nbsp;&nbsp;pthread_cond_wait(&sync_cond, &sync_mutex); | p_local = *p;                                                       |
+| }                                                                   | sync_copied = TRUE;                                                 |
+| sync_copied = FALSE;                                                | pthread_cond_signal(&sync_cond);                                    |
+| pthread_mutex_unlock(&sync_mutex);                                  | pthread_mutex_unlock(&sync_mutex);                                  |
 
-         
+<br>
+
 Con dichos cambios, la función **main** quedará:
 
    ```c
@@ -459,13 +467,14 @@ Con dichos cambios, la función **main** quedará:
            // En lugar de ejecutar "tratar_petición(&p);" aquí, se crea un hilo para ello
            pthread_create(&thid, &attr, tratar_petición, (void*)&p) ;
          
-            // <código de espera a que se haya creado el hilo y copiado &p>
+            ///// <código de espera a que se haya creado el hilo y copiado &p>
             pthread_mutex_lock(&sync_mutex) ;
             while (sync_copied == FALSE) {
                pthread_cond_wait(&sync_cond, &sync_mutex) ;
             }
             sync_copied= FALSE ;
             pthread_mutex_unlock(&sync_mutex) ;
+            ///// </fin código de espera>
         }
    }
    ```
@@ -473,20 +482,21 @@ Con dichos cambios, la función **main** quedará:
 La función **tratar_petición** se modifica para ser el código del hilo:
 
    ```c
-   pthread_mutex_t mutex_2 = PTHREAD_MUTEX_INITIALIZER; // API mutex
+   pthread_mutex_t mutex_2 = PTHREAD_MUTEX_INITIALIZER; ///// API mutex
 
    void tratar_petición ( struct petición * p )
    {
       struct respuesta r ;
       
-           // <código de sincronización para "p_local= *p" y señalizar que copiado>  
+           ///// <código de sincronización para "p_local= *p" y señalizar que copiado>  
            pthread_mutex_lock(&sync_mutex) ;
            p_local= *p ;
            sync_copied= TRUE ;
            pthread_cond_signal(&sync_cond) ;
            pthread_mutex_unlock(&sync_mutex) ;    
+           ///// </fin código de sincronización>
 
-      pthread_mutex_lock(&mutex_2) ; // API lock
+      pthread_mutex_lock(&mutex_2) ; ///// API lock
       switch (p->op)
       {
          case 0: // INIT
@@ -499,7 +509,7 @@ La función **tratar_petición** se modifica para ser el código del hilo:
               r.status= real_set(p->name, p->i, p->value) ;
               break ;
       }
-      pthread_mutex_unlock(&mutex_2) ; // API unlock
+      pthread_mutex_unlock(&mutex_2) ; ///// API unlock
       
       int qr= mq_open(p->q_name, O_WRONLY, 0700, NULL) ;
       mq_send(qr, &r, sizeof(structrespuesta), 0) ; // prio== 0
