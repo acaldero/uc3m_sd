@@ -1,0 +1,18 @@
+{
+  "root": "_site",
+  "title": "Sistemas Distribuidos",
+  "description": "Sistemas Distribuidos (UC3M)",
+  "author": "Felix Garcia-Carballeira y Alejandro Calderon-Mateos",
+  "plugins": [
+    "mermaid-md-adoc",
+    "hide-published-with",
+    "hints",
+    "favicon-custom",
+    "chapter-fold"
+  ],
+  "pluginsConfig": {
+    "highlight": {
+      "languages": ["bash", "json", "yaml", "javascript", "python", "java", "c", "cpp", "text"]
+    }
+  }
+}

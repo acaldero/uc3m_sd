@@ -1,0 +1,29 @@
+{
+   "dependencies": {
+      "honkit": "^6.1.6",
+      "honkit-plugin-mermaid-md-adoc": "^0.0.8"
+   },
+   "scripts": {
+      "build": "npx honkit build  ./materiales  ../_site",
+      "pdf": "npx honkit pdf    ./materiales  ../_site",
+      "serve": "npx honkit serve  ./materiales  ../_site"
+   },
+   "name": "uc3m_sd",
+   "version": "1.0.0",
+   "description": "+ **Felix García Carballeira y Alejandro Calderón Mateos** @ arcos.inf.uc3m.es + [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)",
+   "main": "index.js",
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/acaldero/uc3m_sd.git"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "Attribution-NonCommercial-ShareAlike 4.0 International",
+   "bugs": {
+      "url": "https://github.com/acaldero/uc3m_sd/issues"
+   },
+   "homepage": "https://github.com/acaldero/uc3m_sd#readme",
+   "devDependencies": {
+      "mermaid": "^11.12.2"
+   }
+}
