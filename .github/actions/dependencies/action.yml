@@ -1,0 +1,12 @@
+name: Install dependencies
+description: Install project tools/dependencies
+runs:
+  using: composite
+  steps:
+    - name: Install bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: 1.2.22
+    - name: Install dependencies
+      shell: bash
+      run: bun install

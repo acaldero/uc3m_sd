@@ -1,0 +1,44 @@
+name: UC3M_SD CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-web:
+    name: Build UC3M_SD Wiki
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+      - name: Install dependencies
+        uses: ./.github/actions/dependencies
+      - name: Build UC3M_SD Wiki
+        env:
+          REPO: ${{ github.event.repository.name }}
+        run: |
+          bun run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_book/
+
+  deploy-pages:
+    name: Deploy UC3M_SD to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: [build-web]
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    permissions:
+      pages: write
+      id-token: write
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4

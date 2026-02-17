@@ -1,12 +1,13 @@
 {
    "dependencies": {
+      "highlight.js-mermaid": "^0.0.0",
       "honkit": "^6.1.6",
       "honkit-plugin-mermaid-md-adoc": "^0.0.8"
    },
    "scripts": {
-      "build": "npx honkit build  ./materiales  ../_site",
-      "pdf": "npx honkit pdf    ./materiales  ../_site",
-      "serve": "npx honkit serve  ./materiales  ../_site"
+      "build": "npx honkit build  ./materiales  ../book",
+      "pdf": "npx honkit pdf    ./materiales  ../book",
+      "serve": "npx honkit serve  ./materiales  ../book"
    },
    "name": "uc3m_sd",
    "version": "1.0.0",
@@ -22,8 +23,5 @@
    "bugs": {
       "url": "https://github.com/acaldero/uc3m_sd/issues"
    },
-   "homepage": "https://github.com/acaldero/uc3m_sd#readme",
-   "devDependencies": {
-      "mermaid": "^11.12.2"
-   }
+   "homepage": "https://github.com/acaldero/uc3m_sd#readme"
 }
