@@ -62,14 +62,45 @@ De esta forma podremos probar que la implementación de estos componentes del si
 
 Para dicho diseño haremos los siguientes pasos:
 
-1. Tipo de datos a utilizar:
+1. Ejemplo de programa principal de prueba en ```main.c```:
    ```c
+   #include <stdio.h>
+   #include <stdlib.h>
+   #include "lib.h"
+
+   char *A = "nombre" ;
+   int   V = 0x123 ;
+   
+   int main ( int argc, char *argv[] )
+   {
+      int ret, val ;
+
+      ret = init(A, 10) ;
+      if (ret < 0) { printf("init: error code %d\n", ret); exit(-1); }
+
+      ret = set (A, 1, V) ;
+      if (ret < 0) { printf("set: error code %d\n", ret); exit(-1); }
+
+      ret = get (A, 1, &val) ;
+      if (ret < 0) { printf("get: error code %d\n", ret); exit(-1); }
+
+      if (V != val) { printf("set %d but get %d\n", V, val); exit(-1); }
+
+      printf("OK\n") ;
+      return 0 ;
+   }
+   ```
+
+2. Estructuras de datos a utilizar en ```lib.c```:
+   ```c
+   #include "lib.h"
+
    int    a_neltos= 0 ;
    int  * a_values[100] ; // = [ [0…N1], [0…N2], ... [0…NN] ] ;
    char * a_keys[100] ;   // = [ "key1", "key2", ... "keyN" ] ;
    ```
 
-2. Funciones auxiliares de<br>
+3. Funciones auxiliares de<br>
     (a) buscar un nombre en el array *a_keys* de claves y <br>
     (b) insertar un nuevo array con *nombre* y *N* elementos de tipo entero:
    ```c
@@ -104,7 +135,7 @@ Para dicho diseño haremos los siguientes pasos:
    }
    ```
 
-3. Funciones pedidas (basadas en lo desarrollado anteriormente):
+4. Funciones pedidas (basadas en lo desarrollado anteriormente):
    ```c
    // Inicializar un array distribuido de N números enteros.
    int init ( char *nombre, int N )
@@ -139,33 +170,29 @@ Para dicho diseño haremos los siguientes pasos:
    }
    ```
 
-4. Ejemplo de programa principal de prueba:
+5. Interfaz de las funciones pedidas (basadas en lo desarrollado anteriormente) en ```lib.h```:
    ```c
-   #include <stdio.h>
    #include <stdlib.h>
-   #include "lib.h"
+   #include <string.h>
+
+   // Inicializar un array distribuido de N números enteros.
+   int init ( char *nombre, int N ) ;
+
+   // Inserta el valor en la posición i del array nombre.
+   int set ( char *nombre, int i, int valor ) ;
    
-   int   N = 10 ;
-   char *A = "nombre" ;
-   int   E = 1 ;
-   int   V = 0x123 ;
-   
-   int main ( int argc, char *argv[] )
-   {
-      int ret, val ;
-      
-      ret = init(A, N) ;
-      if (ret < 0) { printf("init: error code %d\n", ret); exit(-1); }
-      
-      ret = set (A, E, V) ;
-      if (ret < 0) { printf("set: error code %d\n", ret); exit(-1); }
-      
-      ret = get (A, E, &val) ;
-      if (ret < 0) { printf("get: error code %d\n", ret); exit(-1); }
-      
-      return 0 ;
-   }
+   // Recuperar el valor del elemento i del array nombre.
+   int get ( char*nombre, int i, int *valor ) ;
    ```
+
+Para compilar y ejecutar:
+```bash
+gcc -g -Wall -o lib.o  -c lib.c
+gcc -g -Wall -o main.o -c main.c
+gcc -o main main.o lib.o
+./main
+```
+
 
 ## Paso de monolítico a distribuido general
 
