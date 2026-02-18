@@ -58,9 +58,10 @@
 ## Ejercicios
 
   * Paso de mensajes
-    * [Ejercicio de paso de mensajes (colas POSIX)](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_vector.md) [en PDF](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e1-pasomensajes-v2a.pdf)
-    * [Ejercicio de paso de mensajes (nombrado)](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_upgraded.md)
+    * [Ejercicio de paso de mensajes: colas POSIX](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_vector.md) [en PDF](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e2-pasomensajes.pdf)
+    * [Ejercicio de paso de mensajes: fecha y hora (PDF)](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e1-pasomensajes.pdf)
+    * [Ejercicio de paso de mensajes: nombrado](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_upgraded.md)
   * Sockets
-    * [Ejercicio de calculadora distribuida basada en Sockets](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-sockets/ejercicio_sockets_calculadora.md)
+    * [Ejercicio de calculadora distribuida](https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-sockets/ejercicio_sockets_calculadora.md)
 
 

@@ -45,9 +45,10 @@
        Ejercicios de paso de mensajes:
        <ul>
        <li>
-          <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_vector.md">Colas POSIX</a>
-          <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e1-pasomensajes-v2a.pdf">(En PDF)</a>
+          <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_vector.md">Vectores con colas POSIX</a>
+          <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e2-pasomensajes.pdf">(en PDF)</a>
        </li>
+       <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e1-pasomensajes.pdf">Fecha y hora (PDF)</a> </li>
        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_upgraded.md">Nombrado y comunicación</a> </li>
        <li> <a href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.ipynb">MPI en notebook</a> </li>
        </ul>
