@@ -1,8 +1,11 @@
 {
    "dependencies": {
-      "highlight.js-mermaid": "^0.0.0",
       "honkit": "^6.1.6",
-      "honkit-plugin-mermaid-md-adoc": "^0.0.8"
+      "honkit-plugin-mermaid-md-adoc": "^0.0.8",
+      "highlight.js-mermaid": "^0.0.0",
+      "gitbook-plugin-hints": "^1.0.2",
+      "gitbook-plugin-chapter-fold": "^0.0.4",
+      "gitbook-plugin-hide-published-with": "^0.0.1"
    },
    "scripts": {
       "build": "npx honkit build  ./materiales  ../book",
