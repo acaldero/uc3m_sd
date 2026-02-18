@@ -1,16 +1,17 @@
 {
    "dependencies": {
-      "honkit": "^6.1.6",
-      "honkit-plugin-mermaid-md-adoc": "^0.0.8",
-      "highlight.js-mermaid": "^0.0.0",
-      "gitbook-plugin-hints": "^1.0.2",
       "gitbook-plugin-chapter-fold": "^0.0.4",
-      "gitbook-plugin-hide-published-with": "^0.0.1"
+      "gitbook-plugin-hide-published-with": "^0.0.1",
+      "gitbook-plugin-hints": "^1.0.2",
+      "highlight.js-mermaid": "^0.0.0",
+      "honkit": "^6.1.6",
+      "honkit-plugin-mermaid-md-adoc": "^0.0.8"
    },
    "scripts": {
       "build": "npx honkit build  ./materiales  ../book",
       "pdf": "npx honkit pdf    ./materiales  ../book",
-      "serve": "npx honkit serve  ./materiales  ../book"
+      "serve": "npx honkit serve  ./materiales  ../book",
+      "book": "npm install; npx honkit build  ./materiales  ../book"
    },
    "name": "uc3m_sd",
    "version": "1.0.0",
@@ -26,5 +27,11 @@
    "bugs": {
       "url": "https://github.com/acaldero/uc3m_sd/issues"
    },
-   "homepage": "https://github.com/acaldero/uc3m_sd#readme"
+   "homepage": "https://github.com/acaldero/uc3m_sd#readme",
+   "devDependencies": {
+      "honkit-plugin-mermaid": "^0.1.4"
+   },
+   "overrides": {
+      "mermaid": "^11.0.0"
+   }
 }
