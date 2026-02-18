@@ -19,17 +19,17 @@
   <tr><th>Tema</th><th>Lección</th><th>Materiales de estudio</th></tr>
   <tr>
       <td rowspan="2">1</td>
-      <td>Repaso de C y make</td>
+      <td>C y make para sistemas distribuidos</td>
       <td>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-cymake/ssdd_c.md">Aspectos de C para sistemas distribuidos</a></li>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-cymake/ssdd_make.md">Introducción a make para sistemas distribuidos</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-cymake/ssdd_make.md">Introducción a make</a></li>
       </td>
   </tr>
   <tr>
-      <td>Repaso de concurrencia</td>
+      <td>Concurrencia en sistemas distribuidos</td>
       <td>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-concurrencia/ssdd_threads_posix.md">Concurrencia en sistemas distribuidos (POSIX)</a></li>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-concurrencia/ssdd_threads_c.md">Concurrencia en sistemas distribuidos (C11)</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-concurrencia/ssdd_threads_posix.md">Concurrencia con API POSIX</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-concurrencia/ssdd_threads_c.md">Concurrencia con C<sub>11</sub></a></li>
       </td>
   </tr>
   <tr>
@@ -37,21 +37,22 @@
       <td rowspan="2">Paso de mensajes</td>
       <td>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_pq.md">Colas de mensajes POSIX</a> </li>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.md">Introducción a MPI</a> </li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.md">Introducción a MPI</a> 
+             <a href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.ipynb">(notebook)</a> </li>
+        </li>
       </td>
   </tr>
   <tr>
       <td>
-       Ejercicios de paso de mensajes:
-       <ul>
-       <li>
+        Ejercicios:
+        <ul>
+        <li>
           <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_vector.md">Vectores con colas POSIX</a>
           <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e2-pasomensajes.pdf">(en PDF)</a>
-       </li>
-       <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e1-pasomensajes.pdf">Fecha y hora (PDF)</a> </li>
-       <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_upgraded.md">Nombrado y comunicación</a> </li>
-       <li> <a href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.ipynb">MPI en notebook</a> </li>
-       </ul>
+        </li>
+        <li> Fecha y hora <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e1-pasomensajes.pdf">(en PDF)</a> </li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_upgraded.md">Nombrado y comunicación</a> </li>
+        </ul>
       </td>
   </tr>
   <tr>
@@ -63,10 +64,10 @@
   </tr>
   <tr>
       <td>
-        Ejercicio de sockets:
-        <ul>
+       Ejercicio:
+       <ul>
           <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-sockets/ejercicio_sockets_calculadora.md">Calculadora distribuida</a></li>
-        </ul>
+       </ul>
       </td>
   </tr>
   <tr>
