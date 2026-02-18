@@ -231,17 +231,17 @@ INFO:   Finished server process [171932]
      <table>
      <tr> <td>1.</td>
           <td>Hay que abrir la paleta de comandos con Ctrl-Alt-P y seleccionar "MCP: añadir servidor":<br>
-          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg1.png" height="125"></td> </tr>
+          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/lab-mcp-jsonrpc/images/cfg1.png" height="125"></td> </tr>
      <tr> <td>2.</td>
           <td>A continuación, hay que seleccionar servidor HTTP:<br>
-          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg2.png" height="200"></td> </tr>
+          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/lab-mcp-jsonrpc/images/cfg2.png" height="200"></td> </tr>
      <tr> <td>3.</td>
           <td>A continuación, hay que indicar la dirección URL:<br>
-          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg3.png" height="100"></td> </tr>
+          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/lab-mcp-jsonrpc/images/cfg3.png" height="100"></td> </tr>
      <tr> <td>4.</td>  <td>A continuación, hay que indicar el nombre:<br>
-          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg4.png" height="125"></td> </tr>
+          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/lab-mcp-jsonrpc/images/cfg4.png" height="125"></td> </tr>
      <tr> <td>5.</td>  <td>Y finalmente, hacer global (o local al espacio de trabajo):<br>
-          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/cfg5.png" height="125"></td> </tr>
+          <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/lab-mcp-jsonrpc/images/cfg5.png" height="125"></td> </tr>
      </table>
      </html>
 4. Una vez configurado, para usar el servicio en "Visual Studio Code":
@@ -249,19 +249,19 @@ INFO:   Finished server process [171932]
    <table>
    <tr> <td>1.</td>
         <td>Hay que hacer click en herramientas en el chat:<br>
-        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/clt1.png" height="110"></td> </tr>
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/lab-mcp-jsonrpc/images/clt1.png" height="110"></td> </tr>
    <tr> <td>2.</td>
         <td>Hay que activar el servidor my-mcp-server (y las utilidades):<br>
-        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/clt2.png" height="250"></td> </tr>
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/lab-mcp-jsonrpc/images/clt2.png" height="250"></td> </tr>
    <tr> <td>3.</td>
         <td>Hay que indicar en el chat que se quiere "add 1 and 2 with my-mcp-server":<br>
-        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/clt3.png" height="250"></td> </tr>
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/lab-mcp-jsonrpc/images/clt3.png" height="250"></td> </tr>
    <tr> <td>4.</td>
         <td>Puede ser necesario dar permisos ("Allow") para usar el servicio:<br>
-        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/clt4.png" height="250"></td> </tr>
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/lab-mcp-jsonrpc/images/clt4.png" height="250"></td> </tr>
    <tr> <td>5.</td>
         <td>Se tiene el resultado:<br>
-        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/mcp-jsonrpc/images/clt5.png" height="225"></td> </tr>
+        <img src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materiales/lab-mcp-jsonrpc/images/clt5.png" height="225"></td> </tr>
    </table>
    </html>
 

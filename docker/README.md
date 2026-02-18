@@ -1,7 +1,7 @@
-# Ubuntu 24.04 LTS in Docker (v3.0)
+# Ubuntu 24.04 LTS en Docker (v3.0)
 
 
-## Prerequisites
+## Pre-requisitos
 
 * Windows:
   * Windows Terminal: https://apps.microsoft.com/detail/9n0dx20hk701?hl=es-ES&gl=ES
@@ -39,7 +39,7 @@
   </details>
 
 
-## Getting ssdd-docker
+## Obtener ssdd-docker
 
 ```bash
 git clone https://github.com/acaldero/uc3m_sd.git
@@ -48,34 +48,34 @@ cd uc3m_sd
 ```
 
 
-## Using ssdd-docker
+## Usar ssdd-docker
 
 <html>
  <table>
   <tr>
-  <th>Summary</th>
-  <th>Example of work session</th>
+  <th>Resumen</th>
+  <th>Ejemplo de sesión de trabajo</th>
   </tr>
   <tr>
   <td>
 </html>
 
-  * First time + "each time u20-dockerfile is updated":
+  * Primera vez + "cada vez que se actualiza dockerfile":
     * ./docker.sh build
 
-  * To start **3** containers:
+  * Para arrancar **3** contenedores:
     *  ./docker.sh start **3**
 
-  * To get into container **2**:
+  * Para entrar en el contenedor **2**:
     *  ./docker.sh bash **2**
 
-  * Being within **2**, to exit:
+  * Estando en **2**, para salir:
     *  exit
 
-  * To stop the containers:
+  * Para parar los contenedores:
     *  ./docker.sh stop
 
-  * Available options for debugging:
+  * Opciones disponibles para depuración:
     *  ./docker.sh status
     *  ./docker.sh network
 
@@ -84,23 +84,23 @@ cd uc3m_sd
   <td>
 </html>
 
-  * To start:
-    * To start a work session with **2** containers, please execute:
+  * Para arrancar:
+    * To start a work session with **2** contenedores, please execute:
       *  ./docker.sh start **2**
-    * To check the containers are running please use:
+    * To check the contenedores are running please use:
       *  ./docker.sh status
-    * To get the containers internal IP address please use:
+    * To get the contenedores internal IP address please use:
       *  ./docker.sh network
 
-  * To work with some container:
-    * To get into container **1** out of 2 please execute:
+  * Para trabajar con algún contenedor:
+    * Para trabajar dentro del contenedor **1** de 2 por favor ejecute:
       *  ./docker.sh bash **1**
     * <some work inside container **1** at /work directory>
-    * To exit from container **1** please use:
+    * Para salir del contenedor **1** por favor ejecute:
       *  exit
 
-  * To stop:
-    * To stop the work session please use:
+  * Para parar:
+    * Para parar la sesión de trabajo por favor ejecute:
       *  ./docker.sh stop
 
 <html>
@@ -110,13 +110,13 @@ cd uc3m_sd
 </html>
 
 
-**Please beware of**:
-  * Any modification outside /shared will be discarded on container stopping.
-  * Please make a backup of your work "frequently".
-  * You might need to use "sudo" before ./docker.sh if your user doesn't belong to the docker group (could be solved by using "sudo usermod -aG docker ${USER}")
+**Por favor tenga en cuenta que**:
+  * Cualquier modificación fuera de "/shared" se perderá cuando se pare los contenedores.
+  * Por favor haga copia de seguridad de su trabajo "con suficiente frecuencia".
+  * Puede que necesite usar "sudo" antes de ./docker.sh si su usuario/a no pertenece al grupo de docker (se puede solventar usando ```sudo usermod -aG docker ${USER}```)
 
 
-## Example using ssdd-docker
+## Ejemplo de uso de ssdd-docker
 
-![Example of using 2 containers in Linux, and using each one with netcat](u20-example1.gif)
+![Ejemplo de uso de 2 contenedores en Linux, y comunicar ambos con netcat](u20-example1.gif)
 

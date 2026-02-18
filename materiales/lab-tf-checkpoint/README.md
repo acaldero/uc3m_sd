@@ -10,7 +10,7 @@
 
 Hay que introducir:
 ```
-cd tf-checkpoint
+cd lab-tf-checkpoint
 ./run.sh
 ```
 

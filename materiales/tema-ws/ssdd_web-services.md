@@ -1,6 +1,6 @@
 
 # Sistemas Distribuidos: Servicios Web
-+ **Felix García Carballeira y Alejandro Calderón Mateos**
++ **Felix García Carballeira y Alejandro Calderón Mateos** @ arcos.inf.uc3m.es
 + [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
@@ -1375,7 +1375,7 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
   pip3 install fastmcp fastapi --break-system-packages
   ```
 
-* En [ws-jsonrpc-mcp](/materiales/mcp-jsonrpc/README.md) está disponible un ejemplo compuesto de 2 ficheros:
+* En [ws-jsonrpc-mcp](/materiales/lab-mcp-jsonrpc/README.md) está disponible un ejemplo compuesto de 2 ficheros:
   * El servidor **```mcp_server_calc.py```** en Python de una calculadora simple:
     ```python
     from fastapi import FastAPI
