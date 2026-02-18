@@ -36,20 +36,21 @@
       <td rowspan="2">3</td>
       <td rowspan="2">Paso de mensajes</td>
       <td>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_pq.md">Colas de mensajes POSIX</a></li>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.md">Introducción a MPI</a>
-             <a href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.ipynb">(notebook)</a>  </li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_pq.md">Colas de mensajes POSIX</a> </li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.md">Introducción a MPI</a> </li>
       </td>
   </tr>
   <tr>
       <td>
        Ejercicios de paso de mensajes:
+       <ul>
        <li>
           <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_vector.md">Colas POSIX</a>
           <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/e1-pasomensajes-v2a.pdf">(En PDF)</a>
        </li>
-       <li><a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_upgraded.md">Nombrado y comunicación</a>
-       </li>
+       <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ejercicio_pasomensajes_upgraded.md">Nombrado y comunicación</a> </li>
+       <li> <a href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materiales/tema-pasomensajes/ssdd_mpi.ipynb">MPI en notebook</a> </li>
+       </ul>
       </td>
   </tr>
   <tr>
@@ -62,7 +63,9 @@
   <tr>
       <td>
         Ejercicio de sockets:
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-sockets/ejercicio_sockets_calculadora.md">Calculadora distribuida con sockets</a></li>
+        <ul>
+          <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materiales/tema-sockets/ejercicio_sockets_calculadora.md">Calculadora distribuida</a></li>
+        </ul>
       </td>
   </tr>
   <tr>
