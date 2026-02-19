@@ -8,10 +8,10 @@
       "honkit-plugin-mermaid-md-adoc": "^0.0.8"
    },
    "scripts": {
-      "build": "npx honkit build  ./materiales  ../book",
-      "pdf": "npx honkit pdf    ./materiales  ../book",
-      "serve": "npx honkit serve  ./materiales  ../book",
-      "book": "npm install; npx honkit build  ./materiales  ../book"
+      "build": "npx honkit build  ./materials  ../book",
+      "pdf": "npx honkit pdf      ./materials  ../book",
+      "serve": "npx honkit serve  ./materials  ../book",
+      "book": "npm install; npx honkit build  ./materials  ../book"
    },
    "name": "uc3m_sd",
    "version": "1.0.0",
