@@ -722,9 +722,16 @@ flowchart TD
     * Little-endian
        * Intel, AMD
 
-* Las diferencias entre los dos se puede ver en la siguiente figura:
-
-![wikipedia Endianess](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/32bit-Endianess.svg/880px-32bit-Endianess.svg.png)
+* Las diferencias entre los dos se puede ver en la siguiente figura (Aeroid, CC BY-SA 4.0, via Wikimedia Commons):
+  <html>
+  <table border="1">
+  <tr>
+    <td>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5d/32bit-Endianess.svg">
+    </td>
+  </tr>
+  </table>
+  </html>
 
 
 ## Orden de los bytes y el *Network Byte Order*
@@ -782,17 +789,17 @@ flowchart TD
 <tr>
 <td valign=top>
 <ul>
-   <li> 1.- Creación de un socket (<b>socket</b>) </li>
-   <li> 2.- Obtener la dirección</li>
-   <li> 3.- Asignación de direcciones (<b>bind</b>)</li>
-   <li> 4.- Preparar para aceptar conexiones (<b>listen</b>)</li>
+   <li> (1) Creación de un socket (<b>socket</b>) </li>
+   <li> (2) Obtener la dirección</li>
+   <li> (3) Asignación de direcciones (<b>bind</b>)</li>
+   <li> (4) Preparar para aceptar conexiones (<b>listen</b>)</li>
    <li> Por cada cliente:</li>
    <ul>
-   <li> 5.- Aceptar una conexión (<b>accept</b>)</li>
-   <li> 6.- Transferencia de datos (<b>read</b> y <b>write</b>)</li>
-   <li> 7.- Cerrar socket conectado (<b>close</b>)</li>
+   <li> (5) Aceptar una conexión (<b>accept</b>)</li>
+   <li> (6) Transferencia de datos (<b>read</b> y <b>write</b>)</li>
+   <li> (7) Cerrar socket conectado (<b>close</b>)</li>
    </ul>
-   <li> 8.- Cerrar socket servicio (<b>close</b>)</li>
+   <li> (8) Cerrar socket servicio (<b>close</b>)</li>
 </ul>
 </td>
 <td valign=top>
@@ -876,15 +883,17 @@ graph LR;
        size_t escritos = 0 ;
        ssize_t result  = 0 ;
 
+      // no vale "return write(newsd, buffer, total) ;" porque
+      // puede que write NO escriba todo lo solicitado de una vez
+
        while (escritos != total) // mientras queda por escribir...
        {
-          result = write(newsd, buffer+escritos, total-escritos) ;
-          // puede que write NO escriba todo lo solicitado de una vez
-          if (-1 == result) {
-              return -1 ;
-          }
+           result = write(newsd, buffer+escritos, total-escritos) ;
+           if (-1 == result) {
+               return -1 ;
+           }
 
-          escritos = escritos + result ;
+           escritos = escritos + result ;
        }
 
        return escritos ;
@@ -914,7 +923,7 @@ graph LR;
        // (2) Obtener la dirección
        bzero((char *)&server_addr, sizeof(server_addr));
        server_addr.sin_family = AF_INET;
-       server_addr.sin_port = htons(puerto);
+       server_addr.sin_port   = htons(puerto);
        server_addr.sin_addr.s_addr = INADDR_ANY;
 
        // (3) Asigna dirección a un socket:
@@ -927,14 +936,15 @@ graph LR;
            return -1 ;
        }
 
-       // Con bind(port=0...) se buscaría el primer puerto libre y con
-       // getsockname() se puede obtener el puerto asignado por bind
-       size = sizeof(struct sockaddr_in) ;
-       bzero(&client_addr, size);
-       getsockname(sd, (struct sockaddr *) &client_addr, &size);
-       printf("servidor: bind() asociado a %s:%d\n",
-               inet_ntoa(client_addr.sin_addr),
-               ntohs(client_addr.sin_port));
+         // Con bind(port=0...):
+         // se buscaría el primer puerto libre y con getsockname(...)
+         // se puede obtener el puerto que ha sido asignado por bind(...)
+         size = sizeof(struct sockaddr_in) ;
+         bzero(&client_addr, size);
+         getsockname(sd, (struct sockaddr *) &client_addr, &size);
+         printf("servidor: bind() asociado a %s:%d\n",
+                 inet_ntoa(client_addr.sin_addr),
+                 ntohs(client_addr.sin_port));
 
        // (4) preparar para aceptar conexiones
        // * listen permite definir el número máximo de peticiones pendientes a encolar
@@ -950,8 +960,8 @@ graph LR;
           // (5) aceptar nueva conexión (newsd) desde socket servidor (sd)
           // * bloquea al servidor hasta que se produce la conexión
           // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
-          size = sizeof(struct sockaddr_in) ;
           bzero(&client_addr, size);
+          size = sizeof(struct sockaddr_in) ;
           newsd = accept (sd, (struct sockaddr *) &client_addr, &size);
           if (newsd < 0) {
               perror("Error en el accept");
@@ -976,8 +986,9 @@ graph LR;
           char buffer[1024] ;
           size_t escritos ;
 
-          // Preparar el mensaje a enviar: 1024 bytes con "hola mundo"
+          // Preparar el mensaje a enviar: 1024 bytes que incluye "hola mundo"
           strcpy(buffer, "Hola mundo") ;
+
           // Transferir datos sobre newsd
           escritos = sendMessage(newsd, buffer, sizeof(buffer)) ;
           if (escritos < 0) {
@@ -1013,13 +1024,13 @@ graph LR;
 
        while (leidos != total) // mientras queda por leer...
        {
-          // puede que read NO lea todo lo solicitado de una vez
-          result = read(sd, buffer+leidos , total-leidos ) ;
-          if (-1 == result) {
-              return -1 ;
-          }
+           // puede que read NO lea todo lo solicitado de una vez
+           result = read(sd, buffer+leidos , total-leidos ) ;
+           if (-1 == result) {
+               return -1 ;
+           }
 
-          leidos = leidos + result ;
+           leidos = leidos + result ;
        }
 
        return leidos ;
@@ -1037,8 +1048,11 @@ graph LR;
            return 0;
        }
 
+       // argumentos: máquina y puerto
        maquina = argv[1] ;
        puerto  = (short) atoi(argv[2]);
+
+       // "localhost" -> 127.0.0.1 como IP address
        hp = gethostbyname(maquina);
        if (NULL == hp) {
            printf("ERROR en gethostbyname con '%s'\n", maquina) ;
@@ -1054,9 +1068,9 @@ graph LR;
 
        // (2) obtener la dirección
        bzero((char *)&server_addr, sizeof(server_addr));
-       memcpy (&(server_addr.sin_addr), hp->h_addr, hp->h_length);
        server_addr.sin_family = AF_INET;
-       server_addr.sin_port = htons(puerto);
+       server_addr.sin_port   = htons(puerto);
+       memcpy (&(server_addr.sin_addr), hp->h_addr, hp->h_length);
 
        // (3) Solicitud de conexión (con socket remoto)
        // * si el socket local no tiene dirección asignada
@@ -1788,7 +1802,7 @@ Las opciones más importantes son:
           return 0;
       }
 
-      int writeLine ( int socket, char *buffer )
+      int writeLine ( int socket, char * buffer )
       {
           return sendMessage(socket, buffer, strlen(buffer)+1);
       }
