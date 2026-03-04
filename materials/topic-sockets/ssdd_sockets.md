@@ -44,6 +44,7 @@
 
 ```c
 #include <sys/socket.h>
+
 int socket(int domain, int type, int protocol) ;
 ...
 ```
@@ -65,6 +66,7 @@ int socket(int domain, int type, int protocol) ;
 
   ```c
   int socket(int domain, int type, int protocol) ;
+  //             ^^
   ```
 
   * **Dominio de comunicación**
@@ -84,6 +86,7 @@ int socket(int domain, int type, int protocol) ;
 
   ```c
   int socket(int domain, int type, int protocol) ;
+  //                         ^^
   ```
 
   * Dominio de comunicación
@@ -102,6 +105,7 @@ int socket(int domain, int type, int protocol) ;
 
   ```c
   int socket(int domain, int type, int protocol) ;
+  //                                   ^^
   ```
 
   * Dominio de comunicación
@@ -128,7 +132,10 @@ int socket(int domain, int type, int protocol) ;
 | Fiabilidad     | Si (2)           | No<br>(desordenados, duplicados, pérdidas) |
 | Ejemplos       | HTTP, FTP, etc.  | DNS  |
 
- * (1) Longitud máxima de un datagrama (datos y cabeceras) es 64 KB<br>Cabecera IP+cabecera UDP = 28 bytes
+<br>
+
+ * (1) Longitud máxima de un datagrama (datos y cabeceras) es 64 KB <br> 
+       Cabecera IP+cabecera UDP = 28 bytes
  * (2) Paquetes ordenados por secuencia, sin duplicación de paquetes, libre de errores, notifica errores
 
 
@@ -184,7 +191,7 @@ Donde:
     * Toda aplicación que desee enviar y recibir datos debe "abrir" un puerto
 
  * Se representa con un número entero de 16 bits sin signo:
-   * 2^16 puertos en una máquina ~ 65536 puertos posibles
+   * 2<sup>16</sup> puertos en una máquina ~ 65536 puertos posibles
    * Reservados por la IANA para aplicaciones de Internet:
       * 0-1023 (también llamados *well-known* puertos)
       * Puertos entre 1024 y 49151 son puertos registrados para ser usados por los servicios
@@ -235,24 +242,25 @@ Donde:
 ## Direcciones en AF_INET
 
  * En C, una dirección incluye la dirección IP, puerto y familia en la estructura ```struct sockaddr_in```:
-```c
-#include <netinet/in.h>
+   ```c
+   #include <netinet/in.h>
 
-struct sockaddr_in
-{
-  short          sin_family;  /* dominio Internet (AF_INET) */
-  in_port_t      sin_port;    /* puerto: entero 16 bits sin signo */
-  struct in_addr sin_addr;    /* dirección IP (entero 32 bits sin signo) */
-  unsigned char  sin_zero[8]; /* relleno o padding (8 bytes) */
-};
+   struct sockaddr_in
+   {
+     short          sin_family;  /* dominio Internet (AF_INET) */
+     in_port_t      sin_port;    /* puerto: entero 16 bits sin signo */
+     struct in_addr sin_addr;    /* dirección IP (entero 32 bits sin signo) */
+     unsigned char  sin_zero[8]; /* relleno o padding (8 bytes) */
+   };
 
-...
-struct sockaddr_in a2;
-memset(&a2, 0, sizeof(struct sockaddr_in)); // inicializar todo a cero
-a2.sin_family      = AF_INET ;
-a2.sin_port        = htons(8080) ;
-a2.sin_addr.s_addr = inet_addr("10.12.110.57");
-```
+   ...
+   struct sockaddr_in a2;
+   memset(&a2, 0, sizeof(struct sockaddr_in)); // inicializar todo a cero
+   a2.sin_family      = AF_INET ;
+   a2.sin_port        = htons(8080) ;
+   a2.sin_addr.s_addr = inet_addr("10.12.110.57");
+   ```
+ 
  * **TIP:** Al usar ```struct sockaddr_in``` que hay que inicializar a 0 todos los campos para limpiar lo que tenga antes.
 
 
@@ -865,7 +873,7 @@ graph LR;
 
 ## Ejemplo de uso de sockets orientados a conexión (en C)
 
-**servidor-base-tcp.c**
+### servidor-base-tcp.c
    ```c
    #include <stdio.h>
    #include <stdlib.h>
@@ -1005,7 +1013,7 @@ graph LR;
    } /* fin main */
    ```
 
-**cliente-base-tcp.c**
+### cliente-base-tcp.c
    ```c
    #include <stdlib.h>
    #include <stdio.h>
@@ -1263,8 +1271,8 @@ graph LR;
 
 ## Ejemplo de uso de sockets NO orientados a conexión
 
-**servidor-base-udp.c**
-   ```c
+### servidor-base-udp.c
+```c
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <stdbool.h>
@@ -1329,10 +1337,10 @@ graph LR;
 
         return 0;
 }
-   ```
+  ```
 
-**cliente-base-udp.c**
-   ```c
+### cliente-base-udp.c
+```c
     #include <arpa/inet.h>
     #include <stdio.h>
     #include <string.h>
@@ -1384,7 +1392,7 @@ graph LR;
 
         return 0;
     }
-   ```
+  ```
 
 
 * Para compilar, se puede usar:
@@ -1405,7 +1413,7 @@ graph LR;
 
 ## Ejemplo de uso de sockets NO orientados a conexión (en Python)
 
-  ### server_base_udp.py
+### server_base_udp.py
   ```python
   import socket
   import sys
@@ -1420,7 +1428,7 @@ graph LR;
        print("mensaje: ", message) 
   ```
 
-  ### client_base_udp.py
+### client_base_udp.py
   ```python
   import socket
   import sys
