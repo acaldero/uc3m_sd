@@ -24,20 +24,22 @@
   * Debe evitarse un punto único de fallo.
   * **No existe un reloj común**.
 
+
 ### Modelo del sistema distribuido
 
  * Procesos secuenciales {P<sub>1</sub>, P<sub>2</sub>, ...P<sub>n</sub>} y canales de comunicación
  * Eventos en P<sub>i</sub>
     * E<sub>i</sub> = {e<sub>i1</sub>, e<sub>i2</sub>, ...e<sub>in</sub>}
     * Historia(P<sub>i</sub>) = h<sub>i</sub> =  <e<sub>i0</sub>, e<sub>i1</sub>, e<sub>i2</sub>, ... > donde  e<sub>ik</sub>  ->  e<sub>i(k+1)</sub>
-  * Tipos de eventos:
-     * Internos (cambios en el estado de un proceso)
-     * Comunicación:
-        * Envío
-        * Recepción
-           * e<sub>02</sub>  ->  e<sub>12</sub>
-  * Diagramas espacio-tiempo:  
+ * Tipos de eventos:
+    * Internos (cambios en el estado de un proceso)
+    * Comunicación:
+      * Envío
+      * Recepción
+        * e<sub>02</sub>  ->  e<sub>12</sub>
+ * Diagramas espacio-tiempo:  
      ![Ejemplo de diagrama de eventos en el tiempo](/materials/topic-ds/ds/ds_diagrama_eventos.svg)
+
 
 ### Modelos síncronos y asíncronos
 
@@ -51,11 +53,13 @@
     * Hay límites en las latencias de comunicación
     * Los sistemas del mundo real no son síncronos
 
+
 ### Entrega de mensajes en Internet
 
  * Internet se basa en una red de conmutación de paquetes, donde los paquetes se pueden perder y las copias de mensajes, colas y retardos en la red hace que los tiempos de comunicación no sean predecibles y no estén acotados
  * Internet no usa el concepto de redes de conmutación de circuitos donde sí es predecible y el ancho de banda es asignado estáticamente
  * En Internet el ancho de banda se asigna dinámicamente
+
 
 ### Tiempo en sistemas distribuidos
 
@@ -72,6 +76,7 @@
   + Relojes físicos
   + Relojes lógicos
 
+
 ### Relojes físicos
 
 * Para ordenar dos eventos de un proceso basta con asignarles una **marca de tiempo**
@@ -82,8 +87,9 @@
          * Ej: cantidad de milisegundos o nanosegundos transcurridos desde una fecha de referencia
       * Resolución del reloj: periodo entre actualizaciones de C<sub>i</sub>(t)
         * Determina la ordenación de eventos
- * Dos relojes en dos computadores diferentes dan medidas distintas
-    * Necesidad de **sincronizar relojes físicos** de un sistema distribuido
+* Dos relojes en dos computadores diferentes dan medidas distintas
+   * Necesidad de **sincronizar relojes físicos** de un sistema distribuido
+
 
 #### Tiempo del sistema (Linux)
 
@@ -120,6 +126,7 @@
   printf(“Tiempo en segundos = %lf\n, Tiempo);
   ```
 
+
 #### Sincronización de relojes físicos
 
 * Los computadores de un **sistema distribuido** poseen **relojes** que **no están sincronizados** (**derivas**)
@@ -132,6 +139,7 @@
   * Actualmente se puede mejorar mediante GPS:
     * Los computadores de un sistema poseen todos un GPS
     * Uno o dos computadores utilizan un GPS y el resto se sincroniza mediante protocolos clásicos
+
 
 #### Sincronización externa versus interna
 
@@ -146,12 +154,14 @@
    * Dados dos eventos de dos computadores se puede establecer su orden en función de sus relojes si están sincronizados
 * Sincronización externa -> sincronización interna (ok sí) pero <br>Sincronización externa <-/- sincronización interna (ko no solo sí)
 
+
 #### Métodos de sincronización de relojes
 
  * Sincronización en un sistema síncrono
  * Algoritmo de Cristian
  * Algoritmo de Berkeley
  * Network time protocol
+
 
 #### Sincronización en un sistema síncrono
 
@@ -165,6 +175,7 @@
    * Si P2 fija su reloj al valor t + (max+min)/2, entonces la deriva máxima es <= u/2
    * El problema es que en un sistema asíncrono T<sub>transmit</sub>  no está acotado
 
+
 #### Algoritmo de Cristian
   ![Algoritmo de Cristian](/materials/topic-ds/ds/ds_rf_cristian.svg)
 
@@ -174,11 +185,13 @@
 * Para mejorar la precisión se pueden hacer varias mediciones y descartar cualquiera en la que T<sub>1</sub> - T<sub>0</sub> exceda de un límite
 * Precisión del resultado = +/-  (T<sub>1</sub> - T<sub>0</sub>) / 2
 
+
 ##### Mejorando la precisión
 
 * Min: tiempo mínimo de transmisión de un mensaje
 * El valor que obtiene el servidor T<sub>s</sub> se encuentra en el intervalo [T’<sub>s</sub>, T’’<sub>s</sub>] = [T<sub>1</sub> + Min, T<sub>2</sub> - Min]
 * La precisión del resultado en este caso es: +/- (T<sub>1</sub> - T<sub>0</sub>) / 2 - T<sub>min</sub>
+
 
 #### Algoritmo de Berkeley
 
@@ -186,6 +199,7 @@
 * **Calcula el tiempo promedio** y le indica a todas las máquinas que avancen su reloj a la nueva hora o que disminuyan la velocidad de actualización
 
 ![Algoritmo de Berkeley](/materials/topic-ds/ds/ds_rf_berkeley.svg)
+
 
 #### Network time protocol (NTP)
 
@@ -205,6 +219,7 @@
 
 ![Ejemplo de diagrama de eventos](/materials/topic-ds/ds/ds_diagrama_eventos.svg)
 
+
 #### Causalidad potencial
 
 * En ausencia de un reloj global la **relación causa-efecto** es la única posibilidad de ordenar eventos
@@ -213,9 +228,10 @@
   2. Si un proceso hace **send(m)** y otro **receive(m)**, entonces send  se produjo antes que el evento **receive**
 * Entonces, Lamport define la relación de causalidad potencial
   * **Precede a** (**&rarr;**) entre cualquier par de eventos del SD
-     * Ej: a -> b
+     * Ej.: a -> b
 * **Orden parcial**: reflexiva, anti-simétrica y transitiva
   * Dos eventos son **concurrentes** (a || b) si **no se puede deducir** entre ellos una relación de causalidad potencial
+
 
 #### Importancia de la causalidad potencial
 
@@ -225,6 +241,7 @@
 * Monitorización
 * Entrega causal
 * Actualización de réplicas
+
 
 #### Relojes lógicos (algoritmo de Lamport)
 
@@ -255,6 +272,7 @@
 * (T<sub>a</sub>, P<sub>a</sub>) < (T<sub>b</sub>, P<sub>b</sub>) sí y solo si:
    * T<sub>a</sub> < T<sub>b</sub>  o
    * T<sub>a</sub>=Tb y P<sub>a</sub><P<sub>b</sub>
+
 
 #### Problemas de los relojes lógicos
 
@@ -292,6 +310,7 @@ Problemas de los relojes lógicos:
 
    ![Ejemplo de relojes vectoriales](/materials/topic-ds/ds/ds_rv.svg)
 
+
 #### Propiedades de los relojes vectoriales
 
 * RV < RV´ si y solo si:
@@ -315,29 +334,29 @@ Problemas de los relojes lógicos:
    * **Exclusión mutua**
    * **Progreso**
    * **Espera acotada**
-/
+
 
 #### Principales algoritmos para la exclusión mutua distribuida
 
-   * Algoritmo **centralizado**:
-      * Existe un proceso coordinador
-      * Problemas: 
-        * Cuello de botella 
-          * Posible arreglo: reparto estático entre número prefijado de coordinadores
-        * Punto único de fallo
-          * Posible arreglo: uso de temporizadores: el cerrojo se libera transcurrido un cierto tiempo
-   * Algoritmo **distribuido**:
-     * Algoritmo de **Ricart y Agrawala**
-       * Requiere la existencia de  un orden total de todos los mensajes en el sistema
-       * Estudiar bibliografía para más detalles
-   * **Anillo con testigo**:
-     * Los procesos se ordenan conceptualmente como un anillo
-     * Por el anillo circula un testigo
-     * Cuando un proceso quiere entrar en la SC debe esperar a recoger el testigo
-     * Cuando sale de la SC envía el testigo al nuevo proceso del anillo
-   * Algoritmo basado en **quorum**:
-     * Algoritmo de **Maekawa**
-       * Estudiar bibliografía para más detalles
+ * Algoritmo **centralizado**:
+    * Existe un proceso coordinador
+    * Problemas: 
+      * Cuello de botella 
+        * Posible arreglo: reparto estático entre número prefijado de coordinadores
+      * Punto único de fallo
+        * Posible arreglo: uso de temporizadores: el cerrojo se libera transcurrido un cierto tiempo
+ * Algoritmo **distribuido**:
+   * Algoritmo de **Ricart y Agrawala**
+     * Requiere la existencia de  un orden total de todos los mensajes en el sistema
+     * Estudiar bibliografía para más detalles
+ * **Anillo con testigo**:
+   * Los procesos se ordenan conceptualmente como un anillo
+   * Por el anillo circula un testigo
+   * Cuando un proceso quiere entrar en la SC debe esperar a recoger el testigo
+   * Cuando sale de la SC envía el testigo al nuevo proceso del anillo
+ * Algoritmo basado en **quorum**:
+   * Algoritmo de **Maekawa**
+     * Estudiar bibliografía para más detalles
 
 
 ## Algoritmos de elección
@@ -405,6 +424,7 @@ Problemas de los relojes lógicos:
    * Fallo con recuperación: el sistema que falla vuelve a funcionar en algún momento
    * Fallos bizantinos: el componente que falla genera fallos arbitrarios
 
+
 ### Acuerdo bizantino
 
 * En la mayoría de las ocasiones cuando un componente o sistema falla, su funcionamiento es arbitrario.
@@ -430,6 +450,7 @@ Problemas de los relojes lógicos:
 Implementación de consenso:
     * Estudiar bibliografía para más detalles
 
+
 ## Servicio de nombres
 
 * Objetivo: descubrir recursos en sistemas distribuido
@@ -444,8 +465,6 @@ Implementación de consenso:
    + Nombres de usuarios
    + Nombres de hosts
    + Nombres de objetos remotos o servicios remotos en caso de servicios de llamadas a procedimientos remotos o invocaciónón de métodos remotos
-
-
 
 * Estructura general: 
    * Cliente: precisa localizar un servidor usando un servidor de nombre
@@ -480,12 +499,14 @@ Implementación de consenso:
       * Requiere un proceso de traducción
       * Ejemplo: urn:ietf:rfc:3187
 
+
 #### Resolución de nombres
 
 * Proceso  iterativo que permite a un cliente obtener  los  atributos de interés a partir de un determinado nombre:
   * Resolución iterativa guiada por el cliente
   * Resolución guiada por el servidor
 * Empleo de cachés en el cliente
+
 
 #### Ejemplos de servicios de nombres
 
@@ -507,5 +528,4 @@ Implementación de consenso:
 * Localización del servicio de nombres
 
 -- Estudiar bibliografía para más detalles
-
 
