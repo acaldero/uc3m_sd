@@ -29,7 +29,7 @@
       <td rowspan="1">1</td>
       <td>Introducción</td>
       <td>
-        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-intro/intro.md">Introducción a los Sistemas Distribuidos</a></li>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-intro/intro.md">Introducción a los sistemas distribuidos</a></li>
       </td>
   </tr>
   <tr>

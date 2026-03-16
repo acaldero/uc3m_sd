@@ -21,7 +21,7 @@
        * 2.2.2. [Escalabilidad](#222-escalabilidad)
        * 2.2.3. [Consistencia](#223-consistencia)
        * 2.2.4. [Tolerancia a fallos](#224-tolerancia-a-fallos)
-       * 2.2.5. [Seguridad](#223-seguridad)
+       * 2.2.5. [Seguridad](#225--seguridad)
      * 2.3  [Elementos típicos](#23-elementos-t%C3%ADpicos)
        * 2.3.1. [Mecanismo de comunicación](#231-mecanismo-de-comunicaci%C3%B3n)
        * 2.3.2. [Mecanismo de sincronización](#232-mecanismo-de-sincronizaci%C3%B3n)
@@ -166,7 +166,7 @@
    - Comunicación entre sistemas
    - Compartición de recursos
    - Transferencia de datos
- <br>
+ 
 * **Tipos** principales de redes:
    * **LAN (Local Area Network)**
       * Características:
@@ -183,7 +183,7 @@
          - Interconexión de múltiples redes
       * Ejemplo:
          - Internet
- <br>
+ 
 * **Protocolos de comunicación** más importantes:
    * **TCP**
       - Comunicación fiable
@@ -211,7 +211,7 @@
   * Ejemplos:
      - Multiprocesadores
      - Sistemas SMP
-<br>
+
 * **Sistemas de memoria distribuida**
   * Características:
      -   Cada nodo tiene **su propia memoria local**
@@ -360,7 +360,7 @@ El problema de la consistencia (coherencia) surge cuando varios procesos acceden
       * Ficheros
       * Correos
       * Etc.
-<br>
+
 * **Paradigmas** (moldes/patrones): usando los mecanismos de comunicación básicos se han construido otros mecanismos de comunicación que se pueden clasificar atendiendo al paradigma de comunicación usado:
   * **Paso de mensajes**
      * Modelo típico en sistemas distribuidos.
