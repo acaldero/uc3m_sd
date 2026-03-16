@@ -18,7 +18,7 @@
  <table>
   <tr><th>Tema</th><th>Lección</th><th>Materiales de estudio</th></tr>
   <tr>
-      <td rowspan="2">1</td>
+      <td rowspan="1">0</td>
       <td>C y make para sistemas distribuidos</td>
       <td>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-candmake/ssdd_c.md">Aspectos de C para sistemas distribuidos</a></li>
@@ -26,7 +26,15 @@
       </td>
   </tr>
   <tr>
-      <td>Concurrencia en sistemas distribuidos</td>
+      <td rowspan="1">1</td>
+      <td>Introducción</td>
+      <td>
+        <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-intro/intro.md">Introducción a los Sistemas Distribuidos</a></li>
+      </td>
+  </tr>
+  <tr>
+      <td rowspan="1">2</td>
+      <td>Comunicación y sincronización</td>
       <td>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-concurrency/ssdd_threads_posix.md">Concurrencia con API POSIX</a></li>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-concurrency/ssdd_threads_c.md">Concurrencia con C<sub>11</sub></a></li>
@@ -121,4 +129,5 @@
     * [Ejemplo de calculadora distribuido basado en sockets](/materials/pc-calculator/cal-distribuido-sockets#readme)
     * [Ejemplo de calculadora distribuido basado en RPC](/materials/pc-calculator/cal-distribuido-rpc#readme)
     * [Ejemplo de calculadora distribuido basado en GSOAP](/materials/pc-calculator/cal-distribuido-gsoap-standalone#readme)
+
 
