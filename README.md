@@ -47,7 +47,6 @@
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/ssdd_pq.md">Colas de mensajes POSIX</a> </li>
         <li> <a href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.md">Introducción a MPI</a> 
              <a href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb">(notebook)</a> </li>
-        </li>
       </td>
   </tr>
   <tr>

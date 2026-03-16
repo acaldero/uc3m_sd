@@ -21,7 +21,7 @@
        * 2.2.2. [Escalabilidad](#222-escalabilidad)
        * 2.2.3. [Consistencia](#223-consistencia)
        * 2.2.4. [Tolerancia a fallos](#224-tolerancia-a-fallos)
-       * 2.2.5. [Seguridad](#225--seguridad)
+       * 2.2.5. [Seguridad](#225-seguridad)
      * 2.3  [Elementos típicos](#23-elementos-t%C3%ADpicos)
        * 2.3.1. [Mecanismo de comunicación](#231-mecanismo-de-comunicaci%C3%B3n)
        * 2.3.2. [Mecanismo de sincronización](#232-mecanismo-de-sincronizaci%C3%B3n)
@@ -34,7 +34,7 @@
 ### 1.1 Conceptos base
 
 * ***Host* conectado**: procesador + memoria + subsistema de comunicación
-     * **Subsistema de comunicación**: conjunto de componentes hardware y software que proporcionan servicios de comunicación en un sistema distribuido 
+   * **Subsistema de comunicación**: conjunto de componentes hardware y software que proporcionan servicios de comunicación en un sistema distribuido 
 
 * **Red de computadores**: conjunto de *hosts* conectados por medio de una red 
    * ***Host***: es un computador u otros dispositivo que usan la red para propósitos de comunicación. 
@@ -68,11 +68,11 @@
  * **Aplicaciones monolítica (no distribuida)**:
     * Conjunto de procesos que ejecutan en solo un computador, que pueden colaborar y comunicar por memoria compartida.
  * **Aplicaciones distribuidas**:
-     * Conjunto de procesos que ejecutan en uno o más computadores que colaboran y comunican intercambiando mensajes.
-     * Algunos ejemplos:
-       * WorldWide Web (WWW)
-       * Correo electrónico (IMAP, POP) 
-       * Transferencia de ficheros (FTP)
+    * Conjunto de procesos que ejecutan en uno o más computadores que colaboran y comunican intercambiando mensajes.
+    * Algunos ejemplos:
+      * WorldWide Web (WWW)
+      * Correo electrónico (IMAP, POP) 
+      * Transferencia de ficheros (FTP)
 
 
 ### 1.4 Evolución hacia los sistemas distribuidos
@@ -83,26 +83,27 @@
 
  **~1950: <br>Computación centralizada**
    * Características principales:
-     -   **Mainframes centrales**
-     -   **Sistemas de tiempo compartido**
-     -   **Recursos completamente centralizados**
-     -   **Terminales simples** conectados al mainframe
-     -   **Interfaces poco amigables**
+     - **Mainframes centrales**
+     - **Sistemas de tiempo compartido**
+     - **Recursos completamente centralizados**
+     - **Terminales simples** conectados al mainframe
+     - **Interfaces poco amigables**
   * Contexto tecnológico:
-     -   Primeras **redes de computadores**
-     -   Usuarios dependían completamente del sistema central
+     - Primeras **redes de computadores**
+     - Usuarios dependían completamente del sistema central
 
 <html></td><td></html>
 
  **~1960/70: <br>Aparición de TCP/IP**
-  -   **1969:** creación de **ARPANET**
-  -   **1974:** diseño del protocolo **TCP/IP**
+* Hitos:
+  - **1969:** creación de **ARPANET**
+  - **1974:** diseño del protocolo **TCP/IP**
 * Autores principales:
-  -   Vinton G. Cerf
-  -   Robert E. Kahn
+  - Vinton G. Cerf
+  - Robert E. Kahn
 * Impacto:
-  -   Base de Internet
-  -   Permite comunicación entre redes heterogéneas
+  - Base de Internet
+  - Permite comunicación entre redes heterogéneas
 
 <html></td><td></html>
 
@@ -116,23 +117,23 @@
    - Aplicaciones ejecutadas **localmente**
    - Interfaces de usuario más amigables
    - Aparición de **redes de área local (LAN)**
-  * Uso de las redes:
-    - Compartición de recursos
-       - impresoras
-       - sistemas de archivos
-  * Primeros **sistemas operativos distribuidos**:
-    - Mach
-    - Sprite
-    - Chorus
+ * Uso de las redes:
+   - Compartición de recursos
+      - impresoras
+      - sistemas de archivos
+ * Primeros **sistemas operativos distribuidos**:
+   - Mach
+   - Sprite
+   - Chorus
 
 <html></td><td></html>
 
  **~1990: <br>Internet y modelo cliente-servidor**
 
-* Características:
-  - Crecimiento de **arquitecturas cliente-servidor**
-  - Mayor **descentralización**
-  - Aplicaciones distribuidas entre cliente y servidor
+ * Características:
+   - Crecimiento de **arquitecturas cliente-servidor**
+   - Mayor **descentralización**
+   - Aplicaciones distribuidas entre cliente y servidor
  * Evento clave:
    - **1991: aparición de la Web**
    - Creada por **Tim Berners-Lee en el CERN**
@@ -214,18 +215,18 @@
 
 * **Sistemas de memoria distribuida**
   * Características:
-     -   Cada nodo tiene **su propia memoria local**
-     -   Comunicación mediante **intercambio de mensajes**
+     - Cada nodo tiene **su propia memoria local**
+     - Comunicación mediante **intercambio de mensajes**
   * Ventajas:
-     -   Mayor escalabilidad
-     -   Mejor tolerancia a fallos
-     -   Coste menor
+     - Mayor escalabilidad
+     - Mejor tolerancia a fallos
+     - Coste menor
   * Problemas:
-     -   Programación más compleja
-     -   Coste de comunicación
+     - Programación más compleja
+     - Coste de comunicación
   * Ejemplos:
-     -   Clusters
-     -   Sistemas distribuidos
+     - Clusters
+     - Sistemas distribuidos
 
 
 ## 2. Elementos en las aplicaciones distribuidas
@@ -273,7 +274,7 @@ Objetivos y aspectos de diseño de un sistema distribuido:
      * El sistema oculta fallos de componentes.
 
 
-#### 2.2.2	 Escalabilidad
+#### 2.2.2 Escalabilidad
 
 * Capacidad del sistema para crecer en:
    - Número de usuarios
@@ -297,7 +298,7 @@ Objetivos y aspectos de diseño de un sistema distribuido:
 * La replicación y las técnicas de caching pueden introducir problemas de consistencia y coherencia
 
 
-#### 2.2.3	 Consistencia
+#### 2.2.3 Consistencia
 
 El problema de la consistencia (coherencia) surge cuando varios procesos acceden y actualizan datos de forma concurrente
 * Coherencia de las actualizaciones
@@ -307,19 +308,19 @@ El problema de la consistencia (coherencia) surge cuando varios procesos acceden
 * Relojes consistentes
 
 
-#### 2.2.4	 Tolerancia a fallos
+#### 2.2.4 Tolerancia a fallos
 
 * El sistema debe seguir funcionando cuando:
-   - Falla un nodo
-   - Falla una red
-   - Falla un componente
-*  Técnicas:
-   - Replicación
-   - Recuperación
-   - Redundancia
+  - Falla un nodo
+  - Falla una red
+  - Falla un componente
+* Técnicas:
+  - Replicación
+  - Recuperación
+  - Redundancia
 
 
-#### 2.2.5  Seguridad
+#### 2.2.5 Seguridad
 
  - **Autenticación**:  verifica la identidad del usuario/a.
  - **Confidencialidad**: asegura que solo los autorizados accedan a los datos.
@@ -333,29 +334,29 @@ El problema de la consistencia (coherencia) surge cuando varios procesos acceden
    * Mecanismo de **comunicación**: intercambio de información entre procesos
    * Mecanismo de **sincronización**: eventos que controlan la ejecución en un proceso dependiente de un evento
 * <ins>Soporte de **concurrencia**</ins>:
-     * **Secuencial**: se ejecuta las peticiones de una en una
-     * **Concurrente**: se ejecutan peticiones a la vez.
-          * **Modelo de concurrencia**: maestro/trabajadores, lectores/escritores, productor/consumidor, etc.
+   * **Secuencial**: se ejecuta las peticiones de una en una
+   * **Concurrente**: se ejecutan peticiones a la vez.
+     * **Modelo de concurrencia**: maestro/trabajadores, lectores/escritores, productor/consumidor, etc.
 * Estructura de software: <ins>modelo de arquitectura distribuida</ins>:
- 	 * Cliente/servidor entorno al 80% de las veces.
-  	 * Publish/subscribe, Peer-to-peer,  etc.
+   * Cliente/servidor entorno al 80% de las veces.
+   * Publish/subscribe, Peer-to-peer,  etc.
 * <ins>Heterogeneidad</ins> de los componentes
    * Es la variedad y diferencia de los siguientes componentes: redes, lenguajes de programación, etc.
    * Ayuda: empleo de sistemas abiertos y estándares
 * <ins>Nombrado</ins> 
-    * Notación humana -> notación máquina
-      * Los/as usuarios/as designan a los objetos mediante un nombre (ej.: www.uc3m.es)
-      * Los programas designan a los objetos mediante un identificador (ej.: 163.117.100.10)
-      * Resolver un nombre implica obtener el identificador a partir del nombre.
-    * Objetivo importante: los nombres deben ser independientes de su localización.
+   * Notación humana -> notación máquina
+     * Los/as usuarios/as designan a los objetos mediante un nombre (ej.: www.uc3m.es)
+     * Los programas designan a los objetos mediante un identificador (ej.: 163.117.100.10)
+     * Resolver un nombre implica obtener el identificador a partir del nombre.
+   * Objetivo importante: los nombres deben ser independientes de su localización.
 
 
 #### 2.3.1 Mecanismo de comunicación
 
 * **Tipos** de mecanismos:
     * <ins>Básicos</ins>:
-       * **Memoria compartida**
-       * **Paso de mensajes**
+      * **Memoria compartida**
+      * **Paso de mensajes**
     * <ins>Colaterales</ins>:
       * Ficheros
       * Correos
@@ -372,7 +373,7 @@ El problema de la consistencia (coherencia) surge cuando varios procesos acceden
   * **Invocación remota (RPC)**
      * Permite llamar a funciones en otro computador como si fueran locales.
      * Ventajas:
-       - Simplifica la programación
+        - Simplifica la programación
      * Problemas:
         - Latencia
         - Manejo de fallos
@@ -390,8 +391,8 @@ El problema de la consistencia (coherencia) surge cuando varios procesos acceden
    * Semáforos 
    * Mutex y variables condicionales 
 * Mecanismos de comunicación **en memoria distribuida** usados también para sincronizar (mecanismos **colaterales**):
-  * Tuberías (pipes, FIFOs)
-  * Paso de mensajes
+   * Tuberías (pipes, FIFOs)
+   * Paso de mensajes
 * **Otros**:
    * Señales (asincronismo)
    * Etc.
@@ -428,10 +429,10 @@ El problema de la consistencia (coherencia) surge cuando varios procesos acceden
   B <-- crear hilo de servicio --> C
   ```
 
-     * **Modelos de concurrencia** más frecuentes:
-       * Productor/Consumidor
-       * Lectores/Escritores     
-       * Etc.
+    * **Modelos de concurrencia** más frecuentes:
+      * Productor/Consumidor
+      * Lectores/Escritores     
+      * Etc.
 
 
 #### 2.3.4. Arquitecturas de comunicación
@@ -461,5 +462,4 @@ El problema de la consistencia (coherencia) surge cuando varios procesos acceden
   * Publish/subscribe (Pub/Sub)
   * Etc.
 * Es posible usar modelos conocidos o distintas mezclas de estos modelos.
-
 
