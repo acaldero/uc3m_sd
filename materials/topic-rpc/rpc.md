@@ -50,12 +50,15 @@
      ProcesoB  ->>-  ProcesoA: <br/>
     ```
  * Hay <u>**dos ingredientes principales**</u>:
-    * Código de invocación remota <u>lo más transparente posible.</u>
-    * Generación del código de invocación remota <u>lo más automatizada posible.</u>
+   * <u>Código de invocación remota <u>lo más transparente posible.</u>
+   * <u>Generación del código de invocación remota <u>lo más automatizada posible.</u>
+   <br>
  * **Beneficio**: la persona que desarrolla puede centrarse más en lo que hace su aplicación en lugar preocuparse de poner en marcha una plantilla inicial repetitiva.
-   * Se simplifica las complejidades de las interacciones entre máquinas y espacios de direcciones.
-   * Se ofrece una interfaz de alto nivel para el movimiento de datos y comunicación.
-   * Se simplifica muchos de los errores que pueden surgir de las interacciones de comunicación/transmisión de bajo nivel, liberando al desarrollador de tener que reimplementar explícitamente el manejo de errores en cada programa.
+   * Por transparencia...
+     * Se simplifica las complejidades de las interacciones entre máquinas y espacios de direcciones.
+     * Se ofrece una interfaz de alto nivel para el movimiento de datos y comunicación.
+   * Por generación automatizada posible....
+     * Se simplifica muchos de los errores que pueden surgir de las interacciones de comunicación/transmisión de bajo nivel, liberando al desarrollador de tener que reimplementar explícitamente el manejo de errores en cada programa.
 
 
 ## (1/2) Transparencia de invocación remota
@@ -122,40 +125,45 @@
 
 ## Desarrollando con las RPC
 
+ Se supone que las herramientas necesarias están ya instaladas, por ejemplo: [RPC en Ubuntu](#usar-las-rpc-en-la-distribuci%C3%B3n-ubuntu-de-linux)
+ 
+ Los principales paso para desarrollar con RPC son:
+
  1. Definir la interfaz de servicio un lenguaje de definición de interfaces (IDL):
     * Hay que definir cada operación, sus argumentos de entrada y salida, así como sus resultados
 
-     ### Ejemplo: suma.x
-       ```c
+    ### Ejemplo: suma.x
+    ```c
        program SUMAR {
           version SUMAVER {
              int SUMA ( int a, int b ) = 1;
           } = 1;
        } = 99;
-      ```
+    ```
 
  2. Compilación de la interfaz IDL para generar los archivos encargados de las comunicaciones en cliente y servidor:
- 	 * Opciones comunes son:
+  	* A partir de la descripción de la interfaz del servicio en IDL, la utilidad rpcgen genera de forma automática distintos archivos.
+     
+    ### Ejemplo: uso de rpcgen
+    ```bash
+    rpcgen -N -M -a suma.x
+    ```
+
+    * Opciones comunes son:
      	 * **-N** para procedimientos con múltiples argumentos.
      	 * **-M** para codigo que pueda ser usado por varios hilos.
      	 * **-a** para que genere todos los ficheros, incluido un Makefile de plantilla para la compilación.
 
-     ### Ejemplo: uso de rpcgen
-      ```bash
-      rpcgen -N -M -a suma.x
-      ```
-
-  	 * A partir de la descripción de la interfaz del servicio en IDL, la utilidad rpcgen genera de forma automática tanto los archivos relacionados con la comunicación como los archivos con una plantilla que el/la programador/a ha de rellenar con la implementación y uso del servicio:
+     * Los archivos generados son tanto los relacionados con la comunicación como los archivos con una plantilla que el/la programador/a ha de rellenar con la implementación y uso del servicio:
     	 * Archivos comunes en el lado del cliente y del servidor: **suma_xdr.c** y **suma.h**
     	 * En el lado del servidor: **suma_svc.c** y **suma_server.c** (este último ha de cambiarse con la implementación de la interfaz del servicio)
     	 * En el lado del cliente: **suma_clnt.c** y **suma_client.c** (este último ha de cambiarse con la implementación del cliente que usará el servicio)
-
 
        ![Archivos generados por rpcgen y archivos escritos por programador/a](./rpc/rpc_drawio_81.svg)
 
 
  3. Se implementa el servicio en el lado del servidor.
- 	 * Se cambia el contenido de las funciones generadas en *sumar_server.c* por dado a continuación.
+ 	  * Se cambia el contenido de las funciones generadas en *sumar_server.c* por el dado a continuación.
 
     ### Ejemplo: suma_server.c
     ```c
@@ -171,14 +179,14 @@
     int sumar_1_freeresult ( SVCXPRT *transp,
                              xdrproc_t xdr_result, caddr_t result )
     {
-    	xdr_free (xdr_result, result);
-    	return 1;
+        xdr_free (xdr_result, result);
+        return 1;
     }
     ```
 
  4. Se implementación el cliente que hace uso de la interfaz en el lado del cliente.
- 	 * Se cambia todo el contenido generado en *sumar_client.c* por dado a continuación.
- 	 * En el ejemplo de sumar_cliente.c dado, para la función *main* la función *sumar_1* es una llamada local, aunque internamente suponga el uso de un servicio remoto.
+  	* Se cambia todo el contenido generado en *sumar_client.c* por dado a continuación.
+  	* En el ejemplo de sumar_cliente.c dado, para la función *main* la función *sumar_1* es una llamada local, aunque internamente suponga el uso de un servicio remoto.
 
     ### Ejemplo: suma_client.c
     ```c
@@ -193,6 +201,7 @@
            printf ("Uso: %s <host>\n", argv[0]);
            exit (-1);
        }
+    
        host = argv[1] ;
        
        int ret = sumar_1(1, 2);
@@ -226,7 +235,7 @@
 
  5. Se compila y genera los ejecutables en el lado del cliente y del servidor.
 
-      ### Ejemplo: compilación individual
+    ### Ejemplo: compilación individual
     ```bash
     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_xdr.o     -c suma_xdr.c
     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_clnt.o    -c suma_clnt.c
@@ -239,8 +248,8 @@
 
  6. Para la ejecución hay que primero ejecutar el servidor y luego el cliente.
  
-       ### Ejemplo: ejecución del servidor 
-       ```bash
+     ### Ejemplo: ejecución del servidor 
+     ```bash
       acaldero@docker1:~/sd$ ./suma_server &
 
       acaldero@docker1:~/sd$ rpcinfo  -p localhost
@@ -253,25 +262,24 @@
       100000    2   udp    111  portmapper
           99    1   udp  34654
           99    1   tcp  41745
-      ```
+     ```
 
-       ### Ejemplo: ejecución del cliente en la misma máquina usando *localhost*:
-
-       ```bash
+     ### Ejemplo: ejecución del cliente en la misma máquina usando *localhost*:
+     ```bash
       acaldero@docker1:~/sd$ ./suma_client  localhost
       Resultado de 1 + 2 es 3
 
       acaldero@docker1:~/sd$ kill -9 %1
       acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
       [1]+  Killed                  ./suma_server
-      ```
+     ```
 
-       ### Ejemplo: detener la ejecución del servidor y dar de baja el servicio 
-       ```bash
+     ### Ejemplo: detener la ejecución del servidor y dar de baja el servicio 
+     ```bash
       acaldero@docker1:~/sd$ kill -9 %1
       acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
       [1]+  Killed                  ./suma_server
-      ```
+     ```
 
 
 ## Lenguaje IDL
