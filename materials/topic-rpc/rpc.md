@@ -10,18 +10,19 @@
    * [Motivación: transparencia de invocación y generación automática](#llamadas-a-procedimientos-remotos-objetivo)
    * [Breve historia](#breve-historia-de-las-rpc)
    * [Estructura de las RPC](#estructura-de-las-rpc)
- * Ejemplos de uso de RPC
+ * Ejemplos de uso de RPC (Sun/ONC)
    * [Desarrollando con las RPC: suma remota](#desarrollando-con-las-rpc)
    * [Calculadora remota](#calculadora-remota)
    * [Cadena de caracteres](#cadena-de-caracteres)
    * [Vector remoto](#vector-remoto)
    * [RPC en Python](#rpc-en-python)
- * Aspectos adicionales
+ * Principales aspectos de las RPC
    * [Lenguaje IDL](#lenguaje-idl)
    * [Aplanamiento (marshalling)](#aplanamiento-marshalling)
    * [Localización y enlazado (*binding*)](#localización-y-enlazado-binding)
    * [Tipos de fallos que pueden aparecer con las RPC](#tipos-de-fallos-que-pueden-aparecer-con-las-rpc)
    * [Características que definen una RPC](#características-que-definen-una-rpc)
+ * Las RPC de Sun/ONC
    * [RPC de Sun/ONC](#rpc-de-sunonc)
    * [XDR para Sun/ONC](#xdr-para-sunonc)
    * [IDL: formato base](#idl-formato-base)
@@ -30,7 +31,7 @@
    * [Biblioteca de funciones rpc.h](#biblioteca-de-funciones-rpch)
    * [Notación usada en el código generado por rpcgen](#notación-usada-en-el-código-generado-por-rpcgen)
    * [Usar las RPC en la distribución Ubuntu de Linux](#usar-las-rpc-en-la-distribución-ubuntu-de-linux)
-
+ 
 
 ## Llamadas a procedimientos remotos: objetivo
 
@@ -86,7 +87,7 @@
 ## Breve historia de las RPC
 
  * RPC (Remote Procedure Call): llamadas a procedimientos remotos
-   * Por Birrel y Nelson (1985) en “Implementing Procedure Calls”
+   * Por Birrell y Nelson (1985) en ["Implementing Remote Procedure Calls"](https://dl.acm.org/doi/epdf/10.1145/2080.357392)
  * Híbrido:
     * Llamadas a procedimientos
     * Paso de mensajes
@@ -487,7 +488,7 @@ datos estándar
  * Breve historia:
    * Diseñado inicialmente para el sistema de ficheros NFS
    * Descrito en RFC 1831
-   * También se denomina ONC-RPC (*Open network computing*)
+   * También se denomina ONC-RPC (*Open Network Computing*)
 
  * Características:
     * Se puede usar tanto UDP como TCP
@@ -574,7 +575,7 @@ datos estándar
             } = 1;    
          } = 99;      
         ```
-     * **Cada procedimiento remoto se identifica unívocamente mediante tres campos** codificados con enteros sin signo:  (NUM-PROG, NUM-VERSION, NUM-PROCEDURE)
+     * **Cada procedimiento remoto se identifica unívocamente mediante tres campos** (NUM-PROG, NUM-VERSION, NUM-PROCEDURE) codificados con enteros sin signo:
          * NUM-PROG es el número de programa remoto.
            * Se definen en la RFC 1831 (http://www.ietf.org/rfc/rfc1831.txt)
              * ```0x00000000 - 0x1fffffff``` --> definido por Sun
