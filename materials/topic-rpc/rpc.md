@@ -242,9 +242,13 @@
     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_client.o  -c suma_client.c
     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_svc.o     -c suma_svc.c
     gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_server.o  -c suma_server.c
-    gcc -g -D_REENTRANT    -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lnsl -lpthread -ltirpc
-    gcc -g -D_REENTRANT    -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lnsl -lpthread -ltirpc
+    gcc -g -D_REENTRANT    -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lpthread -ltirpc
+    gcc -g -D_REENTRANT    -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lpthread -ltirpc
     ```
+
+     * **NOTA 1**: **mucho cuidado** con "make -f Makefile.suma clean" puesto que por defecto borra suma_server.c y suma_client.c, perdiendo el trabajo realizado en dichos ficheros.
+     * **NOTA 2**: este ejemplo se basa en usar la librería ```tirpc``` en Linux (Debian/Ubuntu), puede que en otro sistema no sea necesaria o sea otra librería.
+     * **NOTA 3**: en este ejemplo puede ser también necesaria la librería ```-lnsl```
 
  6. Para la ejecución hay que primero ejecutar el servidor y luego el cliente.
  
@@ -1075,11 +1079,13 @@ datos estándar
       ```
      * **NOTA 1**: **mucho cuidado** con "make -f Makefile.calc clean" puesto que por defecto borra calc_server.c y calc_client.c perdiendo el trabajo realizado en dichos ficheros.
      * **NOTA 2**: este ejemplo se basa en usar la librería ```tirpc``` en Linux (Debian/Ubuntu), puede que en otro sistema no sea necesaria o sea otra librería.
+     * **NOTA 3**: en este ejemplo puede ser también necesaria la librería ```-lnsl```
 
 * Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente.
    1. En una misma máquina, se puede usar como nombre de host *localhost*:
        ```bash
       acaldero@docker1:~/sd$ ./calc_server &
+
       acaldero@docker1:~/sd$ rpcinfo  -p localhost
       program vers proto   port  service
       100000    4   tcp    111  portmapper
@@ -1090,9 +1096,11 @@ datos estándar
       100000    2   udp    111  portmapper
          999    1   udp  34654
          999    1   tcp  41745
+
       acaldero@docker1:~/sd$ ./calc_client  localhost
       1 + 2 = 3
       1 - 2 = -1
+
       acaldero@docker1:~/sd$ kill -9 %1
       acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
       [1]+  Killed                  ./calc_server
@@ -1294,11 +1302,13 @@ datos estándar
       ```
       * **NOTA 1**: mucho cuidado con "make -f Makefile.string clean" puesto que por defecto borra string_server.c y string_client.c perdiendo el trabajo realizado en dichos ficheros.
       * **NOTA 2**: este ejemplo se basa en usar la librería ```tirpc``` en Linux/Ubuntu, puede que en otro sistema no sea necesaria o sea otra librería.
+     * **NOTA 3**: en este ejemplo puede ser también necesaria la librería ```-lnsl```
 
 * Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente:
    1. En una misma máquina, se puede usar como nombre de host *localhost*:
        ```bash
       acaldero@docker1:~/sd$ ./string_server &
+
       acaldero@docker1:~/sd$ rpcinfo  -p localhost
       program vers proto   port  service
       100000    4   tcp    111  portmapper
@@ -1309,10 +1319,12 @@ datos estándar
       100000    2   udp    111  portmapper
           99    1   udp  33906
           99    1   tcp  39879
+
       acaldero@docker1:~/sd$ ./string_client  localhost
       vocales   = 5
       first     = m
       convertir = 12345
+
       acaldero@docker1:~/sd$ kill -1 %1
       acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
       [1]+  Killed                  ./string_server
@@ -1461,11 +1473,13 @@ datos estándar
       ```
       * **NOTA 1**: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.
       * **NOTA 2**: este ejemplo se basa en usar la librería ```tirpc``` en Linux/Ubuntu, puede que en otro sistema no sea necesaria o sea otra librería.
+      * **NOTA 3**: en este ejemplo puede ser también necesaria la librería ```-lnsl```
 
 * Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente:
    1. En una misma máquina, se puede usar como nombre de host *localhost*:
        ```bash
       acaldero@docker1:~/sd$ ./vector_server &
+
       acaldero@docker1:~/sd$ rpcinfo  -p localhost
       program vers proto   port  service
       100000    4   tcp    111  portmapper
@@ -1476,8 +1490,10 @@ datos estándar
       100000    2   udp    111  portmapper
           99    1   udp  49848
           99    1   tcp  42919
+
       acaldero@docker1:~/sd$ ./vector_client  localhost
       La suma es 200
+
       acaldero@docker1:~/sd$ kill -9 %1
       acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
       [1]+  Killed                  ./vector_server
