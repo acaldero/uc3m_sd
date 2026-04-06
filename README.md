@@ -8,7 +8,6 @@
 
  * [Materiales de apoyo](#materiales-de-apoyo)
  * [Casos prácticos](#casos-prácticos)
- * [Ejercicios](#ejercicios)
 
 
 ## Materiales de apoyo
@@ -116,17 +115,58 @@
 
 ## Casos prácticos
 
-  * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida: almacenamiento clave-valor](/materials/pc-keyvalue/#readme)
-    * [Ejemplo de almacenamiento clave-valor centralizado monolítico](/materials/pc-keyvalue/kv-centralizado-monolitico#readme)
-    * [Ejemplo de almacenamiento clave-valor distribuido basado en colas POSIX](/materials/pc-keyvalue/kv-distribuido-mqueue#readme)
-    * [Ejemplo de almacenamiento clave-valor distribuido basado en sockets](/materials/pc-keyvalue/kv-distribuido-sockets#readme)
-    * [Ejemplo de almacenamiento clave-valor distribuido basado en RPC](/materials/pc-keyvalue/kv-distribuido-rpc#readme)
+### Transformación de aplicación monolítica a aplicación distribuida:
 
-  * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida: calculadora](/materials/pc-calculator/#readme)
-    * [Ejemplo de calculadora centralizado monolítico](/materials/pc-calculator/cal-centralizado-monolitico#readme)
-    * [Ejemplo de calculadora distribuido basado en colas POSIX](/materials/pc-calculator/cal-distribuido-mqueue#readme)
-    * [Ejemplo de calculadora distribuido basado en sockets](/materials/pc-calculator/cal-distribuido-sockets#readme)
-    * [Ejemplo de calculadora distribuido basado en RPC](/materials/pc-calculator/cal-distribuido-rpc#readme)
-    * [Ejemplo de calculadora distribuido basado en GSOAP](/materials/pc-calculator/cal-distribuido-gsoap-standalone#readme)
+<html>
+<ul><small>
+<table width="100%">
+<tr><th>Almacén <br>clave-valor</th>
+<td>
+</html>
 
+ [Principales pasos para transformar](/materials/pc-keyvalue/#readme) una aplicación de almacenamiento (almacen clave-valor) desde <br> diseño monolítico hasta diseño distribuido:
+ ```mermaid
+  %%{init: {"flowchart": {"diagramPadding": 80}}}%%
+  flowchart LR
+    A[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-keyvalue/kv-centralizado-monolitico#readme'>monolítico</a>]
+    B[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-keyvalue/kv-centralizado-libreria#readme'>monolítico con<br> librería</a>]
+    C{patrón <br>proxy <br>con...}
+    D[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-keyvalue/kv-distribuido-mqueue#readme'>colas POSIX</a>]
+    E[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-keyvalue/kv-distribuido-sockets#readme'>sockets</a>]
+    F[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-keyvalue/kv-distribuido-rpc#readme'>RPC</a>]
+    A --> B
+    B --> C
+    C -- mqueue  --> D
+    C -- sockets --> E
+    C -- RPC     --> F
+  ```
+
+<html>
+</td></tr>
+<tr><th>Calculadora</th>
+<td>
+</html>
+
+ [Principales pasos para transformar](/materials/pc-calculator/#readme) una aplicación de cómputo (calculadora) desde <br> diseño monolítico hasta diseño distribuido:
+ ```mermaid
+  %%{init: {"flowchart": {"diagramPadding": 80}}}%%
+  flowchart LR
+    A[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-centralizado-monolitico#readme'>monolítico</a>]
+    B[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-centralizado-libreria#readme'>monolítico con<br> librería</a>]
+    C{patrón <br>proxy <br>con...}
+    D[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distribuido-mqueue#readme'>colas POSIX</a>]
+    E[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distribuido-sockets#readme'>sockets</a>]
+    F[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distribuido-rpc#readme'>RPC</a>]
+    A --> B
+    B --> C
+    C -- mqueue  --> D
+    C -- sockets --> E
+    C -- RPC     --> F
+  ```
+
+<html>
+</td></tr>
+</table>
+</small></ul>
+</html>
 
