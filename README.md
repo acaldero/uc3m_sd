@@ -151,12 +151,12 @@
  ```mermaid
   %%{init: {"flowchart": {"diagramPadding": 100}}}%%
   flowchart LR
-    A[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-centralizado-monolitico#readme'>1.<br> monolítico</a>]
-    B[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-centralizado-libreria#readme'>2.<br> monolítico<br> con librería</a>]
+    A[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-centralized-monolithic#readme'>1.<br> monolítico</a>]
+    B[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-centralized-library#readme'>2.<br> monolítico<br> con librería</a>]
     C{3.<br> patrón <br>proxy <br>con...}
-    D[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distribuido-mqueue#readme'>colas POSIX</a>]
-    E[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distribuido-sockets#readme'>sockets</a>]
-    F[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distribuido-rpc#readme'>RPC</a>]
+    D[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distributed-mqueue#readme'>colas POSIX</a>]
+    E[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distributed-sockets#readme'>sockets</a>]
+    F[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distributed-rpc#readme'>RPC</a>]
     G[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distributed-gsoap-standalone#readme'>gSOAP</a>]
     A --> B
     B --> C

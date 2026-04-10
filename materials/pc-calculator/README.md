@@ -47,7 +47,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como único ejecutable (centralizado)
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio centralizado monolítico](/pc-calculator/cal-centralizado-monolitico#readme)
+  * [Servicio centralizado monolítico](/pc-calculator/cal-centralized-monolithic#readme)
 
 Partiendo de esta versión inicial monolítica centralizada,
 para transformar a un servicio distribuidos, se aconseja seguir los siguientes pasos:
@@ -74,7 +74,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como único ejecutable (centralizado)
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio centralizado con librería](/pc-calculator/cal-centralizado-libreria#readme)
+  * [Servicio centralizado con librería](/pc-calculator/cal-centralized-library#readme)
 
 La arquitectura se puede resumir como:
   ```mermaid
@@ -91,7 +91,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como varios ejecutables (distribuidos) usando colas POSIX
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio distribuido basado en colas POSIX](/pc-calculator/cal-distribuido-mqueue#readme)
+  * [Servicio distribuido basado en colas POSIX](/pc-calculator/cal-distributed-mqueue#readme)
 
 La arquitectura se puede resumir como:
 ```mermaid
@@ -112,7 +112,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como varios ejecutables (distribuidos) usando sockets
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio distribuido basado en sockets](/pc-calculator/cal-distribuido-sockets#readme)
+  * [Servicio distribuido basado en sockets](/pc-calculator/cal-distributed-sockets#readme)
 
 La arquitectura se puede resumir como:
 ```mermaid
@@ -133,7 +133,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como varios ejecutables (distribuidos) usando RPC
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio distribuido basado en RPC](/pc-calculator/cal-distribuido-rpc#readme)
+  * [Servicio distribuido basado en RPC](/pc-calculator/cal-distributed-rpc#readme)
 
 La arquitectura se puede resumir como:
 ```mermaid
@@ -154,7 +154,7 @@ Dicha abstracción se diseña e implementa inicialmente:
   * Se despliega como varios ejecutables (distribuidos) usando GSOAP
 
 El código fuente, las instrucciones de compilación y las instrucciones para la ejecución están en:
-  * [Servicio distribuido basado en GSOAP](/pc-calculator/cal-distribuido-gsoap-standalone#readme)
+  * [Servicio distribuido basado en GSOAP](/pc-calculator/cal-distributed-gsoap-standalone#readme)
 
 La arquitectura se puede resumir como:
 ```mermaid

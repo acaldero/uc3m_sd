@@ -4,23 +4,24 @@
 + [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://github.com/acaldero/uc3m_sd/blob/main/LICENSE)
 
 
-## Servicio centralizado monolítico
+## Servicio centralizado con librería
 
-### Compilar
+### Compilar 
 
 Hay que introducir:
 ```
-cd cal-centralizado-monolitico
+cd cal-centralized-library
 make
 ```
 
 Y la salida debería ser similar a:
 ```
 gcc -g -Wall -c app-c.c
-gcc -g -Wall app-c.o  -o app-c
+gcc -g -Wall -c lib.c
+gcc -g -Wall app-c.o lib.o  -o app-c
 ```
 
-### Ejecutar 
+### Ejecutar
 
 Hay que introducir:
 ```
@@ -38,6 +39,7 @@ Y la salida debería ser similar a:
 
 ```mermaid
 sequenceDiagram
-    app-c ->> app-c: request API call and return result of API call
+    app-c   ->> lib.c: request lib.h API
+    lib.c   ->> app-c: return result of API call
 ```
 

@@ -48,11 +48,11 @@
     * [Ejemplo de almacenamiento clave-valor distribuido basado en RPC](/materials/pc-keyvalue/kv-distribuido-rpc#readme)
 
   * [Ejemplo de transformación de aplicación monolítica a aplicación distribuida: calculadora](/materials/pc-calculator/#readme)
-    * [Ejemplo de calculadora centralizado monolítico](/materials/pc-calculator/cal-centralizado-monolitico#readme)
-    * [Ejemplo de calculadora distribuido basado en colas POSIX](/materials/pc-calculator/cal-distribuido-mqueue#readme)
-    * [Ejemplo de calculadora distribuido basado en sockets](/materials/pc-calculator/cal-distribuido-sockets#readme)
-    * [Ejemplo de calculadora distribuido basado en RPC](/materials/pc-calculator/cal-distribuido-rpc#readme)
-    * [Ejemplo de calculadora distribuido basado en GSOAP](/materials/pc-calculator/cal-distribuido-gsoap-standalone#readme)
+    * [Ejemplo de calculadora centralizado monolítico](/materials/pc-calculator/cal-centralized-monolithic#readme)
+    * [Ejemplo de calculadora distribuido basado en colas POSIX](/materials/pc-calculator/cal-distributed-mqueue#readme)
+    * [Ejemplo de calculadora distribuido basado en sockets](/materials/pc-calculator/cal-distributed-sockets#readme)
+    * [Ejemplo de calculadora distribuido basado en RPC](/materials/pc-calculator/cal-distributed-rpc#readme)
+    * [Ejemplo de calculadora distribuido basado en GSOAP](/materials/pc-calculator/cal-distributed-gsoap-standalone#readme)
 
 
 ## Ejercicios
