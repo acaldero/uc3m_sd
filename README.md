@@ -124,13 +124,13 @@
 <td>
 </html>
 
- [Principales pasos para transformar](/materials/pc-keyvalue/#readme) una aplicación de almacenamiento (almacen clave-valor) desde <br> diseño monolítico hasta diseño distribuido:
+ [Principales pasos para transformar](/materials/pc-keyvalue/#readme) una aplicación de almacenamiento (almacen clave-valor) <br> desde diseño monolítico hasta diseño distribuido:
  ```mermaid
-  %%{init: {"flowchart": {"diagramPadding": 80}}}%%
+  %%{init: {"flowchart": {"diagramPadding": 100}}}%%
   flowchart LR
-    A[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-keyvalue/kv-centralizado-monolitico#readme'>monolítico</a>]
-    B[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-keyvalue/kv-centralizado-libreria#readme'>monolítico con<br> librería</a>]
-    C{patrón <br>proxy <br>con...}
+    A[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-keyvalue/kv-centralizado-monolitico#readme'>1.<br> monolítico</a>]
+    B[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-keyvalue/kv-centralizado-libreria#readme'>2.<br> monolítico<br> con librería</a>]
+    C{3.<br> patrón <br>proxy <br>con...}
     D[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-keyvalue/kv-distribuido-mqueue#readme'>colas POSIX</a>]
     E[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-keyvalue/kv-distribuido-sockets#readme'>sockets</a>]
     F[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-keyvalue/kv-distribuido-rpc#readme'>RPC</a>]
@@ -149,19 +149,21 @@
 
  [Principales pasos para transformar](/materials/pc-calculator/#readme) una aplicación de cómputo (calculadora) desde <br> diseño monolítico hasta diseño distribuido:
  ```mermaid
-  %%{init: {"flowchart": {"diagramPadding": 80}}}%%
+  %%{init: {"flowchart": {"diagramPadding": 100}}}%%
   flowchart LR
-    A[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-centralizado-monolitico#readme'>monolítico</a>]
-    B[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-centralizado-libreria#readme'>monolítico con<br> librería</a>]
-    C{patrón <br>proxy <br>con...}
+    A[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-centralizado-monolitico#readme'>1.<br> monolítico</a>]
+    B[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-centralizado-libreria#readme'>2.<br> monolítico<br> con librería</a>]
+    C{3.<br> patrón <br>proxy <br>con...}
     D[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distribuido-mqueue#readme'>colas POSIX</a>]
     E[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distribuido-sockets#readme'>sockets</a>]
     F[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distribuido-rpc#readme'>RPC</a>]
+    G[<a href='https://github.com/acaldero/uc3m_sd/tree/main/materials/pc-calculator/cal-distributed-gsoap-standalone#readme'>gSOAP</a>]
     A --> B
     B --> C
     C -- mqueue  --> D
     C -- sockets --> E
     C -- RPC     --> F
+    C -- gSOAP   --> G
   ```
 
 <html>
@@ -169,4 +171,10 @@
 </table>
 </small></ul>
 </html>
+
+
+### Diseño de aplicación distribuida:
+
+* [Calculadora basada en sockets TCP](https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-sockets/exercise_sockets_calculator.md#ejemplo-de-calculadora-distribuida-basada-en-sockets-tcp)
+* [Calculadora basada en sockets UDP](https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-sockets/exercise_sockets_calculator_tcp_vs_udp.md#servicio-de-calculadora-con-udp)
 
