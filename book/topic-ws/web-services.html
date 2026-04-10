@@ -1,0 +1,2030 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Servicios web · Sistemas Distribuidos</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.1.7">
+        <meta name="author" content="Felix Garcia-Carballeira y Alejandro Calderon-Mateos">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/honkit-plugin-mermaid/mermaid.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-hints/plugin-hints.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="../topic-dfs/dfs.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Índice
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../topic-candmake/ssdd_c.html">
+            
+                <a href="../topic-candmake/ssdd_c.html">
+            
+                    
+                    C para distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../topic-candmake/ssdd_make.html">
+            
+                <a href="../topic-candmake/ssdd_make.html">
+            
+                    
+                    Introducción a make
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../topic-concurrency/ssdd_threads_posix.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_posix.html">
+            
+                    
+                    Concurrencia con POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../topic-concurrency/ssdd_threads_c.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_c.html">
+            
+                    
+                    Concurrencia con C11
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../topic-messagepassing/ssdd_pq.html">
+            
+                <a href="../topic-messagepassing/ssdd_pq.html">
+            
+                    
+                    Colas de mensajes POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../topic-messagepassing/mpi.html">
+            
+                <a href="../topic-messagepassing/mpi.html">
+            
+                    
+                    Introducción a MPI
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.2.1" >
+            
+                <a target="_blank" href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb">
+            
+                    
+                    MPI (notebook)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../topic-sockets/ssdd_sockets.html">
+            
+                <a href="../topic-sockets/ssdd_sockets.html">
+            
+                    
+                    Sockets
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../topic-ds/ds.html">
+            
+                <a href="../topic-ds/ds.html">
+            
+                    
+                    Servicios distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../topic-rpc/rpc.html">
+            
+                <a href="../topic-rpc/rpc.html">
+            
+                    
+                    RPC
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../topic-dfs/dfs.html">
+            
+                <a href="../topic-dfs/dfs.html">
+            
+                    
+                    Sistemas de ficheros distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter active" data-level="8.1" data-path="web-services.html">
+            
+                <a href="web-services.html">
+            
+                    
+                    Servicios web
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" >
+            
+                <a target="_blank" href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ft/t9_tolerancia-a-fallos.pdf">
+            
+                    
+                    Tolerancia a fallos (PDF)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Servicios web</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="sistemas-distribuidos-servicios-web">Sistemas Distribuidos: Servicios Web</h1>
+<ul>
+<li><strong>Felix García Carballeira y Alejandro Calderón Mateos</strong> @ arcos.inf.uc3m.es</li>
+<li><a href="https://github.com/acaldero/uc3m_sd/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg" alt="License: CC BY-NC-SA 4.0"></img></a></li>
+</ul>
+<h2 id="contenidos">Contenidos</h2>
+<ul>
+<li><a href="#introducción">Motivación en el uso de servicios Web</a></li>
+<li><a href="#estilos-de-servicios-soap-vs-rest">Estilos de servicios: SOAP vs RESTful</a></li>
+<li>Ejemplos REST y SOAP:<ul>
+<li><a href="#ejemplo-simple-de-servicio-web-rest-servidor-y-cliente-en-python">Python - REST: Ejemplo simple de servicio web  (servidor y cliente)</a></li>
+<li><a href="#openapi">Python - REST: Ejemplo simple con OpenAPI (servidor y cliente)</a>  </li>
+<li><a href="#ejemplo-simple-de-servicio-web-soap-cliente-en-python">Python - SOAP: Ejemplo de servicio web  (cliente)</a></li>
+<li><a href="#ejemplo-simple-de-servicio-web-soap-cliente-y-servidor-en-python">Python - SOAP: Ejemplo simple de servicio web (cliente y servidor)</a></li>
+<li><a href="#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c">C - SOAP: Usar un servicio distribuido basado en gSOAP/XML (cliente solo)</a></li>
+<li><a href="#creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c">C - SOAP: Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor)</a></li>
+</ul>
+</li>
+<li><a href="#otras-tecnologías-además-de-rest-y-soap">Otras tecnologías además de REST y SOAP</a></li>
+<li>Ejemplos de otras tecnologías:<ul>
+<li><a href="#ejemplo-simple-de-servicio-web-basado-en-sse-en-bash">Ejemplo simple de servicio web basado en eventos enviados por servidor (SSE)</a></li>
+<li><a href="#creación-de-un-servicio-distribuido-basado-en-apache-thrift-cliente-y-servidor-en-python">Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)</a></li>
+<li><a href="#creación-de-un-servicio-distribuido-basado-en-grpc-cliente-y-servidor-en-python">Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)</a></li>
+<li><a href="#ejemplo-de-json-rpc-sobre-http-servidor-mcp-de-calculadora-simple-cliente-y-servidor-en-python">Ejemplo de JSON-RPC sobre HTTP: servidor MCP de calculadora simple (cliente y servidor, en Python)</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="introducción">Introducción</h2>
+<p>Los servicios web están al nivel de un servicio de red y un nivel más del paradigma de procedimiento remoto:</p>
+<p>   <img src="../materials/topic-ws/web-services/web-services-drawio_4.svg" alt="Paradigmas por niveles"></img></p>
+<p>Los servicios web (y los servicios de red) son una extensión al paradigma de invocación de procedimientos remotos en el que se añade un servicio de directorio que proporcionan la referencia a los servicios disponibles:</p>
+<p>   <img src="../materials/topic-ws/web-services/web-services-drawio_5.svg" alt="Transparencia de localización"></img></p>
+<p>Este servicio de directorio permite <em>transparencia de localización</em>, lo que es un nivel de abstracción extra.</p>
+<h4 id="transparencia-de-localización">Transparencia de localización</h4>
+<p>Los pasos habituales para el uso del servicio de directorio (o registro) son:</p>
+<ol>
+<li>El proceso solicitante contacta con el servicio de directorio y busca un servicio</li>
+<li>El servicio de directorio devuelve la referencia al servicio solicitado</li>
+<li>Usando la referencia, el proceso solicitante interactúa con el servicio</li>
+</ol>
+<p>Las principales diferencias con RPC son:</p>
+<ul>
+<li>En una RPC se busca el puerto de la máquina donde ejecuta el <em>"servicio de directorio"</em><ul>
+<li>En servicios Web se busca por el listado de las URL (protocolo, máquina y puerto) donde está el servicio</li>
+</ul>
+</li>
+<li>En una RPC se busca por un número identificador del servicio<ul>
+<li>En servicios Web se podría buscar por su nombre, características del servicio, etc.</li>
+</ul>
+</li>
+</ul>
+<h4 id="invocación-remota-usando-la-web">Invocación remota usando la Web</h4>
+<p>En el directorio se puede dar de alta el servicio (paso 0) y dar de baja.
+Dar de alta un servicio puede suponer incluir en el directorio lo siguiente:</p>
+<ul>
+<li>Identificación del servicio.</li>
+<li>Dirección y puerto de la máquina donde se ofrece.</li>
+<li>Una descripción del API que permite diseñar, implementar y probar un cliente (consumidor) que pida el servicio a un servidor (proveedor).</li>
+</ul>
+<p>A partir de la descripción del API puede ser posible generar los resguardos (stubs) que facilitan el despliegue de forma parecida a como <code>rpcgen</code> automatiza la generación de parte del código en las RPC.</p>
+<ul>
+<li>La generación de código mediante una herramienta de este tipo permite garantizar que se ha validado dicho proceso de generación (en lugar de basarse en una generación estocástica de código que puede no funcionar como es el caso de herramientas puramente basadas en IA).</li>
+</ul>
+<h4 id="qué-ha-facilitado-los-servicios-web">Qué ha facilitado los servicios Web</h4>
+<p>El disponer de un repositorio de servicios web ofrecidos permite que:</p>
+<ul>
+<li><strong>Distintas aplicaciones de software</strong> desarrolladas en lenguajes de programación diferentes, y ejecutadas sobre cualquier plataforma, pueden utilizar los servicios web para intercambiar datos.</li>
+<li>Una única <strong>aplicación distribuida</strong> puede descomponerse en servicios modulares independientes débilmente acoplados que pueden interoperar entre sí.<ul>
+<li><strong>Arquitectura SOA</strong>: Arquitectura en la que el software se expone como “servicio”, que es invocado utilizando un protocolo estándar de comunicación</li>
+<li>Es posible componer y combinar servicios web para generar nuevas aplicaciones distribuidas (por ejemplo: agencia de viajes que interactúa con hoteles, aviones, banco, etc.)</li>
+</ul>
+</li>
+</ul>
+<h2 id="primera-generación-de-la-www-contenido-estático">Primera generación de la WWW: contenido estático</h2>
+<p>En la WWW se usa una arquitectura cliente (ejemplo: navegador web) y servidor (ejemplo: servidor web Apache), con un protocolo HTTP basado en texto. \
+Por ejemplo, es posible pedir una página web a mano:</p>
+<ul>
+<li>Ejecutamos:<pre><code>$ telnet www.lab.inf.uc3m.es 80
+</code></pre>Y la salida es:<pre><code>Trying 163.117.61.51...
+Connected to waf.uc3m.es.
+Escape character is '^]'.
+</code></pre></li>
+<li><p>Escribimos:</p>
+<pre><code>GET / HTTP/1.0
+accept: */*
+</code></pre><p>Y la salida es:</p>
+<pre><code class="lang-html">HTTP/1.1 301 Moved Permanently
+Date: Fri, 28 Apr 2023 11:18:58 GMT
+Server: Apache
+Location: https:///
+Content-Length: 217
+Connection: close
+Content-Type: text/html; charset=iso-8859-1
+
+<!DOCTYPE >
+<html><head>
+<title>301 Moved Permanently</title>
+</head><body>
+<h1>Moved Permanently</h1>
+<p>The document has moved <a href="https:///">here</a>.</p>
+</body></html>
+Connection closed by foreign host.
+</code></pre>
+</li>
+</ul>
+<p>La salida tiene dos partes:</p>
+<ul>
+<li>Una cabecera con los metadatos de la respuesta.</li>
+<li>El contenido de la página pedida (index.html) en formato texto HTML.</li>
+</ul>
+<p>Inicialmente los servidores Web se han usado para enviar el contenido estático guardado en ficheros. \
+Esta primera generación permitía servir información escrita previamente en ficheros en formato HTML.</p>
+<h2 id="segunda-generación-de-la-www-contenido-dinámico">Segunda generación de la WWW: contenido dinámico</h2>
+<p>La siguiente generación, el contenido se generaba parcialmente o totalmente de forma dinámica:</p>
+<ul>
+<li>En el servidor con tecnologías como servlets, JSP, PHP, etc.</li>
+<li>En el cliente con tecnologías como Applets, JavaScript, etc.</li>
+</ul>
+<p>Hay un paso adicional interesante, ¿y si detrás de un fichero dinámico no hay un fichero sino un programa al que enviar los parámetros y que nos responda con el resultado?
+El método POST se usaba para enviar información útil para la generación dinámica: los "parámetros" con los que trabajar.</p>
+<p>Por tanto tenemos el potencial de:</p>
+<ul>
+<li>Al escribir:<pre><code>GET /calculadora,sumar,2,3 HTTP/1.0
+accept: */*
+</code></pre></li>
+<li><p>Tener la salida siguiente en lugar del texto HTML:</p>
+<pre><code class="lang-html">HTTP/1.1 200 OK
+Date: Fri, 28 Apr 2023 11:18:58 GMT
+Server: Apache
+Location: https:///
+Content-Length: 1
+Connection: close
+Content-Type: text/html; charset=iso-8859-1
+
+5
+</code></pre>
+</li>
+</ul>
+<p>Inicialmente este "dinamismo" se usó para permitir a las personas poder indicar términos de búsqueda y tener una página de resultados asociada a esos términos construida de forma dinámica.</p>
+<p>En la segunda generación se caracterizaba inicialmente por que:</p>
+<ul>
+<li>Había distintas tecnologías no siempre compatibles.</li>
+<li>Estaba muy orientada a interacción con personas.</li>
+<li>Por seguridad los cortafuegos solo solía dejar pasar el tráfico hacia el puerto 80.</li>
+</ul>
+<h2 id="por-qué-usar-un-servicio-web">Por qué usar un Servicio Web</h2>
+<p>No obstante, si se usa este mecanismo de generación dinámica para comunicar aplicaciones entre sí, tenemos la base para construir un posible servicio Web.
+En la tercera generación:</p>
+<ul>
+<li>Se empezó a usar el mecanismo de generación dinámica de contenido para b2b (<em>business to business</em>).</li>
+<li>Aparecieron distintos estándares que nos permiten construir servicios web en los que se evite en lo posible incompatibilidades.</li>
+<li>Se empezó a definir un servicio web en base a generación dinámica de contenido, facilitando el despliegue de una nueva generación de aplicaciones distribuidas.</li>
+</ul>
+<p>Un <strong>servicio web</strong> (<em>Web Service</em>) es un conjunto de protocolos y estándares que sirven para intercambiar datos entre aplicaciones en redes de ordenadores como Internet:</p>
+<ul>
+<li>La <strong>interoperabilidad</strong> se consigue mediante la adopción de <strong>estándares abiertos</strong>.<ul>
+<li>Las organizaciones OASIS y W3C son los comités responsables de la arquitectura y reglamentación de los servicios Web.</li>
+</ul>
+</li>
+</ul>
+<h2 id="estilos-de-servicios-soap-vs-rest">Estilos de servicios: SOAP vs REST</h2>
+<p>Hay dos estilos principales:</p>
+<ul>
+<li>Servicios web <strong>SOAP</strong> (<em>Simple Object Accces Protocol</em>)</li>
+<li><strong>REST</strong> (<em>RESTful Architecture Style</em>)</li>
+</ul>
+<p>Inicialmente apareció la idea de Servicio Web y se estandarizó con el uso de <strong>SOAP</strong>, lo que ofrece muchas funcionalidades para <em>business to business</em>.
+Con el paso del tiempo apareció otra necesidad complementaria: una versión simplificada que permita definir un API Web simple.
+En su tesis doctoral en el año 2000, Roy Fielding introduce la propuesta de REST, que proporciona un nivel relativamente alto de flexibilidad, escalabilidad y eficiencia para los/as desarrolladores/as.
+Las API REST se han popularizado, siendo el método común para conectar componentes y aplicaciones en una arquitectura de microservicios.</p>
+<html>
+<table>
+<tr><th></th><th>SOAP</th><th>REST</th></tr>
+<tr>
+<td>Orientación</td>
+<td>A mensaje</td>
+<td>A recurso</td>
+</tr>
+<tr>
+<td>Una URL representa...</td>
+<td>Acceso a un API</td>
+<td>Un recurso</td>
+</tr>
+<tr>
+<td>Métodos HTTP</td>
+<td>Habitualmente solo precisa POST (y el algún caso simple puede usarse GET)</td>
+<td>POST y/o PUT/GET/UPDATE/DELETE se corresponden a CRUD (Create/Read/Update/Delete)</td>
+</tr>
+<tr>
+<td>Representación de datos</td>
+<td>XML</td>
+<td>JSON (pero también HTML, texto plano, XML)</td>
+</tr>
+<tr>
+<td>Ventajas</td>
+<td>
+<li> Seguridad</li>
+<li> Flexibilidad</li>
+</td>
+<td>
+<li> Precisa menos ancho de banda</li>
+<li> Tecnología sin estado</li>
+<li> Almacenamiento en caché</li>
+<li> Escalabilidad</li>
+</td>
+</tr>
+<tr>
+<td>Registro</td>
+<td><img src="../materials/topic-ws/web-services/web-services-drawio_soap.svg"></img></td>
+<td><img src="../materials/topic-ws/web-services/web-services-drawio_rest.svg"></img></td>
+</tr>
+</table>
+</html>
+
+<p>Los <a href="https://www.ibm.com/topics/rest-apis" target="_blank">seis principios de diseño (o restricciones arquitectónicas)</a> REST son:</p>
+<ul>
+<li>Interfaz uniforme: Todas las solicitudes de API para el mismo recurso deben tener el mismo aspecto, independientemente de la procedencia de la solicitud.</li>
+<li>Desacoplamiento cliente-servidor: Las aplicaciones cliente y servidor deben ser completamente independientes entre sí, solo se interactúa con el API.</li>
+<li>Sin estado: Las API REST son apátridas, lo que significa que cada solicitud debe incluir toda la información necesaria para procesarla.</li>
+<li>Cacheabilidad: En la medida de lo posible, los recursos deben poder almacenarse en caché en el cliente o en el servidor.</li>
+<li>Arquitectura en capas: las llamadas y las respuestas pueden pasar por diferentes capas (no asumir que cliente y servidor se conectan directamente entre sí).</li>
+<li>Código bajo demanda (opcional): Las API REST suelen enviar recursos estáticos, pero en algunos casos las respuestas también pueden contener código ejecutable (como applets de Java). En estos casos, el código solo debe ejecutarse bajo demanda.</li>
+</ul>
+<h3 id="ejemplo-de-comunicación-con-soap-y-rest">Ejemplo de comunicación con SOAP y REST</h3>
+<p>Para la siguiente función:</p>
+<pre><code class="lang-c">  Float precio ;
+  Precio = ObtenerPrecio(mesa);
+</code></pre>
+<p>La siguiente tabla muestra un ejemplo de cómo podría ser las peticiones y respuestas:</p>
+<html>
+<table>
+<tr><th></th><th>SOAP</th><th>REST</th></tr>
+
+<tr>
+<td>
+Petición
+</td>
+<td>
+<pre>
+POST StockQuote HTTP/1.1
+...
+&lt;SOAP-ENV:Envelope
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  SOAP-ENV:encodingStyle ="http://schemas.xmlsoap.org/soap/
+&lt;SOAP-ENV:Body&gt;
+  &lt;m:ObtenerPrecio
+     xmlns:m="http://example.com/stockquote.xsd"&gt;
+     &lt;item&gt;mesa&lt;/item&gt;
+  &lt;/m:ObtenerPrecio&gt;
+&lt;/SOAP-ENV:Body&gt;
+&lt;/SOAP-ENV:Envelope&gt;
+</pre>
+</td>
+<td>
+<pre>
+POST /precio HTTP/1.1
+Content-Type: application/json
+...
+{"item":"mesa"}
+</pre>
+</td>
+</tr>
+
+<tr>
+<td>
+Respuesta
+</td>
+<td>
+<pre>
+HTTP/1.1 200 OK
+...
+&lt;SOAP-ENV:Envelope
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  SOAP-ENV:encodingStyle ="http://schemas.xmlsoap.org/soap/
+&lt;SOAP-ENV:Body&gt;
+   &lt;m:ObtenerPrecioResponse
+     xmlns:m="http://example.com/stockquote.xsd"&gt;
+     &lt;Precio&gt;123.5&lt;/Precio&gt;
+   &lt;/m:ObtenerPrecioResponse&gt;
+&lt;/SOAP-ENV:Body&gt;
+&lt;/SOAP-ENV:Envelope&gt;
+</pre>
+</td>
+<td>
+<pre>
+HTTP/1.0 201 CREATED
+...
+123.5
+</pre>
+</td>
+</tr>
+
+<tr>
+<td>
+Principales tecnologías (protocolos, etc.)
+</td>
+<td>
+<ul>
+<li> HTTP: transporte utilizado</li>
+<li> XML: describe la información, los mensajes</li>
+<li> SOAP: empaqueta la información y la transmite entre el cliente y el proveedor del servicio</li>
+<li> WSDL: descripción del servicio</li>
+<li> UDDI: lista de servicios disponibles </li>
+<ul>
+</ul></ul></td>
+<td>
+<ul>
+<li> HTTP: transporte utilizado </li>
+<li> JSON: describe la información como estructura de datos en JavaScript</li>
+<ul>
+</ul></ul></td>
+</tr>
+
+<tr>
+<td>
+Relación entre tecnologías
+</td>
+<td>
+<img src="../materials/topic-ws/web-services/web-services-drawio_10_soap.svg" alt="Pila de protocolos habitual en servicios web basados en SOAP"></img>
+</td>
+<td>
+<img src="../materials/topic-ws/web-services/web-services-drawio_10_rest.svg" alt="Pila de protocolos habitual en servicios web basados en REST"></img>
+</td>
+</tr>
+
+</table>
+</html>
+
+
+<h2 id="ejemplos-de-servicio-usando-rest-y-soap">Ejemplos de servicio usando REST y SOAP</h2>
+<p>A continuación se presentan 3 ejemplos simples en Python:</p>
+<ul>
+<li>Servicio web REST (servidor y cliente)</li>
+<li>Servicio web SOAP (cliente solo)</li>
+<li>Servicio web SOAP (cliente y servidor)</li>
+</ul>
+<p>Y posteriormente se presentan 2 ejemplos en C:</p>
+<ul>
+<li>Uso de servicio basado en gSOAP/XML (cliente solo)</li>
+<li>Creación de un servicio basado en gSOAP/XML (cliente y servidor)</li>
+</ul>
+<h2 id="ejemplo-simple-de-servicio-web-rest-servidor-y-cliente-en-python">Ejemplo simple de servicio web REST (servidor y cliente en Python)</h2>
+<p>El siguiente ejemplo implementa un servidor de un servicio web en Python que permite consultar el precio de una mesa de un restaurante:</p>
+<ul>
+<li><p>El script <strong><code>app.py</code></strong> se encarga de implementar un servicio web en Python usando los paquetes <em>Flask</em> y <em>request</em>:</p>
+<pre><code class="lang-python">from flask import Flask, request
+
+app = Flask(__name__)
+precios = { "mesa": "123.5", "reserva": "12.5" }
+
+@app.route('/precio', methods=["POST"])
+def add_precio():
+    try:
+       req  = request.get_json()
+       item = req['item']
+       return precios[item], 201
+    except Exception as e:
+       return {"error": str(e)}, 415
+
+app.run(debug=False, host="0.0.0.0", port="5000")
+</code></pre>
+</li>
+<li><p>Para <em>iniciar</em> la ejecución del servidor hay que usar lo siguiente:</p>
+<pre><code class="lang-bash">python3 app.py &amp;
+</code></pre>
+</li>
+<li><p>Para <em>parar</em> la ejecución del servidor (cuando ya no se necesite el servicio) se puede usar lo siguiente:</p>
+<pre><code class="lang-bash">kill $(pgrep -f app.py)
+</code></pre>
+</li>
+</ul>
+<p>El siguiente ejemplo implementa un cliente del servicio web anterior usando Python:</p>
+<ul>
+<li><p>El script <strong><code>clnt.py</code></strong>  usa <em>requests</em>:</p>
+<pre><code class="lang-python">import requests
+
+r = requests.post(url="http://127.0.0.1:5000/precio",
+                  json={ "item": "mesa" },
+                  headers={ 'Content-type': 'application/json' })
+print(r.text)
+</code></pre>
+</li>
+<li><p>Para ejecutar el cliente se puede usar:</p>
+<pre><code class="lang-bash">python3 clnt.py
+</code></pre>
+</li>
+<li><p>La salida es:</p>
+<pre><code class="lang-bash">123.5
+</code></pre>
+</li>
+</ul>
+<p>Es incluso posible usar el mandato <code>curl</code> como cliente del servicio web anterior:</p>
+<ul>
+<li><p>Para ejecutar un cliente se puede usar:</p>
+<pre><code class="lang-bash">curl -i http://127.0.0.1:5000/precio \
+     -X POST \
+     -H 'Content-Type: application/json' \
+     -d '{"item":"mesa"}'
+</code></pre>
+</li>
+<li><p>Y la salida sería:</p>
+<pre><code class="lang-bash">127.0.0.1 - - [11/Mar/2025 12:42:00] "POST /precio HTTP/1.1" 201 -
+HTTP/1.0 201 CREATED
+Server: Werkzeug/2.3.2 Python/3.10.12
+Date: Tue, 11 Mar 2025 11:42:00 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 5
+Connection: close
+
+123.5
+</code></pre>
+</li>
+</ul>
+<p><br></br></p>
+<h3 id="openapi">OpenAPI</h3>
+<p>A partir del ejemplo inicial anterior nos podemos hacer algunas preguntas, como por ejemplo:</p>
+<ul>
+<li>¿Cómo vamos a documentar este servicio REST?</li>
+<li>¿Se podría describir en un formato simplificado de WSDL para generar la documentación de forma automática?</li>
+<li>¿Y Se podría describir en un formato simplificado de WSDL para generar el código de forma automática?</li>
+</ul>
+<p>El estándar OpenAPI busca ayudar con las anteriores preguntas ya que:</p>
+<ul>
+<li>Permite describir un servicio REST:<ul>
+<li>La documentación del estándar OpenAPI 3.1 está disponible en: <a href="https://spec.openapis.org/oas/v3.1.1" target="_blank">https://spec.openapis.org/oas/v3.1.1</a></li>
+<li>Incluye ejemplos como:<ul>
+<li>Ejemplo simple: <a href="https://learn.openapis.org/examples/v3.0/link-example.html" target="_blank">https://learn.openapis.org/examples/v3.0/link-example.html</a></li>
+<li>Tienda de mascotas: <a href="https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml" target="_blank">https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Basado en este estándar hay herramientas para ayudar en el diseño, desarrollo y pruebas de dicho servicio REST:<ul>
+<li>Para diseñar el API se puede usar un editor en línea (<em>online</em>) como <em>Swagger Editor</em>: <a href="https://editor.swagger.io/" target="_blank">https://editor.swagger.io/</a></li>
+<li>Para la generación de código (<em>client libraries</em>, <em>server stubs</em>, documentación) en diferentes lenguajes se puede usar <em>Swagger Codegen</em>: <a href="https://github.com/swagger-api/swagger-codegen" target="_blank">https://github.com/swagger-api/swagger-codegen</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="ejemplo-simple-de-servicio-web-rest-con-openapi">Ejemplo simple de servicio web REST con OpenAPI</h3>
+<p>El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:</p>
+<ol>
+<li>Primero se precisa comprobar que esté instalado los paquetes python <strong>fastapi, uvicorn y pydantic</strong>.
+ Se puede instalar mediante:<pre><code class="lang-bash">pip3 install fastapi uvicorn[standard] pydantic
+</code></pre>
+ O bien mediante:<pre><code class="lang-bash">sudo python3 -m pip install fastapi uvicorn[standard] pydantic
+</code></pre>
+Suele tardar algún tiempo la instalación, hay que esperar.
+Puede usar <code>pip3 install --user fastapi uvicorn pydantic</code> para instalar solo para el usuario actual.</li>
+<li><p>El siguiente paso sería crear el archivo <strong><code>ws-openapi.py</code></strong> con el servidor de dicho servicio web:</p>
+<pre><code class="lang-python">from fastapi  import FastAPI
+from pydantic import BaseModel
+import uvicorn
+
+# Item asociado a cada clave
+class Item(BaseModel):
+    name: str
+    weight: float
+
+# {10, {name:'', weight:0.0}, ...
+list_kv = {}
+
+# fastAPI
+app = FastAPI()
+
+@app.put("/items/{key}")
+async def add_item(key: int, item: Item):
+    list_kv[key] = item
+    return { "key": key, "item": item}
+
+@app.get("/items/{key}")
+async def select_item(key: int):
+    try:
+       item = list_kv[key]
+    except:
+       item = { '', 0.0 }
+    return { "key": key, "item": item }
+
+# Main
+if __name__ == "__main__":
+   uvicorn.run(app, host="127.0.0.1", port=8000)
+</code></pre>
+<p>El proceso de crear el anterior archivo tiene 3 pasos principales:
+<html>
+<table>
+<tr>
+<td>(1) API clave-valor simple inicial</td>
+<td>(2) Añadir pydantic</td>
+<td>(3) Añadir fastAPI y uvicorn</td>
+</tr><tr>
+</tr><tr></tr></table></html></p>
+<td>
+
+<p>   ```python</p>
+</td></li>
+</ol>
+<h1 id="item-asociado-a-cada-clave">Item asociado a cada clave</h1>
+<p>   class Item:
+       name: str
+       weight: float</p>
+<h1 id="10-name-weight00-">{10, {name:'', weight:0.0}, ...</h1>
+<p>   list_kv = {}</p>
+<h1 id="api">API</h1>
+<p>   def add_item(k: int, v: Item):
+       list_kv[k] = v
+       return { "key": k,
+                "item": v }</p>
+<p>   def select_item(key: int):
+       try:
+          item = list_kv[key]
+       except:
+          item = { '', 0.0 }
+       return { "key": key,
+                "item": item }</p>
+<h1 id="main">Main</h1>
+<p>   if <strong>name</strong> == "<strong>main</strong>":
+       print(add_item(10, {'name', 0.0}))
+       print(select_item(10))</p>
+<pre><code>
+   
+   <td>
+
+      ```python
+   from pydantic import BaseModel
+
+
+
+   # Item asociado a cada clave
+   class Item(BaseModel):
+       name: str
+       weight: float
+
+   # {10, {name:'', weight:0.0}, ...
+   list_kv = {}
+
+
+   # API
+
+
+   def add_item(k: int, v: Item):
+       list_kv[k] = v
+       return { "key": k,
+                "item": v }
+
+
+
+   def select_item(key: int):
+       try:
+          item = list_kv[key]
+       except:
+          item = { '', 0.0 }
+       return { "key": key,
+                "item": item }
+
+   # Main
+   if __name__ == "__main__":
+       print(add_item(10, {'name', 0.0}))
+       print(select_item(10))
+</td></code></pre><p>   &lt;/td&gt;
+   <td></td></p>
+<pre><code>  ```python
+</code></pre><p>   from fastapi  import FastAPI
+   from pydantic import BaseModel
+   import uvicorn</p>
+<h1 id="item-asociado-a-cada-clave">Item asociado a cada clave</h1>
+<p>   class Item(BaseModel):
+       name: str
+       weight: float</p>
+<h1 id="10-name-weight00-">{10, {name:'', weight:0.0}, ...</h1>
+<p>   list_kv = {}</p>
+<h1 id="fastapi">fastAPI</h1>
+<p>   app = FastAPI()</p>
+<p>   @app.put("/items/{key}")
+   async def add_item(k: int, v: Item):
+       list_kv[k] = v
+       return { "key": k,
+                "item": v }</p>
+<p>   @app.get("/items/{key}")
+   async def select_item(key: int):
+       try:
+          item = list_kv[key]
+       except:
+          item = { '', 0.0 }
+       return { "key": key,
+                "item": item }</p>
+<h1 id="main">Main</h1>
+<p>   if <strong>name</strong> == "<strong>main</strong>":
+      h="127.0.0.1"
+      p=8000
+      uvicorn.run(app, host=h, port=p)</p>
+<pre><code>
+   
+   
+   
+   
+2. Para ejecutar el servidor:
+   ```bash
+   python3 ws-openapi.py &amp;
+</code></pre><pre><code>Y la salida se parecerá a:
+</code></pre><pre><code class="lang-bash">   INFO:     Started server process [67103]
+   INFO:     Waiting for application startup.
+   INFO:     Application startup complete.
+   INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+</code></pre>
+<ol>
+<li><p>Para ver la interfaz <em>swagger</em> con la documentación y cliente interactivo básico ha de usar un navegador web:</p>
+<pre><code class="lang-bash">firefox http://127.0.0.1:8000/docs
+</code></pre>
+<p> Esta interfaz permite tanto ver la documentación generada de forma automática como poder interactuar con el servicio:
+<img src="../materials/topic-ws/web-services/ws-openapi-ui.png" alt="Interfaz swagger para ws-openapi"></img></p>
+<p>Es posible observar que hay un enlace a <a href="http://127.0.0.1:8000/openapi.json" target="_blank">http://127.0.0.1:8000/openapi.json</a>
+Esta página Web permite acceder a la descripción usando OpenAPI del servicio implementado.</p>
+</li>
+</ol>
+<p>Con la descripción basada en OpenAPI del servicio REST hay herramientas que permiten generar el código del cliente (e incluso del servidor) en distintos lenguajes.
+Como ejemplo de pasos para tener un cliente simple en Python del servicio de almacén clave-valor anterior de forma no automática:</p>
+<ol>
+<li><p>El primer paso es crear el archivo cliente <strong><code>ws-openapi-clnt.py</code></strong> de dicho servicio web:</p>
+<pre><code class="lang-python">import requests
+
+def add_item(key, value):
+    http_url = "http://127.0.0.1:8000/items/" + str(key)
+    http_headers = { 'Content-type': 'application/json', 'accept': 'application/json' }
+    r = requests.put(url=http_url, json=value, headers=http_headers)
+    return r.text
+
+key   = 10
+value = { "name": "name", "weight":0.0 }
+r = add_item(key,value)
+print(r)
+</code></pre>
+</li>
+<li>Para ejecutar dicho cliente se usará:<pre><code class="lang-bash">python3 ws-openapi-clnt.py
+</code></pre>
+</li>
+<li>Y la salida podría ser similar a:<pre><code class="lang-bash">{"key":10,"item":{"name":"name","weight":0.0}}
+</code></pre>
+Se puede apreciar que la función <code>add_item</code> en el cliente encapsula la invocación al servicio REST.</li>
+</ol>
+<p><br></br></p>
+<p>Pueden verse más ejemplos de uso en los siguientes interesantes artículos:</p>
+<ul>
+<li><a href="https://data-ai.theodo.com/en/technical-blog/fastapi-pydantic-powerful-duo" target="_blank">https://data-ai.theodo.com/en/technical-blog/fastapi-pydantic-powerful-duo</a></li>
+<li><a href="https://medium.com/codenx/fastapi-pydantic-d809e046007f" target="_blank">https://medium.com/codenx/fastapi-pydantic-d809e046007f</a></li>
+<li><a href="https://www.geeksforgeeks.org/fastapi-pydantic/" target="_blank">https://www.geeksforgeeks.org/fastapi-pydantic/</a></li>
+<li><a href="https://realpython.com/fastapi-python-web-apis/" target="_blank">https://realpython.com/fastapi-python-web-apis/</a></li>
+</ul>
+<p>Aprovecho para agradecer a Pablo Velo Moreno la introducción al mundo de fastAPI y pydantic.</p>
+<h2 id="ejemplo-simple-de-servicio-web-soap-cliente-en-python">Ejemplo simple de servicio web SOAP (cliente en Python)</h2>
+<p>A la hora de crear un servicio Web en Python con SOAP hay múltiples entornos:</p>
+<ul>
+<li><a href="https://wiki.python.org/moin/WebServices" target="_blank">https://wiki.python.org/moin/WebServices</a></li>
+</ul>
+<p>Ejemplos más conocidos son:</p>
+<ul>
+<li><strong>Zeep</strong>: para crear <strong>clientes</strong><ul>
+<li>Modelo basado en SOAP para Python.</li>
+<li>Hace uso de los diccionarios de Python para el manejo de XML.</li>
+</ul>
+</li>
+<li><strong>Spyne</strong>: para crear <strong>servicios</strong><ul>
+<li>Modelo basado en SOAP para Python para creación de servicios.</li>
+<li>Despliegue del servidor.</li>
+<li>Generador de WDSL.</li>
+</ul>
+</li>
+</ul>
+<p>El siguiente ejemplo implementa un cliente de saludar (<code>Hello + <nombre></nombre></code>) basado en Zeep:</p>
+<ol>
+<li><p>Primero se precisa comprobar que esté instalado el paquete python <strong>zeep</strong>.
+ Se puede instalar mediante:</p>
+<pre><code class="lang-bash">pip3 install zeep
+</code></pre>
+<p>Suele tardar algún tiempo la instalación, hay que esperar.
+Puede usar <code>pip3 install zeep --user</code> para instalar solo para el usuario actual.</p>
+</li>
+<li><p>Hay que conocer la información del servicio Web usando <code>python -mzeep <url></url></code>, siendo URL la asociada al WSDL:</p>
+<pre><code class="lang-bash">python3 -mzeep https://apps.learnwebservices.com/services/hello?WSDL
+</code></pre>
+</li>
+<li><p>El siguiente paso habitual es crear el archivo cliente de dicho servicio web (ws-echo.py en nuestro ejemplo):</p>
+<pre><code class="lang-python">import zeep
+
+wsdl = 'https://apps.learnwebservices.com/services/hello?WSDL'
+client = zeep.Client(wsdl=wsdl)
+print(client.service.SayHello('Web Services'))
+</code></pre>
+</li>
+<li><p>Para ejecutar:</p>
+<pre><code class="lang-bash">$ python3 ./ws-echo.py
+Hello Web Services!
+</code></pre>
+</li>
+</ol>
+<p>Puede probarse otros servicios WSDL disponibles gratis (al menos en el momento de escribir este tutoría) de la siguiente lista:</p>
+<ul>
+<li><a href="https://ngrashia.medium.com/compiled-list-of-free-and-working-wsdl-urls-a7a54be6b91" target="_blank">https://ngrashia.medium.com/compiled-list-of-free-and-working-wsdl-urls-a7a54be6b91</a>
+<br></br></li>
+</ul>
+<h2 id="ejemplo-simple-de-servicio-web-soap-cliente-y-servidor-en-python">Ejemplo simple de servicio web SOAP (cliente y servidor en Python)</h2>
+<p>A la hora de crear un servicio Web en Python con SOAP hay múltiples entornos:</p>
+<ul>
+<li><a href="https://wiki.python.org/moin/WebServices" target="_blank">https://wiki.python.org/moin/WebServices</a></li>
+</ul>
+<p>Ejemplos más conocidos son:</p>
+<ul>
+<li><strong>Zeep</strong>: para crear <strong>clientes</strong><ul>
+<li>Modelo basado en SOAP para Python.</li>
+<li>Hace uso de los diccionarios de Python para el manejo de XML.</li>
+</ul>
+</li>
+<li><strong>Spyne</strong>: para crear <strong>servicios</strong><ul>
+<li>Modelo basado en SOAP para Python para creación de servicios.</li>
+<li>Despliegue del servidor.</li>
+<li>Generador de WDSL.</li>
+</ul>
+</li>
+</ul>
+<p>El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) basado en Spyne:</p>
+<ol>
+<li><p>Primero se precisa comprobar que estén instalados los paquetes python <strong>spyne</strong> y <strong>zeep</strong>.
+ Se pueden instalar mediante:</p>
+<pre><code class="lang-bash">pip3 install spyne zeep
+</code></pre>
+<p>Suele tardar algún tiempo la instalación, hay que esperar.
+Puede usar <code>pip3 install spyne zeep --user</code> para instalar solo para el usuario actual.</p>
+</li>
+<li><p>El primer paso habitual es crear el archivo servidor de dicho servicio web (ws-calc-servidor.py en nuestro ejemplo):</p>
+<pre><code class="lang-python">import time, logging
+from wsgiref.simple_server import make_server
+from spyne import Application, ServiceBase, Integer, Unicode, rpc
+from spyne.protocol.soap import Soap11
+from spyne.server.wsgi import WsgiApplication
+
+class Calculadora(ServiceBase):
+    @rpc(Integer, Integer, _returns=Integer)
+    def add(ctx, a, b):
+        return a+b
+    @rpc(Integer, Integer, _returns=Integer)
+    def sub(ctx, a, b):
+        return a-b
+
+application = Application(services=[Calculadora],
+                          tns='http://tests.python-zeep.org/',
+                          in_protocol=Soap11(validator='lxml'),
+                          out_protocol=Soap11())
+application = WsgiApplication(application)
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    logging.getLogger('spyne.protocol.xml').setLevel(logging.DEBUG)
+    logging.info("listening to http://127.0.0.1:8000; wsdl is at: http://localhost:8000/?wsdl ")
+    server = make_server('127.0.0.1', 8000, application)
+    server.serve_forever()
+</code></pre>
+</li>
+<li><p>El segundo paso es ejecutar el servidor:</p>
+<pre><code class="lang-bash">python3 ./ws-calc-servidor.py
+</code></pre>
+</li>
+<li><p>El siguiente paso es conocer la información del servicio Web usando <code>python -mzeep <url></url></code>:</p>
+<pre><code class="lang-bash">$ python3 -mzeep http://localhost:8000/?wsdl
+
+...
+Service: Calculadora
+  Port: Application (Soap11Binding: {http://tests.python-zeep.org/}Application)
+      Operations:
+         add(a: xsd:integer, b: xsd:integer) -&gt; addResult: xsd:integer
+         sub(a: xsd:integer, b: xsd:integer) -&gt; subResult: xsd:integer
+</code></pre>
+</li>
+<li><p>El siguiente paso habitual es crear el archivo cliente de dicho servicio web (ws-calc-cliente.py en nuestro ejemplo):</p>
+<pre><code class="lang-python">import zeep
+
+wsdl = "http://localhost:8000/?wsdl"
+client = zeep.Client(wsdl=wsdl)
+
+r = client.service.add(5, 2)
+print(' 5+2 = ' + str(r))
+
+r = client.service.sub(5, 3)
+print(' 5-3 = ' + str(r))
+</code></pre>
+</li>
+<li><p>Para ejecutar el cliente del servicio:</p>
+<pre><code class="lang-bash">$ python3 ./ws-calc-cliente.py
+ 5+2 = 7
+ 5-3 = 2
+</code></pre>
+</li>
+</ol>
+<h2 id="usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c">Usar un servicio distribuido basado en gSOAP/XML (cliente solo, en C)</h2>
+<p>Usaremos un ejemplo basado en el servicio de calculadora disponible en: <a href="http://www.genivia.com/calc.wsdl" target="_blank">http://www.genivia.com/calc.wsdl</a></p>
+<p>Los pasos principales a seguir son los siguientes:</p>
+<ol>
+<li>Primero se precisa comprobar que estén instalados los paquetes <strong>gsoap</strong> y <strong>libgsoap-dev</strong>.
+ Se pueden instalar mediante:<pre><code class="lang-bash"> sudo apt install gsoap gsoap-doc libgsoap-dev
+</code></pre>
+</li>
+<li>Primero hay que obtener el archivo calc.h con la interfaz del servicio a partir de la descripción del servicio dada en WSDL:<pre><code class="lang-bash"> wsdl2h -c -o calc.h http://www.dneonline.com/calculator.asmx?WSDL
+</code></pre>
+</li>
+<li>A continuación hay que generar los resguardos (<em>stubs</em>) a partir de la interfaz de calc.h:<pre><code class="lang-bash"> soapcpp2 -CcL calc.h
+</code></pre>
+</li>
+<li><p>Hay que crear la aplicación <strong><code>app-d.c</code></strong> que use el servicio:</p>
+<pre><code class="lang-c"> #include "CalculatorSoap.nsmap"
+ #include "soapH.h"
+
+ int main ( int argc, char *argv[] )
+ {
+   struct _tempuri__Add in ;
+   struct _tempuri__AddResponse out ;
+   struct soap *soap ;
+
+   soap = soap_new();
+   if (NULL == soap) { return -1; }
+
+   in.intA = 1 ;
+   in.intB = 1 ;
+   int ret = soap_call___tempuri__Add(soap, NULL, NULL, &amp;in, &amp;out) ;
+   if (SOAP_OK != ret) { soap_print_fault(soap, stderr); exit(-1); }
+
+   printf("Sum = %d\n", out.AddResult);
+
+   soap_destroy(soap); soap_end(soap); soap_free(soap);
+   return 0;
+ }
+</code></pre>
+</li>
+<li>Hay que compilar todo, por ejemplo usando:<pre><code class="lang-bash"> gcc -o app-d   app-d.c soapC.c soapClient.c -lgsoap
+</code></pre>
+En caso de tener, por ejemplo, instalado gsoap 2.8.127 con <em>brew</em>, se podría usar:<pre><code class="lang-bash"> gcc -o app-d \
+     -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ \
+     -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
+     app-d.c soapC.c soapClient.c -lgsoap
+</code></pre>
+</li>
+<li>La ejecución del ejemplo sería:<pre><code class="lang-bash">$ ./app-d
+Sum = 2
+</code></pre>
+</li>
+</ol>
+<h2 id="creación-de-un-servicio-distribuido-basado-en-gsoapxml-cliente-y-servidor-en-c">Creación de un servicio distribuido basado en gSOAP/XML (cliente y servidor, en C)</h2>
+<p>El siguiente ejemplo está basado en el ejemplo de calculadora disponible en: <a href="https://www.genivia.com/dev.html#client-c" target="_blank">https://www.genivia.com/dev.html#client-c</a></p>
+<p>En el proceso de creación de un servicio distribuido basado en gSOAP/XML que permita sumar y restar, <br></br>los pasos a seguir son:</p>
+<ol>
+<li>Hay que generar el archivo de cabecera <strong><code>calc.h</code></strong> con la interfaz del servicio:<pre><code class="lang-c"> //gsoap ns service name: calc
+ //gsoap ns schema namespace: urn:calc
+ int ns__add(double a, double b, double *result);
+ int ns__sub(double a, double b, double *result);
+</code></pre>
+</li>
+<li>Con <em>soapcpp2</em> (versión 2.8.91 o compatible) hay que generar los resguardos (<em>stubs</em>) a partir de la interfaz de calc.h:<pre><code class="lang-bash">soapcpp2 -cL calc.h
+</code></pre>
+Gracias al mandato soapcpp2 se han generado gran parte del trabajo, como se puede ver en la siguiente figura: <br></br>
+<img src="https://www.genivia.com/images/flowchart.png" style="max-height:512"></img><br></br><br></br></li>
+<li><p>Hay que crear la parte que implementa el servicio, por ejemplo en el archivo <strong><code>lib-server.c</code></strong>:</p>
+<pre><code class="lang-c">#include "soapH.h"
+#include "calc.nsmap"
+
+int main(int argc, char **argv)
+{
+   struct soap soap;
+
+   if (argc &lt; 2) {
+       printf("Uso: %s <puerto>\n", argv[0]) ;
+       exit(-1);
+   }
+   soap_init(&amp;soap);
+   soap_bind(&amp;soap, NULL, atoi(argv[1]), 100);
+   while(1)
+   {
+     soap_accept(&amp;soap);
+     soap_serve(&amp;soap);
+     soap_end(&amp;soap);
+   }
+
+   return 0;
+}
+
+int ns__add ( struct soap *soap, double a, double b, double *result )
+{
+    *result = a + b;
+    return SOAP_OK;
+}
+
+int ns__sub ( struct soap *soap, double a, double b, double *result )
+{
+    *result = a - b;
+    return SOAP_OK;
+}
+</puerto></code></pre>
+</li>
+<li><p>Hay que crear la aplicación <strong><code>app-d.c</code></strong> que use el servicio:</p>
+<pre><code class="lang-c">#include "soapH.h"
+#include "calc.nsmap"
+
+int d_add ( double a, double b, double *r )
+{
+    struct soap soap;
+
+    // env SERVER_IP=localhost:12345 ./app-d
+    char *host = getenv("SERVER_IP") ;
+    if (NULL == host) {
+        printf("ERROR: missing 'export SERVER_IP=<ip>:<port>'\n") ;
+        return -1 ;
+    }
+
+    soap_init(&amp;soap);
+    soap_call_ns__add(&amp;soap, host, "", a, b, r);
+    if (soap.error) {
+        soap_print_fault(&amp;soap, stderr);
+        return -1 ;
+    }
+    soap_done(&amp;soap) ;
+
+    return 0 ;
+}
+
+int main ( int argc, char **argv )
+{
+    double result = 0 ;
+    int ret ;
+
+    ret = d_add(1.0, 2.0, &amp;result) ;
+    if (ret &lt; 0)
+         printf("result is not valid\n") ;
+    else printf("result = %g\n", result) ;
+
+    return 0;
+}
+</port></ip></code></pre>
+</li>
+<li>Hay que compilar todo, por ejemplo usando:<pre><code class="lang-bash"> gcc -g -o app-d       app-d.c soapC.c soapClient.c -lgsoap
+ gcc -g -o lib-server  lib-server.c soapC.c soapServer.c -lgsoap
+</code></pre>
+En caso de tener, por ejemplo, instalado gsoap 2.8.127 con <em>brew</em>, se podría usar:<pre><code class="lang-bash"> gcc -g -o app-d \
+     -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
+     app-d.c soapC.c soapClient.c -lgsoap
+ gcc -g -o lib-server \
+     -I/opt/homebrew/Cellar/gsoap/2.8.127/include/ -L/opt/homebrew/Cellar/gsoap/2.8.127/lib/ \
+     lib-server.c soapC.c soapServer.c -lgsoap
+</code></pre>
+</li>
+<li>Es posible ejecutar por un lado el servidor (lib-server) y por otro el cliente (app-d) de la siguiente manera:<pre><code class="lang-bash"> $ ./lib-server 12345 &amp;
+ $ env SERVER_IP=localhost:12345 ./app-d
+ result = 3
+</code></pre>
+</li>
+</ol>
+<h2 id="otras-tecnologías-además-de-rest-y-soap">Otras tecnologías además de REST y SOAP</h2>
+<p>REST y SOAP han ido evolucionando, al igual que han apareciendo nuevas tecnologías.
+La siguiente imagen resume la evolución en el tiempo y la comparación de las principales tecnologías:</p>
+<p> <img src="../materials/topic-ws/web-services/web-services-api-timeline.svg" alt="Evolución de tecnologías Web"></img> <br></br></p>
+<p>La siguiente tabla resume los principales aspectos de algunas de las principales tecnologías:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SOAP</th>
+<th>REST</th>
+<th>JSON-RPC</th>
+<th>gRPC</th>
+<th>GraphQL</th>
+<th>Thrift</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Presentado</td>
+<td>fin 1990s</td>
+<td>2000</td>
+<td>mitad 2000</td>
+<td>2015</td>
+<td>2015</td>
+<td>2007</td>
+</tr>
+<tr>
+<td>Formato</td>
+<td>XML</td>
+<td>JSON, XML, ...</td>
+<td>JSON</td>
+<td>Protobuf, JSON, ...</td>
+<td>JSON</td>
+<td>JSON o binario</td>
+</tr>
+<tr>
+<td>Ventajas</td>
+<td>conocido</td>
+<td>Formato de intercambio flexible y simple</td>
+<td>Simple de implementar</td>
+<td>Permite cualquier tipo función</td>
+<td>Estructuración flexible de datos</td>
+<td>Adaptable a muchos casos de uso</td>
+</tr>
+<tr>
+<td>Casos de uso</td>
+<td>pagos, "legacy", ...</td>
+<td>API pública</td>
+<td></td>
+<td>HPC microservicios</td>
+<td>API móvil</td>
+<td></td>
+</tr>
+<tr>
+<td>Organización</td>
+<td>mensajes empaquetados</td>
+<td>cumplir 6 restricciones</td>
+<td></td>
+<td>llamada a procedimiento</td>
+<td>sistema tipado</td>
+</tr>
+</tbody>
+</table>
+<p>Entre estas tecnologías hay que destacar dos:</p>
+<ul>
+<li><strong>gRPC</strong>, que es un proyecto creado por Google para su uso interno.</li>
+<li><strong>Apache Thrift</strong>, que es un proyecto originalmente creado por Facebook también para su uso interno.
+Ambas tecnologías permiten crear software en distintos lenguajes, y usar protocolos eficientes.</li>
+</ul>
+<h3 id="motor-de-la-evolución-servicios-con-más-necesidades">Motor de la evolución: servicios con más necesidades</h3>
+<p>A día de hoy, el estándar más usado como base de servicios Web es HTTP lo que hace que solo usando HTTP todo se tenga que basar en el modelo de interacción <em>petición/respuesta</em> y protocolo basado en mensajes de <em>texto</em>.
+En algunos casos puede que no sea el modelo ideal para construir algunos servicios lo que fuerza a adaptar dichos servicios al modelo y protocolo de una forma que complica tanto el diseño y como la eficiencia de ejecución.</p>
+<p>Algunos ejemplos de modelos de interacción diferentes al <em>petición/respuesta</em> se tienen:</p>
+<ul>
+<li><strong>Fire-and-forget</strong>. Este modelo es una optimización del modelo <em>petición/respuesta</em> que es útil cuando la respuesta no es necesaria. Por ejemplo si un cliente quiere usar un servicio no crítico de registro de eventos (<em>non-critical event logging</em>). Ahorra tanto recursos de uso en red (al no enviar la respuesta) y también recursos de procesamiento (al necesitar el procesamiento de la respuesta). También es común su uso en <a href="https://dasunpubudumal.medium.com/distributed-systems-messaging-eee8e70c4a77" target="_blank">sistemas de mensajería</a></li>
+<li><strong>Request/stream</strong>. Este modelo es una variante de <em>petición/respuesta</em> en el que la respuesta no es un único mensaje sino una colección de mensajes. Por ejemplo si un cliente pide la lista de productos de un catálogo.</li>
+<li><strong>Event</strong>. Este modelo es una variante de modelo <em>petición/respuesta</em> en el que no hay una petición y si una secuencia de  respuestas, son mensajes de respuesta asociados a eventos asíncronos. Por ejemplo si un cliente quiere estar suscrito a los comentarios que se vayan haciendo de una transmisión deportiva.</li>
+</ul>
+<h2 id="ejemplos-de-otras-tecnologías">Ejemplos de otras tecnologías</h2>
+<p>Como ejemplos de otras tecnologías se tienen los siguientes:</p>
+<ul>
+<li>Python - SSE: Ejemplo simple de servicio web basado en SSE </li>
+<li>BASH - SSE: Ejemplo simple de servicio web basado en SSE </li>
+<li>Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)</li>
+<li>Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)</li>
+</ul>
+<h2 id="ejemplo-simple-de-servicio-web-basado-en-sse-en-python">Ejemplo simple de servicio web basado en SSE (en Python)</h2>
+<p>El siguiente es un ejemplo de <a href="https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events" target="_blank">Server Side Events</a> basado en Python. \
+Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).</p>
+<p>Este ejemplo está compuesto de 2 ficheros:</p>
+<ul>
+<li><p>El archivo <strong><code>demo-server.py</code></strong>: servidor que cada segundo genera un mensaje con el instante de tiempo actual</p>
+<pre><code class="lang-python">import time, datetime
+from flask import Flask, Response
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
+
+@app.route("/")
+def publish_data():
+    def stream():
+        while True:
+            ts  = datetime.datetime.now()
+            msg = f"data: " + str(ts) + "\n\n"
+            yield msg
+            time.sleep(1)
+
+    return Response(stream(), mimetype="text/event-stream")
+
+if __name__ == "__main__":
+     app.run(debug=True, port=5000)
+</code></pre>
+</li>
+<li>La página web <strong><code>demo-client.html</code></strong>: se encarga de mostrar la información que va llegando en tiempo real.<pre><code class="lang-html"><!DOCTYPE >
+<html>
+  <head><meta charset="utf-8"></meta></head>
+  <body>
+  <div id="msg1"></div><br></br>
+  <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div><br></br>
+  <script>
+    var s = new EventSource('http://localhost:5000');
+        s.onmessage = function(e) {
+            document.getElementById("msg1").innerHTML = e.data ;
+            var old_msg2 = document.getElementById("msg2").innerHTML ;
+            document.getElementById("msg2").innerHTML = e.data + '&lt;br&gt;' + old_msg2 ;
+        };
+  </script>
+  </body>
+</html>
+</code></pre>
+</li>
+</ul>
+<p>Los pasos para la ejecución típica son:</p>
+<ul>
+<li>Ejecutar el servidor:<pre><code class="lang-bash">python3 ./demo-server.py
+</code></pre>
+</li>
+<li>Ejecutar el cliente:<pre><code class="lang-bash">firefox demo-client.html
+</code></pre>
+</li>
+</ul>
+<p>En la página Web <code>demo-client.html</code> cada segundo llega un evento por parte de <code>demo-server.py</code>.
+En lugar de mostrarse en la página Web el instante de tiempo cada segundo, se puede mandar otro tipo de información (por ejemplo, valores de los sensores), con distinto tipo de periodicidad y distinto tipo de visualización o procesamiento.</p>
+<h2 id="ejemplo-simple-de-servicio-web-basado-en-sse-en-bash">Ejemplo simple de servicio web basado en SSE (en bash)</h2>
+<p>El siguiente es un ejemplo de <a href="https://developer.mozilla.org/es/docs/Web/API/Server-sent_events/Using_server-sent_events" target="_blank">Server Side Events</a> o eventos enviados por servidor. \
+Los eventos enviados por el servidor (SSE) es una tecnología que permite enviar notificaciones/mensajes/eventos desde el servidor a los clientes a través de una conexión HTTP (tecnología push).</p>
+<p>Este ejemplo está disponible en <a href="../ws-rest-sse-bash/README.md">ws-rest-sse-bash</a> y está compuesto de 3 ficheros:</p>
+<ul>
+<li>El script <strong><code>demo-server.sh</code></strong>: manda la salida del script <strong><code>demo.sh</code></strong> al mandato <strong>nc</strong> (<em>net cat</em>) que está escuchando en el puerto 8080.<pre><code class="lang-bash">#!/bin/bash
+set -x
+./demo.sh | nc -l -p 8080
+</code></pre>
+</li>
+<li>El script <strong><code>demo.sh</code></strong>: se encarga de mandar las cabeceras de respuesta de un servidor web, y luego cada segundo manda el instante de tiempo dentro de un JSON.<pre><code class="lang-bash">#!/bin/bash
+# (1) cabeceras
+echo "HTTP/1.1 200 OK"
+echo "Access-Control-Allow-Origin: *"
+echo "Content-Type: text/event-stream"
+echo "Cache-Control: no-cache"
+echo ""
+# (2) cada segundo manda "data: {'timestamp': <instante>}"
+while [ 1 ]; do
+  T=$(date +%H:%M:%S)
+  echo "data: {'timestamp': $T}"
+  echo ""
+  echo ""
+  sleep 1
+done
+</instante></code></pre>
+</li>
+<li>La página web <strong><code>demo-client.html</code></strong>: se encarga de mostrar la información que va llegando en tiempo real.<pre><code class="lang-html"><!DOCTYPE >
+<html>
+  <head><meta charset="utf-8"></meta></head>
+  <body>
+  <div id="msg1"></div><br></br>
+  <div id="msg2" style="overflow-y: scroll;height: 300px; width: 360px;"></div><br></br>
+  <script>
+    var s = new EventSource('http://localhost:8080');
+        s.onmessage = function(e) {
+            document.getElementById("msg1").innerHTML = e.data ;
+            var old_msg2 = document.getElementById("msg2").innerHTML ;
+            document.getElementById("msg2").innerHTML = e.data + '&lt;br&gt;' + old_msg2 ;
+        };
+  </script>
+  </body>
+</html>
+</code></pre>
+</li>
+</ul>
+<p>Los pasos para la ejecución típica son:</p>
+<ul>
+<li>Ejecutar el servidor:<pre><code>chmod a+x *.sh
+./demo-server.sh &amp;
+</code></pre></li>
+<li>Ejecutar el cliente:<pre><code>firefox demo-client.html
+</code></pre></li>
+</ul>
+<p>En la página Web <code>demo-client.html</code> cada segundo llega un evento por parte del script <code>demo.sh</code> a través del mandato <code>nc</code>que simula un servidor web en el puerto 8080.
+En lugar de mostrarse en la página Web el instante de tiempo cada segundo, se puede mandar otro tipo de información (por ejemplo, valores de los sensores), con distinto tipo de periodicidad y distinto tipo de visualización o procesamiento.</p>
+<h2 id="creación-de-un-servicio-distribuido-basado-en-apache-thrift-cliente-y-servidor-en-python">Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)</h2>
+<p>El siguiente ejemplo está basado en el ejemplo disponible en: <a href="https://github.com/apache/thrift/tree/master/tutorial/py" target="_blank">https://github.com/apache/thrift/tree/master/tutorial/py</a></p>
+<p>En el proceso de creación de un servicio distribuido basado en Apache Thrift que permita sumar y restar, <br></br>los pasos a seguir son:</p>
+<ol>
+<li>Hay que generar el archivo <strong><code>calc.thrift</code></strong> con la interfaz del servicio:<pre><code class="lang-c">service calc
+{
+   i32 add(1:i32 a, 2:i32 b) ;
+   i32 sub(1:i32 a, 2:i32 b) ;
+}
+</code></pre>
+</li>
+<li>Con <em>thrift</em> (versión 0.13.0 o compatible) hay que generar los resguardos (<em>stubs</em>) a partir de la interfaz de calc.thrift:<pre><code class="lang-bash">thrift -r --gen py calc.thrift
+cd gen-py
+</code></pre>
+</li>
+<li><p>Hay que crear la parte que implementa el servicio, por ejemplo en el archivo <strong><code>server.py</code></strong>:</p>
+<pre><code class="lang-python">from calc import calc
+from calc.ttypes import *
+
+from thrift.transport import TSocket
+from thrift.transport import TTransport
+from thrift.protocol  import TBinaryProtocol
+from thrift.server    import TServer
+
+class calcHandler:
+    def __init__(self):
+        self.log = {}
+    def add(self, n1, n2):
+        print('add(%d,%d)' % (n1, n2))
+        return n1 + n2
+    def sub(self, n1, n2):
+        print('sub(%d,%d)' % (n1, n2))
+        return n1 - n2
+
+if __name__ == '__main__':
+    handler   = calcHandler()
+    processor = calc.Processor(handler)
+    transport = TSocket.TServerSocket(host='127.0.0.1', port=9090)
+    tfactory  = TTransport.TBufferedTransportFactory()
+    pfactory  = TBinaryProtocol.TBinaryProtocolFactory()
+
+    server = TServer.TSimpleServer(processor, transport, tfactory, pfactory)
+    # You could do one of these for a multithreaded server
+    # server = TServer.TThreadedServer  (processor, transport, tfactory, pfactory)
+    # server = TServer.TThreadPoolServer(processor, transport, tfactory, pfactory)
+
+    print('Starting the server on localhost:9090...')
+    server.serve()
+    print('done.')
+</code></pre>
+</li>
+<li><p>Hay que crear la parte cliente que use el servicio, por ejemplo en el archivo <strong><code>client.py</code></strong>:</p>
+<pre><code class="lang-python">from calc import calc
+from calc.ttypes import *
+
+from thrift import Thrift
+from thrift.transport import TSocket
+from thrift.transport import TTransport
+from thrift.protocol import TBinaryProtocol
+
+def main():
+    transport = TSocket.TSocket('localhost', 9090)
+    transport = TTransport.TBufferedTransport(transport)
+    protocol  = TBinaryProtocol.TBinaryProtocol(transport)
+
+    transport.open()
+    client = calc.Client(protocol)
+    res_ = client.add(1, 1)
+    print('1+1=%d' % res_)
+    res_ = client.sub(1, 1)
+    print('1-1=%d' % res_)
+    transport.close()
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Thrift.TException as tx:
+        print('%s' % tx.message)
+</code></pre>
+</li>
+<li>Es posible ejecutar el servidor y el cliente de la siguiente manera:<pre><code class="lang-bash"> $ python3 ./server.py &amp;
+ $ python3 ./client.py
+ add(1,1)
+ 1+1=2
+ sub(1,1)
+ 1-1=0
+</code></pre>
+</li>
+</ol>
+<h2 id="creación-de-un-servicio-distribuido-basado-en-grpc-cliente-y-servidor-en-python">Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)</h2>
+<p>El siguiente ejemplo está basado en el ejemplo disponible en: <a href="https://medium.com/@coderviewer/simple-usage-of-grpc-with-python-f714d9f69daa" target="_blank">https://medium.com/@coderviewer/simple-usage-of-grpc-with-python-f714d9f69daa</a></p>
+<p>En el proceso de creación de un servicio distribuido basado en gRPC que permita sumar y restar, <br></br>los pasos a seguir son:</p>
+<ol>
+<li><p>Hay que generar el archivo <strong><code>calc.proto</code></strong> con la interfaz del servicio:</p>
+<pre><code class="lang-c">syntax = "proto3";
+package calculator;
+
+service Calculator {
+  rpc Add (AddRequest) returns (AddResponse);
+}
+
+message AddRequest {
+  int32 num1 = 1;
+  int32 num2 = 2;
+}
+
+message AddResponse {
+  int32 result = 1;
+}
+</code></pre>
+</li>
+<li>Con <em>grpc_tools.protoc</em> (<code>pip3 install grpcio grpcio-tools</code>) hay que generar los resguardos (<em>stubs</em>) a partir de la interfaz de calc.proto:<pre><code class="lang-bash">python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. calc.proto
+</code></pre>
+</li>
+<li><p>Hay que crear la parte que implementa el servicio, por ejemplo en el archivo <strong><code>server.py</code></strong>:</p>
+<pre><code class="lang-python">import grpc
+from concurrent import futures
+import calc_pb2
+import calc_pb2_grpc
+
+class CalculatorServicer(calc_pb2_grpc.CalculatorServicer):
+     def Add(self, request, context):
+         result = request.num1 + request.num2
+         return calc_pb2.AddResponse(result=result)
+
+server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+calc_pb2_grpc.add_CalculatorServicer_to_server(CalculatorServicer(), server)
+server.add_insecure_port('[::]:50051')
+server.start()
+server.wait_for_termination()
+</code></pre>
+</li>
+<li><p>Hay que crear la parte cliente que use el servicio, por ejemplo en el archivo <strong><code>client.py</code></strong>:</p>
+<pre><code class="lang-python">import grpc
+import calc_pb2
+import calc_pb2_grpc
+
+with grpc.insecure_channel('localhost:50051') as channel:
+    stub = calc_pb2_grpc.CalculatorStub(channel)
+    response = stub.Add(calc_pb2.AddRequest(num1=1, num2=2))
+print(f"Result: {response.result}")
+</code></pre>
+</li>
+<li>Es posible ejecutar el servidor y el cliente de la siguiente manera:<pre><code class="lang-bash">$ python3 ./server.py &amp;
+$ python3 ./client.py
+Result: 3
+</code></pre>
+</li>
+</ol>
+<h2 id="ejemplo-de-json-rpc-sobre-http-servidor-mcp-de-calculadora-simple-cliente-y-servidor-en-python">Ejemplo de JSON-RPC sobre HTTP: servidor MCP de calculadora simple (cliente y servidor, en Python)</h2>
+<ul>
+<li><p>Un <strong>servicio basado en MCP ofrece principalmente cuatro tipos de funciones</strong>:</p>
+<ul>
+<li><em>Tools</em>: las utilidades son funciones que el cliente puede invocar para realizar acciones o accesos a sistemas externos.</li>
+<li><em>Resources</em>: los recursos exponen fuentes de datos que el cliente puede leer.</li>
+<li><em>Resource templates</em>: las plantillas de recursos son recursos parametrizados que permiten al cliente pedir un dato específico.</li>
+<li><em>Prompts</em>: Las entradas son plantillas de mensajes reusables para guiar a un LLM.</li>
+</ul>
+</li>
+<li><p>Para trabajar con el protocolo MCP se usará uvicorn y las bibliotecas <code>FastMCP</code> y <code>FastAPI</code>:</p>
+<pre><code class="lang-bash">sudo apt install uvicorn -y
+pip3 install fastmcp fastapi --break-system-packages
+</code></pre>
+</li>
+<li><p>En <a href="../materials/lab-mcp-jsonrpc/README.md">ws-jsonrpc-mcp</a> está disponible un ejemplo compuesto de 2 ficheros:</p>
+<ul>
+<li><p>El servidor <strong><code>mcp_server_calc.py</code></strong> en Python de una calculadora simple:</p>
+<pre><code class="lang-python">from fastapi import FastAPI
+from fastmcp import FastMCP
+import uvicorn
+
+# A. Initialize FastMCP
+mcp = FastMCP("calculator")
+
+## A.1. Utilidades (*tools*)
+@mcp.tool()
+def add(a: int, b: int) -&gt; int:
+    """Add two numbers and return the result."""
+    return a + b
+
+@mcp.tool()
+def sub(a: int, b: int) -&gt; int:
+    """Substract two numbers and return the result."""
+    return a - b
+
+@mcp.tool()
+def mul(a: int, b: int) -&gt; int:
+    """Multiply two numbers and return the result."""
+    return a * b
+
+@mcp.tool()
+def div(a: int, b: int) -&gt; int:
+    """Divide two numbers and return the result."""
+    return a / b
+
+# A.2. Entradas (*prompts*)
+@mcp.prompt()
+def calculator_prompt(a: float, b: float, operation: str) -&gt; str:
+    if operation == "add":
+        return f"The result of adding {a} and {b} is {add(a, b)}"
+    elif operation == "subtract":
+        return f"The result of subtracting {b} from {a} is {sub(a, b)}"
+    elif operation == "multiply":
+        return f"The result of multiplying {a} and {b} is {mul(a, b)}"
+    elif operation == "divide":
+        try:
+            return f"The result of dividing {a} by {b} is {div(a, b)}"
+        except ValueError as e:
+            return str(e)
+    else:
+        return "Invalid operation. Please choose add, subtract, multiply, or divide."
+
+# B. Initialize FastAPI
+mcp_app = mcp.http_app(path="/")
+api = FastAPI(lifespan=mcp_app.lifespan)
+
+## B.1. Get status
+@api.get("/api/status")
+def status():
+    return {"status": "ok"}
+
+# C. Mount MCP on FastAPI at "/mcp"  and run on (IP=ANY, port=8000)
+api.mount("/mcp", mcp_app)
+
+if __name__ == "__main__":
+    uvicorn.run(api, host="0.0.0.0", port=8000)
+</code></pre>
+</li>
+<li><p>El cliente <strong><code>mcp_client_calc.py</code></strong> en Python de una la calculadora simple:</p>
+<pre><code class="lang-python">import asyncio
+from fastmcp import Client
+
+async def main():
+  # Conectar al servidor MCP vía HTTP
+  client = Client("http://127.0.0.1:8000/mcp/")
+
+  # Abrir sesión
+  async with client:
+      # Listar herramientas disponibles
+      tools = await client.list_tools()
+      print("Herramientas disponibles:")
+      for tool in tools:
+          print("-", tool.name)
+      print("\n")
+
+      # Llamar a add(1,2)
+      result = await client.call_tool("add", {"a": 1, "b": 2})
+      print("Resultado de add(1,2):")
+      print(result)
+
+if __name__ == "__main__":
+   asyncio.run(main())
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="ejemplo-de-ejecución">Ejemplo de ejecución:</h3>
+<html>
+<table>
+<tr><th>Paso</th><th>Cliente</th><th>Servidor</th></tr>
+<tr>
+<td>1</td>
+<td></td>
+<td>
+
+```bash
+$ python3 ./mcp_server_calc.py &amp;
+
+...
+INFO: Started server process [172886]
+INFO: Waiting for application startup.
+INFO: Application startup complete.
+INFO: Uvicorn running on http://0.0.0.0:8000
+      (Press CTRL+C to quit)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>
+
+```bash
+$ python3 ./mcp_client_calc.py
+
+...
+Herramientas disponibles:
+  - add
+  - sub
+  - mul
+  - div
+
+Resultado de add(1,2):
+CallToolResult(content=[TextContent(type='text',
+                                   text='3',
+                                   annotations=None,
+                                   meta=None)],
+                 structured_content={'result': 3},
+                 meta=None, data=3,
+                 is_error=False)
+...
+```
+
+</td>
+<td>
+
+```bash
+...
+INFO: 127.0.0.1:48316 - "POST /mcp/ HTTP/1.1" 200 OK
+INFO: 127.0.0.1:48320 - "POST /mcp/ HTTP/1.1" 202 Accepted
+INFO: 127.0.0.1:48336 - "GET /mcp/ HTTP/1.1" 200 OK
+INFO: 127.0.0.1:48342 - "POST /mcp/ HTTP/1.1" 200 OK
+INFO: 127.0.0.1:48358 - "POST /mcp/ HTTP/1.1" 200 OK
+INFO: 127.0.0.1:48364 - "DELETE /mcp/ HTTP/1.1" 200 OK
+...
+```
+
+</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td></td>
+<td>
+
+```bash
+$ killall python3
+
+INFO: Shutting down
+INFO: Waiting for application shutdown.
+INFO: Application shutdown complete.
+INFO: Finished server process [181555]
+```
+
+</td>
+</tr>
+</table>
+</html>
+
+
+
+<p><br></br></p>
+<h2 id="información-adicional">Información adicional</h2>
+<ul>
+<li>Transparencias:<ul>
+<li><a href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ws/t8_web-services.pdf" target="_blank">Tema 8: t8_web-services.pdf</a></li>
+</ul>
+</li>
+<li>SOAP, REST, gRPC, etc.:<ul>
+<li><a href="https://www.mertech.com/blog/know-your-api-protocols" target="_blank">Know your API protocols: SOAP vs. REST vs. JSON-RPC vs. gRPC vs. GraphQL vs. Thrift</a></li>
+<li><a href="https://www.soa4u.co.uk/2019/02/a-brief-look-at-evolution-of-interface.html" target="_blank">A brief look at the evolution of interface protocols leading to modern APIs</a></li>
+<li><a href="https://www.altexsoft.com/blog/soap-vs-rest-vs-graphql-vs-rpc/" target="_blank">Soap vs REST vs GrapQL vs gRPC</a></li>
+<li><a href="https://www.soa4u.co.uk/2019/02/a-brief-look-at-evolution-of-interface.html" target="_blank">A brief look at the evolution of interface protocols leading to modern APIs</a></li>
+<li><a href="https://www.hardikp.com/2018/07/28/services/" target="_blank">RPC Frameworks: gRPC vs Thrift vs RPyC for python</a></li>
+</ul>
+</li>
+<li>MCP:<ul>
+<li><a href="https://gofastmcp.com/tutorials/create-mcp-server" target="_blank">Ejemplo de Servidor MCP server</a></li>
+<li><a href="https://scrapfly.io/blog/posts/how-to-build-an-mcp-server-in-python-a-complete-guide" target="_blank">How to Build an MCP Server in Python: A Complete Guide</a></li>
+</ul>
+</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../topic-dfs/dfs.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Sistemas de ficheros distribuidos">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Servicios web","level":"8.1","depth":1,"next":{"title":"Tolerancia a fallos (PDF)","level":"9.1","depth":1,"url":"https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ft/t9_tolerancia-a-fallos.pdf","ref":"https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ft/t9_tolerancia-a-fallos.pdf","articles":[]},"previous":{"title":"Sistemas de ficheros distribuidos","level":"7.1","depth":1,"path":"topic-dfs/dfs.md","ref":"topic-dfs/dfs.md","articles":[]},"dir":"ltr"},"config":{"plugins":["mermaid","highlight","hide-published-with","hints","chapter-fold"],"styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"search":{},"mermaid":{},"hints":{"info":"fa fa-info-circle","tip":"fa fa-mortar-board","danger":"fa fa-exclamation-circle","working":"fa fa-wrench"},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"hide-published-with":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{"exclude":["mermaid"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Felix Garcia-Carballeira y Alejandro Calderon-Mateos","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Sistemas Distribuidos","gitbook":"*","description":"Sistemas Distribuidos (UC3M)"},"file":{"path":"topic-ws/web-services.md","mtime":"2026-02-19T11:05:52.136Z","type":"markdown"},"gitbook":{"version":"6.1.7","time":"2026-04-10T14:15:27.234Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid-load.js"></script>
+        
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-hide-published-with/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

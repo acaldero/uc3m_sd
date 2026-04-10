@@ -1,0 +1,708 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Introducción a make · Sistemas Distribuidos</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.1.7">
+        <meta name="author" content="Felix Garcia-Carballeira y Alejandro Calderon-Mateos">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/honkit-plugin-mermaid/mermaid.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-hints/plugin-hints.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../topic-concurrency/ssdd_threads_posix.html" />
+    
+    
+    <link rel="prev" href="ssdd_c.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Índice
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="ssdd_c.html">
+            
+                <a href="ssdd_c.html">
+            
+                    
+                    C para distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.2" data-path="ssdd_make.html">
+            
+                <a href="ssdd_make.html">
+            
+                    
+                    Introducción a make
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../topic-concurrency/ssdd_threads_posix.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_posix.html">
+            
+                    
+                    Concurrencia con POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../topic-concurrency/ssdd_threads_c.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_c.html">
+            
+                    
+                    Concurrencia con C11
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../topic-messagepassing/ssdd_pq.html">
+            
+                <a href="../topic-messagepassing/ssdd_pq.html">
+            
+                    
+                    Colas de mensajes POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../topic-messagepassing/mpi.html">
+            
+                <a href="../topic-messagepassing/mpi.html">
+            
+                    
+                    Introducción a MPI
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.2.1" >
+            
+                <a target="_blank" href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb">
+            
+                    
+                    MPI (notebook)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../topic-sockets/ssdd_sockets.html">
+            
+                <a href="../topic-sockets/ssdd_sockets.html">
+            
+                    
+                    Sockets
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../topic-ds/ds.html">
+            
+                <a href="../topic-ds/ds.html">
+            
+                    
+                    Servicios distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../topic-rpc/rpc.html">
+            
+                <a href="../topic-rpc/rpc.html">
+            
+                    
+                    RPC
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../topic-dfs/dfs.html">
+            
+                <a href="../topic-dfs/dfs.html">
+            
+                    
+                    Sistemas de ficheros distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../topic-ws/web-services.html">
+            
+                <a href="../topic-ws/web-services.html">
+            
+                    
+                    Servicios web
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" >
+            
+                <a target="_blank" href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ft/t9_tolerancia-a-fallos.pdf">
+            
+                    
+                    Tolerancia a fallos (PDF)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Introducción a make</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="resumen-de-los-principales-aspectos-del-uso-de-make-para-sistemas-distribuidos">Resumen de los principales aspectos del uso de Make para Sistemas Distribuidos</h1>
+<ul>
+<li><strong>Felix García Carballeira y Alejandro Calderón Mateos</strong> @ arcos.inf.uc3m.es</li>
+<li><a href="https://github.com/acaldero/uc3m_sd/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg" alt="License: CC BY-NC-SA 4.0"></img></a></li>
+</ul>
+<h2 id="contenidos">Contenidos</h2>
+<ul>
+<li>Puesta en marcha:<ul>
+<li><a href="#requisitos">Requisitos</a></li>
+<li><a href="#ejemplo-de-c%C3%B3digo-para-compilar-con-makefile">Ejemplo de código para compilar con Makefile</a></li>
+</ul>
+</li>
+<li>De la compilación a mano al uso de Makefile con reglas:<ul>
+<li><a href="#compilaci%C3%B3n-sin-makefile-compilaci%C3%B3n-manual">Compilación SIN Makefile</a></li>
+<li><a href="#compilaci%C3%B3n-con-makefile-primera-versi%C3%B3n">Compilación con Makefile sencillo</a></li>
+<li><a href="#compilaci%C3%B3n-con-makefile-segunda-versi%C3%B3n-con-variables">Compilación con Makefile con variables</a></li>
+<li><a href="#compilaci%C3%B3n-con-makefile-tercera-versi%C3%B3n-con-reglas">Compilación con Makefile con reglas</a></li>
+<li><a href="#compilaci%C3%B3n-con-makefile-cuarta-versi%C3%B3n-con-reglas-especiales">Compilación con Makefile con reglas especiales</a></li>
+</ul>
+</li>
+<li><a href="#material-recomendado">Materiales adicionales</a></li>
+</ul>
+<h2 id="requisitos">Requisitos</h2>
+<p> Los principales requisitos son:</p>
+<ul>
+<li>Tener conexión a Internet para consultar documentación.</li>
+<li>Tener acceso a una máquina con Linux con software de desarrollo instalado:<ul>
+<li>Puede usar las Aulas Virtuales del Laboratorio del Departamento de Informática:<ul>
+<li><a href="https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/" target="_blank">"https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/</a></li>
+</ul>
+</li>
+<li>Puede usar su Debian/Ubuntu con: <code>sudo apt-get install build-essential gdb ddd</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="ejemplo-de-código-para-compilar-con-makefile">Ejemplo de código para compilar con Makefile</h2>
+<p>Usaremos tres archivos:</p>
+<ul>
+<li><p>lib_hola.h</p>
+<pre><code class="lang-c">void di_hola ( void ) ;
+</code></pre>
+</li>
+<li><p>lib_hola.c</p>
+<pre><code class="lang-c">void di_hola ( void )
+{
+   printf("Hola Mundo...") ;
+}
+</code></pre>
+</li>
+<li><p>main.c</p>
+<pre><code class="lang-c">#include <lib_hola.h>
+
+int main ( int argc, char *argv[] )
+{
+   di_hola() ;
+   return 0 ;
+}
+</lib_hola.h></code></pre>
+</li>
+</ul>
+<h2 id="compilación-sin-makefile-compilación-manual">Compilación SIN Makefile (compilación manual)</h2>
+<p>Para compilar los anteriores archivos hay que ejecutar los siguientes mandatos:</p>
+<pre><code class="lang-bash">gcc -g -Wall -c lib_hola.c -o lib_hola.o
+gcc -g -Wall -c main.c     -o main.o
+gcc -g -Wall -o main main.o lib_hola.o
+</code></pre>
+<h2 id="compilación-con-makefile-primera-versión">Compilación con Makefile (primera versión)</h2>
+<p>Usaremos el siguiente archivo inicialmente:</p>
+<ul>
+<li>Makefile:<pre><code class="lang-bash">all:
+    gcc -g -Wall -c lib_hola.c -o lib_hola.o
+    gcc -g -Wall -c main.c     -o main.o
+    gcc -g -Wall -o main main.o lib_hola.o
+</code></pre>
+</li>
+</ul>
+<p>Para usar el archivo Makefile hay que ejecutar:</p>
+<pre><code class="lang-bash">  make
+</code></pre>
+<h3 id="estructura-básica-del-archivo-makefile">Estructura básica del archivo Makefile</h3>
+<p>El esqueleto del Makefile anterior es:</p>
+<pre><code class="lang-bash">targets: prerequisites
+    command 1
+    command 2
+    command 3
+</code></pre>
+<p>Donde para obtener un objetivo (targets) se indica 2 elementos:</p>
+<ul>
+<li>Prerequisitos (prerequisites): que son objetivos que hay que cumplir primero</li>
+<li>Mandatos (command 1/2/3): una vez se tengan los prerequisitos la forma de tener el objetivo es ejecutar los mandatos uno detrás de otro<blockquote>
+<p>Importante: no vale usar espacios en blanco antes de cada "gcc -g ...", solo vale tabuladores.</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="compilación-con-makefile-segunda-versión-con-variables">Compilación con Makefile (segunda versión con variables)</h2>
+<p>Usaremos el siguiente archivo makefile:</p>
+<ul>
+<li><p>Makefile:</p>
+<pre><code class="lang-bash">CC=gcc
+CFLAGS=-g -Wall
+
+all:
+    $(CC) $(CFLAGS) -c lib_hola.c -o lib_hola.o
+    $(CC) $(CFLAGS) -c main.c     -o main.o
+    $(CC) $(CFLAGS) -o main main.o lib_hola.o
+</code></pre>
+</li>
+</ul>
+<p>Para usar el archivo Makefile hay que ejecutar:</p>
+<pre><code class="lang-bash">make
+</code></pre>
+<h3 id="variables-en-el-archivo-makefile">Variables en el archivo Makefile</h3>
+<p>Para definir una variable se puede utilizar:</p>
+<pre><code class="lang-bash">VARIABLE=valor
+</code></pre>
+<p>Para usar el valor de la variable hay que usar:</p>
+<pre><code class="lang-bash">$(VARIABLE)
+</code></pre>
+<blockquote>
+<p>Importante: El nombre de la variable no puede tener espacios.</p>
+</blockquote>
+<h2 id="compilación-con-makefile-tercera-versión-con-reglas">Compilación con Makefile (tercera versión con reglas)</h2>
+<p>Usaremos el siguiente archivo makefile:</p>
+<ul>
+<li><p>Makefile:</p>
+<pre><code class="lang-bash">CC=gcc
+CFLAGS=-g -Wall
+OBJS=main.o lib_hola.o
+
+all: $(OBJS)
+    $(CC) $(CFLAGS) -o main $(OBJS)
+
+lib_hola.o: lib_hola.c
+    $(CC) $(CFLAGS) -c lib_hola.c -o lib_hola.o
+
+main.o: main.c
+    $(CC) $(CFLAGS) -c main.c     -o main.o
+
+clean: $(OBJS)
+    rm -fr $(OBJS)
+</code></pre>
+</li>
+</ul>
+<p>Para usar el archivo Makefile se recomienda ejecutar:</p>
+<pre><code class="lang-bash">make clean; make
+</code></pre>
+<h2 id="compilación-con-makefile-cuarta-versión-con-reglas-especiales">Compilación con Makefile (cuarta versión con reglas especiales)</h2>
+<ul>
+<li><p>Archivo Makefile:</p>
+<pre><code class="lang-bash">CC=gcc
+CFLAGS=-g -Wall
+OBJS=main.o lib_hola.o
+
+.PHONY: all clean
+
+all: $(OBJS)
+    $(CC) $(CFLAGS) -o main $(OBJS)
+
+%.o: %.c
+    @echo "Compiling... $&lt;"
+    $(CC) $(CFLAGS) -c $&lt; -o $@
+
+clean: $(OBJS)
+    @echo "Removing $(OBJS)..."
+    rm -fr $(OBJS)
+</code></pre>
+</li>
+</ul>
+<p>Para usar el archivo Makefile se recomienda ejecutar:</p>
+<pre><code class="lang-bash">make clean; make
+</code></pre>
+<p>Hay dos reglas especiales:</p>
+<ul>
+<li>La regla de ignorar ficheros que se llamen all y clean (de otra forma hacer un make all si hay un archivo all supone que se cumple la regla y no se ejecuta):<pre><code class="lang-bash">  .PHONY: all clean
+</code></pre>
+</li>
+<li>Usar una única regla para indicar que cada archivo .o (%.o) precisa un archivo .c asociado (%.c) y se compila con <code>-c $&lt; -o $@</code> donde <code>$&lt;</code> es el nombre del archivo .c y <code>$@</code> es el nombre del archivo .o:<pre><code class="lang-bash">  %.o: %.c
+      @echo "Compiling... $&lt;"
+    $(CC) $(CFLAGS) -c $&lt; -o $@
+</code></pre>
+</li>
+</ul>
+<h2 id="material-recomendado">Material recomendado</h2>
+<ul>
+<li><a href="https://makefiletutorial.com/" target="_blank">https://makefiletutorial.com/</a></li>
+<li><a href="https://www3.nd.edu/~zxu2/acms60212-40212/Makefile.pdf" target="_blank">https://www3.nd.edu/~zxu2/acms60212-40212/Makefile.pdf</a></li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ssdd_c.html" class="navigation navigation-prev " aria-label="Previous page: C para distribuidos">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../topic-concurrency/ssdd_threads_posix.html" class="navigation navigation-next " aria-label="Next page: Concurrencia con POSIX">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Introducción a make","level":"2.2","depth":1,"next":{"title":"Concurrencia con POSIX","level":"2.3","depth":1,"path":"topic-concurrency/ssdd_threads_posix.md","ref":"topic-concurrency/ssdd_threads_posix.md","articles":[]},"previous":{"title":"C para distribuidos","level":"2.1","depth":1,"path":"topic-candmake/ssdd_c.md","ref":"topic-candmake/ssdd_c.md","articles":[]},"dir":"ltr"},"config":{"plugins":["mermaid","highlight","hide-published-with","hints","chapter-fold"],"styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"search":{},"mermaid":{},"hints":{"info":"fa fa-info-circle","tip":"fa fa-mortar-board","danger":"fa fa-exclamation-circle","working":"fa fa-wrench"},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"hide-published-with":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{"exclude":["mermaid"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Felix Garcia-Carballeira y Alejandro Calderon-Mateos","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Sistemas Distribuidos","gitbook":"*","description":"Sistemas Distribuidos (UC3M)"},"file":{"path":"topic-candmake/ssdd_make.md","mtime":"2026-02-18T19:45:11.497Z","type":"markdown"},"gitbook":{"version":"6.1.7","time":"2026-04-10T14:15:27.234Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid-load.js"></script>
+        
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-hide-published-with/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

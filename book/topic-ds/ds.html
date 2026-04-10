@@ -1,0 +1,1194 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Servicios distribuidos · Sistemas Distribuidos</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.1.7">
+        <meta name="author" content="Felix Garcia-Carballeira y Alejandro Calderon-Mateos">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/honkit-plugin-mermaid/mermaid.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-hints/plugin-hints.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../topic-rpc/rpc.html" />
+    
+    
+    <link rel="prev" href="../topic-sockets/ssdd_sockets.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Índice
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../topic-candmake/ssdd_c.html">
+            
+                <a href="../topic-candmake/ssdd_c.html">
+            
+                    
+                    C para distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../topic-candmake/ssdd_make.html">
+            
+                <a href="../topic-candmake/ssdd_make.html">
+            
+                    
+                    Introducción a make
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../topic-concurrency/ssdd_threads_posix.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_posix.html">
+            
+                    
+                    Concurrencia con POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../topic-concurrency/ssdd_threads_c.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_c.html">
+            
+                    
+                    Concurrencia con C11
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../topic-messagepassing/ssdd_pq.html">
+            
+                <a href="../topic-messagepassing/ssdd_pq.html">
+            
+                    
+                    Colas de mensajes POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../topic-messagepassing/mpi.html">
+            
+                <a href="../topic-messagepassing/mpi.html">
+            
+                    
+                    Introducción a MPI
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.2.1" >
+            
+                <a target="_blank" href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb">
+            
+                    
+                    MPI (notebook)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../topic-sockets/ssdd_sockets.html">
+            
+                <a href="../topic-sockets/ssdd_sockets.html">
+            
+                    
+                    Sockets
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter active" data-level="5.1" data-path="ds.html">
+            
+                <a href="ds.html">
+            
+                    
+                    Servicios distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../topic-rpc/rpc.html">
+            
+                <a href="../topic-rpc/rpc.html">
+            
+                    
+                    RPC
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../topic-dfs/dfs.html">
+            
+                <a href="../topic-dfs/dfs.html">
+            
+                    
+                    Sistemas de ficheros distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../topic-ws/web-services.html">
+            
+                <a href="../topic-ws/web-services.html">
+            
+                    
+                    Servicios web
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" >
+            
+                <a target="_blank" href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ft/t9_tolerancia-a-fallos.pdf">
+            
+                    
+                    Tolerancia a fallos (PDF)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Servicios distribuidos</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="servicios-distribuidos">Servicios distribuidos</h1>
+<ul>
+<li><strong>Felix García Carballeira y Alejandro Calderón Mateos</strong> @ arcos.inf.uc3m.es</li>
+<li><a href="https://github.com/acaldero/uc3m_sd/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg" alt="License: CC BY-NC-SA 4.0"></img></a></li>
+</ul>
+<h2 id="contenidos">Contenidos</h2>
+<ul>
+<li><a href="#sincronización-en-sistemas-distribuidos">Sincronización en sistemas distribuidos</a></li>
+<li><a href="#relojes-físicos-y-lógicos">Relojes físicos y lógicos</a></li>
+<li><a href="#exclusión-mutua-distribuida">Exclusión mutua distribuida</a></li>
+<li><a href="#algoritmos-de-elección">Algoritmos de elección</a></li>
+<li><a href="#comunicación-multicast">Comunicación multicast</a></li>
+<li><a href="#problemas-de-consenso">Problemas de consenso</a></li>
+<li><a href="#servicio-de-nombres">Servicio de nombres</a></li>
+</ul>
+<h2 id="sincronización-en-sistemas-distribuidos">Sincronización en sistemas distribuidos</h2>
+<ul>
+<li><strong>Más compleja</strong> que en los centralizados ya que usan algoritmos distribuidos<ul>
+<li>Los <strong>algoritmos distribuidos</strong> deben tener las siguientes propiedades:</li>
+<li>La <strong>información relevante se distribuye</strong> entre varios procesos en computadores distintos.</li>
+<li>Los procesos <strong>toman las decisiones</strong> sólo en base a la <strong>información local</strong>.</li>
+<li>Debe evitarse un punto único de fallo.</li>
+<li><strong>No existe un reloj común</strong>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="modelo-del-sistema-distribuido">Modelo del sistema distribuido</h3>
+<ul>
+<li>Procesos secuenciales {P<sub>1</sub>, P<sub>2</sub>, ...P<sub>n</sub>} y canales de comunicación</li>
+<li>Eventos en P<sub>i</sub><ul>
+<li>E<sub>i</sub> = {e<sub>i1</sub>, e<sub>i2</sub>, ...e<sub>in</sub>}</li>
+<li>Historia(P<sub>i</sub>) = h<sub>i</sub> =  <e<sub>i0&lt;/sub&gt;, e<sub>i1</sub>, e<sub>i2</sub>, ... &gt; donde  e<sub>ik</sub>  -&gt;  e<sub>i(k+1)</sub></e<sub></li>
+</ul>
+</li>
+<li>Tipos de eventos:<ul>
+<li>Internos (cambios en el estado de un proceso)</li>
+<li>Comunicación:<ul>
+<li>Envío</li>
+<li>Recepción<ul>
+<li>e<sub>02</sub>  -&gt;  e<sub>12</sub></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Diagramas espacio-tiempo:<br></br>  <img src="../materials/topic-ds/ds/ds_diagrama_eventos.svg" alt="Ejemplo de diagrama de eventos en el tiempo"></img></li>
+</ul>
+<h3 id="modelos-síncronos-y-asíncronos">Modelos síncronos y asíncronos</h3>
+<ul>
+<li>Sistemas distribuidos <strong>asíncronos</strong>:<ul>
+<li><strong>No hay un reloj común</strong></li>
+<li>No hacen ninguna suposición sobre las velocidades relativas de los procesos.</li>
+<li>Los canales son fiables pero no existe un límite a la entrega de mensajes</li>
+<li>La comunicación entre procesos es la única forma de sincronización</li>
+</ul>
+</li>
+<li>Sistemas  síncronos:<ul>
+<li>Hay una perfecta <strong>sincronización</strong></li>
+<li>Hay límites en las latencias de comunicación</li>
+<li>Los sistemas del mundo real no son síncronos</li>
+</ul>
+</li>
+</ul>
+<h3 id="entrega-de-mensajes-en-internet">Entrega de mensajes en Internet</h3>
+<ul>
+<li>Internet se basa en una red de conmutación de paquetes, donde los paquetes se pueden perder y las copias de mensajes, colas y retardos en la red hace que los tiempos de comunicación no sean predecibles y no estén acotados</li>
+<li>Internet no usa el concepto de redes de conmutación de circuitos donde sí es predecible y el ancho de banda es asignado estáticamente</li>
+<li>En Internet el ancho de banda se asigna dinámicamente</li>
+</ul>
+<h3 id="tiempo-en-sistemas-distribuidos">Tiempo en sistemas distribuidos</h3>
+<ul>
+<li>Dificultades en el diseño de aplicaciones distribuidas:<ul>
+<li>Paralelismo entre los procesadores</li>
+<li>Velocidades arbitrarias de procesadores</li>
+<li>No determinismo en el retardo de los mensajes. Fallos</li>
+<li><strong>Ausencia de tiempo global</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="relojes-físicos-y-lógicos">Relojes físicos y lógicos</h2>
+<ul>
+<li>Marcas de tiempo (<em>timestamps</em>):<ul>
+<li>Relojes físicos</li>
+<li>Relojes lógicos</li>
+</ul>
+</li>
+</ul>
+<h3 id="relojes-físicos">Relojes físicos</h3>
+<ul>
+<li>Para ordenar dos eventos de un proceso basta con asignarles una <strong>marca de tiempo</strong></li>
+<li>Para un instante físico <strong>t</strong>:<ul>
+<li>H<sub>i</sub>(t): valor del reloj <strong>hardware</strong> (oscilador)</li>
+<li>C<sub>i</sub>(t): valor del reloj <strong>software</strong> (generado por el sistema operativo):<ul>
+<li>C<sub>i</sub>(t) = a * H<sub>i</sub>(t) + b<ul>
+<li>Ej: cantidad de milisegundos o nanosegundos transcurridos desde una fecha de referencia</li>
+</ul>
+</li>
+<li>Resolución del reloj: periodo entre actualizaciones de C<sub>i</sub>(t)<ul>
+<li>Determina la ordenación de eventos</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Dos relojes en dos computadores diferentes dan medidas distintas<ul>
+<li>Necesidad de <strong>sincronizar relojes físicos</strong> de un sistema distribuido</li>
+</ul>
+</li>
+</ul>
+<h4 id="tiempo-del-sistema-linux">Tiempo del sistema (Linux)</h4>
+<ul>
+<li><p>Uso de la función <code>clock_gettime</code> y la estructura <code>struct timespec</code> :</p>
+<pre><code class="lang-c"> struct  timespec {
+    time_t  tv_sec;  /* seconds */
+    long    tv_nsec; /* nanoseconds */
+ } ;
+
+ int clock_gettime (clockid_t         clk_id, 
+                    struct timespec * tp);
+</code></pre>
+</li>
+<li><p>La función <code>clock_gettime</code>:</p>
+<ul>
+<li>Devuelve el número de segundos  transcurridos  <strong>desde 1 de Enero de 1970</strong> y el número de nanosegundos dentro del actual segundo</li>
+<li>Valores posibles para <code>clk_id</code>:<ul>
+<li><strong>CLOCK_REALTIME</strong>: Reloj del sistema. Este reloj puede sufrir ajustes para corregir la fecha.</li>
+<li><strong>CLOCK_MONOTONIC</strong>: Igual que CLOCK_REALTIME pero no se realizan ajustes, por tanto su cuenta es creciente sin saltos bruscos. Útil para medir duraciones de eventos</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Ejemplo de uso de la función <code>clock_gettime</code>:</p>
+<pre><code class="lang-c">/* 1) Medición antes y después */
+struct timespec  T_ini, T_fin ;
+clock_gettime(CLOCK_MONOTONIC , &amp;T_ini);
+/* <tarea a="" medir=""> */
+clock_gettime(CLOCK_MONOTONIC , &amp;T_fin);
+
+/* 2) Cálculo de diferencia de tiempos */
+double A1, A2, Tiempo ;
+A1 = (T_fin.tv_sec  – T_ini.tv_sec);
+A2 = (T_fin.tv_nsec – T_ini.tv_nsec) / (double)1000000000;
+Tiempo = A1 + A2;
+printf(“Tiempo en segundos = %lf\n, Tiempo);
+</tarea></code></pre>
+</li>
+</ul>
+<h4 id="sincronización-de-relojes-físicos">Sincronización de relojes físicos</h4>
+<ul>
+<li>Los computadores de un <strong>sistema distribuido</strong> poseen <strong>relojes</strong> que <strong>no están sincronizados</strong> (<strong>derivas</strong>)<ul>
+<li>Importante asegurar una correcta sincronización:<ul>
+<li>En <strong>aplicaciones de tiempo real</strong></li>
+<li>Ordenación natural de eventos distribuidos (fechas de ficheros)</li>
+<li><strong>Análisis de rendimiento</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Sincronización:<ul>
+<li>Tradicionalmente se han empleado protocolos de sincronización que intercambian mensajes</li>
+<li>Actualmente se puede mejorar mediante GPS:<ul>
+<li>Los computadores de un sistema poseen todos un GPS</li>
+<li>Uno o dos computadores utilizan un GPS y el resto se sincroniza mediante protocolos clásicos</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="sincronización-externa-versus-interna">Sincronización externa versus interna</h4>
+<ul>
+<li><strong>D</strong>: Cota máxima de sincronización</li>
+<li><strong>S</strong>: fuente del tiempo UTC, t<ul>
+<li>UTC: Estándar de tiempo que regula los relojes y el tiempo en el mundo</li>
+</ul>
+</li>
+<li><strong>Sincronización  externa</strong>:<ul>
+<li>Los relojes están sincronizados si <strong>|S(t) - C<sub>i</sub>(t)| &lt; D</strong></li>
+<li>Los relojes se consideran sincronizados dentro de D</li>
+</ul>
+</li>
+<li><strong>Sincronización interna</strong> entre los relojes de los computadores de un sistema distribuido:<ul>
+<li>Los relojes están sincronizados si <strong>|C<sub>i</sub>(t) - C<sub>j</sub>(t)| &lt; D</strong></li>
+<li>Dados dos eventos de dos computadores se puede establecer su orden en función de sus relojes si están sincronizados</li>
+</ul>
+</li>
+<li>Sincronización externa -&gt; sincronización interna (ok sí) pero <br></br>Sincronización externa &lt;-/- sincronización interna (ko no solo sí)</li>
+</ul>
+<h4 id="métodos-de-sincronización-de-relojes">Métodos de sincronización de relojes</h4>
+<ul>
+<li>Sincronización en un sistema síncrono</li>
+<li>Algoritmo de Cristian</li>
+<li>Algoritmo de Berkeley</li>
+<li>Network time protocol</li>
+</ul>
+<h4 id="sincronización-en-un-sistema-síncrono">Sincronización en un sistema síncrono</h4>
+<ul>
+<li><strong>P1</strong> envía el valor de su reloj local t a <strong>P2</strong>:<ul>
+<li>P2 puede actualizar su reloj al valor <strong>t + T<sub>transmit</sub>  si T<sub>transmit</sub></strong> es el tiempo que lleva enviar un mensaje</li>
+<li>Sin embargo, T<sub>transmit</sub>  puede desconocerse<ul>
+<li>Se compite por el uso de la red</li>
+<li>Congestión de la red</li>
+<li>En un <strong>sistema síncrono</strong> se conoce el tiempo mínimo y máximo de transmisión de un mensaje</li>
+<li>u = (max - min)</li>
+</ul>
+</li>
+<li>Si P2 fija su reloj al valor t + (max+min)/2, entonces la deriva máxima es &lt;= u/2</li>
+<li>El problema es que en un sistema asíncrono T<sub>transmit</sub>  no está acotado</li>
+</ul>
+</li>
+</ul>
+<h4 id="algoritmo-de-cristian">Algoritmo de Cristian</h4>
+<p>  <img src="../materials/topic-ds/ds/ds_rf_cristian.svg" alt="Algoritmo de Cristian"></img></p>
+<ul>
+<li>El cliente realiza una petición para obtener el tiempo</li>
+<li>El servidor responde con el tiempo de su reloj (T<sub>s</sub>)</li>
+<li>El cliente actualiza su reloj a tiempo T<sub>s</sub> +  (T<sub>1</sub> - T<sub>0</sub>) / 2</li>
+<li>Para mejorar la precisión se pueden hacer varias mediciones y descartar cualquiera en la que T<sub>1</sub> - T<sub>0</sub> exceda de un límite</li>
+<li>Precisión del resultado = +/-  (T<sub>1</sub> - T<sub>0</sub>) / 2</li>
+</ul>
+<h5 id="mejorando-la-precisión">Mejorando la precisión</h5>
+<ul>
+<li>Min: tiempo mínimo de transmisión de un mensaje</li>
+<li>El valor que obtiene el servidor T<sub>s</sub> se encuentra en el intervalo [T’<sub>s</sub>, T’’<sub>s</sub>] = [T<sub>1</sub> + Min, T<sub>2</sub> - Min]</li>
+<li>La precisión del resultado en este caso es: +/- (T<sub>1</sub> - T<sub>0</sub>) / 2 - T<sub>min</sub></li>
+</ul>
+<h4 id="algoritmo-de-berkeley">Algoritmo de Berkeley</h4>
+<ul>
+<li>El <strong>servidor de tiempo</strong> realiza un <strong>muestreo periódico</strong> de todas las máquinas para pedirles el tiempo</li>
+<li><strong>Calcula el tiempo promedio</strong> y le indica a todas las máquinas que avancen su reloj a la nueva hora o que disminuyan la velocidad de actualización</li>
+</ul>
+<p><img src="../materials/topic-ds/ds/ds_rf_berkeley.svg" alt="Algoritmo de Berkeley"></img></p>
+<h4 id="network-time-protocol-ntp">Network time protocol (NTP)</h4>
+<ul>
+<li>Servicio para <strong>sincronizar a máquinas en Internet</strong> con el UTC</li>
+<li>3 modos de sincronización:<ul>
+<li><strong>multicast</strong>: para redes LAN de alta velocidad</li>
+<li><strong>RPC</strong>: similar al algoritmo de Cristian</li>
+<li><strong>simétrico</strong>: entre pares de procesos</li>
+</ul>
+</li>
+<li>Se utilizan servidores localizados a través de Internet con mensajes <strong>UDP</strong></li>
+</ul>
+<h3 id="relojes-lógicos">Relojes lógicos</h3>
+<ul>
+<li>Dado que no se pueden sincronizar perfectamente los relojes físicos en un sistema distribuido, no se pueden utilizar relojes físicos para ordenar eventos</li>
+<li>¿Podemos ordenar los eventos de otra forma?<ul>
+<li>Empleando el concepto de reloj lógico</li>
+</ul>
+</li>
+</ul>
+<p><img src="../materials/topic-ds/ds/ds_diagrama_eventos.svg" alt="Ejemplo de diagrama de eventos"></img></p>
+<h4 id="causalidad-potencial">Causalidad potencial</h4>
+<ul>
+<li>En ausencia de un reloj global la <strong>relación causa-efecto</strong> es la única posibilidad de ordenar eventos</li>
+<li>Relación de causalidad potencial (<strong>Lamport,1978</strong>) se basa en dos observaciones:<ol>
+<li>Si dos eventos ocurren en el mismo proceso (pi(i=1..N)), entonces ocurrieron en el mismo orden en que se observaron</li>
+<li>Si un proceso hace <strong>send(m)</strong> y otro <strong>receive(m)</strong>, entonces send  se produjo antes que el evento <strong>receive</strong></li>
+</ol>
+</li>
+<li>Entonces, Lamport define la relación de causalidad potencial<ul>
+<li><strong>Precede a</strong> (<strong>→</strong>) entre cualquier par de eventos del SD<ul>
+<li>Ej.: a -&gt; b</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Orden parcial</strong>: reflexiva, anti-simétrica y transitiva<ul>
+<li>Dos eventos son <strong>concurrentes</strong> (a || b) si <strong>no se puede deducir</strong> entre ellos una relación de causalidad potencial</li>
+</ul>
+</li>
+</ul>
+<h4 id="importancia-de-la-causalidad-potencial">Importancia de la causalidad potencial</h4>
+<ul>
+<li>Sincronización de relojes lógicos</li>
+<li>Depuración distribuida</li>
+<li>Registro de estados globales</li>
+<li>Monitorización</li>
+<li>Entrega causal</li>
+<li>Actualización de réplicas</li>
+</ul>
+<h4 id="relojes-lógicos-algoritmo-de-lamport">Relojes lógicos (algoritmo de Lamport)</h4>
+<ul>
+<li>Útiles para <strong>ordenar eventos</strong> en ausencia de un reloj común</li>
+<li><p><strong>Algoritmo de Lamport</strong> (1978):</p>
+<ul>
+<li>Cada proceso <strong>P</strong> mantiene una variable entera <strong>RL<sub>p</sub></strong>  (reloj lógico)</li>
+<li>Cuando un proceso <strong>P</strong> genera un evento, <strong>RL<sub>p</sub>=RL<sub>p+1</sub></strong></li>
+<li>Cuando un proceso <strong>envía</strong> un <strong>mensaje m</strong>  a otro le añade el valor de su reloj</li>
+<li>Cuando un proceso <strong>Q</strong>  <strong>recibe</strong> un <strong>mensaje m</strong> con un valor de <strong>tiempo t</strong>, el proceso actualiza su reloj, <strong>RL<sub>p</sub>=max(RL<sub>p</sub>,t) + 1</strong></li>
+<li>El algoritmo asegura que si <strong>a → b</strong> entonces  <strong>RL(a) &lt; RL(b)</strong></li>
+<li><strong>Lo contrario no se puede demostrar</strong></li>
+</ul>
+</li>
+<li><p>Ejemplo:</p>
+<ul>
+<li><p>Ordenado:</p>
+<p><img src="../materials/topic-ds/ds/ds_rl_o.svg" alt="Ejemplo de eventos vistos de forma ordenada"></img></p>
+</li>
+<li><p>No ordenado:</p>
+<p><img src="../materials/topic-ds/ds/ds_rl_no.svg" alt="Ejemplo de eventos vistos de forma NO ordenada"></img></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="relojes-lógicos-totalmente-ordenados">Relojes lógicos totalmente ordenados</h4>
+<ul>
+<li>Los relojes lógicos de Lamport imponen sólo una relación <strong>de orden parcial</strong>:<ul>
+<li>Eventos de distintos procesos pueden tener asociado una misma marca de tiempo</li>
+</ul>
+</li>
+<li>Se puede extender la relación de orden para conseguir una relación de orden total añadiendo el <strong>identificador de proceso</strong>:<ul>
+<li>(T<sub>a</sub> , P<sub>a</sub>): marca de tiempo del evento a del proceso P</li>
+</ul>
+</li>
+<li>(T<sub>a</sub>, P<sub>a</sub>) &lt; (T<sub>b</sub>, P<sub>b</sub>) sí y solo si:<ul>
+<li>T<sub>a</sub> &lt; T<sub>b</sub>  o</li>
+<li>T<sub>a</sub>=Tb y P<sub>a</sub><p<sub>b&lt;/sub&gt;</p<sub></li>
+</ul>
+</li>
+</ul>
+<h4 id="problemas-de-los-relojes-lógicos">Problemas de los relojes lógicos</h4>
+<ul>
+<li>No bastan para caracterizar la causalidad:<ul>
+<li>Dados RL(a) y RL(b) no podemos saber:<ul>
+<li>si a precede a b</li>
+<li>si b precede a a</li>
+<li>si a y b son concurrentes</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Se necesita una relación (F(e), &lt;) tal que:<ul>
+<li>a → b si y sólo si F(a) &lt; F(b)</li>
+<li>Los <strong>relojes vectoriales</strong> permiten representar de forma precisa la relación de <strong>causalidad potencial</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="../materials/topic-ds/ds/ds_prl.svg" alt="Problema de los relojes lógicos"></img></p>
+<p>Problemas de los relojes lógicos:</p>
+<ul>
+<li>C(e11) &lt; C(e22),  y e11 -&gt; e22  es cierto</li>
+<li>C(e11) &lt; C(e32),  pero e11 -&gt; e32  es falso (son concurrentes)</li>
+</ul>
+<h3 id="relojes-vectoriales">Relojes vectoriales</h3>
+<ul>
+<li>Desarrollado independientemente por <strong>Fidge</strong>, <strong>Mattern</strong> y <strong>Schmuck</strong></li>
+<li>Todo proceso lleva asociado un vector de enteros <strong>RV</strong></li>
+<li><strong>RV<sub>i</sub>[a]</strong> es el valor del reloj vectorial del proceso i cuando ejecuta el evento a</li>
+<li>Mantenimiento de los relojes vectoriales (RV<sub>i</sub>):<ul>
+<li>Inicialmente:<ul>
+<li>RV<sub>i</sub>= 0   ∀ i</li>
+</ul>
+</li>
+<li>Cuando un proceso i genera un evento:<ul>
+<li>RV<sub>i</sub>[ i ] = RV<sub>i</sub>[ i ] + 1</li>
+</ul>
+</li>
+<li>Todos los mensajes llevan el RV del envío</li>
+<li>Cuando un proceso <strong>j</strong> recibe un mensaje con RV<sub>i</sub>:<ul>
+<li>RV<sub>j</sub>  = max( RV<sub>j</sub> , RV<sub>i</sub> ) (componente a componente)</li>
+<li>RV<sub>j</sub>[ j ] = RV<sub>j</sub>[ j ] + 1 (evento de recepción)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Ejemplo:</p>
+<p> <img src="../materials/topic-ds/ds/ds_rv.svg" alt="Ejemplo de relojes vectoriales"></img></p>
+</li>
+</ul>
+<h4 id="propiedades-de-los-relojes-vectoriales">Propiedades de los relojes vectoriales</h4>
+<ul>
+<li>RV &lt; RV´ si y solo si:<ul>
+<li>RV  ≠ RV´ y</li>
+<li>RV[i ] ≤ RV´[i ], ∀ i</li>
+</ul>
+</li>
+<li>Dados dos eventos a y b:<ul>
+<li>a → b si y solo si RV(a) &lt; RV(b)</li>
+<li>a y b son concurrentes cuando<ul>
+<li>Ni RV(a) ≤ RV(b)  ni  RV(b ) ≤ RV(a)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="exclusión-mutua-distribuida">Exclusión mutua distribuida</h2>
+<ul>
+<li>Los procesos ejecutan el siguiente fragmento de código:<pre><code class="lang-c">  entrada()
+  SECCIÓN CRÍTICA
+  salida()
+</code></pre>
+</li>
+<li>Requisitos para resolver el problema de la sección crítica:<ul>
+<li><strong>Exclusión mutua</strong></li>
+<li><strong>Progreso</strong></li>
+<li><strong>Espera acotada</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="principales-algoritmos-para-la-exclusión-mutua-distribuida">Principales algoritmos para la exclusión mutua distribuida</h4>
+<ul>
+<li>Algoritmo <strong>centralizado</strong>:<ul>
+<li>Existe un proceso coordinador</li>
+<li>Problemas: <ul>
+<li>Cuello de botella <ul>
+<li>Posible arreglo: reparto estático entre número prefijado de coordinadores</li>
+</ul>
+</li>
+<li>Punto único de fallo<ul>
+<li>Posible arreglo: uso de temporizadores: el cerrojo se libera transcurrido un cierto tiempo</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Algoritmo <strong>distribuido</strong>:<ul>
+<li>Algoritmo de <strong>Ricart y Agrawala</strong><ul>
+<li>Requiere la existencia de  un orden total de todos los mensajes en el sistema</li>
+<li>Estudiar bibliografía para más detalles</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Anillo con testigo</strong>:<ul>
+<li>Los procesos se ordenan conceptualmente como un anillo</li>
+<li>Por el anillo circula un testigo</li>
+<li>Cuando un proceso quiere entrar en la SC debe esperar a recoger el testigo</li>
+<li>Cuando sale de la SC envía el testigo al nuevo proceso del anillo</li>
+</ul>
+</li>
+<li>Algoritmo basado en <strong>quorum</strong>:<ul>
+<li>Algoritmo de <strong>Maekawa</strong><ul>
+<li>Estudiar bibliografía para más detalles</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="algoritmos-de-elección">Algoritmos de elección</h2>
+<ul>
+<li>Útil en aplicaciones donde es necesario la existencia de un coordinador</li>
+<li>El algoritmo debe ejecutarse cuando <strong>falla el coordinador</strong></li>
+<li>El objetivo del algoritmo es que la elección sea única aunque el algoritmo se inicie de forma concurrente en varios procesos</li>
+<li>Algoritmos <strong>de elección</strong>:<ul>
+<li><strong>Algoritmo del matón</strong><ul>
+<li>Estudiar bibliografía para más detalles</li>
+</ul>
+</li>
+<li><strong>Algoritmo basado en anillo</strong><ul>
+<li>Estudiar bibliografía para más detalles</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="interbloqueo-distribuido">Interbloqueo distribuido</h4>
+<ul>
+<li><strong>Interbloqueos</strong> en la <strong>asignación de recursos</strong>.
+ Existe interbloqueo cuando se cumplen las siguientes condiciones:<ul>
+<li>Exclusión mutua</li>
+<li>Retención y espera</li>
+<li>No expulsión</li>
+<li>Condición de espera circular</li>
+</ul>
+</li>
+<li><strong>Interbloqueos</strong> en el <strong>mal uso de operaciones de sincronización</strong></li>
+<li><strong>Interbloqueos</strong> en <strong>las comunicaciones</strong><ul>
+<li>Todos los procesos están esperando un mensaje de otro miembro del grupo y no hay mensajes de camino</li>
+</ul>
+</li>
+</ul>
+<h2 id="comunicación-multicast">Comunicación multicast</h2>
+<ul>
+<li><p>Tipos de comunicación:</p>
+<ul>
+<li><strong>Punto a punto</strong> (uno a uno)<ul>
+<li>Las primitivas de comunicación básicas soportan la comunicación uno a uno</li>
+</ul>
+</li>
+<li><strong>Multipunto</strong> (uno a varios, varios a uno o varios a varios) <ul>
+<li>Estas operaciones se implementan normalmente mediante operaciones punto a punto (aunque pueden estar optimizadas por el hardware subyacente)</li>
+<li>Tipos más conocidos:<ul>
+<li><em>Broadcast</em>: el emisor envía un mensaje a todos los nodos del sistema </li>
+<li><em>Multicast</em>: el emisor envía un mensaje a un subconjunto de todos los nodos</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Utilidad de la comunicación multipunto:</p>
+<ul>
+<li><strong>Servidores  replicados</strong>:<ul>
+<li>Un servicio replicado consta de un grupo de servidores.</li>
+<li>Las peticiones de los clientes se envían a todos los miembros del grupo.
+ Aunque algún miembro del grupo falle la operación se realizará.</li>
+</ul>
+</li>
+<li><strong>Mejor rendimiento</strong>:<ul>
+<li>Replicando datos.</li>
+<li>Cuando se cambia un dato, el nuevo valor se envía a todos los procesos que gestionan las réplicas.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Tipos de multicast:</p>
+<ul>
+<li><strong>Multicast no fiable</strong>: no hay garantía de que el mensaje se entregue a todos los nodos.</li>
+<li><strong>Multicast  fiable</strong>: el mensaje es recibido por todos los nodos en funcionamiento.</li>
+<li><strong>Multicast  atómico</strong>: el protocolo asegura que todos los miembros del grupo recibirán los mensajes de diferentes nodos en el mismo orden.<ul>
+<li>Preciso en, por ejemplo, transacciones bancarias donde el orden importa.</li>
+</ul>
+</li>
+<li><strong>Multicast  causal</strong>: asegura que los mensaje se entregan de acuerdo con las relaciones de causalidad.</li>
+</ul>
+</li>
+<li><p>Implementación de un multicast:</p>
+<ul>
+<li>Estudiar bibliografía para más detalles</li>
+</ul>
+</li>
+</ul>
+<h2 id="problemas-de-consenso">Problemas de consenso</h2>
+<ul>
+<li><p>Dado un conjunto de proceso P<sub>1</sub>….P<sub>n</sub>  que se comunican  mediante paso de mensajes, el  objetivo es alcanzar un acuerdo  sobre un determinado valor aun  en  presencia de fallos</p>
+</li>
+<li><p>Tipos de fallo:</p>
+<ul>
+<li>Fallo parada: el sistema que falla deja de funcionar</li>
+<li>Fallo con recuperación: el sistema que falla vuelve a funcionar en algún momento</li>
+<li>Fallos bizantinos: el componente que falla genera fallos arbitrarios</li>
+</ul>
+</li>
+</ul>
+<h3 id="acuerdo-bizantino">Acuerdo bizantino</h3>
+<ul>
+<li>En la mayoría de las ocasiones cuando un componente o sistema falla, su funcionamiento es arbitrario.<ul>
+<li>Pueden enviar información diferente a diferentes componentes con los que se comunica.</li>
+<li>Alcanzar un acuerdo entre las observaciones que hacen diferentes componentes puede ser complicado en presencia de fallos.</li>
+</ul>
+</li>
+<li>El <strong>objetivo</strong> con <strong>acuerdo bizantino</strong> es alcanzar un <strong>acuerdo sobre un determinado valor</strong> <strong>en un sistema donde los componentes pueden fallar</strong> de forma arbitraria**.</li>
+<li><p>Importancia:</p>
+<ul>
+<li>Permite enmascarar fallos arbitrarios.</li>
+<li>Permite construir procesadores con fallos de tipo fallo-parada</li>
+</ul>
+</li>
+<li><p>Definición del problema: Problema de los Generales Bizantinos</p>
+<ul>
+<li>Sistema distribuido compuesto por una serie de nodos (generales) que intercambian información entre ellos.</li>
+<li>Los componentes pueden exhibir fallos bizantinos (generales traidores)<ul>
+<li>Un nodo con fallo puede enviar información diferente a diferentes nodos (para un mismo dato).</li>
+</ul>
+</li>
+<li><strong>Objetivo</strong>: que los nodos sin fallo alcancen un acuerdo o consenso sobre un determinado valor (ataque, retirada, espera). Es decir que vean el mismo valor para un dato.</li>
+<li>¿Cuántos nodos hacen falta para hacer frente a m fallos?<ul>
+<li>Se necesitan <strong>3*m + 1</strong> nodos para hacer frente a m fallos bizantinos.</li>
+<li>Utilizando 3 nodos, si uno falla el problema no puede resolverse.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>&lt;/br&gt;</p>
+<p>Implementación de consenso:</p>
+<pre><code>* Estudiar bibliografía para más detalles
+</code></pre><h2 id="servicio-de-nombres">Servicio de nombres</h2>
+<ul>
+<li>Objetivo: descubrir recursos en sistemas distribuido</li>
+<li>Tipos de recursos:<ul>
+<li>Ficheros, usuarios, grupos, procesos, dispositivos, máquinas, …</li>
+</ul>
+</li>
+<li><p>El nombre del recurso permite referirse a una entidad única en un sistema distribuido (aunque pueda estar replicada y haya varios nombres para la misma entidad)</p>
+<ul>
+<li>Ejemplo: en sockets se identifica con IP + puerto</li>
+</ul>
+</li>
+<li><p>Los <strong>nombres</strong> utilizados en sistemas distribuidos son específicos de algún <strong>servicio</strong> concreto</p>
+</li>
+<li><p>Ejemplos:</p>
+<ul>
+<li>Nombre de fichero</li>
+<li>Nombres de usuarios</li>
+<li>Nombres de hosts</li>
+<li>Nombres de objetos remotos o servicios remotos en caso de servicios de llamadas a procedimientos remotos o invocaciónón de métodos remotos</li>
+</ul>
+</li>
+<li><p>Estructura general: </p>
+<ul>
+<li>Cliente: precisa localizar un servidor usando un servidor de nombre</li>
+<li>Servidor: servidor a ser usado por un cliente</li>
+<li>Servidor de nombre:<ul>
+<li>Un servicio de nombres almacena de forma  general pares <nombre, atributos=""></nombre,></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Funcionamiento general: </p>
+<ul>
+<li>Registro: el servidor contacta con el <em>servicio de nombre</em> para almacenar su identificador unívoco (información fija) y su dirección IP, etc. (información variable)</li>
+<li>Búsqueda: el cliente cuando precisa contactar con el servidor primero pregunta al <em>servicio de nombre</em> por el registro asociado (par <nombre, atributos="">). 
+ El <em>servicio de nombre</em> contesta con la información o error en caso de no haber registro asociado.<ul>
+<li>El cliente contacta con el servidor y pide los servicios (no intervención del  <em>servicio de nombre</em> )</li>
+<li>Dar de baja: antes del servidor dejar de estar activo para los clientes, se da de baja en el  <em>servicio de nombre</em>.</li>
+</ul>
+</nombre,></li>
+</ul>
+</li>
+</ul>
+<h4 id="espacio-de-nombres">Espacio de nombres</h4>
+<ul>
+<li><p>El espacio de nombres es el conjunto de nombres válidos reconocidos por un servicio particular</p>
+<ul>
+<li>Plano</li>
+<li>Jerárquico</li>
+</ul>
+</li>
+<li><p>Ejemplo de nombrado jerárquico: URI</p>
+<ul>
+<li>URI (<em>Uniform Resource Identifier</em>): <ul>
+<li>Una URI identifica recursos en Internet</li>
+<li>URI = URL | URN (puede ser una URL o un URN)</li>
+</ul>
+</li>
+<li>URL (<em>Uniform Resource locators</em>): <ul>
+<li>URI que proporcionan información para localizar recursos</li>
+<li>Puede verse afectado si el recurso se mueve</li>
+<li>Ejemplo: <a href="http://tools.ietf.org/html/rfc3187.html" target="_blank">http://tools.ietf.org/html/rfc3187.html</a></li>
+</ul>
+</li>
+<li>URN (<em>Uniform  resource  names</em>)<ul>
+<li>URI que solo utilizan nombres sin incluir información de localización</li>
+<li>Requiere un proceso de traducción</li>
+<li>Ejemplo: urn:ietf:rfc:3187</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="resolución-de-nombres">Resolución de nombres</h4>
+<ul>
+<li>Proceso  iterativo que permite a un cliente obtener  los  atributos de interés a partir de un determinado nombre:<ul>
+<li>Resolución iterativa guiada por el cliente</li>
+<li>Resolución guiada por el servidor</li>
+</ul>
+</li>
+<li>Empleo de cachés en el cliente</li>
+</ul>
+<h4 id="ejemplos-de-servicios-de-nombres">Ejemplos de servicios de nombres</h4>
+<ul>
+<li><strong>DNS</strong>: traduce nombres de dominio a direcciones IP <ul>
+<li>Base de datos  jerárquica que almacena información sobre nombres de dominio</li>
+</ul>
+</li>
+<li><strong>LDAP (Lighweight  Directory Access Protocol)</strong>: servicio de directorio que consta de una base de datos con información sobre nombres de personas. Habitualmente almacena información de autenticación (usuario y contraseña)</li>
+<li><strong>portmapper</strong>: servidor de nombres utilizado en RPC. Obtiene el puerto asociado a servicios RPC registrados</li>
+<li><strong>rmiregistry</strong>: servicio de registro de objetos remotos en Java</li>
+</ul>
+<p>&lt;/br&gt;</p>
+<h4 id="implementación-de-un-servicio-de-nombres">Implementación de un servicio de nombres</h4>
+<ul>
+<li>Almacenamiento de la información: servicio de directorios, base de datos</li>
+<li>Migración del servicio de nombres</li>
+<li>Replicación del servicio</li>
+<li>Cache de la información en los clientes</li>
+<li>Localización del servicio de nombres</li>
+</ul>
+<p>-- Estudiar bibliografía para más detalles</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../topic-sockets/ssdd_sockets.html" class="navigation navigation-prev " aria-label="Previous page: Sockets">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../topic-rpc/rpc.html" class="navigation navigation-next " aria-label="Next page: RPC">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Servicios distribuidos","level":"5.1","depth":1,"next":{"title":"RPC","level":"6.1","depth":1,"path":"topic-rpc/rpc.md","ref":"topic-rpc/rpc.md","articles":[]},"previous":{"title":"Sockets","level":"4.1","depth":1,"path":"topic-sockets/ssdd_sockets.md","ref":"topic-sockets/ssdd_sockets.md","articles":[]},"dir":"ltr"},"config":{"plugins":["mermaid","highlight","hide-published-with","hints","chapter-fold"],"styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"search":{},"mermaid":{},"hints":{"info":"fa fa-info-circle","tip":"fa fa-mortar-board","danger":"fa fa-exclamation-circle","working":"fa fa-wrench"},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"hide-published-with":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{"exclude":["mermaid"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Felix Garcia-Carballeira y Alejandro Calderon-Mateos","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Sistemas Distribuidos","gitbook":"*","description":"Sistemas Distribuidos (UC3M)"},"file":{"path":"topic-ds/ds.md","mtime":"2026-03-16T12:38:58.356Z","type":"markdown"},"gitbook":{"version":"6.1.7","time":"2026-04-10T14:15:27.234Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid-load.js"></script>
+        
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-hide-published-with/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

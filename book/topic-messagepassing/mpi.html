@@ -1,0 +1,928 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Introducción a MPI · Sistemas Distribuidos</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.1.7">
+        <meta name="author" content="Felix Garcia-Carballeira y Alejandro Calderon-Mateos">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/honkit-plugin-mermaid/mermaid.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-hints/plugin-hints.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="ssdd_pq.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Índice
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../topic-candmake/ssdd_c.html">
+            
+                <a href="../topic-candmake/ssdd_c.html">
+            
+                    
+                    C para distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../topic-candmake/ssdd_make.html">
+            
+                <a href="../topic-candmake/ssdd_make.html">
+            
+                    
+                    Introducción a make
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../topic-concurrency/ssdd_threads_posix.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_posix.html">
+            
+                    
+                    Concurrencia con POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../topic-concurrency/ssdd_threads_c.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_c.html">
+            
+                    
+                    Concurrencia con C11
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="ssdd_pq.html">
+            
+                <a href="ssdd_pq.html">
+            
+                    
+                    Colas de mensajes POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="3.2" data-path="mpi.html">
+            
+                <a href="mpi.html">
+            
+                    
+                    Introducción a MPI
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.2.1" >
+            
+                <a target="_blank" href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb">
+            
+                    
+                    MPI (notebook)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../topic-sockets/ssdd_sockets.html">
+            
+                <a href="../topic-sockets/ssdd_sockets.html">
+            
+                    
+                    Sockets
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../topic-ds/ds.html">
+            
+                <a href="../topic-ds/ds.html">
+            
+                    
+                    Servicios distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../topic-rpc/rpc.html">
+            
+                <a href="../topic-rpc/rpc.html">
+            
+                    
+                    RPC
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../topic-dfs/dfs.html">
+            
+                <a href="../topic-dfs/dfs.html">
+            
+                    
+                    Sistemas de ficheros distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../topic-ws/web-services.html">
+            
+                <a href="../topic-ws/web-services.html">
+            
+                    
+                    Servicios web
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" >
+            
+                <a target="_blank" href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ft/t9_tolerancia-a-fallos.pdf">
+            
+                    
+                    Tolerancia a fallos (PDF)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Introducción a MPI</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="comunicación-con-mpi">Comunicación con MPI</h1>
+<ul>
+<li><strong>Felix García Carballeira y Alejandro Calderón Mateos</strong> @ arcos.inf.uc3m.es</li>
+<li><a href="https://github.com/acaldero/uc3m_sd/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg" alt="License: CC BY-NC-SA 4.0"></img></a></li>
+</ul>
+<h2 id="contenidos">Contenidos</h2>
+<ul>
+<li>Introducción a MPI:<ul>
+<li><a href="#introducción-a-mpi">Definir MPI</a></li>
+<li><a href="#características-principales">Características principales</a></li>
+<li><a href="#ejemplo-en-c-hola-mundo">Ejemplo en C: Hola mundo</a></li>
+</ul>
+</li>
+<li>Comunicación punto a punto y comunicación colectiva:<ul>
+<li><a href="#comunicación-punto-a-punto">API de MPI</a></li>
+<li><a href="#ejemplo-en-c-send-y-receive">Ejemplo en C: send y receive</a></li>
+<li><a href="#comunicación-colectiva">Comunicación colectiva</a></li>
+<li><a href="#ejemplo-en-c-broadcast-y-barrier">Ejemplo en C: broadcast y barrier</a><ul>
+<li>Escalabilidad:</li>
+</ul>
+</li>
+<li><a href="#ejemplo-en-c-cálculo-de-π-con-mpi">Ejemplo en C: cálculo de π con MPI</a></li>
+<li><a href="#ejemplo-en-c-c%C3%A1lculo-de-%CF%80-con-openmp">Ejemplo en C: cálculo de π con OpenMP</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="introducción-a-mpi">Introducción a MPI</h3>
+<ul>
+<li><p>"MPI es una <strong>interfaz</strong>  de paso de mensaje que representa un esfuerzo prometedor de mejorar la disponibilidad de un software <strong>altamente  eficiente</strong> y <strong>portable</strong> para satisfacer las necesidades actuales en la <strong>computación de alto rendimiento</strong> a través de la definición de un estándar de paso de mensajes universal."</p>
+<ul>
+<li>William D. Gropp et al.</li>
+</ul>
+</li>
+<li><p>MPI son las iniciales de <em>Message Passing Interface</em>:</p>
+<ul>
+<li>Es una interfaz estándar de paso de mensajes para el desarrollo de aplicaciones paralelas <br></br> que ejecutan en computadores que no comparten memoria (memoria distribuida).</li>
+</ul>
+</li>
+<li><p>No es una implementación sino la especificación que tiene que cumplir las implementaciones de MPI. <br></br>
+Las más conocidas son:</p>
+<ul>
+<li>OpenMPI 4.1.6 (30/9/2023) –<a href="http://www.open-mpi.org/" target="_blank">http://www.open-mpi.org/</a></li>
+<li>MPICH 4.1.2 (8/6/2023)       –<a href="http://www.mpich.org/" target="_blank">http://www.mpich.org/</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="características-principales">Características principales</h3>
+<ul>
+<li><strong>Portabilidad</strong>: <ul>
+<li>Definido independiente de plataforma paralela</li>
+<li>Útil en arquitecturas paralelas heterogéneas</li>
+</ul>
+</li>
+<li><strong>Eficiencia</strong>: <ul>
+<li>Definido para aplicaciones multihilo</li>
+<li>Sobre una comunicación fiable y eficiente</li>
+<li>Busca el máximo de cada plataforma</li>
+</ul>
+</li>
+<li><strong>Funcionalidad</strong>:<ul>
+<li>Fácil de usar por cualquier programador que ya haya usado cualquier biblioteca de paso de mensajes</li>
+</ul>
+</li>
+</ul>
+<h3 id="modelo-de-mpi">Modelo de MPI</h3>
+<ul>
+<li>Los procesos ejecutan el mismo programa</li>
+<li>Todas las estructuras de datos y variables son locales a cada proceso<ul>
+<li>Los procesos ejecutan en espacios de direcciones distintos (máquinas distintas)</li>
+<li>Los procesos no comparten memoria</li>
+<li>Los procesos intercambian datos mediante paso de mensajes</li>
+</ul>
+</li>
+</ul>
+<h3 id="ejemplo-en-c-hola-mundo">Ejemplo en C: Hola mundo</h3>
+<ul>
+<li><p><strong>mpi_hola.c</strong></p>
+<pre><code class="lang-c">  #include <stdio.h>
+  #include "mpi.h"
+
+  int main ( int argc, char **argv )
+  {
+     int comm_size, my_rank;
+     int  tam = 255;
+     char name[255];
+
+     /* Inicializar MPI, lo primero en el programa (puede modificar argc y argv) */
+     MPI_Init(&amp;argc, &amp;argv);
+
+     MPI_Comm_size(MPI_COMM_WORLD, &amp;comm_size); /* size &lt;- cuántos procesos somos */
+     MPI_Comm_rank(MPI_COMM_WORLD, &amp;my_rank);   /* node &lt;- mi identificador, de 0 a (size-1) */
+
+     MPI_Get_processor_name(name, &amp;tam);
+     printf("El proceso %d de %d procesos (%s)\n", my_rank, comm_size, name);
+
+     /* Finalizar MPI, no se puede inicializar de nuevo luego */
+     MPI_Finalize();
+     return 0;
+  }
+</stdio.h></code></pre>
+</li>
+<li><p>Se puede compilar usando <code>mpicc</code> de la siguiente forma:</p>
+<pre><code class="lang-bash">mpicc -g -Wall -c mpi_hola.c -o mpi_hola.o
+mpicc -g -Wall -o mpi_hola mpi_hola.o
+</code></pre>
+</li>
+<li><p>Se puede ejecutar en la máquina local usando <code>mpirun</code>:</p>
+<ol>
+<li>Primero hay que crear un archivo <code>machines</code> con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:<pre><code class="lang-bash">cat &lt;<eof> machines
+localhost
+localhost
+EOF
+</eof></code></pre>
+</li>
+<li>Luego se ha de usar <code>mpirun</code>:<pre><code class="lang-bash">mpirun -np 2 -machinefile machines ./mpi_hola
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>La salida sería similar a:</p>
+<pre><code class="lang-bash">El proceso 0 de 2 procesos (kiwi)
+El proceso 1 de 2 procesos (kiwi)
+</code></pre>
+</li>
+</ul>
+<h3 id="comunicación-punto-a-punto">Comunicación punto a punto</h3>
+<p>El API de MPI incluye:</p>
+<ul>
+<li>Estructuras de datos:<ul>
+<li>Tipos de datos (básicos, vectores, compuestos, …)</li>
+<li>Grupo de procesos (grupos, comunicadores, …)</li>
+</ul>
+</li>
+<li>Paso de mensajes:<ul>
+<li>Llamadas punto a punto (bloqueantes, asíncronas)</li>
+<li>Llamadas colectivas (bcast, scatter, gather, …)</li>
+</ul>
+</li>
+<li>Entrada y salida:<ul>
+<li>Gestión de ficheros (apertura, cierre, …)</li>
+<li>Gestión de contenidos (vistas, punteros, …)</li>
+</ul>
+</li>
+<li>Procesos:<ul>
+<li>Gestión de procesos (creación, …)</li>
+<li><em>Profiling</em></li>
+</ul>
+</li>
+</ul>
+<h3 id="ejemplo-en-c-send-y-receive">Ejemplo en C: send y receive</h3>
+<p><strong>mpi_p2p.c</strong></p>
+<pre><code class="lang-c">#include <stdio.h>
+#include "mpi.h"
+
+int main ( int argc, char **argv )
+{
+    int comm_size, my_rank;
+    int num = 0;
+
+    /* Inicializar MPI, lo primero en el programa (puede modificar argc y argv) */
+    MPI_Init(&amp;argc, &amp;argv);
+
+    MPI_Comm_size(MPI_COMM_WORLD, &amp;comm_size); /* size &lt;- cuántos procesos somos */
+    MPI_Comm_rank(MPI_COMM_WORLD, &amp;my_rank);   /* node &lt;- mi identificador, de 0 a (size-1) */
+
+    if (my_rank == 0) {
+        /* Envía (MPI_Send) desde una dirección de memoria (&amp;num)
+           un (1) entero (MPI_INT) al proceso con rank 1 (1)
+           en mensaje con etiqueta 0 por el comunicador MPI_COMM_WORD */
+        num = 10 ;
+        MPI_Send(&amp;num, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
+    }
+    else {
+        /* Recibe (MPI_Recv) en una dirección de memoria (&amp;num)
+           un (1) entero (MPI_INT) desde el proceso con rank 0 (0)
+           en mensaje con etiqueta 0 por el comunicador MPI_COMM_WORD */
+        MPI_Recv(&amp;num, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        printf("[0 -&gt; %d] num: %d\n", my_rank, num) ;
+    }
+
+    /* Finalizar MPI, no se puede inicializar de nuevo luego */
+    MPI_Finalize();
+    return 0;
+}
+</stdio.h></code></pre>
+<ul>
+<li><p>Se puede compilar usando <code>mpicc</code>:</p>
+<pre><code class="lang-bash">mpicc -Wall -g mpi_p2p.c -o mpi_p2p
+</code></pre>
+</li>
+<li><p>Se puede ejecutar en la máquina local usando <code>mpirun</code>:</p>
+<ol>
+<li>Primero hay que crear un archivo <code>machines</code> con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:<pre><code class="lang-bash">cat &lt;<eof> machines
+localhost
+localhost
+EOF
+</eof></code></pre>
+</li>
+<li>Luego se ha de usar <code>mpirun</code>:<pre><code class="lang-bash">mpirun -np 2 ./mpi_p2p
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>La salida sería similar a:</p>
+<pre><code class="lang-bash">[0 -&gt; 1] num: 10
+</code></pre>
+</li>
+</ul>
+<h3 id="comunicación-colectiva">Comunicación colectiva</h3>
+<p>Principales primitivas de comunicación colectiva:</p>
+<ul>
+<li>MPI_Barrier y MPI_Bcast:<html>
+  <table border="0">
+      <tr>
+          <td><img alt="MPI_Barrier" src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materials/topic-messagepassing/mpi/mpi_barrier.svg" height="125"></img></td>
+          <td><img width="25" height="1"></img></td>
+          <td><img alt="MPI_Bcast" src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materials/topic-messagepassing/mpi/mpi_bcast.svg" height="150"></img></td>
+      </tr>
+  </table>
+</html></li>
+<li>MPI_Scatter vs MPI_Gather:<html>
+  <table border="0">
+      <tr>
+          <td><img alt="MPI_Scatter" src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materials/topic-messagepassing/mpi/mpi_scatter.svg" height="150"></img></td>
+          <td><img width="25" height="1"></img></td>
+          <td><img alt="MPI_Gather" src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materials/topic-messagepassing/mpi/mpi_gather.svg" height="150"></img></td>
+      </tr>
+  </table>
+</html></li>
+<li>MPI_Gather vs MPI_Allgather:<html>
+  <table border="0">
+      <tr>
+          <td><img alt="MPI_Gather" src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materials/topic-messagepassing/mpi/mpi_gather.svg" height="175"></img></td>
+          <td><img width="25" height="1"></img></td>
+          <td><img alt="MPI_Allgather" src="https://raw.githubusercontent.com/acaldero/uc3m_sd/main/materials/topic-messagepassing/mpi/mpi_allgather.svg" height="175"></img></td>
+      </tr><tr>
+  </tr></table>
+</html></li>
+<li>MPI_Reduce vs MPI_Allreduce:<html>
+  <table border="0">
+      
+          <td><img alt="MPI_Reduce" src="http://hustcat.github.io/assets/mpi/mpi_reduce_00.png" height="150"></img></td>
+          <td><img width="25" height="1"></img></td>
+          <td><img alt="MPI_Allreduce" src="http://hustcat.github.io/assets/mpi/mpi_allreduce_00.png" height="150"></img></td>
+      
+  </table>
+</html>
+
+
+</li>
+</ul>
+<h3 id="ejemplo-en-c-broadcast-y-barrier">Ejemplo en C: broadcast y barrier</h3>
+<p><strong>mpi_coll.c</strong></p>
+<pre><code class="lang-c">#include <stdio.h>
+#include "mpi.h"
+
+int main ( int argc, char **argv )
+{
+    int comm_size, my_rank;
+    int num = 0;
+
+    /* Inicializar MPI, lo primero en el programa (puede modificar argc y argv) */
+    MPI_Init(&amp;argc, &amp;argv);
+
+    MPI_Comm_size(MPI_COMM_WORLD, &amp;comm_size); /* size &lt;- cuántos procesos somos */
+    MPI_Comm_rank(MPI_COMM_WORLD, &amp;my_rank);   /* node &lt;- mi identificador, de 0 a (size-1) */
+
+    if (0 == my_rank)
+         num = 5;  /* solo el proceso 0 tiene num el valor 5 */
+    else num = 0 ; /* el resto de procesos tiene num el valor 0 */
+
+    MPI_Bcast(&amp;num, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Barrier(MPI_COMM_WORLD);
+    printf("El proceso %d tiene num: %d\n", my_rank, num);
+
+    /* Finalizar MPI, no se puede inicializar de nuevo luego */
+    MPI_Finalize();
+    return 0;
+}
+</stdio.h></code></pre>
+<ul>
+<li><p>Se puede compilar usando <code>mpicc</code>:</p>
+<pre><code class="lang-bash">mpicc -Wall -g mpi_coll.c -o mpi_coll
+</code></pre>
+</li>
+<li><p>Se puede ejecutar en la máquina local usando <code>mpirun</code>:</p>
+<ol>
+<li>Primero hay que crear un archivo <code>machines</code> con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:<pre><code class="lang-bash">cat &lt;<eof> machines
+localhost
+localhost
+EOF
+</eof></code></pre>
+</li>
+<li>Luego se ha de usar <code>mpirun</code>:<pre><code class="lang-bash">mpirun -np 2 ./mpi_coll
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>La salida sería similar a:</p>
+<pre><code class="lang-bash">El proceso 0 tiene num: 5
+El proceso 1 tiene num: 5
+</code></pre>
+</li>
+</ul>
+<h3 id="ejemplo-en-c-cálculo-de-π-con-mpi">Ejemplo en C: cálculo de π con MPI</h3>
+<p><strong>pi_mpi.c</strong></p>
+<pre><code class="lang-c">#include <math.h>
+#include <stdio.h>
+#include <mpi.h>
+
+#define N 1E9
+#define d 1E-9
+
+int main(int argc, char* argv[])
+{
+    int rank, size;
+    double pi = 0.0, result = 0.0, sum = 0.0, s = 0, x = 0;
+    MPI_Init(&amp;argc, &amp;argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &amp;rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &amp;size);
+
+    for (int i = rank; i &lt; N; i += size) {
+        x = d * i;
+        s = sqrt(4 * (1 - x * x)) * d;
+        result = result + s;
+    }
+
+    MPI_Reduce(&amp;result, &amp;sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+
+    if (rank == 0) {
+        pi = 2 * sum;
+        printf("np = %2d; PI = %lf\n", size, pi);
+    }
+
+    MPI_Finalize();
+    return 0;
+}
+</mpi.h></stdio.h></math.h></code></pre>
+<ul>
+<li><p>Se puede compilar usando <code>mpicc</code>:</p>
+<pre><code class="lang-bash">mpicc -Wall -g pi_mpi.c -lm -o pi_mpi
+</code></pre>
+</li>
+<li><p>Se puede ejecutar en la máquina local usando <code>mpirun</code>:</p>
+<ul>
+<li>Primero hay que crear un archivo <code>machines</code> con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:<pre><code class="lang-bash">cat &lt;<eof> machines
+localhost
+localhost
+EOF
+</eof></code></pre>
+</li>
+<li>Luego se ha de usar <code>mpirun</code>:<pre><code class="lang-bash">mpirun -np 2 -machinefile machines ./pi_mpi
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>La salida sería similar a:</p>
+<pre><code class="lang-bash">np =  2; PI = 3.141593
+</code></pre>
+</li>
+</ul>
+<h3 id="ejemplo-en-c-cálculo-de-π-con-openmp">Ejemplo en C: cálculo de π con OpenMP</h3>
+<p><strong>pi_omp.c</strong></p>
+<pre><code class="lang-c">#include <stdlib.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys time.h="">
+#include <omp.h>
+
+#define N 1000000000
+#define d 1E-9
+
+int main ( int argc, char* argv[] )
+{
+    long long i;
+    double PI = 0.0, result = 0.0;
+
+    #pragma omp parallel for reduction(+:result)
+    for (i = 0; i &lt; N; i++) {
+        double x = d * i;
+        result += sqrt(4 * (1 - x * x)) * d;
+    }
+
+    PI = 2 * result;
+    printf("PI = %f\n", PI);
+
+    return 0;
+}
+</omp.h></sys></stdlib.h></stdio.h></math.h></stdlib.h></code></pre>
+<ul>
+<li><p>Se puede compilar usando:</p>
+<pre><code class="lang-bash">gcc -o pi_omp -fopenmp pi_omp.c -lm
+</code></pre>
+<ul>
+<li>Se precisa la librería de OpenMP <code>libopenmp.a</code> y la librería matemática <code>libm.a</code></li>
+</ul>
+</li>
+<li><p>Se puede ejecutar mediante:</p>
+<pre><code class="lang-bash">user$ ./pi_omp
+</code></pre>
+</li>
+<li><p>La salida sería similar a:</p>
+<pre><code class="lang-bash">PI = 3.141593
+</code></pre>
+</li>
+</ul>
+<h3 id="lecturas-adicionales">Lecturas adicionales</h3>
+<ul>
+<li><a href="https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/" target="_blank">https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/</a></li>
+<li><a href="http://hustcat.github.io/collective-communication-in-mpi/" target="_blank">http://hustcat.github.io/collective-communication-in-mpi/</a></li>
+<li><a href="https://nyu-cds.github.io/python-mpi/05-collectives/" target="_blank">https://nyu-cds.github.io/python-mpi/05-collectives/</a></li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ssdd_pq.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Colas de mensajes POSIX">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Introducción a MPI","level":"3.2","depth":1,"next":{"title":"MPI (notebook)","level":"3.2.1","depth":2,"url":"https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb","ref":"https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb","articles":[]},"previous":{"title":"Colas de mensajes POSIX","level":"3.1","depth":1,"path":"topic-messagepassing/ssdd_pq.md","ref":"topic-messagepassing/ssdd_pq.md","articles":[]},"articles":[{"title":"MPI (notebook)","level":"3.2.1","depth":2,"url":"https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb","ref":"https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb","articles":[]}],"dir":"ltr"},"config":{"plugins":["mermaid","highlight","hide-published-with","hints","chapter-fold"],"styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"search":{},"mermaid":{},"hints":{"info":"fa fa-info-circle","tip":"fa fa-mortar-board","danger":"fa fa-exclamation-circle","working":"fa fa-wrench"},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"hide-published-with":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{"exclude":["mermaid"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Felix Garcia-Carballeira y Alejandro Calderon-Mateos","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Sistemas Distribuidos","gitbook":"*","description":"Sistemas Distribuidos (UC3M)"},"file":{"path":"topic-messagepassing/mpi.md","mtime":"2026-02-19T10:42:05.928Z","type":"markdown"},"gitbook":{"version":"6.1.7","time":"2026-04-10T14:15:27.234Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid-load.js"></script>
+        
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-hide-published-with/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

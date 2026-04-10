@@ -1,0 +1,1623 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>C para distribuidos · Sistemas Distribuidos</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.1.7">
+        <meta name="author" content="Felix Garcia-Carballeira y Alejandro Calderon-Mateos">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/honkit-plugin-mermaid/mermaid.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-hints/plugin-hints.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ssdd_make.html" />
+    
+    
+    <link rel="prev" href="../" />
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Índice
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter active" data-level="2.1" data-path="ssdd_c.html">
+            
+                <a href="ssdd_c.html">
+            
+                    
+                    C para distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="ssdd_make.html">
+            
+                <a href="ssdd_make.html">
+            
+                    
+                    Introducción a make
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../topic-concurrency/ssdd_threads_posix.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_posix.html">
+            
+                    
+                    Concurrencia con POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../topic-concurrency/ssdd_threads_c.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_c.html">
+            
+                    
+                    Concurrencia con C11
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../topic-messagepassing/ssdd_pq.html">
+            
+                <a href="../topic-messagepassing/ssdd_pq.html">
+            
+                    
+                    Colas de mensajes POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../topic-messagepassing/mpi.html">
+            
+                <a href="../topic-messagepassing/mpi.html">
+            
+                    
+                    Introducción a MPI
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.2.1" >
+            
+                <a target="_blank" href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb">
+            
+                    
+                    MPI (notebook)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../topic-sockets/ssdd_sockets.html">
+            
+                <a href="../topic-sockets/ssdd_sockets.html">
+            
+                    
+                    Sockets
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../topic-ds/ds.html">
+            
+                <a href="../topic-ds/ds.html">
+            
+                    
+                    Servicios distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../topic-rpc/rpc.html">
+            
+                <a href="../topic-rpc/rpc.html">
+            
+                    
+                    RPC
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../topic-dfs/dfs.html">
+            
+                <a href="../topic-dfs/dfs.html">
+            
+                    
+                    Sistemas de ficheros distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../topic-ws/web-services.html">
+            
+                <a href="../topic-ws/web-services.html">
+            
+                    
+                    Servicios web
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" >
+            
+                <a target="_blank" href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ft/t9_tolerancia-a-fallos.pdf">
+            
+                    
+                    Tolerancia a fallos (PDF)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >C para distribuidos</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="resumen-de-los-principales-aspectos-del-lenguaje-c-para-sistemas-distribuidos">Resumen de los principales aspectos del lenguaje C para Sistemas Distribuidos</h1>
+<ul>
+<li><strong>Felix García Carballeira, Alejandro Calderón Mateos y Carlos Gómez Carrasco</strong></li>
+<li><a href="https://github.com/acaldero/uc3m_sd/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg" alt="License: CC BY-NC-SA 4.0"></img></a></li>
+</ul>
+<h2 id="contenidos">Contenidos</h2>
+<ul>
+<li><a href="#requisitos">Requisitos</a></li>
+<li>A. Flujo de trabajo habitual:<ul>
+<li><a href="#a1--proceso-de-compilaci%C3%B3n-y-ejecuci%C3%B3n">Proceso de compilación y ejecución</a></li>
+<li><a href="#a2-y-si-hay-problemas-depuramos">Depuración</a></li>
+</ul>
+</li>
+<li>B. Sentencias de control organizadas:<ul>
+<li><a href="#b1--sentencias-de-control-de-flujo-en-c">Sentencias de control</a></li>
+<li><a href="#b2--sentencias-de-control-organizadas">Sentencias alternativas organizadas</a></li>
+</ul>
+</li>
+<li>C. Registros en C y peculiaridades:<ul>
+<li><a href="#c1--uso-de-estructuras-struct-en-c">struct en C</a></li>
+<li><a href="#c2--particularidades-de-las-estructuras-struct-en-c">Particularidades del uso de struct</a></li>
+</ul>
+</li>
+<li>D. Punteros:<ul>
+<li><a href="#d1--uso-de-punteros-i-qué-es-un-puntero">Qué es un puntero</a></li>
+<li><a href="#d2--uso-de-punteros-ii-memoria-din%C3%A1mica">Memoria dinámica</a></li>
+<li><a href="#d3--uso-de-punteros-iii-paso-de-par%C3%A1metros-a-funciones">Paso de parámetros</a></li>
+</ul>
+</li>
+<li>E. Proyectos de varios ficheros: librerías dinámicas y estáticas:<ul>
+<li><a href="#e1--archivos-de-cabecera-y-proyectos-de-varios-archivos">Archivos de cabecera y proyectos multificheros</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="requisitos">Requisitos</h2>
+<p>Los principales requisitos son:</p>
+<ul>
+<li>Tener conexión a Internet para consultar documentación.</li>
+<li>Tener acceso a una máquina con Linux.<ul>
+<li>-&gt; se recuerda que el Laboratorio del Departamento de Informática ofrece unas Aulas Virtuales en:<br></br> <a href="https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/" target="_blank">"https://www.lab.inf.uc3m.es/servicios/aulas-virtuales-del-laboratorio/</a></li>
+</ul>
+</li>
+<li>Tener instalado el software para desarrollo que sea preciso en la máquina con Linux:<pre><code class="lang-bash"> sudo apt-get install build-essential gdb ddd
+</code></pre>
+</li>
+</ul>
+<h2 id="a-flujo-de-trabajo-habitual">A. Flujo de trabajo habitual</h2>
+<h2 id="a1--proceso-de-compilación-y-ejecución">A.1.- Proceso de compilación y ejecución</h2>
+<ul>
+<li><p>El lenguaje C estándar es compilado (y no interpretado como Python)</p>
+<ul>
+<li>Hay que primero compilar el código fuente para generar un código ejecutable antes de ejecutar.</li>
+</ul>
+</li>
+<li><p><strong>Si todo va bien</strong>, el proceso de trabajo en general es:</p>
+<pre><code class="lang-mermaid"><div class="mermaid">  stateDiagram-v2
+  direction LR
+  state "Editor"           as s_edit
+  state "Compilador"       as s_cc
+  state "Cargador"         as s_exe
+
+  [*]       --&gt; s_edit:   editar   &lt;br&gt;-&gt;&lt;br&gt;  gedit main.c &amp;
+  s_edit    --&gt; s_cc:     compilar &lt;br&gt;-&gt;&lt;br&gt;  gcc -o main ...
+  s_cc      --&gt; s_exe:    ejecutar &lt;br&gt;-&gt;&lt;br&gt;  ./main
+  s_exe     --&gt; [*]:      ejecución&lt;br&gt; correcta
+</div></code></pre>
+</li>
+</ul>
+<p>Como ejemplo usaremos el siguiente archivo:</p>
+<ul>
+<li><p>main.c</p>
+<pre><code class="lang-c">#include <stdio.h>
+
+int main ( int argc, char *argv[] )
+{
+   printf("Hola mundo... %d\n",
+   /*                     ^           */
+   /*                     |           */
+                         argc) ;
+
+   return 0 ;
+}
+</stdio.h></code></pre>
+</li>
+</ul>
+<p>Para compilar usaremos:</p>
+<pre><code class="lang-bash">gcc -g -Wall -c main.c -o main.o
+gcc -g -Wall -o main      main.o
+</code></pre>
+<ul>
+<li><details>
+  <summary>Sobre -g, -Wall, ... (hacer click)</summary>
+
+ * A la hora de compilar se utiliza los siguientes modificadores (flags):
+   * "-g" para añadir información de depuración que es útil si se usa un depurador
+   * "-Wall" para que muestre todas las advertencias (Warnings) de posibles problemas que detecte el compilador
+ * Se podría usar también:
+   * "-Werror" para indicar que trate todas las advertencias (warnings) como errores.
+   * "-std=c90 -pedantic" para indicar que use el estándar de C versión 90 de forma extricta sin extensiones de GNU adicionales.
+
+</details>
+
+</li>
+</ul>
+<p>Para ejecutar usaremos:</p>
+<pre><code class="lang-bash">./main
+</code></pre>
+<h2 id="a2-y-si-hay-problemas-depuramos">A.2 Y si hay problemas... depuramos</h2>
+<p>La premisa es que todo vaya bien y no haya problemas.
+Pero nuestro trabajo incluye tratar con problemas para resolverlos de la mejor forma posible.
+Los problemas habituales aparecen:</p>
+<ul>
+<li><p>A la hora de compilar: errores de compilación por sintáxis incorrecta del archivo fuente .c</p>
+<ul>
+<li><details>
+  <summary>Recomendaciones para depurar problemas de compilación... (hacer click)</summary>
+
+* Tratar de solucionar primero el primer error que aparece y luego volver a compilar (hay errores dependientes de otros)
+* Leer bien los mensajes de error del compilador, buscando entender qué problema indica el compilador:
+  * Buscar primero en la línea indicada en el compilador...
+  * ...es posible que haya un error en el código en la línea X que se manifieste para el compilador como otro error y en líneas posteriores
+</details></li>
+</ul>
+</li>
+<li><p>A la hora de ejecutar: errores de ejecución porque el comportamiento esperado no es igual al comportamiento real.</p>
+<ul>
+<li><details>
+  <summary>Recomendaciones para depurar problemas de ejecución... (hacer click)</summary>
+
+  * El uso de "fuerza bruta" con mensajes de impresión (programas pequeños y/o uso de hilos):
+    * Mensaje de los puntos por dónde pasa la ejecución: ```printf("Aquí 1\n"); ... printf("Aquí 2\n"); ...```
+    * Mensaje de qué estado tienen las variables entre dos puntos anteriores: ```printf("variable: %d\n", valor_int); ....```
+  * El uso de algún depurador (kdbg, ddd, gdb, ...)
+  * Realizar programación "defensiva": desde el principio añadir todas las comprobaciones y mensajes de impresión posibles
+</details>
+
+</li>
+</ul>
+</li>
+</ul>
+<p>El proceso de trabajo en general incluyendo el tratamiento de problemas sería en general:</p>
+<pre><code class="lang-mermaid"><div class="mermaid">    stateDiagram-v2
+    direction TB
+    state "Editor"       as s_edit
+    state "Compilador"   as s_cc
+    state "Ejecutar"     as s_exe
+    state "Depurador"    as s_dbg
+
+    [*]       --&gt; s_edit
+    s_edit    --&gt; s_cc:     compilar
+    s_cc      --&gt; s_edit:   problema al compilar
+    s_cc      --&gt; s_exe:    ejecutar
+    s_exe     --&gt; s_edit:   problema detectado al ejecutar
+    s_exe     --&gt; s_dbg:    problema al ejecutar
+    s_dbg     --&gt; s_edit:   problema detectado al depurar
+    s_exe     --&gt; [*]:      ejecución correcta
+</div></code></pre>
+<details>
+  <summary>Depurar con ddd... (hacer click)</summary>
+<br></br>
+
+ * Para depurar con ddd ha de ejecutar:
+   ```bash
+   ddd ./main &amp;
+   ```
+
+ * La aplicación ddd es una interfaz gráfica sobre el depurador gdb de línea de mandatos, facilitando su uso:
+  ![DDD | main](./images/ddd-1.jpg)
+
+ * Se puede instalar en Debian/Ubuntu mediante:
+   ```bash
+   sudo apt-get install ddd
+   ```
+
+</details>
+
+
+<details>
+  <summary>Depurar con seer... (hacer click)</summary>
+<br></br>
+
+ * NOTA: aprovecho para agradecer a Adolfo la información de seer así como recomendar su uso
+
+ * Seer está disponible en:
+   https://github.com/epasveer/seer
+
+ * Seer es una interfaz gráfica para gdb en Linux:
+   ![seer | main](https://raw.githubusercontent.com/epasveer/seer/main/images/mainview.png)
+
+</details>
+
+
+<p><br></br></p>
+<h2 id="b-sentencias-de-control-organizadas">B. Sentencias de control organizadas</h2>
+<h2 id="b1--sentencias-de-control-de-flujo-en-c">B.1.- Sentencias de control de flujo en C</h2>
+<p>Como ejemplo de uso de sentencias de control de flujo en C, usaremos el siguiente archivo:</p>
+<ul>
+<li><p>main.c</p>
+<pre><code class="lang-c">#include <stdio.h>
+
+int main ( int argc, char *argv[] )
+{
+   int i ;
+
+   if (NULL == argv)  {
+       printf("argv is NULL 🦖\n") ;
+   }
+
+   for (i=0; i<argc; i++)="" {="" printf("="" argv[%d]="" -=""> %s\n", i, argv[i]) ;
+   }
+
+   return 0 ;
+}
+</argc;></stdio.h></code></pre>
+</li>
+</ul>
+<p>Este ejemplo permite imprimir los argumentos con los que se invoca un programa.</p>
+<pre><code class="lang-bash">gcc -g -Wall -c main.c -o main.o
+gcc -g -Wall -o main      main.o
+
+./main uno dos tres
+</code></pre>
+<p>Recordatorios:</p>
+<ul>
+<li><details>
+<summary>De "alternar" entre opciones en C... (hacer click)</summary>
+
+* if-then-else:
+  ```c
+  if ("condición cierta o falsa")  // 0 es falso y resto es verdadero
+  {
+    "si es cierta..."
+  }
+  else
+  {
+    "si es falsa..."
+  }
+  ```
+</details></li>
+<li><details>
+<summary>Para "iterar" en C... (hacer click)</summary>
+
+* for (de 0 a n veces):
+  ```c
+  for ("valores iniciales de contadores"; "condición de mantenimiento en el bucle"; "actualización de contadores")
+  {
+    ...
+  }
+  ```
+* while (de 0 a n veces):
+  ```c
+  "valores iniciales de contadores";
+  while ("condición de mantenimiento en el bucle")
+  {
+    ...
+    "actualización de contadores";
+  }
+  ```
+* do-while (de 1 a n veces):
+  ```c
+  "valores iniciales de contadores";
+  do
+  {
+    ...
+    "actualización de contadores";
+  }
+  while ("condición de mantenimiento en el bucle")
+  ```
+</details>
+
+
+</li>
+</ul>
+<p><strong>Información recomendada</strong>:</p>
+<ul>
+<li><a href="http://www.youtube.com/watch?embed=no&amp;v=ux_J98WmjPA&amp;feature=related" target="_blank">Sentencias de control (youtube)</a></li>
+</ul>
+<h2 id="b2--sentencias-de-control-organizadas">B.2.- Sentencias de control organizadas</h2>
+<p>Uno de los usos de las sentencias de control "alternativas" es para programación "defensiva":</p>
+<ul>
+<li>Se comprueba que todos los argumentos tienen unos valores correctos.</li>
+<li>Se comprueba para toda llamada al sistema operativo si ha devuelto un valor indicando error.</li>
+</ul>
+<p>A la izquierda se muestra un ejemplo <code>main-v1.c</code> de programa que guarda diez veces un mensaje en un fichero cuyo nombre se indica en el argumento sin hacer ningún tipo de comprobación.<br></br>
+A la derecha se tiene <code>main-v2.c</code> con programación "defensiva".</p>
+<html>
+  <table>
+  <tr>
+  <td>
+
+   ```c
+    #include <stdio.h>
+
+
+    int main ( int argc, char *argv[] )
+    {
+       int   i ;
+       FILE *fd ;
+
+       fd = fopen(argv[1], "w") ;
+
+       for (i=0; i&lt;10; i++) {
+            fprintf(fd, "Hola mundo\n") ;
+       }
+
+       fclose(fd) ;
+
+       return 0 ;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ```
+
+  </stdio.h></td>
+  <td>
+
+   ```c
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   int main ( int argc, char *argv[] )
+   {
+      int   ret, i ;
+      FILE *fd ;
+
+      // check arguments
+      if (1 == argc) {
+          printf("Usage: %s <fichero.txt>\n", argv[0]) ;
+          exit(-1) ;
+      }
+
+      // try to open file
+      fd = fopen(argv[1], "w") ;
+      if (NULL == fd) {
+          perror("fopen: ") ;
+          exit(-1) ;
+      }
+
+      // do task
+      for (i=0; i&lt;10; i++) {
+           ret = fprintf(fd, "Hola mundo\n") ;
+           if (ret &lt; 0) {
+               perror("fprintf: ") ;
+           }
+      }
+
+      // cleanup
+      ret = fclose(fd) ;
+      if (ret &lt; 0) {
+          perror("fclose: ") ;
+      }
+
+      return 0 ;
+   }
+   ```
+
+  </fichero.txt></stdlib.h></stdio.h></td>
+  </tr>
+  </table>
+</html>
+
+<p>A la hora de compilar y ejecutar se tiene lo siguiente:</p>
+<html>
+  <table>
+  <tr>
+  <td>
+
+* Para compilar la versión inicial ```main-v1.c```:
+  ```bash
+  gcc -g -Wall -c main-v1.c -o main-v1.o
+  gcc -g -Wall -o main-v1      main-v1.o
+  ```
+
+* Para ejecutar ```main-v1``` con y sin argumento:
+  ```bash
+  ./main-v1 fichero.txt
+  ./main-v1
+  ```
+
+* Pero ```main-v1``` sin parámetros no ejecuta:
+  ```bash
+  Segmentation fault (core dumped)
+  ```
+
+  </td>
+  <td>
+
+* Para compilar la versión "defensiva" ```main-v2.c```:
+  ```bash
+  gcc -g -Wall -c main-v2.c -o main-v2.o
+  gcc -g -Wall -o main-v2      main-v2.o
+  ```
+
+* Para ejecutar ```main-v2``` con y sin argumento:
+  ```bash
+  ./main-v2 fichero.txt
+  ./main-v2
+  ```
+
+* Y sin argumentos, no hay un error grave:
+  ```bash
+  Usage: ./main-v2 <fichero.txt>
+  ```
+
+
+  </fichero.txt></td>
+  </tr>
+  </table>
+</html>
+
+
+<p>Dos detalles a recordar:</p>
+<ul>
+<li><ol>
+<li>Hay que evitar la anidación de <code>if-else</code> para detectar errores porque hace difícil de leer y entender el código.
+Ejemplo:<pre><code class="lang-c">if (**caso de error X**)
+{
+   printf("ERROR: **explicación**") ;
+}
+else
+{
+   if (**caso de error Y**)
+   {
+       printf("ERROR: **explicación**") ;
+   }
+   else
+   {
+        if (**caso de error Z**)
+        {
+            printf("ERROR: **explicación**") ;
+        }
+        else
+        {
+             **más código ...**
+        } 
+   }
+}
+</code></pre>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>Hay que comprobar el valor devuelto por todas las llamadas al sistema (se puede usar <code>perror</code> o similar para informar de la razón del error):<pre><code class="lang-c">fd = fopen(argv[1], "w") ;
+if (NULL == fd)
+{
+   perror("fopen: ") ;
+}
+</code></pre>
+</li>
+</ol>
+</li>
+</ul>
+<p><br></br></p>
+<h2 id="c-registros-en-c-y-peculiaridades">C. Registros en C y peculiaridades</h2>
+<h2 id="c1--uso-de-estructuras-struct-en-c">C.1.- Uso de estructuras (struct) en C</h2>
+<p>Como ejemplo de (array de) structs, usaremos el siguiente archivo:</p>
+<ul>
+<li><p>main.c</p>
+<pre><code class="lang-c">#include <stdio.h>
+#include <stdlib.h>
+
+#define N_PERSONAS 10
+
+struct dni {
+   int  id ;
+   char letra ;
+   char nombre[128] ;
+} ;
+
+struct dni personas[N_PERSONAS] ;
+
+int main ( int argc, char *argv[] )
+{
+   int i ;
+
+   /* Rellenar personas con valores por defecto (persona 0,1...) */
+   for (i=0; i</stdlib.h></stdio.h></code></pre>
+</li>
+</ul>
+<p>Aclaraciones:</p>
+<ul>
+<li><p>Sobre arrays:</p>
+<ul>
+<li>Al usar un array con solo su nombre (sin corchetes []) tendremos la dirección de memoria del primer elemento<ul>
+<li>array == &amp;(array[0])</li>
+<li>Es una dirección de memoria constante (determinada en tiempo de compilación) que apunta a un elemento variable (en tiempo de ejecución puede cambiar).</li>
+</ul>
+</li>
+<li><p>No hay un tipo string ya incluido en C pero podemos usar un array de caracteres para representar un string de una longitud máxima prefijada en compilación:</p>
+<pre><code class="lang-c">char string1[128]; // string de hasta 127 caracteres más caracter fin de cadena ('\0') para indicar el último
+
+strcpy(string1, "Hola mundo") ;
+</code></pre>
+</li>
+</ul>
+</li>
+<li>Sobre structs:<ul>
+<li>Al definir un tipo estructura con <code>struct nombre-de-tipo-estructura</code> "siempre" tenemos que usar la palabra struct en el nombre del tipo para definir variables: <code>struct nombre-de-tipo-estructura variable</code></li>
+<li>Es posible crear un tipo nuevo de datos a partir de otros con typedef:<pre><code class="lang-c">typedef   struct dni     cien_personas[100] ;
+cien_personas  personal ;
+</code></pre>
+</li>
+<li>Es posible no tener que usar "struct" siempre al crear un tipo nuevo de datos con typedef:<pre><code class="lang-c">typedef   struct dni     dni_t ;
+dni_t personas[N_PERSONAS] ;
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Información recomendada</strong>:</p>
+<ul>
+<li><a href="http://www.youtube.com/watch?embed=no&amp;v=o5Jl_Dzga88&amp;feature=related" target="_blank">Array y Struct en C (youtube)</a></li>
+</ul>
+<h2 id="c2--particularidades-de-las-estructuras-struct-en-c">C.2.- Particularidades de las estructuras (struct) en C</h2>
+<p>Como ejemplo de structs, usaremos el siguiente archivo:</p>
+<ul>
+<li><p>main.c</p>
+<pre><code class="lang-c">#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct dni {
+   int  id ;
+   char letra ;
+   char nombre[128] ;
+} ;
+
+struct dni personas ;
+
+int main ( int argc, char *argv[] )
+{
+   /* Rellenar personas con valores por defecto (persona 0,1...) */
+   personas[i].id    = i ;
+   personas[i].letra = 'A' ;
+   sprintf(personas[i].nombre,  /* cadena destino */
+           "persona %d",        /* formato */
+           personas[i].id) ;    /* %d */
+
+   /* El tamaño de un struct puede no ser la suma del tamaño de los campos que la componen: puede haber rellenos */
+   printf("* Tamaño del tipo DNI vs suma tamaño de los campos:\n") ;
+   printf("  + Tamaño en bytes del tipo DNI: %ld\n", sizeof(struct dni)) ;
+   printf("  + Tamaño en bytes de los campos del tipo DNI: %ld, %ld, %ld\n",
+               sizeof(personas.nombre), sizeof(personas.letra), sizeof(personas.id)) ;
+
+   /* El tamaño de un string no es la longitud */
+   printf("* Tamaño de la cadena de caracteres no es la longitud:\n") ;
+   printf("  + Tamaño en bytes de la cadena: %ld\n", sizeof(personas.nombre)) ;
+   printf("  + Longitud de la cadena:        %ld\n", strlen(personas.nombre)) ;
+
+   return 0 ;
+}
+</string.h></stdlib.h></stdio.h></code></pre>
+</li>
+</ul>
+<p>Hay 2 tipos de particularidades a recordar:</p>
+<ol>
+<li><em>Endianess</em><ul>
+<li>Los tipos enteros de más de un byte (e.g.: entero) puede tener orden distinto de bytes: <em>big endian</em> vs <em>little endian</em>.</li>
+</ul>
+</li>
+<li>Tamaños en bytes...:<ul>
+<li>El tamaño del struct NO siempre es la suma del tamaño de los campos: puede haber rellenos o <em>padding</em> para alinear tipos de datos en memoria.<ul>
+<li>Consejo: el tamaño de "struct X" se tiene con "sizeof(struct X)"</li>
+</ul>
+</li>
+<li>El tamaño de un entero en C no es portable: en una plataforma de 32 bits es distinto al de una plataforma de 64 bits<ul>
+<li>Consejo: mejor usar <a href="tipos%20fijos">https://en.cppreference.com/w/c/types/integer.html</a> como por ejemplo <code>int32_t</code>, <code>int64_t</code>, etc.</li>
+</ul>
+</li>
+<li>El tamaño de un array de caracteres es el espacio reservado en memoria, se use o no todo:<ul>
+<li>Consejo: diferenciar entre <em>sizeof(string)</em>, <em>strlen(string)</em> y <em>strlen(string)+1</em> según el contexto.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><br></br></p>
+<h2 id="d-punteros">D. Punteros</h2>
+<h2 id="d1--uso-de-punteros-i-qué-es-un-puntero">D.1.- Uso de punteros I (qué es un puntero)</h2>
+<p>Como ejemplo inicial de qué representa un puntero en C, usaremos el siguiente archivo:</p>
+<ul>
+<li><p>main.c
+```c</p>
+<h1 id="include-">include <stdio.h></stdio.h></h1>
+<h1 id="include-">include <stdlib.h></stdlib.h></h1>
+<p>int main ( int argc, char *argv[] )
+{</p>
+<pre><code>/* Definir variables */
+int   i ;
+int *pi ;     /* (1) */
+</code></pre><p> // int &amp;ri = i ; /<em> (2) &lt;- solo en C++ </em>/</p>
+</li>
+</ul>
+<pre><code>  /* Modificar valor de variables */
+   i  = 5 ;
+   pi = &amp;i ;     /* (4) */
+  *pi = 5 ;      /* (3) */
+</code></pre><p>   //  ri = 5 ;      /<em> &lt;- solo en C++ </em>/</p>
+<pre><code>  /* Consultar valor de variables */
+  printf("  i = %d\n",   i) ;
+  printf(" pi = %x\n",  pi) ;
+  printf("*pi = %d\n", *pi) ; /* (3) */
+</code></pre><p>   // printf(" ri = %d\n",  ri) ; /<em> &lt;- solo en C++ </em>/</p>
+<pre><code>  // Una variable puntero es un variable que guarda la dirección de una posición de memoria,
+  // se parece mucho a una variable del tipo "unsigned long int"
+  printf(" pi = %x\n",  pi) ;
+  printf(" &amp;i = %x\n",  &amp;i) ; /* (4) */
+  // Una variable puntero a su vez se guarda en una posición de memoria
+  // (se puede aplicar el operador &amp; para conocer dicha dirección)
+  printf("&amp;pi = %x\n", &amp;pi) ; /* (4) */
+
+  return 0 ;
+</code></pre><p>  }</p>
+<pre><code>
+A recordar:
+* El uso de los operadores "&amp;" y "*" depende del contexto:
+
+  | contexto/operador        |   *                |   &amp;                       |
+  |:------------------------:|:------------------:|:-------------------------:|
+  | al definir una variable  | (1) puntero a...   | (2) referencia a... (C++) |
+  | uso de variable          | (3) acceder a...   | (4) la dirección de...    |
+
+**Información recomendada**:
+* [Introducción a punteros  I (youtube)](http://www.youtube.com/watch?embed=no&amp;v=iQF-2vUNEJk&amp;feature=related)
+* [Introducción a punteros II (youtube)](http://www.youtube.com/watch?embed=no&amp;v=m6sdKI3zhKg&amp;feature=related)
+
+
+
+## D.2.- Uso de punteros II (memoria dinámica)
+
+Como ejemplo de uso de punteros para memoria dinámica, usaremos el siguiente archivo:
+* main.c
+  ```c
+  #include <stdio.h>
+  #include <stdlib.h>
+
+
+  void imprimir ( int *vector, int n_eltos )
+  {
+      int i ;
+
+      for (i=0; i<n_eltos; i++)="" {="" printf("="">&gt; vector[%d] = %d\n", i, vector[i]) ;
+      }
+  }
+
+  int main ( int argc, char *argv[] )
+  {
+      /*
+       * Array estático
+       */
+
+      /* Definir array estático (de tamaño fijo, en tiempo de compilación) */
+      int  earray[5]  = { 1, 2, 3, 4, 5 } ;
+
+      /* Modificar valor de variables */
+        earray[0] = 1 ;   earray[1] = 2 ;   earray[2] = 3 ;   earray[3] = 4 ;   earray[4] = 5 ;
+      *(earray+0) = 1 ; *(earray+1) = 2 ; *(earray+2) = 3 ; *(earray+3) = 4 ; *(earray+4) = 5 ;
+
+  /* CUIDADO:
+      earray[5] = 5 ;  !!  fuera de rango
+  */
+
+      /* Consultar valor de variables */
+      printf("Estático:\n") ;
+      imprimir(earray, 5) ;
+
+
+      /*
+       * Array dinámico
+       */
+
+      /* Definir array dinámico (tamaño variable fijado en ejecución) */
+      int *darray  = NULL ;
+      int  n_eltos = 0 ;
+
+            /* a) vamos a pedir memoria para 2 enteros... */
+            n_eltos = 2 ;
+            darray  = malloc(n_eltos * sizeof(int)) ;
+            if (NULL == darray) {
+                perror("malloc ha fallado: ") ;
+                exit(-1) ;
+            }
+
+      /* Modificar valor de variables */
+        darray[0] = 1 ;   darray[1] = 2 ;
+      *(darray+0) = 1 ; *(darray+1) = 2 ;
+
+  /* CUIDADO:
+      darray    = 1 ;  !!  darray almacena la dirección 0x1 de memoria pero no se guarda 1 en el primer elemento
+      darray[2] = 3 ;  !!  fuera de rango
+  */
+
+      /* Consultar valor de variables */
+      printf("Dinámico:\n") ;
+      imprimir(darray,  n_eltos) ;
+
+  /* CUIDADO:
+      imprimir(&amp;darray, n_eltos) ;  !! dirección de la variable que guarda la dirección del primer elemento...
+  */
+
+            /* b) se libera la memoria cuando ya NO sea necesario volver a usarse */
+            free(darray) ;
+            darray  = NULL ;
+            n_eltos = 0 ;
+
+      return 0 ;
+  }
+</n_eltos;></stdlib.h></stdio.h></code></pre><p>En este ejemplo:</p>
+<ul>
+<li>Hay un array estático (earray) de enteros:<ul>
+<li>Un array estático es de tamaño fijo determinado en tiempo de compilación.</li>
+<li>En tiempo de ejecución no se puede cambiar su tamaño por lo que normalmente se indica en tiempo de compilación un tamaño máximo que el/la programador/a no se ha de sobrepasar.</li>
+</ul>
+</li>
+<li>Hay un array dinámico (darray) de enteros:<ul>
+<li>El array dinámico se implementa con dos elementos: un entero con el tamaño del array (en elementos o bytes) y un puntero al primer elemento (el resto están a continuación).</li>
+<li>En tiempo de ejecución se reserva espacio (malloc) y luego se puede usar como un array estático (usando los corchetes y el índice del elemento a acceder).</li>
+</ul>
+</li>
+</ul>
+<p>A recordar en C:</p>
+<ul>
+<li><strong>Hay que llevar la contabilidad de los punteros al usarlos</strong>:<ul>
+<li><strong>Dirección</strong>: ¿es válida?</li>
+<li><strong>Espacio apuntado</strong>: ¿se ha reservado previamente (en compilación o ejecución)?</li>
+</ul>
+</li>
+<li><p>Estados en el uso recomendado de un puntero:</p>
+<pre><code class="lang-mermaid"><div class="mermaid">  stateDiagram-v2
+  direction TB
+  state "px==¿?"             as px_xx
+  state "px==NULL"           as px_null
+  state "px==&amp;x"             as px_atx
+  state "px -&gt; alloc(size)"  as px_alloc
+
+  px_xx     --&gt; px_null:  px = NULL
+  px_null   --&gt; px_atx:   px = &amp;x
+  px_atx    --&gt; px_null:  px = NULL
+  px_null   --&gt; px_alloc: px = malloc(size_en_bytes)
+  px_alloc  --&gt; px_null:  free(px) + px = NULL
+  px_alloc  --&gt; px_alloc: px_aux = realloc(px, nuevo_size_en_bytes) +\n if (px_aux != NULL) px = px_aux
+  px_atx    --&gt; px_alloc: px = malloc(size_en_bytes)
+</div></code></pre>
+</li>
+</ul>
+<p><strong>Información recomendada</strong>:</p>
+<ul>
+<li><a href="http://www.youtube.com/watch?embed=no&amp;v=iQF-2vUNEJk&amp;feature=related" target="_blank">Introducción a punteros  I (youtube)</a></li>
+<li><a href="http://www.youtube.com/watch?embed=no&amp;v=m6sdKI3zhKg&amp;feature=related" target="_blank">Introducción a punteros II (youtube)</a></li>
+</ul>
+<h2 id="d3--uso-de-punteros-iii-paso-de-parámetros-a-funciones">D.3.- Uso de punteros III (paso de parámetros a funciones)</h2>
+<p>Es importante tener presente que en lenguaje C:</p>
+<ul>
+<li>Los valores con los que se llama a una función se llaman <strong>argumentos reales</strong>:<pre><code class="lang-c">int ret = f(1, 'a', 3.14) ;
+</code></pre>
+</li>
+<li>Los valores dentro de una función se llaman <strong>argumentos formales</strong>:<pre><code class="lang-c">int f(int a1, char a2, float a3) { ... }
+</code></pre>
+</li>
+<li><strong>En el momento de la llamada a una función se hace una asignación (copia) de los argumentos reales a los formales</strong>.<ul>
+<li>Por tanto, <strong>TODO argumento se pasa por valor</strong>.</li>
+</ul>
+</li>
+<li>El nombre de un array de tipo X equivale a la dirección de memoria donde se guarda el primer elemento de tipo X<ul>
+<li>Por tanto, el argumento formal para un array de tipo X puede ser un puntero a X.<pre><code class="lang-c">    int f(char *a4, char a5[]) ;
+   //           ^        ^
+   //           |        |
+int ret = f(array_char, "Hola") ;
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<p>Como ejemplo de paso por parámetros por valor, usaremos el siguiente archivo:</p>
+<ul>
+<li><p>main.c</p>
+<pre><code class="lang-c">#include <stdio.h>
+#include <stdlib.h>
+
+int imprimir_char ( char valor )
+{
+    printf("valor: '%c'\n", valor) ;
+
+    return 1 ; // convenio aquí: 1 OK y 0 KO
+}
+
+int imprimir_string ( char *valor )
+{
+    // comprobar argumentos: programación "defensiva"...
+    if (NULL == valor)
+        return 0 ;
+
+    // si todo bien, acción y devolver OK
+    printf("valor: '%s'\n", valor) ;
+
+    return 1 ; // convenio aquí: 1 OK y 0 KO
+}
+
+int copiar_string ( char * dest, char * orig )
+{
+    // comprobar argumentos: programación "defensiva"...
+    if (NULL == dest) return 0 ;
+    if (NULL == orig) return 0 ;
+
+    // copiar caracter a caracter...
+    for (int i=0; orig[i] != '\0'; i++) {
+         dest[i] = orig[i] ;
+     // *dest = *orig ; orig++; dest++ ;
+    }
+
+    return 1 ; // convenio aquí: 1 OK y 0 KO
+}
+
+int main ( int argc, char *argv[] )
+{
+    int ret ;
+    char  c  = 'x' ;
+    char *s1 = "Hola" ;
+    char  s2[120] ;
+
+    /* Caracter (char) */
+
+       ret = imprimir_char(c) ;
+       if (ret != 1) return -1 ;
+
+       ret = imprimir_char('x') ;
+       if (ret != 1) return -1 ;
+
+    /* Cadena de caracteres (string) */
+
+       ret = imprimir_string(s1) ;  // a recordar: s1 == &amp;(s1[0])
+       if (ret != 1) return -1 ;
+
+       ret = imprimir_char(s1[3]) ; // a recordar: s1[3] == *(s1+3)
+       if (ret != 1) return -1 ;
+
+       ret = copiar_string(s2, "Adios") ;
+       if (ret != 1) return -1 ;
+
+       ret = imprimir_string(s2) ;  // a recordar: s2 == &amp;(s2[0])
+       if (ret != 1) return -1 ;
+
+       ret = imprimir_char(s2[3]) ; // a recordar: s2[3] == *(s2+3)
+       if (ret != 1) return -1 ;
+
+    return 0 ; // convenio aquí: 0 OK, negativos KO
+}
+</stdlib.h></stdio.h></code></pre>
+</li>
+</ul>
+<p><strong>Información recomendada</strong>:</p>
+<ul>
+<li><a href="https://youtu.be/mS0gnJ-su_Y&amp;t=7m33s" target="_blank">Paso de parámetros a funciones (youtube)</a></li>
+</ul>
+<p>Como ejemplo de paso por parámetros de punteros por referencia, usaremos el siguiente archivo:</p>
+<ul>
+<li><p>main.c</p>
+<pre><code class="lang-c">#include <stdio.h>
+#include <stdlib.h>
+
+// el parámetro long size es un entero largo pasado por valor
+void * mi_malloc ( long size )
+{
+    // comprobar argumentos...
+    if (0 == size) return NULL ;
+
+    return (void *)malloc(size) ;
+}
+
+// el parámetro ptr es un puntero a void pasado por referencia
+int mi_free ( void **ptr )
+{
+    // comprobar argumentos...
+    if (NULL == ptr) return -1 ; // error
+
+    // si ya es NULL, ignorar
+    if (NULL == *ptr) return 0 ; // ignorar
+
+    // liberar y poner a NULL
+    free(*ptr) ;
+    *ptr = NULL ;
+
+    return 1 ; // OK
+}
+
+// el parámetro ptr es un puntero a void pasado por referencia
+int  mi_remalloc ( void **ptr,  long new_size )
+{
+    void * ptr_aux ;
+
+    // comprobar argumentos...
+    if (NULL == ptr) { // (NULL != ptr) vs (ptr != NULL)
+        return -1 ; // error
+    }
+
+    // new_size == 0 -&gt; free(...)
+    if (0 == new_size) {
+        if (*ptr) free(*ptr) ;
+        *ptr = NULL ;
+        return 1 ;
+    }
+
+    // new_size != 0 -&gt; realloc(...)
+    ptr_aux = realloc(*ptr, new_size);
+    if (NULL != ptr_aux) {
+       *ptr = ptr_aux;
+       return 1 ;
+    }
+
+    return -1 ;
+}
+
+int main ( int argc, char *argv[] )
+{
+    int ret ;
+    char *s1 ;
+
+    s1 = mi_malloc(128 * sizeof(char)) ;
+
+       // imprimir string "a"
+       s1[0] = 'a' ;
+       s1[1] = '\0' ;
+       printf("%s\n", s1) ;
+
+    // mantener mismo contenido en s1 pero pedir más espacio asignado
+    ret = mi_remalloc( &amp;s1, 256 * sizeof(char)) ;
+
+       // ...
+
+    ret = mi_free(&amp;s1) ;
+
+    return 0 ;
+}
+</stdlib.h></stdio.h></code></pre>
+</li>
+</ul>
+<p><strong>Información recomendada</strong>:</p>
+<ul>
+<li><a href="https://youtu.be/mS0gnJ-su_Y&amp;t=7m33s" target="_blank">Paso de parámetros a funciones (youtube)</a></li>
+</ul>
+<p><br></br></p>
+<h2 id="e-proyectos-de-varios-ficheros-librerías-dinámicas-y-estáticas">E. Proyectos de varios ficheros: librerías dinámicas y estáticas</h2>
+<h2 id="e1--archivos-de-cabecera-y-proyectos-de-varios-archivos">E.1.- Archivos de cabecera y proyectos de varios archivos</h2>
+<p>Como ejemplo de cómo compilar un proyecto con varios ficheros usaremos estos tres archivos:</p>
+<ul>
+<li><p>lib_hola.h</p>
+<pre><code class="lang-c">// NOTA: "guarda" para evitar incluir más de una vez la misma librería por importaciones "transitivas"
+#ifndef LIB_HOLA
+#define LIB_HOLA
+
+    #include <stdio.h>
+
+    // NOTA: solo "declaraciones" (e.g.: external int err_code;) y no "definiciones" (e.g.: int err_code = 0;)
+    void di_hola ( void ) ;
+
+#endif
+</stdio.h></code></pre>
+</li>
+<li><p>lib_hola.c</p>
+<pre><code class="lang-c">// NOTA: el preprocesador remplaza "#include" por el contenido del archivo de cabecera
+#include "lib_hola.h"
+
+void di_hola ( void )
+{
+   printf("Hola Mundo...\n") ;
+}
+</code></pre>
+</li>
+<li><p>main.c</p>
+<pre><code class="lang-c">// NOTA: el preprocesador remplaza "#include" por el contenido del archivo de cabecera
+#include "lib_hola.h"
+// NOTA: usar #include <fichero> solo busca en las cabeceras del sistema,
+//       #include "fichero" busca además en directorios definidos por programador(a)
+//       con el argumento -Idirectorio al compilar
+#include <stdlib.h>
+
+int main ( int argc, char *argv[] )
+{
+   di_hola() ;
+
+   return 0 ;
+}
+</stdlib.h></fichero></code></pre>
+</li>
+</ul>
+<p>Hay 3 alternativas de compilación principales:</p>
+<ul>
+<li><p>(1/3) Ejemplo de compilación del ejecutable main (sin librerías):</p>
+<pre><code class="lang-bash">gcc -g -Wall -c lib_hola.c -o lib_hola.o
+gcc -g -Wall -c main.c     -o main.o      -I./
+gcc -g -Wall -o main main.o lib_hola.o
+</code></pre>
+<details>
+  <summary>Donde las opciones de compilación... (hacer click)</summary>
+
+  * "-c ... -o ..." genera el archivo binario asociado a un fichero fuente:
+    ```bash
+    gcc -g -Wall -c fichero.c -o fichero.o
+    ```
+  * "-o ... libs..." genera el archivo ejecutable combinando todos los binarios (incluidas bibliotecas como libc.a con -lc):
+    ```bash
+    gcc -g -Wall -o fichero fichero.o lib_hola.o -lc
+    ```
+  </details></li>
+<li><p>(2/3) Ejemplo de compilación con librería estática para lib_hola.o:</p>
+<pre><code class="lang-bash">  gcc -g -Wall -c lib_hola.c -o lib_hola.o
+  ar rcs libestatica.a lib_hola.o
+  gcc -g -Wall -o main main.c -lestatica -L.
+  ./main
+</code></pre>
+<ul>
+<li><p>(3/3) Ejemplo de compilación con librería dinámica para lib_hola.o:</p>
+<pre><code class="lang-bash">gcc -g -Wall -fPIC -c lib_hola.c -o lib_hola.o
+gcc -shared -Wl,-soname,libdinamica.so -o libdinamica.so lib_hola.o
+gcc -g -Wall -o main main.c -ldinamica -L.
+env LD_LIBRARY_PATH=$LD_LIBRARY_PATH:. ./main
+</code></pre>
+<details>
+  <summary>Opciones para compilar con una librería dinámica... (hacer click)</summary>
+
+  * Ejemplo de compilación con versiones para la librería dinámica:
+    ```bash
+    gcc -g -Wall -fPIC -c lib_hola.c -o lib_hola.o
+    gcc -shared -Wl,-soname,libdinamica.so -o libdinamica.so.1.0 lib_hola.o
+    ln -s libdinamica.so.1.0 libdinamica.so
+    gcc -g -Wall -o main main.c -ldinamica -L.
+    env LD_LIBRARY_PATH=$LD_LIBRARY_PATH:. ./main
+    ```
+  * Ejemplo de guardar en el ejecutable el directorio actual para buscar la librería dinámica (-Wl,-rpath,*directorio*):
+    ```bash
+    gcc -g -Wall -o main main.c -ldinamica -L. -Wl,-rpath,.
+    ```
+  </details>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Información recomendada</strong>:</p>
+<ul>
+<li><a href="https://youtu.be/B_7jBxe_VOQ&amp;t=2m34s" target="_blank">Ejemplo de biblioteca (youtube)</a></li>
+<li><a href="https://youtu.be/B_7jBxe_VOQ&amp;t=5m04s" target="_blank">Solucionar las multiples inclusiones (youtube)</a></li>
+<li><a href="https://youtu.be/B_7jBxe_VOQ&amp;t=7m42s" target="_blank">Ejemplo de bibliotecas estática (youtube)</a></li>
+<li><a href="https://youtu.be/B_7jBxe_VOQ&amp;t=10m05s" target="_blank">Ejemplo de bibliotecas dinámica (youtube)</a></li>
+<li><a href="https://beej.us/guide/bgc/" target="_blank">Beej's Guide to C Programming</a><ul>
+<li><details>
+<summary>Transparencias y videos adicionales... (hacer click)</summary>
+<html>
+<small>
+<table>
+<tr><th>Sesión</th><th>Tema</th><th>:notebook: Transparencias</th><th>:clapper: Videos</th></tr>
+<tr><td rowspan="2">1</td>
+<td>Introducción a <br></br>Linux/Ubuntu</td>
+<td><ul>
+  <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w0-ubuntu-instalacion.pdf" target="_blank">instalacion.pdf</a></li>
+  <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w0-ubuntu-fichydirs.pdf" target="_blank">ficheros-y-directorios.pdf</a></li>
+  <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w0-ubuntu-procesos.pdf" target="_blank">gestion-procesos.pdf</a></li>
+</ul></td>
+<td><ul type="1">
+  <li><a href="https://www.youtube.com/watch?v=MwfB9lnB0_A" target="_blank">Instalación de Ubuntu</a></li>
+  <li><a href="https://youtu.be/2U5bJKUX_6s" target="_blank">Ficheros y directorios en línea de mandatos</a></li>
+  <li><a href="https://youtu.be/ym3BeppIE8I" target="_blank">Gestión de trabajos y procesos en línea de mandatos</a></li>
+</ul></td>
+</tr>
+<tr><td>Introducción a <br></br>lenguaje C</td>
+<td><ul>
+  <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w1-introduccionc.pdf" target="_blank">introduccion-a-c.pdf</a></li>
+</ul></td>
+<td>
+<ul type="1">
+  <li><a href="https://www.youtube.com/watch?v=EFEj13YU7I0&amp;list=PLEIHi6crVts7HIrUr88SSJsFJC3scIKlA" target="_blank">Introducción a C</a></li>
+</ul>
+</td>
+</tr>
+</table>
+</small>
+</html>
+</details>
+
+</li>
+</ul>
+</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../" class="navigation navigation-prev " aria-label="Previous page: Índice">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ssdd_make.html" class="navigation navigation-next " aria-label="Next page: Introducción a make">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"C para distribuidos","level":"2.1","depth":1,"next":{"title":"Introducción a make","level":"2.2","depth":1,"path":"topic-candmake/ssdd_make.md","ref":"topic-candmake/ssdd_make.md","articles":[]},"previous":{"title":"Índice","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":["mermaid","highlight","hide-published-with","hints","chapter-fold"],"styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"search":{},"mermaid":{},"hints":{"info":"fa fa-info-circle","tip":"fa fa-mortar-board","danger":"fa fa-exclamation-circle","working":"fa fa-wrench"},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"hide-published-with":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{"exclude":["mermaid"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Felix Garcia-Carballeira y Alejandro Calderon-Mateos","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Sistemas Distribuidos","gitbook":"*","description":"Sistemas Distribuidos (UC3M)"},"file":{"path":"topic-candmake/ssdd_c.md","mtime":"2026-02-19T11:02:52.448Z","type":"markdown"},"gitbook":{"version":"6.1.7","time":"2026-04-10T14:15:27.234Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid-load.js"></script>
+        
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-hide-published-with/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

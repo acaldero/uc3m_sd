@@ -1,0 +1,2548 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Sockets · Sistemas Distribuidos</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.1.7">
+        <meta name="author" content="Felix Garcia-Carballeira y Alejandro Calderon-Mateos">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/honkit-plugin-mermaid/mermaid.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-hints/plugin-hints.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../topic-ds/ds.html" />
+    
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Índice
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../topic-candmake/ssdd_c.html">
+            
+                <a href="../topic-candmake/ssdd_c.html">
+            
+                    
+                    C para distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../topic-candmake/ssdd_make.html">
+            
+                <a href="../topic-candmake/ssdd_make.html">
+            
+                    
+                    Introducción a make
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../topic-concurrency/ssdd_threads_posix.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_posix.html">
+            
+                    
+                    Concurrencia con POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../topic-concurrency/ssdd_threads_c.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_c.html">
+            
+                    
+                    Concurrencia con C11
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../topic-messagepassing/ssdd_pq.html">
+            
+                <a href="../topic-messagepassing/ssdd_pq.html">
+            
+                    
+                    Colas de mensajes POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../topic-messagepassing/mpi.html">
+            
+                <a href="../topic-messagepassing/mpi.html">
+            
+                    
+                    Introducción a MPI
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.2.1" >
+            
+                <a target="_blank" href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb">
+            
+                    
+                    MPI (notebook)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter active" data-level="4.1" data-path="ssdd_sockets.html">
+            
+                <a href="ssdd_sockets.html">
+            
+                    
+                    Sockets
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../topic-ds/ds.html">
+            
+                <a href="../topic-ds/ds.html">
+            
+                    
+                    Servicios distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../topic-rpc/rpc.html">
+            
+                <a href="../topic-rpc/rpc.html">
+            
+                    
+                    RPC
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../topic-dfs/dfs.html">
+            
+                <a href="../topic-dfs/dfs.html">
+            
+                    
+                    Sistemas de ficheros distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../topic-ws/web-services.html">
+            
+                <a href="../topic-ws/web-services.html">
+            
+                    
+                    Servicios web
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" >
+            
+                <a target="_blank" href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ft/t9_tolerancia-a-fallos.pdf">
+            
+                    
+                    Tolerancia a fallos (PDF)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Sockets</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="comunicación-con-sockets">Comunicación con Sockets</h1>
+<ul>
+<li><strong>Felix García Carballeira y Alejandro Calderón Mateos</strong> @ arcos.inf.uc3m.es</li>
+<li><a href="https://github.com/acaldero/uc3m_sd/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg" alt="License: CC BY-NC-SA 4.0"></img></a></li>
+</ul>
+<h2 id="contenidos">Contenidos</h2>
+<ul>
+<li>Introducción a sockets<ul>
+<li><a href="#introducción-a-sockets">Motivación</a></li>
+<li><a href="#sockets-dominios-de-comunicación">Dominios y tipos</a></li>
+<li><a href="#direcciones">Direcciones y puertos</a><ul>
+<li><a href="#ejemplos-de-conversión">Ejemplos en C y Python</a></li>
+</ul>
+</li>
+<li><a href="#orden-de-los-bytes-big-endian-y-little-endian">Representación de datos</a></li>
+</ul>
+</li>
+<li>Modelos de comunicación<ul>
+<li><a href="#modelos-de-comunicaci%C3%B3n-orientado-a-conexi%C3%B3n">Stream o orientado a conexión</a><ul>
+<li><a href="#ejemplo-de-uso-de-sockets-orientados-a-conexión-en-c">Ejemplo en C</a></li>
+<li><a href="#ejemplo-de-uso-de-sockets-orientados-a-conexión-en-python">Ejemplo en Python</a></li>
+</ul>
+</li>
+<li><a href="#modelos-de-comunicación-no-orientado-a-conexión-en-c">Datagram o no orientado a conexión</a><ul>
+<li><a href="#ejemplo-de-uso-de-sockets-no-orientados-a-conexi%C3%B3n">Ejemplo en C</a></li>
+<li><a href="#ejemplo-de-uso-de-sockets-no-orientados-a-conexión-en-python">Ejemplo en Python</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Aspectos adicionales<ul>
+<li><a href="#opciones-importantes-asociadas-a-un-socket">Opciones más comunes de un socket</a></li>
+<li><a href="#servidor-secuencial-vs-procesos-pesados-vs-hilos">Servidor secuencial vs procesos pesados vs hilos</a></li>
+<li><a href="#trabajar-con-heterogeneidad-en-el-sistema-distribuido">Trabajar con heterogeneidad en el sistema distribuido</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="introducción-a-sockets">Introducción a sockets</h2>
+<ul>
+<li><p>Mecanismo de IPC para poder comunicar procesos que ejecutan en distintas máquinas</p>
+<ul>
+<li>Otros posibles mecanismos IPC: ficheros, tuberías con nombre, etc.</li>
+</ul>
+</li>
+<li><p>Breve historia:</p>
+<ul>
+<li>La primera implementación apareció en 1983 en UNIX BSD 4.2<ul>
+<li>Intento de incluir TCP/IP en UNIX</li>
+<li>Diseño independiente del protocolo de comunicación</li>
+</ul>
+</li>
+<li>API formalmente especificado en el estándar POSIX.1g (2000)</li>
+<li>Actualmente:<ul>
+<li>Disponibles en prácticamente todos los sistemas operativos: Linux, Windows, MacOS, etc.</li>
+<li>API en casi todos los lenguajes:  Java (como clase nativa), Python (como paquete socket), etc.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="qué-representa-un-socket">Qué representa un socket</h2>
+<pre><code class="lang-c">#include <sys socket.h="">
+
+int socket(int domain, int type, int protocol) ;
+...
+</sys></code></pre>
+<ul>
+<li><p>Un <strong>socket</strong> es una abstracción que:</p>
+<ul>
+<li>Representa un extremo de una comunicación bidireccional con una terna (protocolo, dirección, puerto) asociada</li>
+<li>Ofrece interfaz de acceso a la capa de transporte del protocolo TCP/IP</li>
+</ul>
+</li>
+<li><p>Un <strong>socket</strong> se representa como descriptor de un punto final de comunicación (<strong>dirección IP</strong> y <strong>puerto</strong>)</p>
+</li>
+<li><p>Tres elementos asociados a un socket en la creación:</p>
+<ul>
+<li>Dominio de comunicación</li>
+<li>Tipo de sockets</li>
+<li>Protocolo</li>
+</ul>
+</li>
+</ul>
+<h2 id="sockets-dominios-de-comunicación">Sockets: dominios de comunicación</h2>
+<pre><code class="lang-c">  int socket(int domain, int type, int protocol) ;
+  //             ^^
+</code></pre>
+<ul>
+<li><p><strong>Dominio de comunicación</strong></p>
+<ul>
+<li>Un socket está asociado a un dominio desde su creación</li>
+<li>Sólo se pueden comunicar sockets del mismo dominio</li>
+<li>Los servicios de sockets son independientes del dominio</li>
+<li>Ejemplos:<ul>
+<li>AF_UNIX: comunicación dentro de una máquina</li>
+<li>AF_INET: comunicación usando protocolos TCP/IP (IPv4)</li>
+<li>AF_INET6: comunicación usando protocolos TCP/IP (IPv6)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Tipo de sockets</p>
+</li>
+<li>Protocolo</li>
+</ul>
+<h2 id="sockets-tipo-de-socket">Sockets: tipo de socket</h2>
+<pre><code class="lang-c">  int socket(int domain, int type, int protocol) ;
+  //                         ^^
+</code></pre>
+<ul>
+<li><p>Dominio de comunicación</p>
+<ul>
+<li>AF_INET: comunicación usando protocolos TCP/IP (IPv4)</li>
+<li>AF_INET6: comunicación usando protocolos TCP/IP (IPv6)</li>
+</ul>
+</li>
+<li><p><strong>Tipo de sockets</strong></p>
+<ul>
+<li>SOCK_STREAM: Stream, protocolo TCP</li>
+<li>SOCK_DGRAM: Datragrama, protocolo UDP</li>
+<li>SOCK_RAW: Raw, sin protocolo de transporte (protocolo IP)</li>
+</ul>
+</li>
+<li><p>Protocolo</p>
+</li>
+</ul>
+<h2 id="sockets-protocolo">Sockets: protocolo</h2>
+<pre><code class="lang-c">  int socket(int domain, int type, int protocol) ;
+  //                                   ^^
+</code></pre>
+<ul>
+<li><p>Dominio de comunicación</p>
+<ul>
+<li>AF_INET: comunicación usando protocolos TCP/IP (IPv4)</li>
+<li>AF_INET6: comunicación usando protocolos TCP/IP (IPv6)</li>
+</ul>
+</li>
+<li><p>Tipo de sockets</p>
+<ul>
+<li>SOCK_STREAM: Stream</li>
+<li>SOCK_DGRAM: Datragrama</li>
+<li>SOCK_RAW: Raw</li>
+</ul>
+</li>
+<li><p><strong>Protocolo</strong></p>
+<ul>
+<li>0: valor por defecto (ver /etc/protocols para otros)</li>
+</ul>
+</li>
+</ul>
+<h2 id="socket-stream-vs-datagram">Socket <strong>stream</strong> vs <strong>datagram</strong></h2>
+<table>
+<thead>
+<tr>
+<th>socket</th>
+<th>stream</th>
+<th>datagram</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Protocolo</td>
+<td>TCP</td>
+<td>UDP</td>
+</tr>
+<tr>
+<td>Flujo de datos</td>
+<td>bidireccional</td>
+<td>bidireccional</td>
+</tr>
+<tr>
+<td>Conexión</td>
+<td>conexión extremo-a-extremo antes de intercambio de datos</td>
+<td>No hay conexión entre procesos comunicados</td>
+</tr>
+<tr>
+<td>Parcelación</td>
+<td>flujo de bytes<br></br>(no preserva el límite entre mensajes)</td>
+<td>flujo de datagramas (un datagrama es una entidad autocontenida, mantiene separación entre paquetes) (1)</td>
+</tr>
+<tr>
+<td>Fiabilidad</td>
+<td>Si (2)</td>
+<td>No<br></br>(desordenados, duplicados, pérdidas)</td>
+</tr>
+<tr>
+<td>Ejemplos</td>
+<td>HTTP, FTP, etc.</td>
+<td>DNS</td>
+</tr>
+</tbody>
+</table>
+<p><br></br></p>
+<ul>
+<li>(1) Longitud máxima de un datagrama (datos y cabeceras) es 64 KB <br></br> <pre><code>Cabecera IP+cabecera UDP = 28 bytes
+</code></pre></li>
+<li>(2) Paquetes ordenados por secuencia, sin duplicación de paquetes, libre de errores, notifica errores</li>
+</ul>
+<h2 id="comparación-de-los-protocolos-tcp-udp-y-ip">Comparación de los protocolos TCP, UDP y IP</h2>
+<table>
+<thead>
+<tr>
+<th>Característica</th>
+<th>IP</th>
+<th>UDP</th>
+<th>TCP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Orientado a conexión</td>
+<td>NO</td>
+<td>NO</td>
+<td>SI</td>
+</tr>
+<tr>
+<td>Límite entre mensajes</td>
+<td>SI</td>
+<td>SI</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>Ack</td>
+<td>NO</td>
+<td>NO</td>
+<td>SI</td>
+</tr>
+<tr>
+<td>Timeout y retransmisión</td>
+<td>NO</td>
+<td>NO</td>
+<td>SI</td>
+</tr>
+<tr>
+<td>Detección de duplicación</td>
+<td>NO</td>
+<td>NO</td>
+<td>SI</td>
+</tr>
+<tr>
+<td>Secuenciamiento</td>
+<td>NO</td>
+<td>NO</td>
+<td>SI</td>
+</tr>
+<tr>
+<td>Flujo de control</td>
+<td>NO</td>
+<td>NO</td>
+<td>SI</td>
+</tr>
+</tbody>
+</table>
+<h2 id="información-asociada-a-una-comunicación">Información asociada a una comunicación</h2>
+<p>La información asociada a una comunicación ha de incluir:</p>
+<pre><code>  (Protocolo, IP-local, P-local, IP-remoto, P-remoto)
+</code></pre><p>Donde:</p>
+<ul>
+<li>Protocolo: TCP, UDP, RAW</li>
+<li>IP-local:  dirección IP local (origen)</li>
+<li>P-local:   puerto local (origen)</li>
+<li>IP-remoto: dirección IP remota (destino)</li>
+<li>P-remoto:  puerto remoto (destino</li>
+</ul>
+<h2 id="direcciones">Direcciones</h2>
+<ul>
+<li><p>Las direcciones se usan para:</p>
+<ul>
+<li>Asignar una dirección local a un socket (bind)</li>
+<li>Especificar una dirección remota (connect o sendto)</li>
+</ul>
+</li>
+<li><p>Las direcciones son dependientes del dominio</p>
+<ul>
+<li>Cada dominio usa una estructura específica<ul>
+<li>Direcciones en AF_UNIX (<code>struct sockaddr_un</code>)<ul>
+<li>Nombre de fichero</li>
+</ul>
+</li>
+<li>Direcciones en AF_INET (<code>struct sockaddr_in</code>)<ul>
+<li>Dirección de host (32 bits) + puerto (16 bits) + protocolo</li>
+</ul>
+</li>
+<li>Se utiliza la estructura genérica <code>struct sockaddr</code> en el API</li>
+<li>Es necesario la conversión de tipos (casting) en las llamadas</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="puertos">Puertos</h2>
+<ul>
+<li><p>Un puerto se asocia a un proceso destino en un computador:</p>
+<ul>
+<li>Permite que la transmisión se dirija a un proceso específico en el computador destino</li>
+<li>Un puerto tiene un único receptor y múltiples emisores (excepto multicast)</li>
+<li>Toda aplicación que desee enviar y recibir datos debe "abrir" un puerto</li>
+</ul>
+</li>
+<li><p>Se representa con un número entero de 16 bits sin signo:</p>
+<ul>
+<li>2<sup>16</sup> puertos en una máquina ~ 65536 puertos posibles</li>
+<li><p>Reservados por la IANA para aplicaciones de Internet:</p>
+<ul>
+<li>0-1023 (también llamados <em>well-known</em> puertos)</li>
+<li>Puertos entre 1024 y 49151 son puertos registrados para ser usados por los servicios</li>
+<li>Puertos por encima de 65535 para uso privado</li>
+<li><a href="http://www.iana.org/assignments/port-numbers" target="_blank">http://www.iana.org/assignments/port-numbers</a></li>
+</ul>
+</li>
+<li><p>El espacio de puertos para streams y datagramas es independiente</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="dirección-ip-de-host">Dirección IP de host</h2>
+<ul>
+<li><p>En C, una dirección IP de host se almacena en una estructura de tipo <code>in_addr</code>:</p>
+<pre><code class="lang-c">#include <netinet in.h="">
+
+typedef uint32_t in_addr_t;
+
+struct in_addr {
+  in_addr_t s_addr; /* entero sin signo de 32 bits */
+};
+
+...
+struct in_addr a1 ;
+a1.s_addr = inet_addr("10.12.110.57"); // a.s_addr es la dirección en binario
+</netinet></code></pre>
+</li>
+</ul>
+<ul>
+<li><details>
+<summary>En Python...</summary>
+El módulo ipaddress incluye clases para trabajar con direcciones de red IPv4 y IPv6
+
+### ip_address.py
+```python
+import binascii
+import ipaddress
+
+addr = ipaddress.ip_address('176.58.10.138')
+print(addr)
+
+print(' IP version:',  addr.version)
+print(' is private:',  addr.is_private)
+print(' packed form:', binascii.hexlify(addr.packed))
+print(' integer:',     int(addr))
+print('')
+```
+</details>
+
+
+</li>
+</ul>
+<h2 id="direcciones-en-afinet">Direcciones en AF_INET</h2>
+<ul>
+<li><p>En C, una dirección incluye la dirección IP, puerto y familia en la estructura <code>struct sockaddr_in</code>:</p>
+<pre><code class="lang-c">#include <netinet in.h="">
+
+struct sockaddr_in
+{
+  short          sin_family;  /* dominio Internet (AF_INET) */
+  in_port_t      sin_port;    /* puerto: entero 16 bits sin signo */
+  struct in_addr sin_addr;    /* dirección IP (entero 32 bits sin signo) */
+  unsigned char  sin_zero[8]; /* relleno o padding (8 bytes) */
+};
+
+...
+struct sockaddr_in a2;
+memset(&amp;a2, 0, sizeof(struct sockaddr_in)); // inicializar todo a cero
+a2.sin_family      = AF_INET ;
+a2.sin_port        = htons(8080) ;
+a2.sin_addr.s_addr = inet_addr("10.12.110.57");
+</netinet></code></pre>
+</li>
+<li><p><strong>TIP:</strong> Al usar <code>struct sockaddr_in</code> que hay que inicializar a 0 todos los campos para limpiar lo que tenga antes.</p>
+</li>
+</ul>
+<h2 id="servicios-sobre-direcciones-12">Servicios sobre direcciones (1/2)</h2>
+<ul>
+<li>Hay distintas notaciones para una dirección:
+ | Notación      | Ejemplo                           | Formato  | Entendible por |
+ |---------------|-----------------------------------|----------|----------------|
+ | dominio-punto | "www.uc3m.es"                     | Texto    | Humano         |
+ | decimal-punto | "176.58.10.138"                   | Texto    | Humano         |
+ | binario       | 10110000001110100000101010001010  | Binario  | Máquina        |</li>
+</ul>
+<ul>
+<li>Servicios sobre direcciones:<ul>
+<li>Obtener el nombre de la máquina local (ej.: "nodo1.inf.uc3m.es")</li>
+<li>Obtener la dirección de un host (ej.: "nodo1.inf.uc3m.es" -&gt; "10.1.2.3")</li>
+<li>Transformar direcciones (ej.: "10.1.2.3" -&gt; 0x12345678 / 0x12345678 -&gt; "10.1.2.3")</li>
+</ul>
+</li>
+</ul>
+<h2 id="servicios-sobre-direcciones-22">Servicios sobre direcciones (2/2)</h2>
+<pre><code class="lang-mermaid"><div class="mermaid">flowchart TD
+    D&gt;obtener nombre de máquina] --&gt; |"(A) obtener nombre local"| A
+    D -.-&gt; A
+    D -.-&gt; B
+    B --&gt;|"(E) resolución inversa"| A
+    A(dominio-punto:&lt;br&gt; www.uc3m.es) --&gt;|"(D) resolución"| B(decimal-punto:&lt;br&gt; 176.58.10.138)
+    B --&gt;|"(B) transformación&lt;br&gt; dec-punto a binario"| C
+    C(binario:&lt;br&gt; 10110000001110100000101010001010) --&gt;|"(C) transformación&lt;br&gt; binario a dec-punto"| B
+
+    subgraph " "
+    A
+    subgraph " "
+    B
+    C
+    end
+    subgraph " "
+    C
+    D
+    end
+    end
+</div></code></pre>
+<h2 id="servicios-sobre-direcciones-a-obtener-el-nombre-local">Servicios sobre direcciones: (A) obtener el nombre local</h2>
+<ul>
+<li>En C, <code>gethostname</code> es la función que facilita el nombre de la máquina (formato dominio punto) en la que se ejecuta:<pre><code class="lang-c">int gethostname ( char *name,        // buffer donde se almacena el nombre
+                  size_t namelen );  // longitud del buffer
+</code></pre>
+</li>
+</ul>
+<h4 id="gethostnamec">gethostname.c</h4>
+<pre><code class="lang-c">#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main ()
+{
+    char maquina[256];
+    int err;
+
+    err = gethostname(maquina, 256);
+    if (err &lt; 0) {
+        perror("gethostname: ") ;
+        return -1;
+    }
+
+    printf("Ejecuto en la maquina %s\n", maquina) ;
+    return 0 ;
+}
+</stdlib.h></stdio.h></unistd.h></code></pre>
+<ul>
+<li><details>
+<summary>En Python...</summary>
+El método gethostname de la clase socket se encarga.
+
+### gethostname.py
+```python
+import socket
+name = socket.gethostname();
+print('host name: ' + name)
+```
+</details>
+
+
+</li>
+</ul>
+<h2 id="servicios-sobre-direcciones-b-decimal-punto---binario">Servicios sobre direcciones: (B) decimal-punto -&gt; binario</h2>
+<pre><code class="lang-c">struct sockaddr_in  a4;
+struct sockaddr_in6 a6;
+memset(&amp;a4, 0, sizeof(struct sockaddr_in));  // inicializar todo a cero
+memset(&amp;a6, 0, sizeof(struct sockaddr_in6)); // inicializar todo a cero
+</code></pre>
+<ul>
+<li><strong>inet_addr</strong> -&gt; PROBLEMA: el error devuelto se confunde con un valor válido<pre><code class="lang-c">// (opción 1) in_addr_t inet_addr(const char *cp);
+a4.sin_addr.s_addr = inet_addr("10.10.10.57");
+if (INADDR_NONE == a4.sin_addr.s_addr) {
+    // INADDR_NONE: dirección con todos los bits a uno
+    printf("ERROR en inet_addr\n") ;
+}
+</code></pre>
+</li>
+<li><strong>inet_aton</strong> -&gt;  PROBLEMA: inet_aton solo vale para IPv4<pre><code class="lang-c">// (opción 2) int inet_aton(char *str, struct in_addr *addr);
+int ret = inet_aton("10.10.10.57", &amp;(a4.sin_addr.s_addr));
+if (0 == ret) {
+    printf("ERROR en inet_aton\n") ;
+}
+</code></pre>
+</li>
+<li><strong>inet_pton</strong> -&gt; vale para IPv4 y para IPv6<pre><code class="lang-c">// (opción 3) int inet_pton(int family, const char *strptr, void *addrptr);
+int ret = inet_pton(AF_INET6, "2024:db8:8722:3a92::15", &amp;(a6.sin6_addr));
+if (ret != 1) {
+    printf("ERROR en inet_pton\n") ;
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="servicios-sobre-direcciones-c--binario---decimal-punto">Servicios sobre direcciones: (C ) binario -&gt; decimal-punto</h2>
+<pre><code class="lang-c">struct sockaddr_in  a4;
+memset(&amp;a4, 0, sizeof(struct sockaddr_in));  // inicializar todo a cero
+</code></pre>
+<ul>
+<li><strong>inet_ntoa</strong> -&gt;  PROBLEMA: inet_ntoa solo vale para IPv4<pre><code class="lang-c">// (opción 1) int inet_ntoa(...
+char str4[INET_ADDRSTRLEN];
+char *ret = inet_ntoa(a4.sin_addr.s_addr);
+if (NULL == ret) {
+    printf("ERROR en inet_ntoa\n") ;
+}
+</code></pre>
+</li>
+<li><strong>inet_ntop</strong> -&gt; vale para IPv4 y para IPv6<pre><code class="lang-c">// (opción 2) const char *inet_ntop(int domain, const void *addrptr, char *dst_str, size_t len);
+char str4[INET_ADDRSTRLEN];
+ptr = inet_ntop(AF_INET, &amp;(a4.sin_addr.s_addr), str4, sizeof(str4));
+if (NULL == ret) {
+    printf("ERROR en inet_ntop\n") ;
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="obtener-la-información-de-una-máquina-d-b-y-e-resolver-nombres-forma-clásica">Obtener la información de una máquina: (D, B y E) resolver nombres (forma clásica)</h2>
+<ul>
+<li><p>La información de una máquina se representa mediante la estructura <code>struct hostent</code>:</p>
+<pre><code class="lang-c">struct hostent
+{
+   char   *h_name ;
+   char  **h_aliases ;
+   int     h_addrtype ;
+   int     h_length ;
+   char  **h_addr_list ;
+}
+</code></pre>
+<ul>
+<li><p>Obtiene la información de un host a partir de una dirección en formato dominio-punto</p>
+<pre><code class="lang-c">struct hostent *gethostbyname(char *str);  // str: nombre de la máquina
+</code></pre>
+</li>
+<li><p>Obtiene la información de un host a partir de una dirección IP</p>
+<pre><code class="lang-c">struct hostent *gethostbyaddr(const void *addr,  // addr: puntero a struct in_addr
+                                int len,           // len:  tamaño de la estructura
+                                int type);         // type: AF_INET
+</code></pre>
+</li>
+<li><p>Un ejemplo de  estructura  <code>struct hostent</code> rellena podría ser:</p>
+</li>
+</ul>
+</li>
+</ul>
+<html>
+<p align="center">
+  <img src="http://www.cs.emory.edu/~cheung/Courses/455/Syllabus/9-netw-prog/FIGS/gethostbyaddr.gif"></img><br></br>
+<small><b>Imagen de  http://www.cs.emory.edu/~cheung/Courses/455/Syllabus/9-netw-prog/netw-supp4.html</b></small>
+</p>
+</html>
+
+
+<h2 id="obtener-la-información-de-una-máquina-d-b-y-e-resolver-nombres-forma-moderna">Obtener la información de una máquina: (D, B y E) resolver nombres (forma moderna)</h2>
+<ul>
+<li><p>Para tanto IPv4 como IPv6 se recomienda usar la nueva estructura  <code>struct addrinfo</code>:</p>
+<pre><code class="lang-c">struct addrinfo {
+   int    ai_flags;    // AI_PASSIVE, AI_CANONNAME, AI_NUMERICHOST, etc.
+   int    ai_family;   // PF_UNSPEC, PF_INET, etc.
+   int    ai_socktype; // SOCK_STREAM, SOCK_DGRAM
+   int    ai_protocol; // IPPROTO_TCP, IPPROTO_UDP
+   size_t ai_addrlen;
+   char * ai_canonname;
+   struct sockaddr * ai_addr;
+   struct addrinfo * ai_next;
+};
+</code></pre>
+<ul>
+<li><p>El equivalente a <code>gethostbyname</code> para IPv4 e IPv6 es <strong>getaddrinfo</strong> + <strong>freeaddrinfo</strong></p>
+<pre><code class="lang-c">int getaddrinfo ( const char *restrict node,
+                     const char *restrict service,
+                     const struct addrinfo *restrict hints,
+                     struct addrinfo **restrict res );
+void freeaddrinfo ( struct addrinfo *res );
+</code></pre>
+<p> Se aconseja ver ejemplo de <a href="https://beej.us/guide/bgnet/html/#a-simple-stream-server" target="_blank">servidor simple de Beej</a> sobre el uso de getaddrinfo+freeaddrinfo puesto que su uso no es un simple cambio de gethostbyname por getaddrinfo. Sobre los resultados que getaddrinfo devuelve hay que iterar e intentar hacer socket+bind o socket+connect hasta el primer resultado que lo permita, que será el de trabajo.</p>
+</li>
+<li><p>La función <strong>getnameinfo</strong> es la inversa de getaddrinfo: convierte una dirección de socket interna en el nombre legible y servicio correspondiente, de forma independiente del protocolo.</p>
+<pre><code class="lang-c">int getnameinfo ( const struct sockaddr *sa,
+                  socklen_t salen,
+                  char *host, size_t hostlen,
+                  char *serv, size_t servlen, int flags );
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="ejemplos-de-conversión">Ejemplos de conversión</h2>
+<pre><code class="lang-mermaid"><div class="mermaid">flowchart TD
+    A(in_addr, 32-bit, IPv4) --&gt;|inet_ntop,&lt;br&gt; inet_ntoa| B(Dirección decimal-punto IPv4)
+    B --&gt;|inet_pton,&lt;br&gt; inet_aton,&lt;br&gt; inet_addr| A
+    C(in6_addr, 128-bit, IPv6) --&gt;|inet_ntop| D(x:x:x:x:x:x:a.b.c.d)
+    D --&gt;|inet_pton| C
+    subgraph " "
+      subgraph "IPv4"
+        A
+        B
+      end
+      subgraph "IPV6"
+        C
+        D
+      end
+    end
+</div></code></pre>
+<ul>
+<li><p>En C:</p>
+<ul>
+<li><details>
+<summary>Ejemplo de inet_aton + inet_ntoa... </summary>
+
+### direcciones.c
+```c
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys socket.h="">
+#include <netinet in.h="">
+#include <arpa inet.h="">
+
+int main(int argc, char **argv)
+{
+   struct in_addr in;
+
+   if (argc != 2) {
+       printf("Uso: %s <decimal-punto>\n", argv[0]);
+       exit(0);
+   }
+
+   if (inet_aton(argv[1], &amp;in) == 0) {
+       printf("Error en la dirección\n");
+       exit(0);
+   }
+
+   printf("La dirección es %s\n", inet_ntoa(in));
+   exit(0);
+}
+ ```
+</decimal-punto></arpa></netinet></sys></stdio.h></stdlib.h></details>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><details>
+<summary>En C, ejemplo de gethostbyname + inet_ntoa...</summary>
+
+ ### dns.c
+ ```c
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <netdb.h>
+#include <sys socket.h="">
+#include <netinet in.h="">
+#include <arpa inet.h="">
+
+int main(int argc, char **argv)
+{
+    struct hostent *hp;
+    struct in_addr in;
+
+    hp = gethostbyname("www.uc3m.es");
+    if (hp == NULL) {
+        printf("Error en gethostbyname\n"); exit(0);
+    }
+
+    memcpy(&amp;(in.s_addr), *(hp-&gt;h_addr_list), sizeof(in.s_addr));
+    printf("%s es %s (%ld)\n", hp-&gt;h_name, inet_ntoa(in), in.s_addr);
+
+    return 0;
+}
+```
+</arpa></netinet></sys></netdb.h></stdlib.h></string.h></stdio.h></details>
+
+
+</li>
+</ul>
+<ul>
+<li><details>
+<summary>Ejemplo de inet_aton + gethostbyaddr (D, B y E clásico)...</summary>
+
+### obtener-dominio.c
+```c
+#include <netdb.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys socket.h="">
+#include <netinet in.h="">
+#include <arpa inet.h="">
+
+int main(int argc, const char **argv)
+{
+   struct in_addr addr; struct hostent *hp;
+   char **p; struct in_addr in;
+   char **q; int err;
+
+   if (argc != 2) {
+       printf("USO: %s <direccion-ip>\n", argv[0]);
+       return (1);
+   }
+
+   err = inet_aton(argv[1], &amp;addr);
+   if (err == 0) {
+       printf("por favor use direccion IP en formato a.b.c.d\n");
+       return (2);
+   }
+
+   hp = gethostbyaddr((char *) &amp;addr, sizeof(addr), AF_INET);
+   if (hp == NULL) {
+       printf("Error en gethostbyaddr\n");
+       return (3);
+   }
+
+   for (p = hp-&gt;h_addr_list; *p != 0; p++)
+   {
+       memcpy(&amp;(in.s_addr), *p, sizeof(in.s_addr));
+       printf("%s es \t%s (%ld)\n", inet_ntoa(in), hp-&gt;h_name, in.s_addr) ;
+       for (q=hp-&gt;h_aliases; *q != 0; q++) {
+            printf("%s\n", *q);
+       }
+   }
+
+   return(0);
+}
+```
+</direccion-ip></arpa></netinet></sys></string.h></stdio.h></netdb.h></details>
+
+
+</li>
+</ul>
+<ul>
+<li><details>
+<summary>Ejemplo de getaddrinfo + getnameinfo + freeaddrinfo (D, B y E moderno)...</summary>
+
+### obtener-dominio-6.c
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <netdb.h>
+#include <string.h>
+#include <netinet in.h="">
+#include <sys socket.h="">
+
+int main ( int argc, char*argv[] )
+{
+    int ret;
+    struct addrinfo *results;
+    struct addrinfo *res;
+    char hostname[1025] ;
+
+    // domain name -&gt; lista de direcciones
+    ret = getaddrinfo("www.uc3m.es", NULL, NULL, &amp;results);
+    if (ret &lt; 0) {
+        printf("ERROR en getaddrinfo: %s\n", gai_strerror(ret));
+        return -1;
+    }
+
+    // recorrer todos los resultados y hacer búsqueda inversa
+    for (res = results; res != NULL; res = res-&gt;ai_next)
+    {
+        strcpy(hostname, "") ;
+        ret = getnameinfo(res-&gt;ai_addr, res-&gt;ai_addrlen,
+                      hostname, 1025,
+                      NULL, 0, 0);
+        if (ret &lt; 0) {
+            printf("ERROR en getnameinfo: %s\n", gai_strerror(ret));
+            continue;
+        }
+
+        if (*hostname != '\0')
+             printf("hostname: %s\n", hostname);
+        else printf("hostname: <empty>\n");
+    }
+
+    // liberar memoria de los resultados
+    freeaddrinfo(results);
+
+    return 0;
+}
+```
+</empty></sys></netinet></string.h></netdb.h></stdlib.h></stdio.h></details>
+
+</li>
+</ul>
+<ul>
+<li><p>En Python:</p>
+<ul>
+<li><details>
+<summary>Ejemplo de gethostname + gethostbyname...</summary>
+
+### gethostname.py
+```python
+import socket
+name = socket.gethostname();
+print(name + ': ' + socket.gethostbyname(name))
+```
+</details>
+</li>
+<li><details>
+<summary>Ejemplo de gethostbyaddr...</summary>
+
+### dns.py
+```python
+import socket
+import sys
+
+arguments = len(sys.argv)
+if arguments &lt; 2:
+   print('Uso: dns <host>')
+   exit()
+try:
+   hostname, aliases, addresses = socket.gethostbyaddr(sys.argv[1])
+   print(sys.argv[1] + ': ', hostname)
+   print(sys.argv[1] + ': ', aliases)
+   print(sys.argv[1] + ': ', addresses)
+except socket.error as msg:
+   print('ERROR: ', msg)
+```
+</host></details>
+</li>
+<li><details>
+<summary>Ejemplo de inet_aton...</summary>
+
+### addr_dot2bin.py
+```python
+import socket
+import struct
+
+// Example from: https://pythontic.com/modules/socket/inet_aton
+IPQuad  = "192.168.0.0"
+IP32Bit = socket.inet_aton(IPQuad)
+print(IP32Bit)
+```
+</details>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="orden-de-los-bytes-big-endian-y-little-endian">Orden de los bytes: big-endian y little-endian</h2>
+<ul>
+<li>Hay dos órdenes de los bytes de una palabra en memoria:<ul>
+<li>Big-endian<ul>
+<li>Motorola</li>
+</ul>
+</li>
+<li>Little-endian<ul>
+<li>Intel, AMD</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Las diferencias entre los dos se puede ver en la siguiente figura (Aeroid, CC BY-SA 4.0, via Wikimedia Commons):<html>
+<table border="1">
+<tr>
+  <td>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5d/32bit-Endianess.svg"></img>
+  </td>
+</tr>
+</table>
+</html>
+
+
+</li>
+</ul>
+<h2 id="orden-de-los-bytes-y-el-network-byte-order">Orden de los bytes y el <em>Network Byte Order</em></h2>
+<ul>
+<li><p>Big-endian es el estándar para el ordenamiento de los bytes usado en TCP/IP</p>
+<ul>
+<li>También llamado <em>Network Byte Order</em></li>
+</ul>
+<ul>
+<li>En computadores que no utilicen Big-endian es necesario emplear funciones para traducir números entre el formato que utiliza TCP/IP (Big-endian) y el empleado por el propio computador (Little-endian)<ul>
+<li>Host (Little-Endian) -&gt; Network (Big-Endian):<pre><code class="lang-c">#include <arpa inet.h="">
+u_long  htonl(u_long hostlong);   // traducir número de 32 bits del formato host al de net
+u_short htons(u_short hostshort); // traducir número de 16 bits del formato host al de net
+</arpa></code></pre>
+</li>
+<li>Network (Big-Endian) -&gt; host (Little-Endian):<pre><code class="lang-c">#include <arpa inet.h="">
+u_long ntohl(u_long netlong);     // traducir número de 32 bits del formato net a host
+u_short ntohs(u_short netshort);  // traducir número de 16 bits del formato net a host
+</arpa></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="representación-de-los-datos-marshallingunmarshalling">Representación de los datos: marshalling/unmarshalling</h2>
+<ul>
+<li><p>En un sistema distribuido con máquinas heterogéneas no solo el orden de los bytes puede ser distinto, también el tamaño de la palabra en los nodos conectados (máquinas de 32-bits, 64-bits, etc.), la representación usada (enteros en complemento a dos, enteros en complemento a uno, etc.), el juego de caracteres (ASCII, utf-16, etc.), etc.</p>
+</li>
+<li><p>De forma general se precisa dos procedimientos:</p>
+<ul>
+<li>Un procedimiento de <strong>marshalling</strong> o empaquetamiento de datos: <br></br>transforma los valores de las estructuras de datos del formato de una máquina a un formato común para envío por la red (<strong>representación externa</strong>).</li>
+<li>Un procedimiento de <strong>unmarshalling</strong> o de desempaquetamiento de datos: <br></br>transforma del formato común recibido por la red en el formato de la máquina al que llega los valores (<strong>representación interna</strong>).</li>
+</ul>
+</li>
+</ul>
+<pre><code class="lang-mermaid"><div class="mermaid">   graph LR;
+    E1("'Cadena'", 1.2, 0x12, -1.5) --&gt;|marshalling| E2
+    E2(...10011...0110...) --&gt;|unmarshalling| E3("'Cadena'", 1.2, 0x12, -1.5)
+
+    subgraph "En computador A"
+    E1
+    end
+    subgraph "Red"
+    E2
+    end
+    subgraph "En computador B"
+    E3
+    end
+</div></code></pre>
+<h2 id="modelos-de-comunicación-orientado-a-conexión">Modelos de comunicación: orientado a conexión</h2>
+<ul>
+<li>Uso de TCP mediante sockets stream (SOCK_STREAM)</li>
+</ul>
+<html>
+<table>
+<tr><th>Servidor</th><th>Cliente</th></tr>
+<tr>
+<td valign="top">
+<ul>
+   <li> (1) Creación de un socket (<b>socket</b>) </li>
+   <li> (2) Obtener la dirección</li>
+   <li> (3) Asignación de direcciones (<b>bind</b>)</li>
+   <li> (4) Preparar para aceptar conexiones (<b>listen</b>)</li>
+   <li> Por cada cliente:</li>
+   <ul>
+   <li> (5) Aceptar una conexión (<b>accept</b>)</li>
+   <li> (6) Transferencia de datos (<b>read</b> y <b>write</b>)</li>
+   <li> (7) Cerrar socket conectado (<b>close</b>)</li>
+   </ul>
+   <li> (8) Cerrar socket servicio (<b>close</b>)</li>
+</ul>
+</td>
+<td valign="top">
+<ul>
+   <li> (1) Creación de un socket (<b>socket</b>)</li>
+   <li> (2) Obtener la dirección</li>
+   <li></li>
+   <li></li>
+   <li></li>
+   <li> (3) Solicitud de conexión (<b>connect</b>)</li>
+   <li> (4) Transferencia de datos (<b>write</b> y <b>read</b>)</li>
+   <li> (5) Cerrar un socket (<b>close</b>)</li>
+</ul>
+</td>
+</tr>
+</table>
+</html>
+
+<pre><code class="lang-mermaid"><div class="mermaid">graph LR;
+    CA("socket()") --&gt; CB("connect()")
+    CB --&gt; CC("write()")
+    CC --&gt; CD("read()")
+    CD --&gt; CE("close()")
+
+    SA("socket()") --&gt; SB("bind()")
+    SB --&gt; SC("listen()")
+    SC --&gt; SD("accept()")
+    SD --&gt; SE("read()")
+    SE --&gt; SF("write()")
+    SF --&gt; SG("close()")
+    SG --&gt; SD
+
+    CB -.-&gt;|conexión| SD
+    CC -.-&gt;|petición| SE
+    SF -.-&gt;|respuesta| CD
+
+    subgraph "Proceso cliente"
+    CA
+    CB
+    CC
+    CD
+    CE
+    end
+
+    subgraph "Proceso servidor"
+    SA
+    SB
+    SC
+    SD
+    SE
+    SF
+    SG
+    subgraph "servicio"
+      SD
+      SE
+      SF
+      SG
+    end
+    end
+</div></code></pre>
+<h2 id="ejemplo-de-uso-de-sockets-orientados-a-conexión-en-c">Ejemplo de uso de sockets orientados a conexión (en C)</h2>
+<h3 id="servidor-base-tcpc">servidor-base-tcp.c</h3>
+<pre><code class="lang-c">   #include <stdio.h>
+   #include <stdlib.h>
+   #include <string.h>
+   #include <unistd.h>
+   #include <netinet in.h="">
+   #include <sys types.h="">
+   #include <arpa inet.h="">
+   #include <sys socket.h="">
+
+
+   // escribe todos los 'total' bytes del buffer
+   int sendMessage ( int newsd, char *buffer, size_t total )
+   {
+       size_t escritos = 0 ;
+       ssize_t result  = 0 ;
+
+      // no vale "return write(newsd, buffer, total) ;" porque
+      // puede que write NO escriba todo lo solicitado de una vez
+
+       while (escritos != total) // mientras queda por escribir...
+       {
+           result = write(newsd, buffer+escritos, total-escritos) ;
+           if (-1 == result) {
+               return -1 ;
+           }
+
+           escritos = escritos + result ;
+       }
+
+       return escritos ;
+   }
+
+   int main ( int argc, char **argv )
+   {
+       int sd, newsd, ret;
+       socklen_t size;
+       struct sockaddr_in server_addr, client_addr;
+
+       if (argc != 2) {
+           printf("Uso: %s <puerto>\n", argv[0]);
+           return 0;
+       }
+
+       int puerto = atoi(argv[1]) ;
+
+       // (1) Creación de un socket
+       // * NO tiene dirección asignada aquí
+       sd = socket(AF_INET, SOCK_STREAM, 0) ;
+       if (sd &lt; 0) {
+           perror("Error en la creación del socket: ");
+           return -1;
+       }
+
+       // (2) Obtener la dirección
+       bzero((char *)&amp;server_addr, sizeof(server_addr));
+       server_addr.sin_family = AF_INET;
+       server_addr.sin_port   = htons(puerto);
+       server_addr.sin_addr.s_addr = INADDR_ANY;
+
+       // (3) Asigna dirección a un socket:
+       // * host = INADDR_ANY -&gt; cualquier dirección del host
+       // * port = 0 -&gt; el sistema selecciona el primer puerto libre
+       // * port = 1...1023 -&gt; puertos reservados (puede necesitar ser root la ejecución)
+       ret = bind(sd,(struct sockaddr *)&amp; server_addr, sizeof(server_addr)) ;
+       if (ret &lt; 0) {
+           perror("Error en bind: ") ;
+           return -1 ;
+       }
+
+         // Con bind(port=0...):
+         // se buscaría el primer puerto libre y con getsockname(...)
+         // se puede obtener el puerto que ha sido asignado por bind(...)
+         size = sizeof(struct sockaddr_in) ;
+         bzero(&amp;client_addr, size);
+         getsockname(sd, (struct sockaddr *) &amp;client_addr, &amp;size);
+         printf("servidor: bind() asociado a %s:%d\n",
+                 inet_ntoa(client_addr.sin_addr),
+                 ntohs(client_addr.sin_port));
+
+       // (4) preparar para aceptar conexiones
+       // * listen permite definir el número máximo de peticiones pendientes a encolar
+       // * SOMAXCONN está en sys/socket.h
+       ret = listen(sd, SOMAXCONN);
+       if (ret &lt; 0) {
+           perror("Error en listen: ") ;
+           return -1 ;
+       }
+
+       while (1)
+       {
+          // (5) aceptar nueva conexión (newsd) desde socket servidor (sd)
+          // * bloquea al servidor hasta que se produce la conexión
+          // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
+          bzero(&amp;client_addr, size);
+          size = sizeof(struct sockaddr_in) ;
+          newsd = accept (sd, (struct sockaddr *) &amp;client_addr, &amp;size);
+          if (newsd &lt; 0) {
+              perror("Error en el accept");
+              return -1 ;
+          }
+
+          // <ayuda a="" la="" depuración="">
+             // a) dirección rellenada por llamada accept()
+             printf("conexión aceptada de IP:%s y puerto:%d\n",
+                     inet_ntoa(client_addr.sin_addr),
+                         ntohs(client_addr.sin_port));
+             // b) dirección asociada al socket newsd en otro extremo
+             char sck_IP[32] ;
+             size = sizeof(struct sockaddr_in) ;
+             getpeername(newsd, (struct sockaddr *)&amp;client_addr, &amp;size);
+             inet_ntop(AF_INET, &amp;(client_addr.sin_addr), sck_IP, sizeof(sck_IP));
+             printf("conexión aceptada de IP:%s y puerto:%d\n",
+                     sck_IP, ntohs(client_addr.sin_port));
+          // </ayuda>
+
+          // (6) transferir datos sobre newsd
+          char buffer[1024] ;
+          size_t escritos ;
+
+          // Preparar el mensaje a enviar: 1024 bytes que incluye "hola mundo"
+          strcpy(buffer, "Hola mundo") ;
+
+          // Transferir datos sobre newsd
+          escritos = sendMessage(newsd, buffer, sizeof(buffer)) ;
+          if (escritos &lt; 0) {
+              printf("Error al escribir buffer\n") ;
+          }
+
+          // (7) cerrar socket conectado
+          close(newsd);
+       }
+
+       // (8) cerrar socket de servicio
+       close(sd);
+
+   } /* fin main */
+</puerto></sys></arpa></sys></netinet></unistd.h></string.h></stdlib.h></stdio.h></code></pre>
+<h3 id="cliente-base-tcpc">cliente-base-tcp.c</h3>
+<pre><code class="lang-c">   #include <stdlib.h>
+   #include <stdio.h>
+   #include <unistd.h>
+   #include <string.h>
+   #include <netdb.h>
+   #include <sys socket.h="">
+   #include <arpa inet.h="">
+   #include <arpa inet.h="">
+
+   // lee todos los 'total' bytes y los guarda en el buffer
+   int recvMessage ( int sd, char *buffer, size_t total )
+   {
+       size_t  leidos = 0 ;
+       ssize_t result = 0 ;
+
+       while (leidos != total) // mientras queda por leer...
+       {
+           // puede que read NO lea todo lo solicitado de una vez
+           result = read(sd, buffer+leidos , total-leidos ) ;
+           if (-1 == result) {
+               return -1 ;
+           }
+
+           leidos = leidos + result ;
+       }
+
+       return leidos ;
+   }
+
+   int main ( int argc, char **argv )
+   {
+       char *maquina; short puerto;
+       struct sockaddr_in server_addr;
+       struct hostent *hp;
+       int sd, ret;
+
+       if (argc != 3) {
+           printf("Uso: %s <ip máquina=""> <puerto>\n", argv[0]);
+           return 0;
+       }
+
+       // argumentos: máquina y puerto
+       maquina = argv[1] ;
+       puerto  = (short) atoi(argv[2]);
+
+       // "localhost" -&gt; 127.0.0.1 como IP address
+       hp = gethostbyname(maquina);
+       if (NULL == hp) {
+           printf("ERROR en gethostbyname con '%s'\n", maquina) ;
+           return -1 ;
+       }
+
+       // (1) creación del socket (NO tiene dirección asignada aquí)
+       sd = socket(AF_INET, SOCK_STREAM, 0);
+       if (sd &lt; 0) {
+           perror("ERROR en socket: ") ;
+           return -1 ;
+       }
+
+       // (2) obtener la dirección
+       bzero((char *)&amp;server_addr, sizeof(server_addr));
+       server_addr.sin_family = AF_INET;
+       server_addr.sin_port   = htons(puerto);
+       memcpy (&amp;(server_addr.sin_addr), hp-&gt;h_addr, hp-&gt;h_length);
+
+       // (3) Solicitud de conexión (con socket remoto)
+       // * si el socket local no tiene dirección asignada
+       //   entonces se le asigna una automáticamente con puerto temporal
+       ret = connect(sd, (struct sockaddr *) &amp;server_addr, sizeof(server_addr)) ;
+       if (ret &lt; 0) {
+           perror("ERROR en connect: ");
+           return -1;
+       }
+
+       // Preparar el espacio para recepción del mensaje
+       char buffer[1024] ;
+       strcpy(buffer, "") ;
+
+       // (4) transferir datos sobre sd
+       size_t leidos = recvMessage(sd, buffer, sizeof(buffer)) ;
+       if (leidos &lt; 0) {
+           printf("Error al leer buffer\n") ;
+       }
+
+       // Imprimir el mensaje recibido
+       printf("mensaje del servidor: %s\n", buffer) ;
+
+       // (5) Cerrar socket
+       close(sd);
+
+       return 0;
+   }
+</puerto></ip></arpa></arpa></sys></netdb.h></string.h></unistd.h></stdio.h></stdlib.h></code></pre>
+<ul>
+<li><p>Para compilar, se puede usar:</p>
+<pre><code class="lang-bash"> gcc -Wall -g  -o servidor-base-tcp servidor-base-tcp.c
+ gcc -Wall -g  -o cliente-base-tcp  cliente-base-tcp.c
+</code></pre>
+</li>
+<li><p>Para ejecutar, se puede usar:</p>
+<pre><code class="lang-bash"> user$ ./servidor-base-tcp 4200 &amp;
+ user$ ./cliente-base-tcp  localhost 4200
+ conexión aceptada de IP:127.0.0.1 y puerto:57422
+ mensaje del servidor: Hola mundo
+ user$  kill -9 %1
+</code></pre>
+</li>
+</ul>
+<h2 id="ejemplo-de-uso-de-sockets-orientados-a-conexión-en-python">Ejemplo de uso de sockets orientados a conexión (en Python)</h2>
+<h3 id="serverbasetcppy">server_base_tcp.py</h3>
+<pre><code class="lang-python">  import socket
+  import sys
+
+  sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+  server_address = ('localhost', 10009)
+  sock.bind(server_address)
+  sock.listen(5)
+
+  while True:
+       connection, client_address = sock.accept()
+       try:
+           message = ''
+           while True:
+               msg = connection.recv(1)
+               if (msg == b'\0'):
+                   break;
+               message += msg.decode()
+           message = message + "\0"
+
+           print('mensaje: ' + message)
+           connection.sendall(message.encode())
+       finally:
+           connection.close()
+</code></pre>
+<h3 id="clientbasetcppy">client_base_tcp.py</h3>
+<pre><code class="lang-python">  import socket
+  import sys
+
+  arguments = len(sys.argv)
+  if arguments &lt; 3:
+      print('Uso: client_base_tcp  <host> <port>')
+      exit()
+
+  sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  server_address = (sys.argv[1], int(sys.argv[2]))
+  print('conectando a {} y puerto {}'.format(*server_address))
+  sock.connect(server_address)
+
+  try:
+      message = b'Esto es una cadena de prueba\0'
+      sock.sendall(message)
+
+      message = ''
+      while True:
+          msg = sock.recv(1)
+          if (msg == b'\0'):
+              break;
+          message += msg.decode()
+      message = message + "\0"
+
+      print('mensaje: ' + message)
+  finally:
+      sock.close()
+</port></host></code></pre>
+<ul>
+<li>Para ejecutar, se puede usar:<pre><code class="lang-bash"> user$ python3 server_base_tcp.py &amp; 
+ user$ python3 client_base_tcp.py  localhost 10009
+ conectando a localhost y puerto 10009
+ mensaje: Esto es una cadena de prueba
+ mensaje: Esto es una cadena de prueba
+ user$  kill -9 %1
+</code></pre>
+</li>
+</ul>
+<h2 id="modelos-de-comunicación-no-orientado-a-conexión-en-c">Modelos de comunicación: NO orientado a conexión (en C)</h2>
+<ul>
+<li>Uso de UDP mediante sockets datagrama (SOCK_DGRAM)</li>
+</ul>
+<html>
+<table>
+<tr><th>Servidor</th><th>Cliente</th></tr>
+<tr>
+<td valign="top">
+<ul>
+   <li> (1) Creación de un socket (<b>socket</b>) </li>
+   <li> (2) Obtener la dirección de un socket</li>
+   <li> (3) Asignación de direcciones (<b>bind</b>)</li>
+   <li>Bucle:</li>
+   <ul>
+   <li> (4) Transferencia de datos (<b>recvfrom</b> y <b>sendto</b>)</li>
+   </ul>
+   <li> (5) Cerrar socket (<b>close</b>)</li>
+</ul>
+</td>
+<td valign="top">
+<ul>
+   <li> (1) Creación de un socket (<b>socket</b>)</li>
+   <li> (2) Obtener la dirección de un socket</li>
+   <li></li>
+   <li></li>
+   <li> (3) Transferencia de datos (<b>sendto</b> y <b>recvfrom</b>)</li>
+   <li> (4) Cerrar un socket (<b>close</b>)</li>
+</ul>
+</td>
+</tr>
+</table>
+</html>
+
+<pre><code class="lang-mermaid"><div class="mermaid">graph LR;
+    CA("socket()") --&gt; CC("sendto()")
+    CC --&gt; CD("recvfrom()")
+    CD --&gt; CE("close()")
+
+    SA("socket()") --&gt; SB("bind()")
+    SB --&gt; SE("recvfrom()")
+    SE --&gt; SF("sendto()")
+    SF --&gt; SG("close()")
+    SF --&gt; SE
+
+    CC -.-&gt;|petición| SE
+    SF -.-&gt;|respuesta| CD
+
+    subgraph "Proceso servidor"
+    SA
+    SB
+    SE
+    SF
+    SG
+    subgraph "servicio"
+      SE
+      SF
+    end
+    end
+
+    subgraph "Proceso cliente"
+    CA
+    CC
+    CD
+    CE
+    end
+</div></code></pre>
+<h2 id="ejemplo-de-uso-de-sockets-no-orientados-a-conexión">Ejemplo de uso de sockets NO orientados a conexión</h2>
+<h3 id="servidor-base-udpc">servidor-base-udp.c</h3>
+<pre><code class="lang-c">#include <arpa inet.h="">
+#include <netinet in.h="">
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+    int main ( int argc, char *argv[] )
+    {
+        int sock, ret;
+
+        // (1) Creación del socket
+        sock = socket(PF_INET, SOCK_DGRAM, 0) ;
+        if (sock &lt; 0) {
+            perror("Error al crear el socket: ") ;
+            return -1;
+        }
+
+        // (2) Obtener la dirección del socket
+        struct sockaddr_in server_address;
+        memset(&amp;server_address, 0, sizeof(server_address));
+        server_address.sin_family      = AF_INET;
+        server_address.sin_port        = htons(4200);
+        server_address.sin_addr.s_addr = htonl(INADDR_ANY);
+
+        // (3) Asignación de dirección
+        ret = bind(sock, (struct sockaddr *)&amp;server_address, sizeof(server_address)) ;
+        if (ret &lt; 0) {
+            perror("Error en bind: ");
+            return -1;
+        }
+
+        // Buffer de recepción de mensajes y
+        // estructura donde guardar la dirección del cliente
+        struct sockaddr_in client_address;
+        unsigned int client_address_len = 0;
+        char buffer[1024];
+
+        // Bucle
+        while (true)
+        {
+                // borrar memoria del mensaje anterior
+                memset(buffer, 0, 1024) ;
+
+                // (4) Transferencia de datos
+                ret = recvfrom(sock,
+                               buffer, 1024, 0,
+                               (struct sockaddr *)&amp;client_address,
+                               &amp;client_address_len);
+                if (ret &lt; 0) {
+                    printf("ERROR en recvfrom :-(\n") ;
+                }
+
+                // Imprimir mensaje
+                printf("mensaje: '%s' desde: %s\n",
+                       buffer,
+                       inet_ntoa(client_address.sin_addr));
+        }
+
+        // (5) Cerrar socket
+        close(sock) ;
+
+        return 0;
+}
+</unistd.h></string.h></stdio.h></stdbool.h></netinet></arpa></code></pre>
+<h3 id="cliente-base-udpc">cliente-base-udp.c</h3>
+<pre><code class="lang-c">    #include <arpa inet.h="">
+    #include <stdio.h>
+    #include <string.h>
+    #include <sys socket.h="">
+    #include <unistd.h>
+
+    int main ( int argc, char *argv[] )
+    {
+        int sock, ret;
+
+        // (1) Creación del socket
+        sock = socket(PF_INET, SOCK_DGRAM, 0) ;
+        if (sock &lt; 0) {
+            perror("Error al crear el socket: ") ;
+            return -1;
+        }
+
+        // (2) Obtener la dirección del socket
+        struct sockaddr_in server_address;
+        memset(&amp;server_address, 0, sizeof(server_address));
+        server_address.sin_family      = AF_INET;
+        server_address.sin_port        = htons(4200);
+        inet_pton(AF_INET, "localhost", &amp;server_address.sin_addr);
+
+
+        // Mensaje a ser enviado
+        char buffer[1024];
+        strcpy(buffer, "Hola mundo...") ;
+
+        // (3) Transferencia de datos
+        ret = sendto(sock,
+                     buffer, 1024, 0,
+                     (struct sockaddr*)&amp;server_address,
+                     sizeof(server_address));
+        if (ret &lt; 0) {
+            printf("Error en sendto\n") ;
+        }
+
+        // Imprimir mensaje
+        printf("mensaje: '%s'\n", buffer);
+
+        // (4) Cerrar socket
+        // * close(sock) equivale a shutdown(sock, SHUT_RDWR) ;
+        // SHUT_RD: cierra canal de lectura
+        // SHUT_WR: cierra el canal de escritura,
+        //          al terminar los datos read devolverá 0
+        // SHUT_RDWR: cierra ambos canales
+        close(sock);
+
+        return 0;
+    }
+</unistd.h></sys></string.h></stdio.h></arpa></code></pre>
+<ul>
+<li><p>Para compilar, se puede usar:</p>
+<pre><code class="lang-bash"> gcc -Wall -g  -o servidor-base-udp servidor-base-udp.c
+ gcc -Wall -g  -o cliente-base-udp  cliente-base-udp.c
+</code></pre>
+</li>
+<li><p>Para ejecutar, se puede usar:</p>
+<pre><code class="lang-bash"> user$ ./servidor-base-udp &amp;
+ user$ ./cliente-base-udp
+ mensaje: 'Hola mundo...' desde 127.0.0.1
+ mensaje: 'Hola mundo...'
+ user$  kill -9 %1
+</code></pre>
+</li>
+</ul>
+<h2 id="ejemplo-de-uso-de-sockets-no-orientados-a-conexión-en-python">Ejemplo de uso de sockets NO orientados a conexión (en Python)</h2>
+<h3 id="serverbaseudppy">server_base_udp.py</h3>
+<pre><code class="lang-python">  import socket
+  import sys
+
+  sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+  server_address = ('localhost', 10009)
+  sock.bind(server_address)
+
+  while True:
+       message, addr = sock.recvfrom(1024)  
+       print("mensaje: ", message)
+</code></pre>
+<h3 id="clientbaseudppy">client_base_udp.py</h3>
+<pre><code class="lang-python">  import socket
+  import sys
+
+  arguments = len(sys.argv)
+  if arguments &lt; 3:
+      print('Uso: client_base_tcp  <host> <port>')
+      exit()
+
+  sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+  server_address = (sys.argv[1], int(sys.argv[2]))
+  print('destino con dirección {} y puerto {}'.format(*server_address))
+
+  try:
+      message = 'Esto es una cadena de prueba\0'
+      sock.sendto(bytes(message, "utf-8"), server_address)
+  finally:
+      sock.close()
+</port></host></code></pre>
+<ul>
+<li>Para ejecutar, se puede usar:<pre><code class="lang-bash"> user$ python3 server_base_udp.py &amp; 
+ user$ python3 client_base_udp.py  localhost 10009
+ destino con dirección localhost y puerto 10009
+ mensaje:  b'Esto es una cadena de prueba\x00'
+ user$  kill -9 %1
+</code></pre>
+</li>
+</ul>
+<h2 id="opciones-importantes-asociadas-a-un-socket">Opciones importantes asociadas a un socket</h2>
+<p>Las funciones setsockopt y getsockopt permiten establecer y consultar (respectivamente) las opciones asociadas a un socket:</p>
+<pre><code class="lang-c">  #include <sys types.h="">
+  #include <sys socket.h="">
+  int getsockopt (int sd, int nivel, int opcion,       void *valor, socklen_t *len);
+  int setsockopt (int sd, int nivel, int opcion, const void *valor, socklen_t  len);
+</sys></sys></code></pre>
+<p>Las opciones más importantes son:</p>
+<ul>
+<li><p>SO_REUSEADDR: para poder volver a usar la dirección de inmediato asociada con bind.</p>
+<pre><code class="lang-c"> int val = 1;
+ setsockopt(sd, SOL_SOCKET, SO_REUSEADDR, (void*) &amp;val, sizeof(val));
+</code></pre>
+<p> Por defecto cuando se cierra un socket hay que esperar un tiempo (constante TIME_WAIT, normalmente unos 20 segundos) hasta poder volver a hacer bind para utilizar la misma dirección. Si se ejecuta antes normalmente aparece el error <strong>"Address already in use"</strong> que esta opción soluciona.</p>
+</li>
+<li><p>TCP_NODELAY: envío inmediato (sin intentar agrupar mensajes relativamente juntos en el tiempo)</p>
+<pre><code class="lang-c">int option = 1 ;
+rc = setsockopt(s, IPPROTO_TCP, TCP_NODELAY, &amp;option, sizeof(option)) ;
+</code></pre>
+<p> Por defecto espera un poco de tiempo antes de enviar pocos bytes por si puede agrupar varias pequeñas peticiones. El problema es que la latencia de cada petición particular es mayor. Por eso se recomienda el envío inmediato.</p>
+</li>
+<li><p>SO_RCVBUF, SO_SNDBUF:</p>
+<ul>
+<li>Fijar el tamaño del buffer de envío/recepción<pre><code class="lang-c">   int size = 16*1024;
+   err = setsockopt(s, SOL_SOCKET, SO_SNDBUF, (char *)&amp;size, sizeof(size));
+</code></pre>
+</li>
+<li>Conocer el tamaño del buffer de envío/recepción<pre><code class="lang-c">int size ;
+err = getsockopt(s, SOL_SOCKET, SO_SNDBUF, (char *)&amp;size, sizeof(size)) ;
+printf("%d\n", size) ;
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="servidor-secuencial-vs-procesos-pesados-vs-hilos">Servidor secuencial vs procesos pesados vs hilos</h2>
+<ul>
+<li>El servidor base es secuencial: una vez se conecta un cliente, hasta que no termina de atender no acepta conexiones de otros clientes (lo que reduce el rendimiento)</li>
+</ul>
+<p><strong>Esqueleto de servidor-base-tcp.c</strong></p>
+<pre><code class="lang-c">
+    ...
+    int main ( int argc, char **argv )
+    {
+         ...
+         while (1)
+         {
+            // (5) aceptar nueva conexión (newsd) desde socket servidor (sd)
+            // * bloquea al servidor hasta que se produce la conexión
+            // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
+            newsd = accept (sd, (struct sockaddr *) &amp;client_addr, &amp;size);
+            if (newsd &lt; 0) {
+                perror("Error en accept: ");
+                return(-1);
+            }
+
+            ...
+
+            // (6) transferir datos sobre newsd
+            size_t total    = sizeof(buffer) ;
+            size_t escritos = 0 ;
+            ssize_t result  = 0 ;
+            while (escritos != total) // queda por escribir
+            {
+               result = write(newsd, buffer+escritos, total-escritos) ;
+               if (-1 == result) { break; }
+               escritos = escritos + result ;
+
+               // puede que write NO escriba todos los datos solicitados
+               // por ello el bucle hasta que se escriban todos
+            }
+            if (escritos != total) { // error, no se ha escrito todo
+                printf("ERROR al escribir buffer\n") ;
+            }
+
+            // (7) cerrar socket conectado
+            close(newsd);
+         }
+
+         ...
+    } /* fin main */
+</code></pre>
+<ul>
+<li>El servidor puede ser concurrente usando procesos pesados: una vez se conecta un cliente, se crea un proceso pesado que se encargue de atenderle.</li>
+</ul>
+<p><strong>Esqueleto de servidor-fork-tcp.c</strong></p>
+<pre><code class="lang-c">
+    ...
+    int main ( int argc, char **argv )
+    {
+         ...
+         while (1)
+         {
+            // (5) aceptar nueva conexión (newsd) desde socket servidor (sd)
+            // * bloquea al servidor hasta que se produce la conexión
+            // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
+            newsd = accept (sd, (struct sockaddr *) &amp;client_addr, &amp;size);
+            if (newsd &lt; 0) {
+                perror("Error en el accept: ");
+                return -1;
+            }
+
+            ...
+
+            pid_t pid = fork() ;
+            if (pid &lt; 0) {
+                perror("Error en fork: ") ;
+                return -1;
+            }
+            if (0 == pid) // el proceso hijo atiende al cliente
+            {
+                // (6) transferir datos sobre newsd
+                size_t total    = sizeof(buffer) ;
+                size_t escritos = 0 ;
+                ssize_t result  = 0 ;
+                while (escritos != total) // queda por escribir
+                {
+                   result = write(newsd, buffer+escritos, total-escritos) ;
+                   if (-1 == result) { break; }
+                   escritos = escritos + result ;
+
+                   // puede que write NO escriba todos los datos solicitados
+                   // por ello el bucle hasta que se escriban todos
+                }
+                if (escritos != total) { // error, no se ha escrito todo
+                    printf("Error al escribir buffer\n") ;
+                }
+
+                // (7) cerrar socket conectado
+                close(newsd);
+            }
+         }
+
+         ...
+    } /* fin main */
+</code></pre>
+<ul>
+<li>El servidor puede ser concurrente usando procesos ligeros: una vez se conecta un cliente, se crea un hilo que se encargue de atenderle.</li>
+</ul>
+<p><strong>Esqueleto de servidor-thread-tcp.c</strong></p>
+<pre><code class="lang-c">
+    ...
+    int busy = 0 ;
+    pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER ;
+    pthread_cond_t  c = PTHREAD_COND_INITIALIZER ;
+
+    void *tratar_peticion ( void * arg )
+    {
+         int s_local;
+
+         /// avisar copiado argumentos ////
+         pthread_mutex_lock(&amp;m);
+         s_local = (* (int *) arg);
+         busy = 0;
+         pthread_cond_signal(&amp;c);
+         pthread_mutex_unlock(&amp;m);
+         /////////////////////
+
+         // (6) transferir datos sobre newsd
+         size_t total    = sizeof(buffer) ;
+         size_t escritos = 0 ;
+         ssize_t result  = 0 ;
+         while (escritos != total) // queda por escribir
+         {
+             result = write(newsd, buffer+escritos, total-escritos) ;
+             if (-1 == result) { break; }
+                 escritos = escritos + result ;
+             }
+             if (escritos != total) { // error, no se ha escrito todo
+                 printf("Error al escribir buffer") ;
+         }
+
+         // (7) cerrar socket conectado
+         close(s_local);
+
+         pthread_exit(NULL);
+         return NULL ;
+    }
+
+    int main ( int argc, char **argv )
+    {
+         pthread_attr_t attr ;
+
+         pthread_attr_init(&amp;attr);
+         pthread_attr_setdetachstate(&amp;attr, PTHREAD_CREATE_DETACHED);
+
+         ...
+         while (1)
+         {
+            // (5) aceptar nueva conexión (newsd) desde socket servidor (sd)
+            // * bloquea al servidor hasta que se produce la conexión
+            // * sd permite acceptar conexiones y newsd permitirá trabajar con cliente
+            newsd = accept (sd, (struct sockaddr *) &amp;client_addr, &amp;size);
+            if (newsd &lt; 0) {
+                perror("Error en el accept: ");
+                return -1;
+            }
+
+            ...
+            pthread_create(&amp;thid, &amp;attr, tratar_peticion, (void *)&amp;newsd);
+
+            /// Esperar copia de argumentos ///
+            pthread_mutex_lock(&amp;m);
+            while (busy == 1) {
+                   pthread_cond_wait(&amp;c, &amp;m);
+            }
+            busy = 1;
+            pthread_mutex_unlock(&amp;m);
+            /////////////////////
+         }
+
+         ...
+    } /* fin main */
+</code></pre>
+<ul>
+<li><details open="">
+<summary>En Python...</summary>
+
+### Esqueleto de servidor-thread-tcp.py
+```python
+import threading
+import socket
+
+def worker(sock):
+    try:
+        ...
+        sock.sendall(message.encode())
+        ...
+    finally:
+        sock.close()
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+server_address = ('localhost', 12345)
+sock.bind(server_address)
+sock.listen(5)
+
+while True:
+    connection, client_address = sock.accept()
+
+    t = threading.Thread(target=worker, name='Daemon', args=(connection,))
+    t.start()
+```
+</details>
+
+
+
+</li>
+</ul>
+<h2 id="trabajar-con-heterogeneidad-en-el-sistema-distribuido">Trabajar con heterogeneidad en el sistema distribuido</h2>
+<ul>
+<li>En general cuando se desarrolla una aplicación con sockets hay que plantear una solución que sea independiente de:<ul>
+<li>Arquitectura (Little-endian, big-endian)</li>
+<li>Lenguaje de programación</li>
+</ul>
+</li>
+<li>Emplear soluciones que definan el tamaño de los enteros (por ejemplo: 32 bits) puede ser un problema<ul>
+<li>Puede existir máquinas en el sistema distribuido que no puedan trabajar con el tamaño seleccionado</li>
+</ul>
+</li>
+<li>Posibles soluciones:<ul>
+<li><strong>Protocolo con base binaria</strong>: usar biblioteca que permita transformar de un formato binario de red a cualquier formato de host y viceversa.<ul>
+<li>Ventaja: envío rápido y compacto</li>
+<li>Desventaja: tiempo de transformación, dificultad de depurar protocolos binarios, necesidad de biblioteca adicional.</li>
+<li>Protocolos de ejemplo: protobuf (opción binaria)</li>
+</ul>
+</li>
+<li><strong>Protocolo basado en texto</strong>: desarrollar aplicaciones que codifiquen los datos en cadenas de caracteres y envíen cadenas de caracteres<ul>
+<li>Ventaja: normalmente no se precisa de bibliteca adicional y es fácil de depurar</li>
+<li>Desventaja: eficiencia</li>
+<li>Protocolos de ejemplo: HTTP, SMTP, etc.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="trabajar-con-heterogeneidad-con-protocolos-basados-en-texto-12">Trabajar con heterogeneidad con protocolos basados en texto (1/2)</h2>
+<ul>
+<li><p>Para la lectura de cadenas de caracteres con sockets stream</p>
+<ul>
+<li>Cuando una cadena de caracteres finaliza con el código ASCII '\0' no se sabe a priori su longitud (y por tanto cuántos bytes hay que leer a priori)</li>
+<li><p>En este caso hay que leer byte a byte hasta leer el el código ASCII '\0', y se puede usar la función readLine para ello:</p>
+<pre><code class="lang-c">
+  ssize_t readLine ( int fd, void *buffer, size_t n )
+  {
+      ssize_t numRead;  /* num of bytes fetched by last read() */
+      size_t totRead;   /* total bytes read so far */
+      char *buf;
+      char ch;
+
+      if (n &lt;= 0 || buffer == NULL) {
+          errno = EINVAL;
+          return -1;
+      }
+
+      buf = buffer;
+      totRead = 0;
+      while (1)
+      {
+          numRead = read(fd, &amp;ch, 1);     /* read a byte */
+
+          if (numRead == -1) {
+               if (errno == EINTR)        /* interrupted -&gt; restart read() */
+                   continue;
+          else return -1;                 /* some other error */
+          } else if (numRead == 0) {      /* EOF */
+                  if (totRead == 0)       /* no bytes read; return 0 */
+                       return 0;
+                  else break;
+          } else {                        /* numRead must be 1 if we get here*/
+                  if (ch == '\n') break;
+                  if (ch == '\0') break;
+                  if (totRead &lt; n - 1) {   /* discard &gt; (n-1) bytes */
+                       totRead++;
+                      *buf++ = ch;
+                  }
+          }
+      }
+
+      *buf = '\0';
+      return totRead;
+  }
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>Para la escritura de cadenas de caracteres con sockets stream</p>
+<ul>
+<li><p>Para el envío se puede usar <em>sendMessage</em> PERO hay que indicar el número de caracteres incluido el fin de cadena:</p>
+<pre><code class="lang-c">
+int sendMessage ( int socket, char * buffer, int len )
+{
+    int r;
+    int l = len;
+
+    do
+    {
+         r = write(socket, buffer, l);
+         if (r &lt; 0) {
+             return (-1);   /* fail */
+         }
+         l = l - r;
+         buffer = buffer + r;
+
+    } while ((l&gt;0) &amp;&amp; (r&gt;=0));
+
+    return 0;
+}
+
+int writeLine ( int socket, char * buffer )
+{
+    return sendMessage(socket, buffer, strlen(buffer)+1);
+}
+
+...
+
+char buffer[256] ;
+strcpy(buffer, "Cadena a enviar...") ;
+writeLine(sd, buffer) ;        // se envía hasta el fin de cadena (incluido)
+sendMessage(sd, buffer, 256) ; // se envía 256 caracteres (no todos se usan)
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><details open="">
+<summary>En Python...</summary>
+
+```python
+def read_string(sock):
+    str = ''
+    while True:
+       msg = sock.recv(1)
+       if (msg == b'\0'):
+           break;
+       str += msg.decode()
+    return str
+
+def write_string(sock, str):
+    sock.sendall(str.encode() + b'\0')  
+```
+</details>
+
+
+</li>
+</ul>
+<h2 id="trabajar-con-heterogeneidad-con-protocolos-basados-en-texto-22">Trabajar con heterogeneidad con protocolos basados en texto (2/2)</h2>
+<ul>
+<li><p>Para recibir un número con sockets stream (como cadena)</p>
+<ul>
+<li>Usando readLine se lee la cadena de caracteres que lo representa.</li>
+<li><p>A continuación se transforma a número.</p>
+<pre><code class="lang-c">
+ int read_int ( int socket, int *number )
+ {
+    char buffer[1024];
+    char *endptr ;
+
+    readLine(socket, buffer, 1024) ;
+    (*number) = strtol(buffer, &amp;endptr, 10) ; // n = atoi(buffer) ;
+    if (endptr[0] != '\0') {
+        printf("Error: %s no es un número en base %d\n", buffer, 10) ;
+        return -1 ;
+    }
+
+    return 0 ;
+ }
+
+ ...
+
+ int n = 0 ;
+ int ret = read_int(sd, &amp;n) ;
+ printf("ret=%d y n=%d\n", ret, n) ;
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>Para enviar un número con sockets stream</p>
+<ul>
+<li><p>Para el envío se puede usar sendMessage PERO hay que indicar el número de caracteres incluido el fin de cadena:</p>
+<pre><code class="lang-c">
+int write_int ( int socket, int number )
+{
+    char buffer[1024];
+
+    sprintf(buffer, "%d", number);
+    sendMessage(socket, buffer, strlen(buffer)+1);
+    return 0 ;
+}
+
+...
+
+int n = 1234;
+write_int(sd, n) ;
+</code></pre>
+</li>
+<li><p>Se puede transformar números en coma flotante, etc. de forma similar.</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><details open="">
+<summary>En Python...</summary>
+
+```python
+def read_string(sock):
+    a = ''
+    while True:
+       msg = sock.recv(1)
+       if (msg == b'\0'):
+           break;
+       a += msg.decode()
+    return a
+
+def read_number(sock):
+    a = read_string(sock)
+    return(int(a,10))
+
+def write_string(sock, str):
+    sock.sendall(str.encode() + b'\0')  
+
+def write_number(sock, num):
+    a = str(num)
+    write_string(sock, a)
+```
+</details>
+
+
+
+</li>
+</ul>
+<p><strong>Material adicional</strong>:</p>
+<ul>
+<li><a href="https://beej.us/guide/bgnet/html/index-wide.html" target="_blank">Beej's Guide to Network Programming</a></li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                
+                <a href="../topic-ds/ds.html" class="navigation navigation-next navigation-unique" aria-label="Next page: Servicios distribuidos">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Sockets","level":"4.1","depth":1,"next":{"title":"Servicios distribuidos","level":"5.1","depth":1,"path":"topic-ds/ds.md","ref":"topic-ds/ds.md","articles":[]},"previous":{"title":"MPI (notebook)","level":"3.2.1","depth":2,"url":"https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb","ref":"https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb","articles":[]},"dir":"ltr"},"config":{"plugins":["mermaid","highlight","hide-published-with","hints","chapter-fold"],"styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"search":{},"mermaid":{},"hints":{"info":"fa fa-info-circle","tip":"fa fa-mortar-board","danger":"fa fa-exclamation-circle","working":"fa fa-wrench"},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"hide-published-with":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{"exclude":["mermaid"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Felix Garcia-Carballeira y Alejandro Calderon-Mateos","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Sistemas Distribuidos","gitbook":"*","description":"Sistemas Distribuidos (UC3M)"},"file":{"path":"topic-sockets/ssdd_sockets.md","mtime":"2026-03-04T16:58:23.361Z","type":"markdown"},"gitbook":{"version":"6.1.7","time":"2026-04-10T14:15:27.234Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid-load.js"></script>
+        
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-hide-published-with/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

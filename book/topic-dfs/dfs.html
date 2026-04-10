@@ -1,0 +1,1198 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Sistemas de ficheros distribuidos · Sistemas Distribuidos</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.1.7">
+        <meta name="author" content="Felix Garcia-Carballeira y Alejandro Calderon-Mateos">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/honkit-plugin-mermaid/mermaid.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-hints/plugin-hints.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../topic-ws/web-services.html" />
+    
+    
+    <link rel="prev" href="../topic-rpc/rpc.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Índice
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../topic-candmake/ssdd_c.html">
+            
+                <a href="../topic-candmake/ssdd_c.html">
+            
+                    
+                    C para distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../topic-candmake/ssdd_make.html">
+            
+                <a href="../topic-candmake/ssdd_make.html">
+            
+                    
+                    Introducción a make
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../topic-concurrency/ssdd_threads_posix.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_posix.html">
+            
+                    
+                    Concurrencia con POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../topic-concurrency/ssdd_threads_c.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_c.html">
+            
+                    
+                    Concurrencia con C11
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../topic-messagepassing/ssdd_pq.html">
+            
+                <a href="../topic-messagepassing/ssdd_pq.html">
+            
+                    
+                    Colas de mensajes POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../topic-messagepassing/mpi.html">
+            
+                <a href="../topic-messagepassing/mpi.html">
+            
+                    
+                    Introducción a MPI
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.2.1" >
+            
+                <a target="_blank" href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb">
+            
+                    
+                    MPI (notebook)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../topic-sockets/ssdd_sockets.html">
+            
+                <a href="../topic-sockets/ssdd_sockets.html">
+            
+                    
+                    Sockets
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../topic-ds/ds.html">
+            
+                <a href="../topic-ds/ds.html">
+            
+                    
+                    Servicios distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../topic-rpc/rpc.html">
+            
+                <a href="../topic-rpc/rpc.html">
+            
+                    
+                    RPC
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter active" data-level="7.1" data-path="dfs.html">
+            
+                <a href="dfs.html">
+            
+                    
+                    Sistemas de ficheros distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../topic-ws/web-services.html">
+            
+                <a href="../topic-ws/web-services.html">
+            
+                    
+                    Servicios web
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" >
+            
+                <a target="_blank" href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ft/t9_tolerancia-a-fallos.pdf">
+            
+                    
+                    Tolerancia a fallos (PDF)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Sistemas de ficheros distribuidos</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="sistemas-de-ficheros-distribuidos">Sistemas de ficheros distribuidos</h1>
+<ul>
+<li><strong>Felix García Carballeira y Alejandro Calderón Mateos</strong> @ arcos.inf.uc3m.es</li>
+<li><a href="https://github.com/acaldero/uc3m_sd/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg" alt="License: CC BY-NC-SA 4.0"></img></a></li>
+</ul>
+<h2 id="contenidos">Contenidos</h2>
+<ul>
+<li>Introducción a sistemas de ficheros  distribuidos:<ul>
+<li><a href="#sistema-de-ficheros">Sistema de ficheros</a></li>
+<li><a href="#funcionamiento-básico-de-un-sistema-de-ficheros">Funcionamiento básico de un sistema de ficheros</a></li>
+<li><a href="#arquitectura-básica-de-un-sistema-de-ficheros">Arquitectura básica de un sistema de ficheros</a></li>
+<li><a href="#posibles-opciones-para-almacenamiento-remoto">Posibles opciones para almacenamiento remoto</a></li>
+</ul>
+</li>
+<li>Sistemas de almacenamiento distribuidos:<ul>
+<li><a href="#sistema-de-ficheros-distribuido">Sistema de ficheros distribuido</a></li>
+<li><a href="#sistema-de-ficheros-paralelo">Sistema de ficheros paralelo</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="sistema-de-ficheros">Sistema de ficheros</h2>
+<ul>
+<li><p>En una máquina Von Neumann, tanto los datos como el código de un programa ha de estar cargado en memoria principal para ejecutar:</p>
+<pre><code class="lang-mermaid"><div class="mermaid">flowchart TD
+A[CPU] &lt;--&gt; B(Memoria principal)
+</div></code></pre>
+</li>
+<li><p>A día de hoy hay dos tecnologías principales para el almacenamiento:</p>
+<pre><code class="lang-mermaid"><div class="mermaid">flowchart TD
+A[CPU] &lt;--&gt; B(Memoria RAM)
+B[Memoria RAM] &lt;--&gt; C(SSD, disco duro)
+</div></code></pre>
+<ul>
+<li>Memoria RAM<ul>
+<li><strong>Volátil</strong> (se pierde contenido si falta electricidad)</li>
+<li><strong>Menor</strong> capacidad (orden de Gigabyte)</li>
+<li>Direccionamiento a nivel de <strong>byte</strong></li>
+</ul>
+</li>
+<li>Disco<ul>
+<li><strong>NO Volátil</strong> (permanente)</li>
+<li><strong>Mayor</strong> capacidad (orden de Terabytes)</li>
+<li>Direccionamiento a nivel de <strong>bloque</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Problema</strong>:</p>
+<ul>
+<li>Que cada programador/a tengan que ocuparse de tratar con los bloques de disco para buscar en qué bloque están los datos que precisa su programa, recuperar o guardar datos de un bloque, etc.</li>
+</ul>
+</li>
+<li><p><strong>Objetivo</strong>:</p>
+<ul>
+<li>En lugar de trabajar con bloques trabajar con una abstracción de datos intermedia de alto nivel que internamente se traduzca a bloques de manera que:<ul>
+<li>Sea independiente del dispositivo físico.</li>
+<li>Ofrezca una visión lógica unificada.</li>
+<li>Sea lo suficientemente simple pero completa.<pre><code class="lang-mermaid"><div class="mermaid">flowchart TD
+A(Proceso)---|"(1) Abstracción de datos"|B("(2) Gestor de abstracción")
+B --- C("Disco&lt;br&gt;(b1, b2, ...)")
+</div></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>El sistema operativo integra una <u>abstracción básica y genérica</u> (<strong>ficheros y directorios</strong>) y hay un componente en el sistema operativo que es el <u>gestor de dicha abstracción</u> (<strong>sistema de ficheros</strong>).</p>
+<pre><code class="lang-mermaid"><div class="mermaid">flowchart TD
+A(Proceso)---|"ficheros y directorios"|B("sistema de ficheros")
+B --- C("Disco&lt;br&gt;(b1, b2, ...)")
+</div></code></pre>
+<ul>
+<li>Normalmente con la abstracción de <strong>ficheros y directorios</strong> que tiene el sistema operativo de serie es suficiente para el acceso habitual a los datos</li>
+<li>El propio sistema operativo usa dicha abstracción de <strong>ficheros y directorios</strong> para la gestión de sus componentes, lo que ayuda a demostrar su potencial.</li>
+</ul>
+</li>
+<li>Aunque hay otras abstracciones, como una base de datos donde <u>la abstracción</u> <strong>se basa en el uso de tablas</strong> y hay un componente que es el <u>gestor de dicha abstracción</u> <strong>que es el gestor de base de datos</strong>.<pre><code class="lang-mermaid"><div class="mermaid">flowchart TD
+A(Proceso)---|"base de datos"|B("gestor BBDD")
+B --- C("Disco&lt;br&gt;(b1, b2, ...)")
+</div></code></pre>
+</li>
+<li>A día de hoy se trabajan con distintas abstracciones a la vez:<ul>
+<li>Se pueden combinar el uso de abstracciones, por ejemplo en un gestor de canciones puede usar una base de datos para la gestión de autores, títulos, etc. y guardar en la base de dato el nombre del fichero donde está la propia canción.</li>
+<li>El sistema operativo habitualmente utiliza un sistema de ficheros específico pero ofrece varios sistemas de ficheros adicionales que es posible usar.</li>
+</ul>
+</li>
+<li>La <em>Storage Networking Industry Association</em> (SNIA) propone el <a href="https://www.snia.org/education/storage_networking_primer/shared_storage_model" target="_blank"><em>The SNIA Shared Storage Model</em></a>:<br></br>
+   <img src="dfs/snia_model_v2.gif" alt="SNIA storage model v2"></img><br></br><ul>
+<li>Donde una aplicación puede usar un gestor de base de datos, o bien un sistema de ficheros (o bien ambos, por ejemplo un reproductor de canciones con una base de datos con la información de las canciones del usuario y las propias canciones guardadas en archivos).</li>
+<li>Sería posible sistemas gestores de base de datos que usan ficheros por debajo y también sería posible sistemas de ficheros que usan bases de datos por debajo.</li>
+<li>Este subsistema de ficheros/registros utiliza por debajo un almacenamiento basado en bloques, donde los bloques pueden ser resultado de una agregación en tres niveles: dispositivo, SAN o <em>host</em>.</li>
+</ul>
+</li>
+</ul>
+<h4 id="para-más-información">Para más información:</h4>
+<ul>
+<li>Puede repasar de sistemas operativos el tema <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w12-sf-ficheros.pdf#page9" target="_blank">"sistema de ficheros (1/3)"</a></li>
+</ul>
+<h2 id="funcionamiento-básico-de-un-sistema-de-ficheros">Funcionamiento básico de un sistema de ficheros</h2>
+<ul>
+<li><p><strong>Un sistema de ficheros es un software de sistema que establece una correspondencia lógica entre los ficheros y directorios y los dispositivos de almacenamiento</strong>.</p>
+</li>
+<li><p><strong>Funciones principales</strong>: organización, almacenamiento, recuperación, gestión de nombres, coutilización y protección de los ficheros.</p>
+<ul>
+<li>Relativo al almacenamiento y recuperación, ofrece un mecanismo de abstracción que oculta todos los detalles relacionados con el almacenamiento y distribución de la información en los dispositivos, así como el funcionamiento de los mismos.</li>
+<li>Relativo a la gestión de nombres, ofrece una traducción transparente entre el nombre de fichero usado por los programas basados en cadenas de caracteres (representación más cómoda para personas) a la representación numérica interna basada en el identificador de i-nodo donde internamente están los detalles del fichero.</li>
+</ul>
+</li>
+<li><p><strong>Organización básica</strong>:</p>
+<ul>
+<li>Un <strong>dispositivo</strong> permite almacenar bloques de datos.<ul>
+<li>Puede ejecutar  <code>lsblk</code> para ver todos los dispositivos de bloque.</li>
+</ul>
+</li>
+<li>En dicho dispositivo se pueden tener una o varias <strong>particiones</strong> o <strong>volúmenes</strong>. Las particiones o volúmenes permiten dividir de forma lógica un dispositivo físico en espacios de almacenamientos con los que trabajar.<ul>
+<li>Puede ejecutar  <code>cat /proc/partitions</code> para ver todas las particiones reconocidas.</li>
+</ul>
+</li>
+<li>Por cada <strong>partición</strong> o <strong>volumen</strong> se tiene formateado con un <strong>sistema de ficheros en disco</strong>, que son las estructuras de datos que precisa en disco para localizar la información.</li>
+<li>Cada <strong>sistema de ficheros en disco</strong> permite trabajar con <strong>ficheros</strong> y <strong>directorios</strong>.<ul>
+<li>Un fichero es una abstracción en la que el contenido de un archivo se trabaja como una secuencia de bytes.</li>
+<li>Un directorio es una colección de ficheros agrupados por algún criterio de el/la usuario/a.<ul>
+<li>Importante: en UNIX/Linux un directorio permite asociar el número de i-nodo al nombre de un fichero.</li>
+<li>Si ejecuta <code>ls -i1</code> se puede ver tanto los nombres como los número de i-nodos del directorio actual.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Operaciones básicas:</p>
+<ul>
+<li><strong>Crear el sistema de ficheros</strong> (<code>mkfs</code>): crea en una partición o volumen un sistema de ficheros vacío. Reserva parte del almacenamiento para guardar las estructuras de datos que posteriormente permiten la gestión de la información en disco (metadatos en disco).</li>
+<li><strong>Montar</strong> (<code>mount</code>): añade el árbol de directorio contenido en un sistema de ficheros a un directorio de un árbol ya montado.</li>
+<li><strong>Desmontar</strong> (<code>unmount</code>): quita el árbol de directorio de un directorio de montaje, volviendo a poder acceder al contenido inicial de ese directorio.</li>
+</ul>
+</li>
+</ul>
+<h2 id="arquitectura-básica-de-un-sistema-de-ficheros">Arquitectura básica de un sistema de ficheros</h2>
+<ul>
+<li><p>Repasando la arquitectura general de un sistema de ficheros, tenemos:</p>
+<html>
+<table>
+<tr>
+<td>
+  <img src="../materials/topic-dfs/dfs/dfs_intro_1.svg"></img>
+</td>
+<td>
+
+<ul>
+<li><b>Servidor de ficheros/archivos virtual</b>:
+<ul>
+<li>Proporciona interfaz de llamadas de E/S.
+</li><li>Independiente de sistema de ficheros particular.
+</li></ul>
+</li><li><b>Módulo de organización de archivos</b>:
+<ul>
+<li>Transforma peticiones lógicas en físicas.
+</li><li>Distinto para cada sistema de ficheros particular.
+</li></ul>
+</li><li><b>Servidor de bloques</b>:
+<ul>
+<li>Gestiona las peticiones de operaciones de bloques sobre dispositivos.
+</li><li>Mantiene una caché de bloques o páginas.
+</li></ul>
+</li><li><b>Manejador de dispositivo</b>:
+<ul>
+<li>Transforma peticiones de bloques en peticiones de dispositivo.
+</li></ul> 
+
+</li></ul>
+</td>
+</tr>
+</table>
+</html>
+</li>
+<li><p>En dicha arquitectura general, el software está organizado por capas, de forma que las capas superiores usan la funcionalidad de las capas inferiores para implementar su funcionalidad.<br></br>
+Las principales capas de software son: <br></br>
+<img src="dfs/dfs_intro_2.svg" alt="Arquitectura básica del software en un sistema de ficheros Unix"></img></p>
+<ul>
+<li>La caché de bloques tiene las siguientes operaciones habitualmente:<ul>
+<li><strong>getblk</strong>: busca/reserva en caché un bloque (a partir de un v-nodo, desplazamiento y tamaño dado).</li>
+<li><strong>brelse</strong>: libera un bloque y lo pasa a la lista de libres.</li>
+<li><strong>bwrite</strong>: escribe un bloque de la caché a disco.</li>
+<li><strong>bread</strong>: lee un bloque de disco a caché.</li>
+<li><strong>breada</strong>: lee un bloque (y el siguiente) de disco a caché.</li>
+</ul>
+</li>
+<li>Los algoritmos de bajo nivel son:<ul>
+<li><strong>namei</strong>: convierte una ruta al i-nodo asociado.</li>
+<li><strong>iget</strong>: devuelve un i-nodo de la tabla de i-nodos y si no está lo lee de memoria secundaria, lo añade a la tabla de i-nodos y lo devuelve.</li>
+<li><strong>iput</strong>: libera un i-nodo de la tabla de i-nodos, y si es necesario lo actualiza en memoria secundaria.</li>
+<li><strong>ialloc</strong>: asignar un i-nodo a un fichero.</li>
+<li><strong>ifree</strong>: libera un i-nodo previamente asignado a un fichero.</li>
+<li><strong>bmap</strong>: calcula el bloque de disco asociado a un desplazamiento del fichero. Traduce direcciones lógicas (<em>offset</em> de fichero) a físicas (bloque de disco).</li>
+<li><strong>alloc</strong>: asigna un bloque a un fichero.</li>
+<li><strong>free</strong>: libera un bloque previamente asignado a un fichero.</li>
+</ul>
+</li>
+<li>Las llamadas al sistema de archivos son las habituales en el estándar POSIX:<ul>
+<li><strong>open</strong></li>
+<li><strong>write</strong></li>
+<li><strong>read</strong></li>
+<li><strong>close</strong></li>
+<li>Etc.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="para-más-información">Para más información:</h4>
+<ul>
+<li>Puede repasar de sistemas operativos el tema <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w12-sf-ficheros.pdf#page18" target="_blank">"sistema de ficheros (3/3)"</a></li>
+<li>Dispone de un ejemplo de un mínimo sistema de ficheros de ejemplo en <a href="https://github.com/acaldero/nanofs" target="_blank">nanofs</a></li>
+</ul>
+<h2 id="posibles-opciones-para-almacenamiento-remoto">Posibles opciones para almacenamiento remoto</h2>
+<ul>
+<li>A la hora de hacer remoto el acceso a los datos en un sistema de ficheros, tenemos varios puntos en la arquitectura donde podemos aplicar un patrón de software <strong>proxy</strong> para pedir la funcionalidad a una máquina remota.</li>
+<li>Entre las principales opciones (puede haber más opciones o mezcla de opciones) se tiene:</li>
+</ul>
+<html>
+<table>
+<tr>
+  <td>
+    Opción
+  </td>
+  <td>
+    Figura
+  </td>
+  <td>
+    Ejemplo:
+  </td>
+</tr>
+<tr>
+  <td>
+    Acceso remoto a dispositivos de bloques que están en otras máquinas
+  </td>
+  <td>
+     <img alt="Acceso a discos remotos" src="dfs/dfs_remoto_1.svg"></img>
+  </td>
+  <td>
+     <a href="https://en.wikipedia.org/wiki/Distributed_Replicated_Block_Device" target="_blank">DRBD</a>
+  </td>
+</tr>
+<tr>
+  <td>
+    Acceso remoto a los servicios de sistema de ficheros del sistema operativo en otra máquina
+  </td>
+  <td>
+    <img alt="Acceso a discos remotos" src="dfs/dfs_remoto_2.svg"></img>
+  </td>
+  <td>
+    <a href="https://es.wikipedia.org/wiki/Network_File_System" target="_blank">NFS</a>
+  </td>
+</tr>
+<tr>
+  <td>
+    Acceso remoto a servicio de directorio (i-nodos), a servicio de bloques y servicio de coherencia de caché
+  </td>
+  <td>
+    <img alt="Acceso bloques, inodos y caché remotos" src="dfs/dfs_remoto_4.svg"></img>
+  </td>
+  <td>
+    <a href="https://www.researchgate.net/publication/4658185_The_Sprite_Network_Operating_System" target="_blank">Sprite</a>
+  </td>
+</tr>
+</table>
+</html>
+
+
+
+<h2 id="sistema-de-ficheros-distribuido">Sistema de ficheros distribuido</h2>
+<ul>
+<li><p>De forma muy general, un sistema de ficheros distribuidos (DFS) es un <em>sistema de ficheros</em> que <em>permite el acceso a ficheros de múltiples máquinas</em> a través de una red de interconexión <em>haciendo posible a múltiples usuarios</em> de múltiples máquinas <em>compartir</em> ficheros (y por tanto, recursos de almacenamiento).</p>
+</li>
+<li><p>Los requisitos de un sistema de ficheros distribuido son:</p>
+<ul>
+<li>Transparencia:<ul>
+<li>Mismas operaciones para acceso locales y remotos</li>
+<li>Imagen única del sistema de ficheros</li>
+</ul>
+</li>
+<li>Eficiencia.<ul>
+<li>Un SFD tiene sobrecargas adicionales: red de comunicación, protocolos, posible necesidad de realizar más copias, etc.</li>
+</ul>
+</li>
+<li>Tolerancia a fallos:<ul>
+<li>Replicación, funcionamiento degradado, etc.</li>
+</ul>
+</li>
+<li>Facilidad de crecimiento (escalabilidad)<ul>
+<li>Eliminar los cuellos de botella</li>
+</ul>
+</li>
+<li>Consistencia</li>
+<li>Actualizaciones concurrentes</li>
+<li>Seguridad</li>
+</ul>
+</li>
+<li><p>Un sistema de ficheros distribuido busca que para los programas clientes su comportamiento sea similar a un sistema de ficheros local, ofreciendo "transparencia" en una serie de aspectos:</p>
+<ul>
+<li><strong>Transparencia de acceso</strong>: los programas cliente no conocen que los ficheros están distribuidos en otras máquinas, trabaja con los ficheros como si fueran locales.</li>
+<li><strong>Transparencia de localización</strong>: los programas cliente utilizan nombres de directorios y ficheros que no incluyen la localización explícita de dichos ficheros en el sistema distribuido.</li>
+<li><strong>Heterogeneidad</strong>: los programas cliente y los servidores de ficheros distribuidos pueden ejecutarse en diferentes tipos de hardware y sistemas operativos.</li>
+<li><strong>Transparencia de concurrencia</strong>: si varios programas cliente acceden a un mismo fichero del sistema de ficheros distribuido, las modificaciones se han de ver de alguna forma coherente.</li>
+<li><strong>Transparencia de fallo</strong>: cualquier programa cliente de un fichero distribuido debería de poder trabajar aún en presencia de fallos en la red o en el servidor.<ul>
+<li>Servidores con estado: cuando se abre un archivo el servidor almacena la información de la sesión de trabajo y devuelve al cliente un identificador único de dicha sesión de trabajo para posteriores operaciones.<ul>
+<li>V: operaciones más cortas y oportunidades de optimización en el servidor.</li>
+<li>I: Es preciso guardar el estado del servidor para en caso de fallo poder recuperarlo.</li>
+</ul>
+</li>
+<li>Servidor sin estado: cada operación es autocontenida (nombre del fichero, posición actual de trabajo, etc. va en cada operación).<ul>
+<li>V: recuperación ante fallos más sencilla al no conservar estado el servidor.</li>
+<li>I: Aunque no son necesarios el open y close, el resto de operaciones tienen más campos.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Transparencia de replicación</strong>: los clientes no deben de preocuparse por la replicación en distintos servidores que pueda realizarse por parte del sistema de ficheros distribuidos para mejorar la tolerancia a fallos y escalabilidad.</li>
+</ul>
+</li>
+<li><p>Habitualmente las capas software usadas se basan en el uso de un patrón proxy a nivel de sistema de ficheros:<br></br></p>
+<html>
+<table>
+<tr>
+<td>
+  Servidor a nivel de usuario
+</td>
+<td>
+  Servidor integrado en el Kernel
+</td>
+</tr>
+<tr>
+<td>
+   <img alt="Acceso a discos remotos" src="dfs/dfs_remoto_2.svg"></img>
+</td>
+<td>
+   <img alt="Acceso a discos remotos" src="dfs/dfs_remoto_3.svg"></img>
+</td>
+</tr>
+</table>
+</html>
+</li>
+<li><p>Pero también se puede aplicar el patrón proxy a los tres elementos de la capa inferior de software:<br></br></p>
+<ul>
+<li>Servicio de directorio (para traducir de nombre lógico a identificador único de i-nodo)</li>
+<li>Servicio de bloque o <em>chunck</em> (para pedir los bloques del fichero)</li>
+<li>Servicio de coherencia de caché (para mantener la coherencia de las caché en los clientes y en los servidores)<html>
+<table>
+<tr>
+<td>
+<img alt="Acceso bloques, inodos y caché remotos" src="dfs/dfs_remoto_4.svg"></img>
+</td>
+</tr>
+</table>
+</html>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="servicio-de-directorio">Servicio de directorio</h3>
+<ul>
+<li>Servicio de directorio: se encarga de la traducción de nombres de usuario a Identificadores de ficheros únicos (UFID)<ul>
+<li>Ej.: En UNIX/Linux de nombre de fichero a identificador de i-nodo</li>
+<li>Los UFID permiten obtener los atributos de los ficheros (metadatos)</li>
+<li>Directorio: relaciona de forma única nombres de fichero con UFID</li>
+</ul>
+</li>
+<li>Dos opciones:<ul>
+<li>Los directorios son objetos independientes gestionados por un servidor de directorios (SD)</li>
+<li>Los directorios son ficheros especiales -&gt; se tiene servidor de ficheros y de directorios combinados</li>
+</ul>
+</li>
+<li>Operaciones básicas de un servicio de directorios:<html>
+<table>
+<tr>
+<td>Lookup(dir, name) -&gt; FileId</td>
+<td>Busca un nombre en un directorio</td>
+</tr>
+<tr>
+<td>AddName(dir, name, FileId)</td>
+<td>Añade un nombre (name, FileId) a un directorio</td>
+</tr>
+<tr>
+<td>RemoveName(dir, name)</td>
+<td>Elimina una nombre de un directorio</td>
+</tr>
+<tr>
+<td>GetNames(dir) -&gt; ListName</td>
+<td>Devuelve los nombre de un directorio</td>
+</tr>
+</table>
+</html></li>
+<li><strong>Resolución de nombres</strong>:<ul>
+<li><strong>Dirigida por los clientes</strong>:<ul>
+<li>Ejemplo: NFS</li>
+</ul>
+</li>
+<li><strong>Dirigida por los servidores</strong>:<ul>
+<li>Resolución <strong>iterativa</strong>:<ul>
+<li>El cliente envía el nombre al SD</li>
+<li>El SD realiza la traducción hasta que termina en un componente que pertenece a otro SD</li>
+<li>El SD envía el resultado al cliente, el cual si no ha terminado la traducción continúa con el SD correspondiente</li>
+</ul>
+</li>
+<li>Resolución <strong>transitiva</strong>:<ul>
+<li>Los SD implicados contactan entre si para llevar a cabo la traducción. El último SD devuelve la traducción al cliente</li>
+<li>Rompe el modelo cliente/servidor (no adecuado para RPC)</li>
+</ul>
+</li>
+<li>Resolución <strong>recursiva</strong>:<ul>
+<li>El último SD implicado devuelve el resultado al anterior y así sucesivamente hasta que el primero responde al cliente</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="servicio-de-ficheros">Servicio de ficheros</h3>
+<ul>
+<li>Servicio de ficheros: se encarga de la gestión de los ficheros y del acceso a los datos</li>
+<li>Aspectos relacionados:<ul>
+<li>Semántica de coutilización</li>
+<li>Métodos de acceso</li>
+<li>Caché de bloques<ul>
+<li>El problema de la coherencia de cache</li>
+</ul>
+</li>
+<li>Métodos para mejorar el rendimiento</li>
+</ul>
+</li>
+<li>Operaciones básicas de un servicio de ficheros:<html>
+ <table>
+ <tr>
+ <td>ReadFile(FileId, pos, n) -&gt; Data</td>
+ <td>Lee n bytes a partir de una determinada posición</td>
+ </tr>
+ <tr>
+ <td>WriteFile(FileId, pos, n, Data)</td>
+ <td>Escribe n bytes (Data) a partir de una determinada posición</td>
+ </tr>
+ <tr>
+ <td>Create(name) -&gt; FileId</td>
+ <td>Crea un nuevo fichero de longitud 0 bytes</td>
+ </tr>
+ <tr>
+ <td>Delete(FileId)</td>
+ <td>Borra el fichero</td>
+ </tr>
+ <tr>
+ <td>GetAttributes(FileId) -&gt; Attr</td>
+ <td>Devuelve los atributos de un fichero</td>
+ </tr>
+ <tr>
+ <td>SetAttributes(FileId, Attr)</td>
+ <td>Modifica los atributos de un fichero</td>
+ </tr>
+ </table>
+</html></li>
+<li>Semánticas de coutilización:<ul>
+<li><strong>Sesión</strong>: serie de accesos que realiza un cliente entre un open y un close</li>
+<li>La <strong>semántica de coutilización</strong> especifica el efecto de varios procesos accediendo de forma simultánea al mismo fichero</li>
+<li>Semánticas más usadas:<ul>
+<li>Semántica UNIX</li>
+<li>Semántica de sesión</li>
+<li>Semántica de ficheros inmutables</li>
+<li>Semántica de transacciones</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="servicio-de-caché-de-bloques">Servicio de caché de bloques</h3>
+<ul>
+<li>Es posible emplear una caché de bloques:<ul>
+<li>V: el empleo de caché de bloques permite mejorar el rendimiento:<ul>
+<li>Explota el principio de proximidad de referencias<ul>
+<li>Proximidad temporal</li>
+<li>Proximidad espacial</li>
+</ul>
+</li>
+<li>En lecturas adelantadas: mejora el rendimiento de las operaciones de lectura, sobre todo si son secuenciales</li>
+<li>En escrituras diferidas: mejora el rendimiento de las escrituras</li>
+</ul>
+</li>
+<li>I: no es fácil mantener la coherencia si hay multiples modificaciones.<ul>
+<li>El problema surge cuando se coutiliza un fichero en escritura:<ul>
+<li>Coutilización en escritura secuencial: típico en entornos y aplicaciones distribuidas.<ul>
+<li>Si no se actualizan todas las copias al cierre:
+open (A) + write (A) + close (A) + open (B) + read (B):</li>
+<li>Si se actualiza al cierre PERO se usa escritura diferida:
+open (A) + read (A) + write (A) + close (A) + open (B) + read (B):</li>
+</ul>
+</li>
+<li>Coutilización en escritura concurrente: típico en aplicaciones paralelas.<ul>
+<li>Si hay escritura concurrente:
+open (A) + open (B) + read (A) + read (B) + write (A) ... B ya no está actualizado</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Localización de las caché en un sistema de ficheros distribuido:<ul>
+<li>Caché en los servidores:<ul>
+<li>Reducen los accesos a disco en el servidor</li>
+</ul>
+</li>
+<li>Caché en los clientes:<ul>
+<li>Reducen el tráfico por la red</li>
+<li>Reducen la carga en los servidores</li>
+<li>Mejora la capacidad de crecimiento</li>
+<li>Dos posibles localizaciones dentro del cliente:<ul>
+<li>En discos locales<ul>
+<li>V: Más capacidad,</li>
+<li>V: No volátil (facilita la recuperación)</li>
+<li>I: Más lento</li>
+</ul>
+</li>
+<li>En memoria principal<ul>
+<li>V: Más rápido</li>
+<li>I: Menor capacidad</li>
+<li>I: Memoria volátil (se pierde si se apaga la máquina)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Soluciones para la coherencia:<ul>
+<li>No emplear caché en los clientes.</li>
+<li>No utilizar caché en los clientes para datos compartidos en escritura (Ej.: Sprite).</li>
+<li>Mecanismos de caché sin replicación de datos.</li>
+<li>Empleo de protocolos de coherencia de caché.<ul>
+<li>Aspectos de diseño a considerar en protocolo de coherencia de caché:<ul>
+<li>Granularidad del protocolo</li>
+<li>Mecanismo de validación</li>
+<li>Mecanismos de actualización/invalidación</li>
+<li>Localización de las copias en las caches de los clientes</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Ejemplo de coherencia en Sprite:<ul>
+<li>Características:<ul>
+<li>Sistema de ficheros desarrollador en Berkeley a finales de 1980</li>
+<li>Implementa consistencia secuencial</li>
+<li>Solo se almacena en caché los datos, no los metadatos</li>
+</ul>
+</li>
+<li>Para identificar los bloques obsoletos se utiliza dos elementos:<ul>
+<li>Número de versión para el fichero</li>
+<li>Identificador del último escritor</li>
+</ul>
+</li>
+<li>Funcionamiento general:<ul>
+<li>Compartición con lectores concurrentes (CLC)<ul>
+<li>Escenario:<ul>
+<li>Un fichero se abre por varios clientes para lecturas</li>
+<li>Ocurren lecturas concurrentes</li>
+</ul>
+</li>
+<li>Acciones:<ul>
+<li>El servidor detecta CLC -&gt; mantiene lista de tuplas {cliente ID, Lectura}</li>
+<li>El servidor notifica a cada cliente al abrir que use cache</li>
+<li>El servidor también utiliza cache</li>
+<li>Cuando un cliente cierra el fichero, se mantiene cache</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Compartición con escrituras concurrentes (CEC)<ul>
+<li>Escenario:<ul>
+<li>Un fichero se abre por varios clientes</li>
+<li>Al menos un cliente abre para escritura</li>
+<li>Ocurren escrituras concurrentes</li>
+</ul>
+</li>
+<li>Acciones:<ul>
+<li>El servidor detecta CEC al abrir para escritura</li>
+<li>El servidor notifica a todos los clientes que no usen cache -&gt; todos los accesos se hacen directamente en el servidor</li>
+<li>El servidor serializa las peticiones de los clientes</li>
+<li>Cuando no haya clientes escritores -&gt; se notifica de usar caché de nuevo</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Compartición con escrituras secuenciales (CES)<ul>
+<li>Escenario 1:<ul>
+<li>Un fichero se abre por un cliente 1, se escribe y se cierra<ul>
+<li>En cache cliente 1 los datos más recientes (no en servidor)</li>
+</ul>
+</li>
+<li>A continuación se abre por un cliente 2<ul>
+<li>El cliente 2 copia los datos antiguos desde el servidor -&gt; problema 1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Escenario 2:<ul>
+<li>Un fichero se abre por un cliente 1, se escribe y se cierra</li>
+<li>Un fichero se abre por un cliente 2, se escribe y se cierra</li>
+<li>A continuación se abre por un cliente 3<ul>
+<li>El servidor no tiene las últimas escrituras -&gt; problema 2</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Acciones:<ul>
+<li>El servidor detecta CES al abrir para escritura<ul>
+<li>El servidor lleva la pista de el último escritor: "lastWriter"</li>
+<li>El servidor lleva la pista de la última versión:  "version"</li>
+</ul>
+</li>
+<li>Se incrementa "version" cada apertura para escritura en cliente</li>
+<li>El servidor pide al último escritor que le mande la última versión</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="para-más-información">Para más información:</h4>
+<ul>
+<li>Puede repasar el artículo <a href="https://www.slideserve.com/penelope-herman/caching-in-the-sprite-network-file-system-scale-and-performance-in-a-distributed-file-system" target="_blank">"scale and performance in distributed file systems"</a></li>
+</ul>
+<h2 id="sistema-de-ficheros-paralelo">Sistema de ficheros paralelo</h2>
+<ul>
+<li>Se añade paralelismo a la forma de trabajar el sistema de ficheros distribuido.<ul>
+<li>Paralelismo en el servidor:<ul>
+<li>Ej.: Una aplicación de un proceso puede acceder a los datos de distintos servidores en paralelo.</li>
+</ul>
+</li>
+<li>Paralelismo en clientes:<ul>
+<li>Ej.: Varias aplicaciones de un proceso cada una pueden acceder cada una a sus datos en paralelo.</li>
+</ul>
+</li>
+<li>Paralelismo tanto en cliente como en servidor:<ul>
+<li>Varias aplicaciones ejecutando en paralelo acceden cada una de ellas en paralelo a los datos guardados en varios servidores.</li>
+<li>En una aplicación paralela formada por varios procesos se puede desde cada proceso acceder en paralelo a los datos guardados en distintos servidores.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Múltiples nodos de E/S -&gt; Incrementa el ancho de banda</li>
+<li>Fichero distribuido entre diferentes nodos de E/S con acceso paralelo:<ul>
+<li>A diferentes ficheros</li>
+<li>Al mismo fichero</li>
+</ul>
+</li>
+<li>Se añade interfaces de E/S paralela<ul>
+<li>MPI-IO</li>
+</ul>
+</li>
+<li>Optimizaciones:<ul>
+<li>E/S colectiva</li>
+<li>Acceso a datos no contiguos</li>
+</ul>
+</li>
+<li>Ejemplos:<ul>
+<li>GPFS</li>
+<li>OrangeFS</li>
+</ul>
+</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../topic-rpc/rpc.html" class="navigation navigation-prev " aria-label="Previous page: RPC">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../topic-ws/web-services.html" class="navigation navigation-next " aria-label="Next page: Servicios web">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Sistemas de ficheros distribuidos","level":"7.1","depth":1,"next":{"title":"Servicios web","level":"8.1","depth":1,"path":"topic-ws/web-services.md","ref":"topic-ws/web-services.md","articles":[]},"previous":{"title":"RPC","level":"6.1","depth":1,"path":"topic-rpc/rpc.md","ref":"topic-rpc/rpc.md","articles":[]},"dir":"ltr"},"config":{"plugins":["mermaid","highlight","hide-published-with","hints","chapter-fold"],"styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"search":{},"mermaid":{},"hints":{"info":"fa fa-info-circle","tip":"fa fa-mortar-board","danger":"fa fa-exclamation-circle","working":"fa fa-wrench"},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"hide-published-with":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{"exclude":["mermaid"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Felix Garcia-Carballeira y Alejandro Calderon-Mateos","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Sistemas Distribuidos","gitbook":"*","description":"Sistemas Distribuidos (UC3M)"},"file":{"path":"topic-dfs/dfs.md","mtime":"2026-02-19T10:44:12.653Z","type":"markdown"},"gitbook":{"version":"6.1.7","time":"2026-04-10T14:15:27.234Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid-load.js"></script>
+        
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-hide-published-with/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

@@ -1,0 +1,2414 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>RPC · Sistemas Distribuidos</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.1.7">
+        <meta name="author" content="Felix Garcia-Carballeira y Alejandro Calderon-Mateos">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/honkit-plugin-mermaid/mermaid.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-hints/plugin-hints.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../topic-dfs/dfs.html" />
+    
+    
+    <link rel="prev" href="../topic-ds/ds.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Índice
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../topic-candmake/ssdd_c.html">
+            
+                <a href="../topic-candmake/ssdd_c.html">
+            
+                    
+                    C para distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../topic-candmake/ssdd_make.html">
+            
+                <a href="../topic-candmake/ssdd_make.html">
+            
+                    
+                    Introducción a make
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../topic-concurrency/ssdd_threads_posix.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_posix.html">
+            
+                    
+                    Concurrencia con POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../topic-concurrency/ssdd_threads_c.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_c.html">
+            
+                    
+                    Concurrencia con C11
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../topic-messagepassing/ssdd_pq.html">
+            
+                <a href="../topic-messagepassing/ssdd_pq.html">
+            
+                    
+                    Colas de mensajes POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../topic-messagepassing/mpi.html">
+            
+                <a href="../topic-messagepassing/mpi.html">
+            
+                    
+                    Introducción a MPI
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.2.1" >
+            
+                <a target="_blank" href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb">
+            
+                    
+                    MPI (notebook)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../topic-sockets/ssdd_sockets.html">
+            
+                <a href="../topic-sockets/ssdd_sockets.html">
+            
+                    
+                    Sockets
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../topic-ds/ds.html">
+            
+                <a href="../topic-ds/ds.html">
+            
+                    
+                    Servicios distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter active" data-level="6.1" data-path="rpc.html">
+            
+                <a href="rpc.html">
+            
+                    
+                    RPC
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../topic-dfs/dfs.html">
+            
+                <a href="../topic-dfs/dfs.html">
+            
+                    
+                    Sistemas de ficheros distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../topic-ws/web-services.html">
+            
+                <a href="../topic-ws/web-services.html">
+            
+                    
+                    Servicios web
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" >
+            
+                <a target="_blank" href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ft/t9_tolerancia-a-fallos.pdf">
+            
+                    
+                    Tolerancia a fallos (PDF)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >RPC</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="comunicación-con-rpc">Comunicación con RPC</h1>
+<ul>
+<li><strong>Felix García Carballeira y Alejandro Calderón Mateos</strong> @ arcos.inf.uc3m.es</li>
+<li><a href="https://github.com/acaldero/uc3m_sd/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg" alt="License: CC BY-NC-SA 4.0"></img></a></li>
+</ul>
+<h2 id="contenidos">Contenidos</h2>
+<ul>
+<li>Introducción a RPC<ul>
+<li><a href="#llamadas-a-procedimientos-remotos-objetivo">Motivación: transparencia de invocación y generación automática</a></li>
+<li><a href="#breve-historia-de-las-rpc">Breve historia</a></li>
+<li><a href="#estructura-de-las-rpc">Estructura de las RPC</a></li>
+</ul>
+</li>
+<li>Ejemplos de uso de RPC (Sun/ONC)<ul>
+<li><a href="#desarrollando-con-las-rpc">Desarrollando con las RPC: suma remota</a></li>
+<li><a href="#calculadora-remota">Calculadora remota</a></li>
+<li><a href="#cadena-de-caracteres">Cadena de caracteres</a></li>
+<li><a href="#vector-remoto">Vector remoto</a></li>
+<li><a href="#rpc-en-python">RPC en Python</a></li>
+</ul>
+</li>
+<li>Principales aspectos de las RPC<ul>
+<li><a href="#lenguaje-idl">Lenguaje IDL</a></li>
+<li><a href="#aplanamiento-marshalling">Aplanamiento (marshalling)</a></li>
+<li><a href="#localización-y-enlazado-binding">Localización y enlazado (<em>binding</em>)</a></li>
+<li><a href="#tipos-de-fallos-que-pueden-aparecer-con-las-rpc">Tipos de fallos que pueden aparecer con las RPC</a></li>
+<li><a href="#características-que-definen-una-rpc">Características que definen una RPC</a></li>
+</ul>
+</li>
+<li>Las RPC de Sun/ONC<ul>
+<li><a href="#rpc-de-sunonc">RPC de Sun/ONC</a></li>
+<li><a href="#xdr-para-sunonc">XDR para Sun/ONC</a></li>
+<li><a href="#idl-formato-base">IDL: formato base</a></li>
+<li><a href="#idl-notación-xdr-usada">IDL: notación XDR usada</a></li>
+<li><a href="#el-proceso-rpcbindportmapper">El proceso rpcbind/portmapper</a></li>
+<li><a href="#biblioteca-de-funciones-rpch">Biblioteca de funciones rpc.h</a></li>
+<li><a href="#notación-usada-en-el-código-generado-por-rpcgen">Notación usada en el código generado por rpcgen</a></li>
+<li><a href="#usar-las-rpc-en-la-distribución-ubuntu-de-linux">Usar las RPC en la distribución Ubuntu de Linux</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="llamadas-a-procedimientos-remotos-objetivo">Llamadas a procedimientos remotos: objetivo</h2>
+<ul>
+<li><strong>Objetivo</strong>: hacer que una aplicación distribuida se programe lo más igual posible que una aplicación no distribuida<ul>
+<li>Mediante el modelo RPC se busca que la comunicación se realiza conceptualmente igual que una invocación de un procedimiento local.<pre><code class="lang-mermaid"><div class="mermaid">sequenceDiagram
+box  Local  Procedure  Call
+participant  ProcesoC
+end
+ProcesoC  -&gt;&gt;+  ProcesoC: proc1(arg1, arg2)
+box  Remote  Procedure  Call
+participant  ProcesoA
+participant  ProcesoB
+end
+ProcesoA  -&gt;&gt;+  ProcesoB: proc1(arg1, arg2)
+ProcesoB  -&gt;&gt;-  ProcesoA: &lt;br/&gt;
+</div></code></pre>
+</li>
+</ul>
+</li>
+<li>Hay <u><strong>dos ingredientes principales</strong></u>:<ul>
+<li><u>Código de invocación remota <u>lo más transparente posible.</u></u></li>
+<li><u>Generación del código de invocación remota <u>lo más automatizada posible.</u>
+<br></br></u></li>
+</ul>
+</li>
+<li><strong>Beneficio</strong>: la persona que desarrolla puede centrarse más en lo que hace su aplicación en lugar preocuparse de poner en marcha una plantilla inicial repetitiva.<ul>
+<li>Por transparencia...<ul>
+<li>Se simplifica las complejidades de las interacciones entre máquinas y espacios de direcciones.</li>
+<li>Se ofrece una interfaz de alto nivel para el movimiento de datos y comunicación.</li>
+</ul>
+</li>
+<li>Por generación automatizada posible....<ul>
+<li>Se simplifica muchos de los errores que pueden surgir de las interacciones de comunicación/transmisión de bajo nivel, liberando al desarrollador de tener que reimplementar explícitamente el manejo de errores en cada programa.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="12-transparencia-de-invocación-remota">(1/2) Transparencia de invocación remota</h2>
+<ul>
+<li><p>Uno de los ingredientes es la transparencia de la invocación remota: se busca que código de invocación remota lo más transparente posible, de manera que se parezca a una invocación a una función local.</p>
+</li>
+<li><p>En el siguiente ejemplo se muestra la forma de acercar esta transparencia:</p>
+<ul>
+<li>A la izquierda se muestra los elementos de una aplicación no distribuida con llamada local a la función de sumar. </li>
+<li>A la derecha se muestra la misma aplicación con una llamada remota a la función de sumar:<ul>
+<li>Sigue estando <code>aplicación.c</code> y <code>biblioteca.c</code>. Se añade <code>stub_cliente.c</code> y <code>stub_servidor.c</code></li>
+<li>El código del <code>stub_cliente</code> y del <code>stub_servidor</code> oculta a la función "main(...)" los detalles de que la ejecución es remota.</li>
+<li>El componente <code>biblioteca</code> de la aplicación pasa a estar en otro proceso, y se comunican usando colas POSIX en este ejemplo. <br></br><br></br>
+<img src="rpc/rpc_drawio_10a.svg" alt="Organización del código para invocación remota mediante colas POSIX"></img></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="22-generación-automática">(2/2) Generación automática</h2>
+<ul>
+<li><p>El otro ingrediente es la generación lo más automatizada posible del código de invocación remota, es decir, que el <code>stub_servidor</code> y <code>stub_cliente</code> se pueda obtener de forma automática a partir de la definición de la interfaz de las funciones remotas (sumar, etc. para el ejemplo anterior)</p>
+</li>
+<li><p>De esta forma:</p>
+<ul>
+<li>Se garantiza que el código generado que sirve de plantilla inicial se base en una gramática que puede validarse (y con ello asegurar que el código funcione).</li>
+<li>Se facilita la generación de nuevas aplicaciones distribuidas así como transformar aplicaciones existentes a distribuidas</li>
+</ul>
+</li>
+</ul>
+<h2 id="breve-historia-de-las-rpc">Breve historia de las RPC</h2>
+<ul>
+<li>RPC (Remote Procedure Call): llamadas a procedimientos remotos<ul>
+<li>Por Birrell y Nelson (1985) en <a href="https://dl.acm.org/doi/epdf/10.1145/2080.357392" target="_blank">"Implementing Remote Procedure Calls"</a></li>
+</ul>
+</li>
+<li>Híbrido:<ul>
+<li>Llamadas a procedimientos</li>
+<li>Paso de mensajes</li>
+</ul>
+</li>
+<li>Las RPC constituyen el núcleo de muchos sistemas distribuidos<ul>
+<li>Llegaron a su culminación con DCE (Distributed Computing Environment)</li>
+<li>Han evolucionado a invocación de métodos remotos (CORBA, RMI) e invocación de servicios (Web Services)</li>
+</ul>
+</li>
+</ul>
+<h2 id="estructura-de-las-rpc">Estructura de las RPC</h2>
+<ul>
+<li><p>Las RPC ofrecen una interfaz sencilla para construir aplicaciones distribuidas sobre TCP/IP</p>
+<p><img src="rpc/rpc_drawio_10.svg" alt="Pila software con RPC y marshalling"></img></p>
+<ul>
+<li><p>De forma general, los elementos que participan son:</p>
+<ul>
+<li>Un cliente <strong>activo</strong>, que realiza una RPC al servidor<ul>
+<li>El stub_cliente realiza una comunicación cliente/servidor, enviando una petición al stub_servidor</li>
+<li>En la petición del cliente se envía un mensaje que contiene, al menos, el código de operación y los argumentos.</li>
+</ul>
+</li>
+<li><p>Un servidor <strong>pasivo</strong>, que realiza el servicio y devuelve el resultado de la RPC al cliente</p>
+<ul>
+<li>El stub_servidor responde a la petición del cliente</li>
+<li>En la respuesta al cliente se envía un mensaje que contine, al menos, el resultado de la función invocada.</li>
+</ul>
+<p><img src="rpc/rpc_drawio_16.svg" alt="Cliente, stub_cliente, stub_servidor y servidor"></img></p>
+</li>
+</ul>
+</li>
+<li><p>Conceptos básicos:</p>
+<ul>
+<li>Un <strong>servicio de red</strong> es una colección de uno o más programas remotos</li>
+<li>Un <strong>programa remoto</strong> implementa uno o más procedimientos remotos</li>
+<li>Un <strong>procedimiento remoto</strong>, sus parámetros y sus resultados se especifican en un fichero de especificación del protocolo escrito en un lenguaje de especificación de interfaces (IDL)</li>
+<li>Un servidor puede soportar más de una <strong>versión de un programa remoto</strong><ul>
+<li>Permite al servidor ser compatible con las actualizaciones del servicio</li>
+</ul>
+</li>
+<li>Un <strong>suplente</strong> (stub o proxy) es responsable de convertir los parámetros y resultados durante el procedimiento remoto, además de enviar y recibir dichos valores mediante mensajes.<ul>
+<li>Los suplentes (stub_cliente y stub_servidor) son independientes de la implementación que se haga del servidor.</li>
+<li>Son dependientes de la interfaz del servicio</li>
+<li>Se generan <strong>automáticamente</strong> por el software de RPC</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="desarrollando-con-las-rpc">Desarrollando con las RPC</h2>
+<p> Se supone que las herramientas necesarias están ya instaladas, por ejemplo: <a href="#usar-las-rpc-en-la-distribuci%C3%B3n-ubuntu-de-linux">RPC en Ubuntu</a></p>
+<p> Los principales paso para desarrollar con RPC son:</p>
+<ol>
+<li><p>Definir la interfaz de servicio un lenguaje de definición de interfaces (IDL):</p>
+<ul>
+<li>Hay que definir cada operación, sus argumentos de entrada y salida, así como sus resultados</li>
+</ul>
+<h3 id="ejemplo-sumax">Ejemplo: suma.x</h3>
+<pre><code class="lang-c">   program SUMAR {
+      version SUMAVER {
+         int SUMA ( int a, int b ) = 1;
+      } = 1;
+   } = 99;
+</code></pre>
+</li>
+<li><p>Compilación de la interfaz IDL para generar los archivos encargados de las comunicaciones en cliente y servidor:</p>
+<ul>
+<li>A partir de la descripción de la interfaz del servicio en IDL, la utilidad rpcgen genera de forma automática distintos archivos.</li>
+</ul>
+<h3 id="ejemplo-uso-de-rpcgen">Ejemplo: uso de rpcgen</h3>
+<pre><code class="lang-bash">rpcgen -N -M -a suma.x
+</code></pre>
+<ul>
+<li><p>Opciones comunes son:</p>
+<pre><code>* **-N** para procedimientos con múltiples argumentos.
+* **-M** para codigo que pueda ser usado por varios hilos.
+* **-a** para que genere todos los ficheros, incluido un Makefile de plantilla para la compilación.
+</code></pre><ul>
+<li><p>Los archivos generados son tanto los relacionados con la comunicación como los archivos con una plantilla que el/la programador/a ha de rellenar con la implementación y uso del servicio:</p>
+<ul>
+<li>Archivos comunes en el lado del cliente y del servidor: <strong>suma_xdr.c</strong> y <strong>suma.h</strong></li>
+<li>En el lado del servidor: <strong>suma_svc.c</strong> y <strong>suma_server.c</strong> (este último ha de cambiarse con la implementación de la interfaz del servicio)</li>
+<li>En el lado del cliente: <strong>suma_clnt.c</strong> y <strong>suma_client.c</strong> (este último ha de cambiarse con la implementación del cliente que usará el servicio)</li>
+</ul>
+<p><img src="rpc/rpc_drawio_81.svg" alt="Archivos generados por rpcgen y archivos escritos por programador/a"></img></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li><p>Se implementa el servicio en el lado del servidor.</p>
+<ul>
+<li>Se cambia el contenido de las funciones generadas en <em>sumar_server.c</em> por el dado a continuación.</li>
+</ul>
+<h3 id="ejemplo-sumaserverc">Ejemplo: suma_server.c</h3>
+<pre><code class="lang-c">#include "suma.h"
+
+bool_t suma_1_svc ( int a, int b, int *result,
+                    struct svc_req *rqstp )
+{
+    *result = a + b; // código a añadir
+      return 1;        // 1 -&gt; resultado ok
+}
+
+int sumar_1_freeresult ( SVCXPRT *transp,
+                         xdrproc_t xdr_result, caddr_t result )
+{
+    xdr_free (xdr_result, result);
+    return 1;
+}
+</code></pre>
+</li>
+<li><p>Se implementación el cliente que hace uso de la interfaz en el lado del cliente.</p>
+<ul>
+<li>Se cambia todo el contenido generado en <em>sumar_client.c</em> por dado a continuación.</li>
+<li>En el ejemplo de sumar_cliente.c dado, para la función <em>main</em> la función <em>sumar_1</em> es una llamada local, aunque internamente suponga el uso de un servicio remoto.</li>
+</ul>
+<h3 id="ejemplo-sumaclientc">Ejemplo: suma_client.c</h3>
+<pre><code class="lang-c">#include "suma.h"
+
+char *host = NULL ;
+int sumar_1 ( int a, int b ) ;
+
+int main ( int argc, char *argv[] )
+{
+   if (argc &lt; 2) {
+       printf ("Uso: %s <host>\n", argv[0]);
+       exit (-1);
+   }
+
+   host = argv[1] ;
+
+   int ret = sumar_1(1, 2);
+   printf("Resultado de %d + %d es %d\n", 1, 2, ret) ;
+
+   return 0 ;
+}
+
+int sumar_1 ( int a, int b )
+{
+   CLIENT *clnt ;
+   enum clnt_stat retval ;
+   int result ;
+
+   clnt = clnt_create (host, SUMAR, SUMAVER, "tcp");
+   if (clnt == NULL) {
+       clnt_pcreateerror (host);
+       exit (-1);
+   }
+
+   retval = suma_1(a, b, &amp;result, clnt);
+   if (retval != RPC_SUCCESS) {
+       clnt_perror (clnt, "call failed");
+   }
+
+   clnt_destroy (clnt);
+
+   return result ;
+}
+</host></code></pre>
+</li>
+<li><p>Se compila y genera los ejecutables en el lado del cliente y del servidor.</p>
+<h3 id="ejemplo-compilación-individual">Ejemplo: compilación individual</h3>
+<pre><code class="lang-bash">gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_xdr.o     -c suma_xdr.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_clnt.o    -c suma_clnt.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_client.o  -c suma_client.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_svc.o     -c suma_svc.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc  -o suma_server.o  -c suma_server.c
+gcc -g -D_REENTRANT    -o suma_server  suma_svc.o  suma_server.o suma_xdr.o -lpthread -ltirpc
+gcc -g -D_REENTRANT    -o suma_client  suma_clnt.o suma_client.o suma_xdr.o -lpthread -ltirpc
+</code></pre>
+<ul>
+<li><strong>NOTA 1</strong>: <strong>mucho cuidado</strong> con "make -f Makefile.suma clean" puesto que por defecto borra suma_server.c y suma_client.c, perdiendo el trabajo realizado en dichos ficheros.</li>
+<li><strong>NOTA 2</strong>: este ejemplo se basa en usar la librería <code>tirpc</code> en Linux (Debian/Ubuntu), puede que en otro sistema no sea necesaria o sea otra librería.</li>
+<li><strong>NOTA 3</strong>: en este ejemplo puede ser también necesaria la librería <code>-lnsl</code></li>
+</ul>
+</li>
+<li><p>Para la ejecución hay que primero ejecutar el servidor y luego el cliente.</p>
+<h3 id="ejemplo-ejecución-del-servidor">Ejemplo: ejecución del servidor</h3>
+<pre><code class="lang-bash">  acaldero@docker1:~/sd$ ./suma_server &amp;
+
+  acaldero@docker1:~/sd$ rpcinfo  -p localhost
+  program vers proto   port  service
+  100000    4   tcp    111  portmapper
+  100000    3   tcp    111  portmapper
+  100000    2   tcp    111  portmapper
+  100000    4   udp    111  portmapper
+  100000    3   udp    111  portmapper
+  100000    2   udp    111  portmapper
+      99    1   udp  34654
+      99    1   tcp  41745
+</code></pre>
+<h3 id="ejemplo-ejecución-del-cliente-en-la-misma-máquina-usando-localhost">Ejemplo: ejecución del cliente en la misma máquina usando <em>localhost</em>:</h3>
+<pre><code class="lang-bash">  acaldero@docker1:~/sd$ ./suma_client  localhost
+  Resultado de 1 + 2 es 3
+
+  acaldero@docker1:~/sd$ kill -9 %1
+  acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
+  [1]+  Killed                  ./suma_server
+</code></pre>
+<h3 id="ejemplo-detener-la-ejecución-del-servidor-y-dar-de-baja-el-servicio">Ejemplo: detener la ejecución del servidor y dar de baja el servicio</h3>
+<pre><code class="lang-bash">  acaldero@docker1:~/sd$ kill -9 %1
+  acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
+  [1]+  Killed                  ./suma_server
+</code></pre>
+</li>
+</ol>
+<h2 id="lenguaje-idl">Lenguaje IDL</h2>
+<ul>
+<li><p>Un Lenguaje de Definición de Interfaz (IDL) permite especificar una <strong>interfaz</strong>:</p>
+<ul>
+<li><strong>Nombre de servicio</strong> que utilizan los clientes y servidores</li>
+<li><strong>Nombres de procedimientos</strong></li>
+<li><strong>Parámetros de los procedimientos</strong><ul>
+<li>Entrada</li>
+<li>Salida</li>
+</ul>
+</li>
+<li><strong>Tipos de datos</strong> de los argumentos.</li>
+<li>Puede incluir opciones de comunicación.</li>
+</ul>
+</li>
+<li><p>La interfaz es compartida por cliente y servidor.</p>
+<ul>
+<li><p>Los compiladores pueden diseñarse para que los clientes y servidores se escriban en lenguajes diferentes</p>
+<p> <img src="rpc/rpc_drawio_36.svg" alt="IDL, stubs y cliente/servidor"></img></p>
+</li>
+</ul>
+</li>
+<li><p>Programación con un paquete de RPC:</p>
+<ul>
+<li>El programador debe proporcionar:<ul>
+<li>La <strong>definición de la interfaz</strong> (IDL)<ul>
+<li>Nombres de los procedimientos</li>
+<li>Parámetros que el cliente pasa al servidor</li>
+<li>Resultados que devuelve el servidor al cliente</li>
+</ul>
+</li>
+<li>El <strong>código del cliente</strong></li>
+<li>El <strong>código del servidor</strong></li>
+</ul>
+</li>
+<li>El compilador de IDL genera :<ul>
+<li>El <strong>suplente</strong> (stub) <strong>del cliente</strong></li>
+<li>El <strong>suplente</strong> (stub) <strong>del servidor</strong></li>
+<li>Puede generar una librería auxiliar para hacer el <em>marshalling/unmarshalling</em> en los suplentes</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="aplanamiento-marshalling">Aplanamiento (marshalling)</h2>
+<ul>
+<li><p>Los parámetros son <strong>aplanados</strong> (<em>marshalling</em>) para resolver los <strong>problemas</strong> en la representación de los datos:</p>
+<ul>
+<li>Servidor y cliente pueden ejecutar en máquinas con arquitecturas distintas (número bits, ordenamiento de bytes, etc.)</li>
+<li>No es posible enviar un puntero dado que cliente y servidor tienen un espacio de direcciones distinto.</li>
+</ul>
+</li>
+<li><p>Posibles esquemas de representación de datos:</p>
+<ul>
+<li><strong>XDR</strong> (e<strong>X</strong>ternal <strong>D</strong>ata <strong>R</strong>epresentation) es un estándar que define la representación de tipos de datos (<strong>RFC 1832</strong>)</li>
+<li><strong>CDR</strong> es la representación común de datos de CORBA.</li>
+<li><strong>XML</strong> (e<strong>X</strong>tensible <strong>M</strong>arkup <strong>L</strong>anguage) es un metalenguaje basado en etiquetas definida por W3C</li>
+<li><strong>JSON</strong> (<strong>J</strong>ava<strong>S</strong>cript <strong>O</strong>bject <strong>N</strong>otation) formato de texto ligero para el intercambio de datos.</li>
+</ul>
+</li>
+<li><p>Ejemplo:  'Smith', 'Paris', 1934</p>
+<p><img src="rpc/rpc_drawio_40.svg" alt="Comparación entre XDR, CDR, XML y JSON"></img></p>
+</li>
+</ul>
+<h2 id="localización-y-enlazado-binding">Localización y enlazado (<em>binding</em>)</h2>
+<ul>
+<li><p><strong>Servicio de enlace</strong>: servicio que permite establecer la asociación entre el cliente y el servidor:</p>
+<ul>
+<li>Implica <strong>localizar al servidor</strong> que ofrece un determinado servicio</li>
+<li>El servidor debe <strong>registrar su dirección</strong> en un servicio de nombres gestionado por un servidor de enlazado dinámico (<em>binder</em>)</li>
+</ul>
+</li>
+<li><p>El <strong>enlazador dinámico (<em>binder</em>)</strong> es el <strong>servicio</strong> que mantiene una <strong>tabla de traducciones</strong> entre <strong>nombres de servicio</strong> y <strong>direcciones</strong>.  Incluye funciones para:</p>
+<ul>
+<li>Registrar un nombre de servicio</li>
+<li>Eliminar un nombre de servicio</li>
+<li>Buscar la dirección correspondiente a un nombre de servicio</li>
+</ul>
+</li>
+<li>Cómo <strong>localizar</strong> al enlazador dinámico:<ol>
+<li>Ejecuta en una dirección fija de un computador fijo</li>
+<li>El sistema operativo se encarga de indicar su dirección</li>
+<li>Difundiendo un mensaje (<em>broadcast</em>) cuando los procesos comienzan su ejecución.</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>Los pasos para el registro y enlace son:</p>
+<ol>
+<li>Servidor obtiene dirección</li>
+<li>Registra dirección</li>
+<li>Busca servidor</li>
+<li>Devuelve dirección</li>
+<li>Petición</li>
+<li>Respuesta</li>
+<li><p>Borra dirección (fin del servicio)</p>
+<pre><code class="lang-mermaid"><div class="mermaid">flowchart 
+ subgraph id1 [ ]
+ A["Cliente"]
+ B["Servidor"]
+ C["Binder"]
+ end
+ B ---&gt;|"(2)"| C
+ B ---&gt;|"(7)"| C
+ A ---&gt;|"(3)"| C
+ C ---&gt;|"(4)"| A
+ A ---&gt;|"(5)"| B
+ B ---&gt;|"(6)"| A
+ B -.-&gt;|"(1)"| B
+</div></code></pre>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="tipos-de-fallos-que-pueden-aparecer-con-las-rpc">Tipos de fallos que pueden aparecer con las RPC</h2>
+<ul>
+<li>El cliente no es capaz de localizar al servidor<ul>
+<li>Posibles soluciones:<ul>
+<li>Revisar si servidor caído</li>
+<li>Revisar que no se use una versión antigua del servidor</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Pérdidas de mensajes<ul>
+<li>Se pierde el mensaje de petición del cliente al servidor<ul>
+<li>Posible solución:<ul>
+<li>Se activa un temporizador después de enviar el mensaje y <strong>si no hay respuesta se retransmite el mensaje</strong>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Se pierde el mensaje de respuesta del servidor al cliente<ul>
+<li>Posibles soluciones:<ul>
+<li>Si es una operación <strong>idempotente</strong> (se pueden repetir y devuelven el mismo resultado) no hay problema.</li>
+<li>Con operación <strong>no idempotente</strong> hay que descartar las peticiones ya ejecutadadas: hay que añadir <strong>un número de secuencia y un campo para indicar si es original o retransmisión</strong> en el cliente y guardar un histórico de las peticiones anteriores y su respuesta para no ejecutar de nuevo en el servidor.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>El servidor falla después de recibir una petición<ul>
+<li>Posibles soluciones:<ul>
+<li><strong>No garantizar nada</strong></li>
+<li>Semántica <strong>al menos una vez</strong>: reintentar y garantizar que la RPC se realiza al menos una vez (cuidado con operaciones no idempotentes)</li>
+<li>Semántica <strong>a lo más una vez</strong>: no reintentar, puede que no se realice ni usa sola vez</li>
+<li>Semántica de <strong>exactamente una</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>El cliente falla después de enviar una petición<ul>
+<li>Posible solución:<ul>
+<li>Disponer de la posibilidad de cancelar una operación en curso.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="características-que-definen-una-rpc">Características que definen una RPC</h2>
+<ul>
+<li><p>Tipos de IDL:</p>
+<ul>
+<li>Integrado con un lenguaje de programación (Cedar, Argus, RMI de Java)</li>
+<li>Lenguaje de definición de interfaces específico para describir las interfaces entre los clientes y los servidores (RPC de Sun/ONC, RPC de DCE, CORBA, Google RPC)</li>
+</ul>
+</li>
+<li><p>Tipos de parámetros:</p>
+<ul>
+<li>Parámetro de entrada (in)<ul>
+<li>El parámetro se envía del cliente al servidor</li>
+</ul>
+</li>
+<li>Parámetro de salida (out)<ul>
+<li>El parámetro se envía del servidor al cliente</li>
+</ul>
+</li>
+<li><p>Parámetro de entrada/salida (inout)</p>
+<ul>
+<li>El parámetro se envía tanto del cliente al servidor como luego del servidor al cliente</li>
+</ul>
+</li>
+<li><p>Modelos de RPC</p>
+<ul>
+<li>RPC síncronas: petición y respuesta</li>
+<li>RPC asíncronas: solo petición<ul>
+<li>El cliente no espera la respuesta</li>
+<li>No admite parámetros de salida</li>
+<li>Ejemplo en CORBA: métodos <em>oneway</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Posibles esquemas de representación de datos:</p>
+<ul>
+<li><strong>XDR</strong> (e<strong>X</strong>ternal <strong>D</strong>ata <strong>R</strong>epresentation)</li>
+<li><strong>CDR</strong> es la representación común de datos de CORBA.</li>
+<li><strong>XML</strong> (e<strong>X</strong>tensible <strong>M</strong>arkup <strong>L</strong>anguage) es un metalenguaje basado en etiquetas definida por W3C</li>
+<li><strong>JSON</strong> (<strong>J</strong>ava<strong>S</strong>cript <strong>O</strong>bject <strong>N</strong>otation) formato de texto ligero para el intercambio de datos.</li>
+</ul>
+</li>
+<li><p>Tipos de <strong>conversión de datos</strong>:</p>
+<ul>
+<li>Conversión de datos <strong>asimétrica</strong>:<ul>
+<li>El cliente convierte a la representación de datos del servidor</li>
+</ul>
+</li>
+<li>Conversión de datos <strong>simétrica</strong>:<ul>
+<li>El cliente y el servidor convierten a una representación de
+datos estándar</li>
+<li>ONC-RPC utiliza representación de datos simétrica</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Tipos de <strong>tipados</strong>:</p>
+<ul>
+<li>Tipado <strong>explícito</strong>:<ul>
+<li>Cada dato enviado incluye el valor y su tipo</li>
+</ul>
+</li>
+<li>Tipado <strong>implícito</strong>:<ul>
+<li>Cada dato enviado solo incluye el valor, no se incluye el tipo<ul>
+<li>ONC-RPC utiliza tipado implícito</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Tipos de <strong>enlace</strong>:</p>
+<ul>
+<li>Enlace <strong>no persistente</strong>: el enlace entre cliente y servidor <strong>se estable en cada RPC</strong><ul>
+<li>Más tolerante a fallos</li>
+<li>Permite migración de servicios</li>
+</ul>
+</li>
+<li>Enlace <strong>persistente</strong>: el enlace <strong>se mantiene después de la primera RPC</strong><ul>
+<li>Mejor rendimiento en aplicaciones con muchas RPC repetidas</li>
+<li>Problemas si los servidores cambian de lugar</li>
+<li>Modelos <strong>híbridos</strong></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Tipos de indicaciones de error:</p>
+<ul>
+<li>Devolver un <strong>código de error</strong> (-1 / NULL) o el valor de salida<ul>
+<li>A evitar: que el código de error está dentro del rango de posibles valores de salida, como por ejemplo -1 para <code>sumar(a,b)</code></li>
+</ul>
+</li>
+<li><strong>Elevar una excepción</strong><ul>
+<li>Precisa un lenguaje que tenga excepciones</li>
+</ul>
+</li>
+<li>Devolver <strong>dos valores</strong>: el <strong>estado de la operación</strong> (OK / KO) y el <strong>valor de salida</strong><ul>
+<li>Mejor aunque resta transparencia: <code>int res = sumar(a,b, &amp;status)</code></li>
+</ul>
+</li>
+<li>Devolver <strong>un puntero al valor</strong>:<ul>
+<li>Si el puntero es NULL es que hay error y no hay valor válido.</li>
+<li>Si el puntero no es NULL entonces al acceder a dicho puntero se tiene el valor buscado.</li>
+<li>Para entornos multi-hilo puede que el puntero apunte a una memoria dinámica que tras su uso hay que liberar.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Estrategias ante fallos:</p>
+<ul>
+<li>Cliente RPC<ul>
+<li>Reenviar petición tras temporizador</li>
+<li>Incluir identificador de petición (número de secuencia)</li>
+</ul>
+</li>
+<li>Servidor RPC<ul>
+<li>Analizar número de secuencia para filtrar peticiones duplicadas (guardar histórico y no ejecutar de nuevo peticiones repetidas)</li>
+<li>Ofrecer semántica:<ul>
+<li><strong>No garantizar nada</strong></li>
+<li><strong>Al menos una vez</strong>: reintentar y garantizar que la RPC se realiza al menos una vez (cuidado con operaciones no idempotentes)</li>
+<li><strong>A lo más una vez</strong>: no reintentar, puede que no se realice ni usa sola vez</li>
+<li><strong>Exactamente una</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Tipos de protocolos usado:</p>
+<ul>
+<li>¿El protocolo es orientado a conexión?<ul>
+<li>Orientado a conexión</li>
+<li>No orientado a conexión</li>
+</ul>
+</li>
+<li>¿El protocolo está estandarizado?<ul>
+<li>Estándar (por ejemplo TCP o UDP)</li>
+<li>Específico (no estándard)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="rpc-de-sunonc">RPC de Sun/ONC</h2>
+<ul>
+<li><p>Breve historia:</p>
+<ul>
+<li>Diseñado inicialmente para el sistema de ficheros NFS</li>
+<li>Descrito en RFC 1831</li>
+<li>También se denomina ONC-RPC (<em>Open Network Computing</em>)</li>
+</ul>
+</li>
+<li><p>Características:</p>
+<ul>
+<li>Se puede usar tanto UDP como TCP<ul>
+<li>Cliente y servidor deben estar de acuerdo en el protocolo de transporte a utilizar</li>
+</ul>
+</li>
+<li><strong>Semántica al menos una vez</strong></li>
+<li>Lenguaje de definición de interfaces <strong>XDR</strong></li>
+<li><strong>Tipado implícito</strong></li>
+<li><strong>Representación de datos simétrica</strong></li>
+<li>Incluye:<ul>
+<li>Un generador de suplentes (stubs) llamado rpcgen</li>
+<li>Bibliotecas de funciones de soporte de las RPC (<rpc rpc.h="">)</rpc></li>
+<li>Servicio de registro de procedimientos (<em>portmapper</em> o <em>rpcbind</em>)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Soporte:</p>
+<ul>
+<li>Para C en UNIX/Linux, Windows, etc.</li>
+<li>Para Java<ul>
+<li><a href="http://sourceforge.net/projects/remotetea/" target="_blank">http://sourceforge.net/projects/remotetea/</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="xdr-para-sunonc">XDR para Sun/ONC</h2>
+<ul>
+<li><p>XDR (eXternal Data Representation) es un estándar que define la representación de tipos de datos (RFC 1832)</p>
+<ul>
+<li>Utilizado inicialmente para representaciones externas de datos</li>
+<li>Se extendió a lenguajes de definición de interfaces</li>
+</ul>
+</li>
+<li><p>Principales características de XDR:</p>
+<ul>
+<li>Utiliza representación big-endian</li>
+<li>No utiliza protocolo de negociación</li>
+<li>Todos los elementos en XDR son múltiplos de 4 bytes</li>
+<li>La transmisión de mensajes utiliza tipado implícito (el tipo de datos no viaje con el valor)</li>
+<li>Utiliza conversión de datos simétrica</li>
+<li>Los datos se codifican en un flujo de bytes</li>
+<li>Gestión de memoria: las RPC no reservan memoria dinámica.<ul>
+<li>Si los argumentos de entrada y/o salida usan memoria dinámica entonces:<ul>
+<li>El servidor puede tener que reservar memoria e implementarse el <em>xxx_freeresult(...)</em> correspondiente.</li>
+<li>El cliente puede tener que reservar memoria antes de invocar a la RPC y liberar luego con <em>xdr_free(...)</em></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="idl-formato-base">IDL: formato base</h2>
+<h4 id="ejemplos-de-definición-de-interfaz">Ejemplos de definición de interfaz:</h4>
+<ul>
+<li>Con un parámetro de entrada y un parámetro de salida:<pre><code class="lang-c"> struct args {
+     int a;
+     int b;
+ };
+ struct res {
+     int r;
+ };
+ program SUMAR {
+     version SUMAVER {
+        struct res SUMA  (struct args a) = 1;  // 1 es el número de procedimiento
+        struct res RESTA (struct args a) = 2;
+     } = 1;    // 1 es el número de versión
+ } = 99;      // 99 es el número de programa
+</code></pre>
+</li>
+<li>Con múltiples argumentos (precisa rpcgen con al menos la opción -N):<pre><code class="lang-c">program SUMAR {
+   version SUMAVER {
+      int SUMA  (int a, int b) = 1;  // 1 es el número de procedimiento
+      int RESTA (int a, int b) = 2;
+   } = 1;    // 1 es el número de versión
+} = 99;      // 99 es el número de programa
+</code></pre>
+</li>
+</ul>
+<h4 id="una-definición-interfaz-puede-contener">Una definición interfaz puede contener:</h4>
+<ul>
+<li><u>Definición de tipos de datos al principio del archivo</u>:<pre><code class="lang-c">    struct res {
+        int status;
+        int value;
+    };
+    ...
+</code></pre>
+</li>
+<li><u>Un conjunto de procedimientos remotos (a continuación de toda definición de tipos)</u>:<pre><code class="lang-c">    ...
+    program SUMAR {
+       version SUMAVER {
+          struct res SUMA  (int a, int b) = 1;  
+       } = 1;    
+    } = 99;
+</code></pre>
+<ul>
+<li><strong>Cada procedimiento remoto se identifica unívocamente mediante tres campos</strong> (NUM-PROG, NUM-VERSION, NUM-PROCEDURE) codificados con enteros sin signo:<ul>
+<li>NUM-PROG es el número de programa remoto.<ul>
+<li>Se definen en la RFC 1831 (<a href="http://www.ietf.org/rfc/rfc1831.txt" target="_blank">http://www.ietf.org/rfc/rfc1831.txt</a>)<ul>
+<li><code>0x00000000 - 0x1fffffff</code> --&gt; definido por Sun</li>
+<li><code>0x20000000 - 0x3fffffff</code> --&gt; definido por usuario/a</li>
+<li><code>0x40000000 - 0x5fffffff</code> --&gt; transitorio</li>
+<li><code>0x60000000 - 0xffffffff</code> --&gt; reservado</li>
+</ul>
+</li>
+<li><strong>Para los laboratorios se recomienda usar el NIA de uno de los integrantes del grupo para evitar interferir con los servicios de otros grupos.</strong></li>
+</ul>
+</li>
+<li>NUM-VERSION es el número de versión de programa.<ul>
+<li>La primera implementación (versión) debe ser la 1.</li>
+<li>Cada vez que se hace un cambio en la interfaz IDL (se añaden/quitan/modifican procedimientos) se incrementa la versión.</li>
+</ul>
+</li>
+<li>NUM-PROCEDURE es el número de procedimiento remoto.<ul>
+<li>Los especifica el/la programador/a, y han de ser diferente para cada procedimiento.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Los parámetros de entrada</strong>:<ul>
+<li>Por defecto (sin usar la opción -N en rpcgen), los procedimientos sólo aceptan un parámetro de entrada. </li>
+<li>Si hay más un un parámetro entonces es posible bien <strong>encapsular todos los parámetros en una estructura y pasar dicha estructura</strong> o bien <strong>se usa la opción -N de rpcgen</strong></li>
+<li>Pasar un puntero no tiene sentido puesto que apunta al espacio de direcciones local y a una zona arbitraria de datos en espacio remoto. Para resolver este problema un sistema RPC puede:<ul>
+<li>Prohibir el uso de punteros como argumentos.</li>
+<li>Permitir el uso de punteros, pero asegurarando de que lo que se transmite son los datos referenciados por el puntero y no el puntero en sí mismo.</li>
+</ul>
+</li>
+<li><strong>Es posible que no se puede pasar un array/vector de tamaño fijo</strong>, 
+  por ejemplo:<pre><code class="lang-c"> int rutina_no_valida ( int arg[32] );
+</code></pre>
+<strong>pero puede ser posible en su lugar usar una estructura que contenga un campo que sea un array/vector de tamaño fijo</strong>,
+ por ejemplo:  <pre><code class="lang-c"> struct arr_double_struct { double vector[32]; } ;
+ int rutina_valida ( struct arr_double arg );
+</code></pre>
+</li>
+</ul>
+</li>
+<li><strong>Los parámetros de salida</strong>:<ul>
+<li>La función devuelve un único resultado (del tipo indicado a la izquierda del nombre de la función).</li>
+<li>Si hay que devolver más, <strong>es posible definir una estructura que contenga todos los valores a devolver y devolver dicha estructura</strong>.</li>
+</ul>
+</li>
+<li><strong>Los parámetros de entrada y salida</strong>:<ul>
+<li>Es común que NO haya parámetros de entrada y luego salida a la vez en la definición IDL.</li>
+<li><strong>Para simular un parámetro de entrada y salida</strong> hay que usar 2 parámetros en la definición IDL: uno de entrada (como un parámetro de entrada adicional) y uno de salida (que se une al resto de parámetros de salida que la función tenga que devolver).</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="idl-notación-xdr-usada">IDL: notación XDR usada</h2>
+<ul>
+<li><p>La notación XDR para los principales elementos es:</p>
+<html>
+<table>
+<tr> <th></th><th>Elemento</th><th>En XDR</th><th>Traducción a C</th> </tr>
+
+<tr>
+<td></td>
+<td>Constantes</td>
+<td><pre lang="c">
+const MAX_SIZE = 8192;
+</pre></td>
+<td><pre lang="c">
+#define MAX_SIZE 8192    
+</pre></td>
+</tr>
+
+<tr>
+<td rowspan="3">Tipos básicos</td>
+<td>   Entero con signo </td>
+<td><pre lang="c">
+int a;
+</pre></td>
+<td><pre lang="c">
+int a;
+</pre></td>
+</tr>
+
+<tr>
+<td>   Entero sin signo</td>
+<td><pre lang="c">
+unsigned a;
+</pre></td>
+<td><pre lang="c">
+unsigned int a;
+</pre></td>
+</tr>
+
+<tr>
+<td>   Coma flotante    </td>
+<td><pre lang="c">
+float a; double c;
+</pre></td>
+<td><pre lang="c">
+float a; double c;
+</pre></td>
+</tr>
+
+<tr>
+<td rowspan="6">Colecciones mismo tipo</td>
+<td>   Cadena de longitud fija (1)</td>
+<td><pre lang="c">
+string a&lt;37&gt;;
+</pre></td>
+<td><pre lang="c">
+char *a;
+</pre></td>
+</tr>
+
+<tr>
+<td>   Cadena de longitud variable   </td>
+<td><pre lang="c">
+string b&lt;&gt;;
+</pre></td>
+<td><pre lang="c">
+struct {
+   u_int  b_len;
+   char  *b_val;
+} b ;
+</pre></td>
+</tr>
+
+<tr>
+<td>   Vectores de tamaño fijo</td>
+<td><pre lang="c">
+int a[12];
+</pre></td>
+<td><pre lang="c">
+int a[12];
+</pre></td>
+</tr>
+
+<tr>
+<td>   Vectores de tamaño variable   </td>
+<td><pre lang="c">
+int d&lt;&gt;; int d&lt;MAX&gt;;
+</pre></td>
+<td><pre lang="c">
+struct {
+   u_int  d_len;
+   char  *d_val;
+} d ;
+</pre></td>
+</tr>
+
+<tr>
+<td> Array de bytes (tamaño fijo)</td>
+<td><pre lang="c">
+opaque a[20];
+</pre></td>
+<td><pre lang="c">
+char a[20];
+</pre></td>
+</tr>
+
+<tr>
+<td> Array de bytes (tamaño variable)</td>
+<td><pre lang="c">
+opaque b&lt;&gt;;
+</pre></td>
+<td><pre lang="c">
+struct {
+   u_int  b_len;
+   char  *b_val;
+} b ;
+</pre></td>
+</tr>
+
+<tr>
+<td rowspan="2">Colecciones distinto tipo</td>
+<td>   Estructuras   </td>
+<td><pre lang="c">
+struct punto {
+   int x;
+   int y;
+};
+</pre></td>
+<td><pre lang="c">
+struct punto {
+   int x;
+   int y;
+};
+typedef struct punto punto;
+bool_t xdr_punto (XDR *, punto*);
+</pre></td>
+</tr>
+
+<tr>
+<td>   Uniones   </td>
+<td><pre lang="c">
+union resultado
+switch (int error) {
+  case 0:
+     int n;
+  default:
+     void;
+} ;
+</pre></td>
+<td><pre lang="c">
+struct resultado {
+  int error;
+  union {
+    int n;
+  } resultado_u ;
+} ;
+typedef struct resultado resultado;
+bool_t xdr_resultado (XDR *, resultado*);
+</pre></td>
+</tr>
+
+<tr>
+<td rowspan="3">Nuevos tipos</td>
+<td>
+Enumerados
+</td>
+<td><pre lang="c">
+enum color {
+  ROJO = 0,
+  VERDE = 1,
+  AZUL = 2
+};
+</pre></td>
+<td><pre lang="c">
+enum color {
+  ROJO = 0,
+  VERDE = 1,
+  AZUL = 2
+};
+typedef enum color color;
+bool_t xdr_color (XDR *, color*);
+</pre></td>
+</tr>
+
+<tr>
+<td>   Definición de tipos nuevos   </td>
+<td><pre lang="c">
+typedef punto puntos[2];
+</pre></td>
+<td><pre lang="c">
+typedef punto puntos[2];
+</pre></td>
+</tr>
+
+<tr>
+<td>   Lista enlazada   </td>
+<td><pre lang="c">
+struct lista {
+   int x;
+   lista *next;
+}
+</pre></td>
+<td><pre lang="c">
+struct lista {
+   int x;
+   lista *next;
+}
+</pre></td>
+</tr>
+
+</table>
+</html>
+
+</li>
+</ul>
+<ul>
+<li>NOTA(1): al transmitir por red, se envía primero la longitud (37) y luego la secuencia de caracteres ASCII.</li>
+</ul>
+<h2 id="el-proceso-rpcbindportmapper">El proceso rpcbind/portmapper</h2>
+<ul>
+<li>El enlace en ONC-RPC se realiza mediante un proceso denominado rpcbind (portmapper).<ul>
+<li>Soporta TCP y UDP</li>
+</ul>
+</li>
+<li>Funcionamiento básico:<ul>
+<li>En cada ordenador se ejecuta un proceso rpcbind en un puerto bien conocido (111)</li>
+<li>Cuando un servidor arranca, registra el servicio en el rpcbind local del computador en el que ejecuta.</li>
+<li>El rpcbind almacena por cada servicio local:<ul>
+<li>El número de programa</li>
+<li>El número de versión</li>
+<li>El número de puerto</li>
+</ul>
+</li>
+<li>Cuando un cliente necesita invocar un procedimiento remoto, envía al rpcbind del host remoto (necesita conocer la dirección IP del servidor)<ul>
+<li>El número de programa y el número de versión</li>
+</ul>
+</li>
+<li>El proceso rpcbind devuelve el puerto del servidor en esa máquina.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Enlace dinámico:<ul>
+<li>El número de puertos disponibles es limitado y el número de programas remotos potenciales puede ser muy grande</li>
+<li>Sólo el rpcbind ejecutará en un puerto determinado (111) y los números de puertos donde escuchan los servidores se averiguan preguntando al rpcbind</li>
+<li>Se puede usar el mandato <code>rpcinfo</code> para consultar los servicios registrados:<pre><code class="lang-bash">acaldero@docker1:~$ rpcinfo -p localhost
+program vers proto   port  service
+100000    4   tcp    111  portmapper
+100000    3   tcp    111  portmapper
+...
+100005    1   udp  42264  mountd
+100005    1   tcp  48921  mountd
+100005    2   udp  33964  mountd
+...
+100021    4   udp  47609  nlockmgr
+100021    1   tcp  42741  nlockmgr
+100021    3   tcp  42741  nlockmgr
+100021    4   tcp  42741  nlockmgr
+99        1   udp  46936
+99        1   tcp  40427
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="biblioteca-de-funciones-rpch">Biblioteca de funciones rpc.h</h2>
+<ul>
+<li><p>Crear un manejador para el cliente:</p>
+<pre><code class="lang-c"> CLIENT * clnt_create ( const char *host,
+                        const u_long prognum,
+                        const u_long versnum,
+                        const char *nettype )
+</code></pre>
+<ul>
+<li>Argumentos:<ul>
+<li><strong>host</strong>: nombre del host remoto donde se localiza el programa remoto</li>
+<li><strong>prognum</strong>: número de programa del programa remoto</li>
+<li><strong>versnum</strong>: número de versión del programa remoto</li>
+<li><strong>nettype</strong>: protocolo de transporte: NETPATH, VISIBLE, CIRCUIT_V, DATAGRAM_V, CIRCUIT_N, DATAGRAM_N, TCP, UDP</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Destruir el manejador del cliente:</p>
+<pre><code class="lang-c">  void clnt_destroy ( CLIENT *clnt ) ;
+</code></pre>
+<ul>
+<li>Argumentos:<ul>
+<li><strong>clnt</strong>: manejador de RPC del cliente (anteriormente creado con clnt_create)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Indicar el error en un fallo de RPC:</p>
+<pre><code class="lang-c">  void clnt_perror       ( CLIENT *clnt, char *s ) ;
+  void clnt_pcreateerror ( CLIENT *clnt, char *s ) ;
+</code></pre>
+<ul>
+<li>Argumentos:<ul>
+<li><strong>clnt</strong>: manejador de RPC del cliente</li>
+<li><strong>s</strong>: mensaje de error</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="notación-usada-en-el-código-generado-por-rpcgen">Notación usada en el código generado por rpcgen</h2>
+<ul>
+<li><p>A partir de la definición de PROCEDIMIENTO en el archivo .x como por ejemplo:</p>
+<pre><code class="lang-c">struct res {
+   int a ;
+   int b ;
+} ;
+
+program PROGRAM {
+   version PROGRAM_VER {
+       struct res PROCEDIMIENTO ( int a, char b ) = 1 ;
+   } = 1 ;
+} = 0x1001010 ;
+</code></pre>
+</li>
+<li><p>Al ejecutar <strong>rpcgen con la opción de múltiples argumentos</strong> (normalmente -N) se genera:</p>
+<ul>
+<li><p>En el lado del <strong>servidor</strong>, prototipo de un procedimiento remoto a implementar:</p>
+<pre><code class="lang-c">bool_t procedimiento_1_svc ( int arg1,
+                             char arg2,
+                             struct res *result,
+                             struct svc_req *rqstp );
+</code></pre>
+<ul>
+<li>Donde:<ul>
+<li>Nombre de la función a implementar: <strong>procedimiento_1_svc</strong><ul>
+<li>se parte de PROCEDIMIENTO...</li>
+<li>...se pasa todo a minúsculas...</li>
+<li>...seguido de "_", seguido de la versión (1 en este ejemplo) y seguido de "_svc"</li>
+</ul>
+</li>
+<li>Argumentos: <strong>int a, int b, struct res *result, struct svc_req *rqstp</strong><ul>
+<li>argumentos en el IDL</li>
+<li>si función devuelve un valor entonces:<ul>
+<li>puntero al tipo de datos del valor de retorno del IDL</li>
+</ul>
+</li>
+<li>parámetro extra de tipo "struct svc_req *rstp" que contiene información de la petición</li>
+</ul>
+</li>
+<li>Valor retorno: <strong>boot_t</strong><ul>
+<li>1 (TRUE) si ha ido bien y 0 (FALSE) para indicar error temporal</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>En el lado del <strong>cliente</strong>, prototipo de un procedimiento remoto a adaptar:</p>
+<pre><code class="lang-c"> enum clnt_stat procedimiento_1 ( int a,
+                                  char b,
+                                  struct res *res,
+                                  CLIENT *clnt );
+</code></pre>
+<ul>
+<li>Donde:<ul>
+<li>Nombre de la función: <strong>procedimiento_1</strong><ul>
+<li>se parte de PROCEDIMIENTO...</li>
+<li>...se pasa todo a minúsculas...</li>
+<li>...seguido de "_" seguido de la versión (1 en este ejemplo)</li>
+</ul>
+</li>
+<li>Argumentos: <strong>int a, char b, struct res *ret, CLIENT *clnt</strong><ul>
+<li>argumentos en el IDL</li>
+<li>si función devuelve un valor entonces:<ul>
+<li>puntero al tipo de datos del valor de retorno del IDL</li>
+</ul>
+</li>
+<li>parámetro extra de tipo "CLIENT *" que representa el manejador de un cliente RPC</li>
+</ul>
+</li>
+<li>Valor retorno: <strong>enum clnt_stat</strong><ul>
+<li>RPC_SUCCESS si ha ido bien</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="calculadora-remota">Calculadora remota</h2>
+<ul>
+<li><p>En el proceso de desarrollo de un procedimiento remoto que devuelve la suma o resta de dos enteros que se le pasan como parámetros, los pasos a seguir son:</p>
+<ol>
+<li><p>Crear el archivo de interfaz calc.x</p>
+<h3 id="calcx">calc.x</h3>
+<pre><code class="lang-c">program SUMAR {
+   version SUMAVER {
+      int SUMA  ( int a, int b ) = 1;
+      int RESTA ( int a, int b ) = 2;
+   } = 1;
+} = 999;
+</code></pre>
+</li>
+<li><p>Hay que usar rpcgen con calc.x:</p>
+<pre><code class="lang-bash">rpcgen -N -M -a calc.x
+</code></pre>
+</li>
+<li><p>Hay que editar calc_server.c y añadir el código de los servicios a ser invocados de forma remota:</p>
+<h3 id="calcserverc">calc_server.c</h3>
+<pre><code class="lang-c">#include "calc.h"
+
+bool_t suma_1_svc ( int a, int b, int *result,  struct svc_req *rqstp )
+{
+    *result = a + b ;
+    return TRUE ;
+}
+
+bool_t resta_1_svc ( int a, int b, int *result,  struct svc_req *rqstp )
+{
+    *result = a - b ;
+    return TRUE ;
+}
+
+int sumar_1_freeresult (SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result)
+{
+   xdr_free (xdr_result, result);
+   return 1;
+}
+</code></pre>
+</li>
+<li><p>Hay que editar calc_client.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.</p>
+<h3 id="calcclientc">calc_client.c</h3>
+<pre><code class="lang-c"> #include "calc.h"
+
+ int sumar ( char *host, int a, int b )
+ {
+    int ret ;
+    CLIENT *clnt;
+    enum clnt_stat retval_1;
+
+    clnt = clnt_create (host, SUMAR, SUMAVER, "tcp");
+    if (clnt == NULL) {
+        clnt_pcreateerror (host); exit (-1);
+    }
+    retval_1 = suma_1(a, b, &amp;ret, clnt);
+    if (retval_1 != RPC_SUCCESS) {
+        clnt_perror (clnt, "call failed"); exit (-1);
+    }
+    clnt_destroy (clnt);
+    return ret ;
+ }
+
+ int restar ( char *host, int a, int b )
+ {
+    int ret ;
+    CLIENT *clnt;
+    enum clnt_stat retval_1;
+
+    clnt = clnt_create (host, SUMAR, SUMAVER, "tcp");
+    if (clnt == NULL) {
+        clnt_pcreateerror (host); exit (-1);
+    }
+    retval_1 = resta_1(a, b, &amp;ret, clnt);
+    if (retval_1 != RPC_SUCCESS) {
+        clnt_perror (clnt, "call failed"); exit (-1);
+    }
+    clnt_destroy (clnt);
+    return ret ;
+ }
+
+  int main ( int argc, char *argv[] )
+  {
+     int res ;
+
+     if (argc &lt; 2) {
+         printf ("usage: %s server_host\n", argv[0]);
+         exit (1);
+     }
+
+     res = sumar(argv[1], 1, 2) ;
+     printf("1 + 2 = %d\n", res) ;
+
+     res = restar(argv[1], 1, 2) ;
+     printf("1 - 2 = %d\n", res) ;
+
+     return 0;
+  }
+</code></pre>
+</li>
+<li><p>Compilar el ejemplo con:</p>
+<pre><code class="lang-bash">make -f Makefile.calc
+</code></pre>
+<p>Dicho proceso de compilación suele suponer los siguientes pasos:</p>
+<pre><code class="lang-bash">gcc -g -D_REENTRANT -I/usr/include/tirpc  -o calc_xdr.o     -c calc_xdr.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc  -o calc_clnt.o    -c calc_clnt.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc  -o calc_client.o  -c calc_client.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc  -o calc_svc.o     -c calc_svc.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc  -o calc_server.o  -c calc_server.c
+gcc -g -D_REENTRANT       -o calc_server  calc_svc.o  calc_server.o calc_xdr.o -lnsl -lpthread -ltirpc
+gcc -g -D_REENTRANT       -o calc_client  calc_clnt.o calc_client.o calc_xdr.o -lnsl -lpthread -ltirpc
+</code></pre>
+<ul>
+<li><strong>NOTA 1</strong>: <strong>mucho cuidado</strong> con "make -f Makefile.calc clean" puesto que por defecto borra calc_server.c y calc_client.c perdiendo el trabajo realizado en dichos ficheros.</li>
+<li><strong>NOTA 2</strong>: este ejemplo se basa en usar la librería <code>tirpc</code> en Linux (Debian/Ubuntu), puede que en otro sistema no sea necesaria o sea otra librería.</li>
+<li><strong>NOTA 3</strong>: en este ejemplo puede ser también necesaria la librería <code>-lnsl</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente.</p>
+<ol>
+<li><p>En una misma máquina, se puede usar como nombre de host <em>localhost</em>:</p>
+<pre><code class="lang-bash">acaldero@docker1:~/sd$ ./calc_server &amp;
+
+acaldero@docker1:~/sd$ rpcinfo  -p localhost
+program vers proto   port  service
+100000    4   tcp    111  portmapper
+100000    3   tcp    111  portmapper
+100000    2   tcp    111  portmapper
+100000    4   udp    111  portmapper
+100000    3   udp    111  portmapper
+100000    2   udp    111  portmapper
+   999    1   udp  34654
+   999    1   tcp  41745
+
+acaldero@docker1:~/sd$ ./calc_client  localhost
+1 + 2 = 3
+1 - 2 = -1
+
+acaldero@docker1:~/sd$ kill -9 %1
+acaldero@docker1:~/sd$ sudo rpcinfo -d 99 1
+[1]+  Killed                  ./calc_server
+</code></pre>
+</li>
+<li><p>Si funciona en una misma máquina, se puede probar en dos máquinas (docker1 para calc_server y docker2 para calc_client):</p>
+ <html>
+ <table>
+ <tr>
+ <td><b>docker1</b></td>
+ <td><b>docker2</b></td>
+ </tr>
+ <tr>
+ <td>
+
+ ```bash
+docker1:~/sd$ ./calc_server &amp;
+```
+
+ </td>
+ <td> </td>
+ </tr>
+ <tr>
+ <td> </td>
+ <td>
+
+ ```bash
+docker2:~/sd$ rpcinfo  -p docker1
+program vers proto   port  service
+100000    4   tcp    111  portmapper
+100000    3   tcp    111  portmapper
+100000    2   tcp    111  portmapper
+100000    4   udp    111  portmapper
+100000    3   udp    111  portmapper
+100000    2   udp    111  portmapper
+   999    1   udp  34654
+   999    1   tcp  41745
+
+@docker2:~/sd$ ./calc_client  docker1
+1 + 2 = 3
+1 - 2 = -1
+```
+
+ </td>
+ </tr>
+ <tr>
+ <td>
+
+ ```bash
+docker1:~/sd$ kill -9 %1
+
+docker1:~/sd$ sudo rpcinfo -d 999 1
+[1]+  Killed       ./calc_server
+```
+
+ </td>
+ <td></td>
+ </tr>
+ </table>
+ </html>
+
+
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="cadena-de-caracteres">Cadena de caracteres</h2>
+<ul>
+<li><p>En el proceso de desarrollo de tres procedimientos remoto que cuenten el número de vocales, indiquen el primer caracter o transforme de entero a cadena, los pasos a seguir son:</p>
+<ol>
+<li><p>Crear el archivo de interfaz string.x</p>
+<h3 id="stringx">string.x</h3>
+<pre><code class="lang-c">program STRING {
+   version STRINGVER {
+      int    vocales   ( string ) = 1 ;
+      char   first     ( string ) = 2 ;
+      string convertir ( int n )  = 3 ;
+   } = 1;
+} = 99;
+</code></pre>
+</li>
+<li><p>Hay que usar rpcgen con string.x:</p>
+<pre><code class="lang-bash">rpcgen -NMa string.x
+</code></pre>
+</li>
+<li><p>Hay que editar string_server.c y añadir el código de los servicios a ser invocados de forma remota:</p>
+<h3 id="stringserverc">string_server.c</h3>
+<pre><code class="lang-c">#include "string.h"
+
+bool_t vocales_1_svc ( char *arg1, int *result,  struct svc_req *rqstp )
+{
+    char *vowels = "aeiou" ;
+    char *pos = NULL ;
+
+    (*result) = 0 ;
+    while (*arg1 != '\0')
+    {
+       pos = strchr(vowels, *arg1) ;
+       if (pos != NULL) {
+           (*result)++ ;
+       }
+       arg1++;
+    }
+
+    return TRUE ;
+ }
+
+ bool_t first_1_svc ( char *arg1, char *result,  struct svc_req *rqstp )
+ {
+     *result = arg1[0] ;
+
+     return TRUE ;
+ }
+
+ bool_t convertir_1_svc ( int n, char **result,  struct svc_req *rqstp )
+ {
+     *result = (char *) malloc(256) ;
+     if (*result != NULL) {
+         sprintf(*result, "%d", n) ;
+     }
+
+     return TRUE ;
+ }
+
+ int string_1_freeresult ( SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result )
+ {
+      xdr_free (xdr_result, result);
+      return 1;
+ }
+</code></pre>
+</li>
+<li><p>Hay que editar string_client.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.</p>
+<h3 id="stringclientc">string_client.c</h3>
+<pre><code class="lang-c">#include "string.h"
+
+void test_string_1 ( char *host, char *cadena, int numero )
+{
+   CLIENT *clnt;
+   enum clnt_stat retval_1;
+   int   result_1;
+   char  result_2;
+   char *result_3;
+
+   clnt = clnt_create (host, STRING, STRINGVER, "udp");
+   if (clnt == NULL) {
+       clnt_pcreateerror (host); exit (1);
+   }
+
+   retval_1 = vocales_1(cadena, &amp;result_1, clnt);
+   if (retval_1 != RPC_SUCCESS) {
+       clnt_perror (clnt, "call failed"); exit (1);
+   }
+   printf(" vocales   = %d\n", result_1) ;
+
+   retval_1 = first_1(cadena, &amp;result_2, clnt);
+   if (retval_1 != RPC_SUCCESS) {
+       clnt_perror (clnt, "call failed"); exit (1);
+   }
+   printf(" first     = %c\n", result_2) ;
+
+   result_3 = malloc(256) ;
+   if (NULL == result_3) {
+       perror("malloc: ") ; exit (1);
+   }
+   retval_1 = convertir_1(numero, &amp;result_3, clnt);
+   if (retval_1 != RPC_SUCCESS) {
+       clnt_perror (clnt, "call failed"); exit (1);
+   }
+   printf(" convertir = %s\n", result_3) ;
+   free(result_3) ;
+
+   clnt_destroy (clnt);
+}
+
+int main (int argc, char *argv[])
+{
+   if (argc &lt; 2) {
+       printf ("Uso: %s <server host="">\n", argv[0]);
+       exit (1);
+   }
+
+   test_string_1 (argv[1], "murcielago", 12345) ;
+   return 0 ;
+}
+</server></code></pre>
+</li>
+<li><p>Compilar el ejemplo con:</p>
+<pre><code class="lang-bash">make -f Makefile.string
+</code></pre>
+<p>Dicho proceso de compilación suele suponer los siguientes pasos:</p>
+<pre><code class="lang-bash">gcc -g -D_REENTRANT -I/usr/include/tirpc  -o string_clnt.o   -c string_clnt.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc  -o string_client.o -c string_client.c
+gcc -g -D_REENTRANT       -o string_client string_clnt.o string_client.o  -lnsl -lpthread -ltirpc
+gcc -g -D_REENTRANT -I/usr/include/tirpc  -o string_svc.o    -c string_svc.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc  -o string_server.o -c string_server.c
+gcc -g -D_REENTRANT       -o string_server string_svc.o string_server.o   -lnsl -lpthread -ltirpc
+</code></pre>
+<ul>
+<li><strong>NOTA 1</strong>: mucho cuidado con "make -f Makefile.string clean" puesto que por defecto borra string_server.c y string_client.c perdiendo el trabajo realizado en dichos ficheros.</li>
+<li><strong>NOTA 2</strong>: este ejemplo se basa en usar la librería <code>tirpc</code> en Linux/Ubuntu, puede que en otro sistema no sea necesaria o sea otra librería.<ul>
+<li><strong>NOTA 3</strong>: en este ejemplo puede ser también necesaria la librería <code>-lnsl</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente:</p>
+<ol>
+<li><p>En una misma máquina, se puede usar como nombre de host <em>localhost</em>:</p>
+<pre><code class="lang-bash">acaldero@docker1:~/sd$ ./string_server &amp;
+
+acaldero@docker1:~/sd$ rpcinfo  -p localhost
+program vers proto   port  service
+100000    4   tcp    111  portmapper
+100000    3   tcp    111  portmapper
+100000    2   tcp    111  portmapper
+100000    4   udp    111  portmapper
+100000    3   udp    111  portmapper
+100000    2   udp    111  portmapper
+    99    1   udp  33906
+    99    1   tcp  39879
+
+acaldero@docker1:~/sd$ ./string_client  localhost
+vocales   = 5
+first     = m
+convertir = 12345
+
+acaldero@docker1:~/sd$ kill -1 %1
+acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
+[1]+  Killed                  ./string_server
+</code></pre>
+</li>
+<li>Si funciona en una misma máquina, se puede probar en dos máquinas (docker1 para string_server y docker2 para string_client):<pre><code class="lang-bash">acaldero@docker1:~/sd$ ./string_server &amp;
+acaldero@docker2:~/sd$ rpcinfo  -p localhost
+program vers proto   port  service
+100000    4   tcp    111  portmapper
+100000    3   tcp    111  portmapper
+100000    2   tcp    111  portmapper
+100000    4   udp    111  portmapper
+100000    3   udp    111  portmapper
+100000    2   udp    111  portmapper
+    99    1   udp  33906
+    99    1   tcp  39879
+acaldero@docker2:~/sd$ ./string_client  localhost
+vocales   = 5
+first     = m
+convertir = 12345
+acaldero@docker1:~/sd$ kill -1 %1
+acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
+[1]+  Killed                  ./string_server
+</code></pre>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="vector-remoto">Vector remoto</h2>
+<ul>
+<li><p>En el proceso de desarrollo de un procedimiento remoto que devuelve la suma los componentes de un vector de enteros que se le pase como parámetro, los pasos a seguir son:</p>
+<ol>
+<li><p>Crear el archivo de interfaz vector.x</p>
+<h3 id="vectorx">vector.x</h3>
+<pre><code class="lang-c"> typedef int t_vector&lt;&gt;;
+
+ program VECTOR {
+       version VECTORVER {
+             int sumar(t_vector v) = 1;
+       } = 1;
+ } = 99;
+</code></pre>
+<p>  Hay que recordar que el elemento:</p>
+<pre><code class="lang-c">typedef int t_vector&lt;&gt;;
+</code></pre>
+<p> Se va a traducir como:</p>
+<pre><code class="lang-c">typedef struct {
+    u_int t_vector_len;
+    int *t_vector_val;
+} t_vector;
+</code></pre>
+</li>
+<li><p>Hay que usar rpcgen con vector.x:</p>
+<pre><code class="lang-bash">rpcgen -NMa vector.x
+</code></pre>
+</li>
+<li><p>Hay que editar vector_server.c y añadir el código de los servicios a ser invocados de forma remota:</p>
+<h3 id="vectorserverc">vector_server.c</h3>
+<pre><code class="lang-c">#include "vector.h"
+
+bool_t sumar_1_svc ( t_vector v, int *result, struct svc_req *rqstp )
+{
+   *result = 0;
+   for (int i=0; i</code></pre>
+</li>
+<li><p>Hay que editar vector_client.c y cambiar el código inicial de ejemplo que usa los servicios remotos con el deseado.</p>
+<h3 id="vectorclientc">vector_client.c</h3>
+<pre><code class="lang-c">#include "vector.h"
+
+int sumar_vector_1 ( char *host, t_vector *sumar_1_v )
+{
+    CLIENT *clnt;
+   enum clnt_stat retval_1;
+   int result_1;
+
+   clnt = clnt_create (host, VECTOR, VECTORVER, "tcp");
+   if (clnt == NULL) {
+       clnt_pcreateerror (host); exit (-1);
+   }
+   retval_1 = sumar_1(*sumar_1_v, &amp;result_1, clnt);
+   if (retval_1 != RPC_SUCCESS) {
+       clnt_perror (clnt, "call failed"); exit(-1) ;
+   }
+   clnt_destroy (clnt);
+
+   return result_1;
+}
+
+int main ( int argc, char *argv[] )
+{
+   long MAX;
+   t_vector sumar_1_v;
+   int ret;
+
+   if (argc &lt; 2) {
+       printf ("Uso: %s <server host="">\n", argv[0]);
+       exit (1);
+   }
+
+   MAX = 100;
+   sumar_1_v.t_vector_len= MAX;
+   sumar_1_v.t_vector_val= (int *) malloc(MAX * sizeof(int));
+   for (int i =0; i &lt; MAX; i ++) {
+          sumar_1_v.t_vector_val[i] = 2;    
+   }
+
+   ret = sumar_vector_1 (argv[1], &amp;sumar_1_v);
+   printf("La suma es %d\n", ret);
+
+   free (sumar_1_v.t_vector_val);
+   return (0);
+}
+</server></code></pre>
+</li>
+<li><p>Compilar el ejemplo con:</p>
+<pre><code class="lang-bash">make -f Makefile.vector
+</code></pre>
+<p>Dicho proceso de compilación suele suponer los siguientes pasos:</p>
+<pre><code class="lang-bash">gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_clnt.o   -c vector_clnt.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_client.o -c vector_client.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_xdr.o    -c vector_xdr.c
+gcc -g -D_REENTRANT    -o vector_client vector_clnt.o vector_client.o vector_xdr.o -lnsl -lpthread -ltirpc
+gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_svc.o    -c vector_svc.c
+gcc -g -D_REENTRANT -I/usr/include/tirpc -o vector_server.o -c vector_server.c
+gcc -g -D_REENTRANT    -o vector_server vector_svc.o vector_server.o vector_xdr.o  -lnsl -lpthread -ltirpc
+</code></pre>
+<ul>
+<li><strong>NOTA 1</strong>: mucho cuidado con "make -f Makefile.vector clean" puesto que por defecto borra vector_server.c y vector_client.c perdiendo el trabajo realizado en dichos ficheros.</li>
+<li><strong>NOTA 2</strong>: este ejemplo se basa en usar la librería <code>tirpc</code> en Linux/Ubuntu, puede que en otro sistema no sea necesaria o sea otra librería.</li>
+<li><strong>NOTA 3</strong>: en este ejemplo puede ser también necesaria la librería <code>-lnsl</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>Para la ejecución de la aplicación distribuida hay que primero ejecutar el servidor, y luego el cliente:</p>
+<ol>
+<li><p>En una misma máquina, se puede usar como nombre de host <em>localhost</em>:</p>
+<pre><code class="lang-bash">acaldero@docker1:~/sd$ ./vector_server &amp;
+
+acaldero@docker1:~/sd$ rpcinfo  -p localhost
+program vers proto   port  service
+100000    4   tcp    111  portmapper
+100000    3   tcp    111  portmapper
+100000    2   tcp    111  portmapper
+100000    4   udp    111  portmapper
+100000    3   udp    111  portmapper
+100000    2   udp    111  portmapper
+    99    1   udp  49848
+    99    1   tcp  42919
+
+acaldero@docker1:~/sd$ ./vector_client  localhost
+La suma es 200
+
+acaldero@docker1:~/sd$ kill -9 %1
+acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
+[1]+  Killed                  ./vector_server
+</code></pre>
+</li>
+<li><p>Si funciona en una misma máquina, se puede probar en dos máquinas (docker1 para vector_server y docker2 para vector_client):</p>
+ <html>
+ <table>
+ <tr>
+ <td><b>docker1</b></td>
+ <td><b>docker2</b></td>
+ </tr>
+ <tr>
+ <td>
+
+ ```bash
+acaldero@docker1:~/sd$ ./vector_server &amp;
+```
+
+ </td>
+ <td> </td>
+ </tr>
+ <tr>
+ <td> </td>
+ <td>
+
+ ```bash
+acaldero@docker2:~/sd$ rpcinfo  -p localhost
+program vers proto   port  service
+100000    4   tcp    111  portmapper
+100000    3   tcp    111  portmapper
+100000    2   tcp    111  portmapper
+100000    4   udp    111  portmapper
+100000    3   udp    111  portmapper
+100000    2   udp    111  portmapper
+    99    1   udp  49848
+    99    1   tcp  42919
+
+acaldero@docker2:~/sd$ ./vector_client  localhost
+La suma es 200
+```
+
+ </td>
+ </tr>
+ <tr>
+ <td>
+
+ ```bash
+acaldero@docker1:~/sd$ kill -9 %1
+
+acaldero@docker1:~/sd$ sudo rpcinfo  -d 99 1
+[1]+  Killed                ./vector_server
+```
+
+ </td>
+ <td></td>
+ </tr>
+ </table>
+ </html>
+
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="autenticación">Autenticación</h2>
+<ul>
+<li>Los mensajes de petición y respuesta disponen de campos para pasar información de autenticación</li>
+<li>El servidor es el encargado de controlar el acceso</li>
+<li>Hay distintos tipos de protocolos de autenticación:<ul>
+<li>Autenticación nula (AUTH_NULL)</li>
+<li>Al estilo UNIX, basado en uid y gid (AUTH_UNIX)</li>
+<li>Autenticación Kerberos</li>
+<li>Mediante una clave compartida que se utiliza para firmar los mensajes RPC</li>
+</ul>
+</li>
+</ul>
+<p>Ejemplo de esqueleto con autenticación UNIX:</p>
+<pre><code class="lang-c">   CLIENT *cl = client_create("host", <someprog>, <somevers>, "udp");
+   if (cl != NULL) {
+       /* To set UNIX style authentication */
+       cl-&gt;cl_auth = authunix_create_default();
+   }
+
+   /* use the autentication */
+   ...
+
+   /* destroy the authentication */
+   auth_destroy(clnt-&gt;cl_auth);
+</somevers></someprog></code></pre>
+<h2 id="rpc-en-python">RPC en Python</h2>
+<ul>
+<li><p>Instalación de <em>rpyc</em>:</p>
+<ul>
+<li>Instalación en el sistema:<pre><code class="lang-bash">pip3 install rpyc
+</code></pre>
+</li>
+<li>Instalación para un usuario:<pre><code class="lang-bash">pip3 install rpyc --user
+</code></pre>
+</li>
+</ul>
+<ul>
+<li><p>(1/2) Ejecución mediante <em>Classic RPyC</em></p>
+<ul>
+<li>Ejecución de un servidor clásico que puede ejecutar funciones y evaluar expresiones en Python:<pre><code class="lang-bash">/usr/local/bin/rpyc_classic.py
+</code></pre>
+</li>
+<li>Ejecución de cliente:<ul>
+<li>Con eval + execute:<h3 id="client-1python">client-1.python</h3>
+<pre><code class="lang-python">import rpyc
+conn = rpyc.classic.connect("localhost")
+conn.execute('import math')
+x = conn.eval('2*math.pi')
+print(x)
+</code></pre>
+</li>
+<li>Con teleport:<h3 id="client-2python">client-2.python</h3>
+<pre><code class="lang-python">import rpyc
+conn = rpyc.classic.connect("localhost")
+def square(x):
+    return x**2
+fn = conn.teleport(square)
+print(fn(2))
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>(2/2) Ejecución mediante <em>RPC</em></p>
+<ul>
+<li><p>Ejemplo de servidor de cálculo:</p>
+<h3 id="calcservicepy">calc_service.py</h3>
+<pre><code class="lang-python">import rpyc
+from rpyc.utils.server import ThreadedServer
+
+class CalculatorService(rpyc.Service):
+   def exposed_add(self, a, b):
+       return a + b
+   def exposed_sub(self, a, b):
+       return a - b
+   def exposed_mul(self, a, b):
+       return a * b
+   def exposed_div(self, a, b):
+       return a / b
+
+if __name__ == "__main__":
+   server = ThreadedServer(CalculatorService, port = 12345)
+   server.start()
+</code></pre>
+</li>
+<li><p>Ejemplo de cliente del servicio de calculadora:</p>
+<h3 id="calcclientpy">calc_client.py</h3>
+<pre><code class="lang-python">import rpyc
+conn = rpyc.connect("localhost", 12345)
+
+x = conn.root.add(4,7)
+print(x)
+
+x = conn.root.sub(4,7)
+print(x)
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="usar-las-rpc-en-la-distribución-ubuntu-de-linux">Usar las RPC en la distribución Ubuntu de Linux</h2>
+<p>Hay 3 detalles a comprobar en su instalación de Ubuntu:</p>
+<p>1) Hay que tener instalado los siguientes paquetes: libtirpc, rpcsvc-proto y rpcbind. <br></br> Para la distribución Ubuntu de Linux se ha de ejecutar:</p>
+<pre><code class="lang-bash">   sudo apt-get install  libtirpc-common libtirpc-dev libtirpc3 rpcsvc-proto rpcbind
+</code></pre>
+<p>2) Se ha de arrancar rpcbind.
+    Si hay un error al arrancar por favor pruebe lo siguiente:</p>
+<pre><code class="lang-bash">   sudo mkdir -p /run/sendsigs.omit.d/
+   sudo /etc/init.d/rpcbind restart
+</code></pre>
+<p>3) Es posible que haya que editar el <strong>Makefile</strong> y comprobar que incluye lo indicado en el siguiente fragmento:</p>
+<pre><code>```make
+...
+CFLAGS += -g -I/usr/include/tirpc
+LDLIBS += -lnsl -lpthread -ldl -ltirpc
+...
+```
+</code></pre><p><br></br></p>
+<h2 id="material-complementario">Material complementario</h2>
+<ul>
+<li><a href="https://www.omscs-notes.com/operating-systems/remote-procedure-calls/" target="_blank">Remote Procedure Calls (19 minutos)</a></li>
+<li><a href="http://dist-prog-book.com/chapter/1/rpc.html" target="_blank">RPC is Not Dead: Rise, Fall and the Rise of Remote Procedure Calls</a></li>
+<li><a href="https://pubs.opengroup.org/onlinepubs/9629399/toc.htm" target="_blank">DCE 1.1: Remote Procedure Call</a></li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../topic-ds/ds.html" class="navigation navigation-prev " aria-label="Previous page: Servicios distribuidos">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../topic-dfs/dfs.html" class="navigation navigation-next " aria-label="Next page: Sistemas de ficheros distribuidos">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"RPC","level":"6.1","depth":1,"next":{"title":"Sistemas de ficheros distribuidos","level":"7.1","depth":1,"path":"topic-dfs/dfs.md","ref":"topic-dfs/dfs.md","articles":[]},"previous":{"title":"Servicios distribuidos","level":"5.1","depth":1,"path":"topic-ds/ds.md","ref":"topic-ds/ds.md","articles":[]},"dir":"ltr"},"config":{"plugins":["mermaid","highlight","hide-published-with","hints","chapter-fold"],"styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"search":{},"mermaid":{},"hints":{"info":"fa fa-info-circle","tip":"fa fa-mortar-board","danger":"fa fa-exclamation-circle","working":"fa fa-wrench"},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"hide-published-with":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{"exclude":["mermaid"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Felix Garcia-Carballeira y Alejandro Calderon-Mateos","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Sistemas Distribuidos","gitbook":"*","description":"Sistemas Distribuidos (UC3M)"},"file":{"path":"topic-rpc/rpc.md","mtime":"2026-04-07T06:57:52.614Z","type":"markdown"},"gitbook":{"version":"6.1.7","time":"2026-04-10T14:15:27.234Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid-load.js"></script>
+        
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-hide-published-with/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

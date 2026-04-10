@@ -1,0 +1,1128 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Concurrencia con POSIX · Sistemas Distribuidos</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.1.7">
+        <meta name="author" content="Felix Garcia-Carballeira y Alejandro Calderon-Mateos">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/honkit-plugin-mermaid/mermaid.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-hints/plugin-hints.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ssdd_threads_c.html" />
+    
+    
+    <link rel="prev" href="../topic-candmake/ssdd_make.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Índice
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../topic-candmake/ssdd_c.html">
+            
+                <a href="../topic-candmake/ssdd_c.html">
+            
+                    
+                    C para distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../topic-candmake/ssdd_make.html">
+            
+                <a href="../topic-candmake/ssdd_make.html">
+            
+                    
+                    Introducción a make
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.3" data-path="ssdd_threads_posix.html">
+            
+                <a href="ssdd_threads_posix.html">
+            
+                    
+                    Concurrencia con POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="ssdd_threads_c.html">
+            
+                <a href="ssdd_threads_c.html">
+            
+                    
+                    Concurrencia con C11
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../topic-messagepassing/ssdd_pq.html">
+            
+                <a href="../topic-messagepassing/ssdd_pq.html">
+            
+                    
+                    Colas de mensajes POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../topic-messagepassing/mpi.html">
+            
+                <a href="../topic-messagepassing/mpi.html">
+            
+                    
+                    Introducción a MPI
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.2.1" >
+            
+                <a target="_blank" href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb">
+            
+                    
+                    MPI (notebook)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../topic-sockets/ssdd_sockets.html">
+            
+                <a href="../topic-sockets/ssdd_sockets.html">
+            
+                    
+                    Sockets
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../topic-ds/ds.html">
+            
+                <a href="../topic-ds/ds.html">
+            
+                    
+                    Servicios distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../topic-rpc/rpc.html">
+            
+                <a href="../topic-rpc/rpc.html">
+            
+                    
+                    RPC
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../topic-dfs/dfs.html">
+            
+                <a href="../topic-dfs/dfs.html">
+            
+                    
+                    Sistemas de ficheros distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../topic-ws/web-services.html">
+            
+                <a href="../topic-ws/web-services.html">
+            
+                    
+                    Servicios web
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" >
+            
+                <a target="_blank" href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ft/t9_tolerancia-a-fallos.pdf">
+            
+                    
+                    Tolerancia a fallos (PDF)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Concurrencia con POSIX</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="resumen-de-los-principales-aspectos-del-uso-de-hilos-para-sistemas-distribuidos">Resumen de los principales aspectos del uso de hilos para Sistemas Distribuidos</h1>
+<ul>
+<li><strong>Felix García Carballeira y Alejandro Calderón Mateos</strong> @ arcos.inf.uc3m.es</li>
+<li><a href="https://github.com/acaldero/uc3m_sd/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg" alt="License: CC BY-NC-SA 4.0"></img></a></li>
+</ul>
+<h2 id="contenidos">Contenidos</h2>
+<ul>
+<li>Procesos ligeros (1) independientes, (2) que compiten y (3) que cooperan:<ul>
+<li><a href="#1--qué-son-y-cómo-se-crean-los-hilos-o-threads">1. Qué son y cómo se crean los hilos o threads</a></li>
+<li><a href="#2--qué-son-y-como-se-usan-los-mutex-para-cuando-1-dos-o-más-hilos-2-comparten-una-variable-3-al-menos-uno-modifica-la-variable-4-y-se-hace-de-forma-no-atómica">2. Qué son y cuándo se usan los <strong>mutex</strong>: dos o más hilos comparten una variable y al menos uno la modifica de forma no atómica</a></li>
+<li><a href="#3--qué-son-y-cuándo-usar-las-conditions-hacer-que-la-ejecución-de-un-hilo-se-espere-hasta-que-se-ejecute-un-código-de-otro-hilo">3. Qué son y cuándo usar las <strong>conditions</strong>: la ejecución de un hilo espera a la ejecución de código de otro</a></li>
+</ul>
+</li>
+<li>Servidor de peticiones:<ul>
+<li><a href="#4--servidor-de-peticiones-basado-en-hilos-bajo-demanda">4. Basado en hilos bajo demanda</a></li>
+<li><a href="#5--servidor-de-peticiones-basado-en-pool-de-hilos">5. Basado en pool de hilos</a></li>
+</ul>
+</li>
+<li><a href="#6--información-adicional">Información adicional</a></li>
+</ul>
+<h2 id="1--qué-son-y-cómo-se-crean-los-hilos-o-threads">1.- <ins>Qué son y cómo se crean los hilos o threads</ins></h2>
+<p>Como ejemplo, este programa tiene:</p>
+<ul>
+<li>Una función main que crea 5 hilos y espera a que todos los hilos terminen.</li>
+<li>Cada hilo imprime "Hello world from thread &lt;id. del hilo&gt;!\n"</li>
+</ul>
+<h3 id="thscreatjoinc">ths_creatjoin.c</h3>
+<pre><code class="lang-c">  #include <stdlib.h>
+  #include <stdio.h>
+  #include <pthread.h>
+
+  #define NUM_THREADS     5
+
+  pthread_t threads[NUM_THREADS];
+
+  // La función th_function tiene el código que ejecutarán los hilos
+  void *th_function ( void *arg )
+  {
+      printf("Hello world from thread #%ld!\n", (long)arg) ;
+      pthread_exit(NULL) ;
+  }
+
+  int main ( int argc, char *argv[] )
+  {
+    // Crear NUM_THREADS hilos con función th_function y argumento el valor de t
+    for (int t=0; t</pthread.h></stdio.h></stdlib.h></code></pre>
+<p>Para compilar y ejecutar hay que usar:</p>
+<pre><code class="lang-bash">gcc -Wall -g -o ths_creatjoin ths_creatjoin.c -lpthread
+./ths_creatjoin
+</code></pre>
+<p>Recordatorios</p>
+<ul>
+<li><details>
+<summary>No hacer asunciones en el orden de ejecución de código... (hacer click)</summary>
+
+* No depender una ejecución correcta de un orden particular sino de cualquier orden posible.
+</details></li>
+<li><details>
+<summary>Al hilo se pasa un único parámetro... (hacer click)</summary>
+
+* En el diseño de la API se pensó en pasar un único parámetro que fuera un puntero a la dirección de memoria de una estructura de C (struct) en la cuál se guarda todos los argumentos de trabajo del hilo.
+* (1/2) Antes de crear el hilo hay que reservar memoria y rellenar los valores de trabajo:
+  ```
+         th_args = (struct thread_arguments *)malloc(sizeof(struct thread_arguments)) ;
+         if (NULL == th_args) {
+            printf("ERROR from malloc\n") ;
+            exit(-1) ;
+         }
+
+         th_args-&gt;arg1 = 'a' ;
+         th_args-&gt;arg2 = 33  ;
+         th_args-&gt;arg3 = j  ;
+         ...
+
+         int rc = pthread_create(&amp;(threads[t]), NULL, th_function, (void *)th_args) ;
+         if (rc) {
+            printf("ERROR from pthread_create(): %d\n", rc) ;
+            exit(-1) ;
+         }
+
+         ...
+* (2/2) en el hilo se usa esta estructura y antes de terminar se libera la memoria asociada:
+  ```
+  void *th_function ( void *arg )
+  {
+      struct thread_arguments *th_args = (struct thread_arguments *) arg ;
+
+      ...
+      printf("Hello world from thread #%d!\n", th_args-&gt;arg3) ;
+      ...
+
+      free(th_args) ;
+      th_args = NULL ;
+      pthread_exit(NULL) ;
+  }
+  ```
+</details>
+
+</li>
+</ul>
+<p><strong>Videos suplementarios</strong>:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=n5qrEotEWfI" target="_blank">Repaso a los conceptos en hilos</a></li>
+<li><a href="https://www.youtube.com/watch?v=akf9UG7Z5Go" target="_blank">Principales llamadas POSIX de hilos con ejemplos</a></li>
+</ul>
+<h2 id="2--qué-son-y-como-se-usan-los-mutex-para-cuando-1-dos-o-más-hilos-2-comparten-una-variable-3-al-menos-uno-modifica-la-variable-4-y-se-hace-de-forma-no-atómica">2.- <ins>Qué son y como se usan los <strong>mutex</strong>: para cuando (1) dos o más hilos (2) comparten una variable (3) al menos uno modifica la variable (4) y se hace de forma no atómica</ins></h2>
+<p>Cuando (1) dos o más hilos (2) comparten una variable (3) al menos uno modifica la variable (4) y se hace de forma no atómica entonces se presenta el problema llamado "condición de carrera".
+La zona de código en la que cada hilo accede a la variable compartida (ya sea para consultar o para modificar) se llama "sección crítica".</p>
+<p>Como ejemplo, este programa soluciona una condición de carrera entre dos hilos mediante el uso de un mutex "mutex_1".</p>
+<h3 id="racesolc">race_sol.c</h3>
+<pre><code class="lang-c">  #include <stdlib.h>
+  #include <stdio.h>
+  #include <unistd.h>
+  #include <pthread.h>
+
+  long acc ;
+  pthread_mutex_t mutex_1; // MUTEX
+
+  void *th_main_1 ( void *arg )
+  {
+    register int a1 ;
+
+    pthread_mutex_lock(&amp;mutex_1) ; // LOCK
+    for (int j=0; j&lt;2; j++)
+    {
+         a1  = acc ;
+             printf("main_1 sees acc=%d...\n", a1) ;
+         a1  = a1 + 1 ;
+         acc = a1 ;
+             printf("main_1 updates acc=%d...\n", a1) ;
+     sleep(1) ;
+    }
+    pthread_mutex_unlock(&amp;mutex_1) ; // UNLOCK
+
+    pthread_exit(NULL) ;
+  }
+
+  void *th_main_2 ( void *arg )
+  {
+    register int a2 ;
+
+    pthread_mutex_lock(&amp;mutex_1) ; // LOCK
+    for (int j=0; j&lt;2; j++)
+    {
+         a2  = acc ;
+             printf("main_2 sees acc=%d...\n", a2) ;
+         a2  = a2 - 1 ;
+         acc = a2 ;
+             printf("main_2 updates acc=%d...\n", a2) ;
+     sleep(1) ;
+    }
+    pthread_mutex_unlock(&amp;mutex_1) ; // UNLOCK
+
+    pthread_exit(NULL) ;
+  }
+
+  int main ( int argc, char *argv[] )
+  {
+    int rc ;
+    pthread_t threads[2];
+
+    // Initialize...
+    acc = 0 ;
+    pthread_mutex_init(&amp;mutex_1, NULL) ; // INIT-MUTEX
+
+    // Create threads...
+    rc = pthread_create(&amp;(threads[0]), NULL, th_main_1, NULL) ;
+    if (rc) {
+        printf("ERROR from pthread_create(): %d\n", rc) ;
+        exit(-1) ;
+    }
+    rc = pthread_create(&amp;(threads[1]), NULL, th_main_2, NULL) ;
+    if (rc) {
+        printf("ERROR from pthread_create(): %d\n", rc) ;
+        exit(-1) ;
+    }
+
+    // Join threads...
+    rc = pthread_join(threads[0], NULL) ;
+    if (rc) {
+        printf("ERROR from pthread_join(): %d\n", rc) ;
+        exit(-1) ;
+    }
+    rc = pthread_join(threads[1], NULL) ;
+    if (rc) {
+        printf("ERROR from pthread_join(): %d\n", rc) ;
+        exit(-1) ;
+    }
+
+    printf(" &gt;&gt;&gt;&gt;&gt; acc = %ld\n", acc) ;
+
+    // Destroy...
+    pthread_mutex_destroy(&amp;mutex_1) ; // DESTROY-MUTEX
+
+    pthread_exit(NULL) ;
+  }
+</pthread.h></unistd.h></stdio.h></stdlib.h></code></pre>
+<p>Para compilar y ejecutar hay que usar:</p>
+<pre><code class="lang-bash">  gcc -Wall -g -o race_sol race_sol.c -lpthread
+  ./race_sol
+</code></pre>
+<p>Recordatorios</p>
+<ul>
+<li><details>
+<summary>Cuidado con los interbloqueos con dos o más mutex... (hacer click)</summary>
+
+* Si se solapa el uso de dos o más mutex, hay que seguir el mismo orden de petición de bloqueo de los mutex usados para evitar interbloqueos (un hilo espere por un mutex que tiene otro y viceversa).
+```c
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <pthread.h>
+
+pthread_mutex_t mutex_1;
+pthread_mutex_t mutex_2;
+
+void *th_main_1 ( void *arg )
+{
+  pthread_mutex_lock(&amp;mutex_1) ;
+  sleep(1) ;
+  pthread_mutex_lock(&amp;mutex_2) ;
+
+  printf("Hello from main_1...\n") ;
+
+  pthread_mutex_unlock(&amp;mutex_2) ;
+  pthread_mutex_unlock(&amp;mutex_1) ;
+
+  pthread_exit(NULL) ;
+}
+
+void *th_main_2 ( void *arg )
+{
+  pthread_mutex_lock(&amp;mutex_1) ; // OK
+  sleep(1) ;
+  pthread_mutex_lock(&amp;mutex_2) ; // OK
+
+  printf("Hello from main_2...\n") ;
+  sleep(1) ;
+
+  pthread_mutex_unlock(&amp;mutex_2) ;
+  pthread_mutex_unlock(&amp;mutex_1) ;
+
+  pthread_exit(NULL) ;
+}
+
+int main ( int argc, char *argv[] )
+{
+  int rc ;
+  pthread_t threads[2];
+
+  // Initialize mutexes...
+  pthread_mutex_init(&amp;mutex_1, NULL) ;
+  pthread_mutex_init(&amp;mutex_2, NULL) ;
+
+  // Create threads...
+  rc = pthread_create(&amp;(threads[0]), NULL, th_main_1, NULL) ;
+  if (rc) {
+      printf("ERROR from pthread_create(): %d\n", rc) ;
+      exit(-1) ;
+  }
+  rc = pthread_create(&amp;(threads[1]), NULL, th_main_2, NULL) ;
+  if (rc) {
+      printf("ERROR from pthread_create(): %d\n", rc) ;
+      exit(-1) ;
+  }
+
+  // Join threads...
+  for (int t=0; t&lt;2; t++)
+  {
+       rc = pthread_join(threads[t], NULL) ;
+       if (rc) {
+       printf("ERROR from pthread_join(): %d\n", rc) ;
+       exit(-1) ;
+   }
+  }
+
+  // Destroy mutexes...
+  pthread_mutex_destroy(&amp;mutex_1) ;
+  pthread_mutex_destroy(&amp;mutex_2) ;
+
+  pthread_exit(NULL) ;
+}
+```
+
+Para compilar y ejecutar hay que usar:
+```bash
+gcc -Wall -g -o interlock_sol interlock_sol.c -lpthread
+./interlock_sol
+```
+</pthread.h></unistd.h></stdio.h></stdlib.h></details>
+
+</li>
+</ul>
+<p><strong>Videos suplementarios</strong>:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=PxjgVYgpGkk&amp;t=471s" target="_blank">Condiciones de carrera</a></li>
+<li><a href="https://www.youtube.com/watch?v=PxjgVYgpGkk&amp;t=924s" target="_blank">Condiciones de interbloqueo</a></li>
+</ul>
+<h2 id="3--qué-son-y-cuándo-usar-las-conditions-hacer-que-la-ejecución-de-un-hilo-se-espere-hasta-que-se-ejecute-un-código-de-otro-hilo">3.- <ins>Qué son y cuándo usar las <strong>conditions</strong>: hacer que la ejecución de un hilo se espere hasta que se ejecute un código de otro hilo</ins></h2>
+<p>Como ejemplo, este programa sincroniza el hilo main y los hilos creados con pthread_create para que "main" espere hasta que se haya creado el hilo y también copiado los argumentos.</p>
+<h3 id="syncchildmncsolc">sync_child_mnc_sol.c</h3>
+<pre><code class="lang-c">  #include <stdlib.h>
+  #include <stdio.h>
+  #include <pthread.h>
+
+  #define NUM_THREADS  5
+
+    /// variable + mutex + condition /////
+    int             is_copied = 0;   // (1/3) boleano que indica "se ha copiado"
+    pthread_mutex_t mutex_1;         // (2/3) mutex que protege la variable global "is_copied":
+                                     //       * por 2 o más hilos,
+                                     //       * la variable es compartida 
+                                     //       * modificada por alguno
+                                     //       * y no de forma atómica la modificación.
+    pthread_cond_t  cond_cp;         // (3/3) condition para esperar si el boleano pide esperar
+    /////////////////////////////////
+
+  void *th_function ( void *arg )
+  {
+    int *p_thid ;
+
+    p_thid = (int *)arg ;
+
+    /// Avisa que se ha copiado ///
+    pthread_mutex_lock(&amp;mutex_1) ;
+    is_copied = 1 ;
+    pthread_cond_signal(&amp;cond_cp) ;
+    pthread_mutex_unlock(&amp;mutex_1) ;
+    ///////////////////////////////
+
+    printf("Hello world from thread #%d!\n", *p_thid) ;
+
+    pthread_exit(NULL) ;
+  }
+
+  int main ( int argc, char *argv[] )
+  {
+    int t, rc ;
+    pthread_t threads[NUM_THREADS];
+
+    // Initialize
+    pthread_mutex_init(&amp;mutex_1, NULL) ;
+    pthread_cond_init(&amp;cond_cp, NULL) ;
+
+    // Crear hilos...
+    for (t=0; t</pthread.h></stdio.h></stdlib.h></code></pre>
+<p>Para compilar y ejecutar hay que usar:</p>
+<pre><code class="lang-bash">  gcc -Wall -g -o sync_child_mnc_sol sync_child_mnc_sol.c -lpthread
+  ./sync_child_mnc_sol
+</code></pre>
+<p>Recordatorios</p>
+<ul>
+<li><details>
+<summary>signal vs broadcast... (hacer click)</summary>
+
+* Para despertar a solo un hilo esperando en la condition:
+  ```
+  pthread_cond_signal(&amp;cond_cp) ;
+  ```
+* Para despertar a todos los hilos esperando en la condition:
+  ```
+  pthread_cond_broadcast(&amp;cond_cp) ;
+  ```
+</details>
+
+</li>
+</ul>
+<p><strong>Video suplementario</strong>:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=EupaagvNpR0&amp;t=807s" target="_blank">Funcionamiento de los mutex y conditions</a></li>
+</ul>
+<h2 id="4--servidor-de-peticiones-basado-en-hilos-bajo-demanda">4.- <ins>Servidor de peticiones basado en hilos bajo demanda</ins></h2>
+<p>Como ejemplo, este programa simula un servidor de peticiones basado en hilos bajo demanda.
+De cara a que el hilo en el servidor que atiende la petición del cliente se crea lo antes posible, la función de servicio espera hasta que se haya creado el hilo hijo y dicho hilo haya copiado los parámetros.</p>
+<h3 id="threadsondemandc">threads_ondemand.c</h3>
+<pre><code class="lang-c">  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <sys time.h="">
+  #include <pthread.h>
+  #include <unistd.h>
+
+  // Peticiones //////////////////////////////
+
+   struct peticion {
+      long id;
+      int tipo;
+      /* ... */
+   };
+   typedef struct peticion peticion_t;
+
+  static long petid = 0;
+
+  void recibir_peticion (peticion_t * p)
+  {
+     fprintf(stderr, "Recibiendo petición\n");
+
+     /* Simulación de tiempo de E/S */
+     int delay = rand() % 10;
+     sleep(delay);
+
+     p-&gt;id = petid++;
+
+     fprintf(stderr,"Petición %ld recibida después de %d segundos\n", p-&gt;id, delay);
+  }
+
+  void responder_peticion (peticion_t * p)
+  {
+    fprintf(stderr, "Enviando petición %ld\n", p-&gt;id);
+
+    /* Simulación de tiempo de procesamiento */
+    int delay1 = rand() % 5;
+    sleep(delay1);
+
+    /* Simulación de tiempo de E/S */
+    int delay2 = rand() % 10;
+    sleep(delay2);
+
+    fprintf(stderr, "Petición %ld enviada después de %d segundos\n",  p-&gt;id, delay1 + delay2);
+  }
+
+
+  // Hilos bajo demanda //////////////////////
+
+  pthread_mutex_t mutex;
+  pthread_cond_t  copied;
+  int             is_copied;
+
+  const int MAX_PETICIONES = 5;
+
+  void * servicio ( void * p )
+  {
+        peticion_t  pet;
+
+        // copy parameters...
+        memmove(&amp;pet,(peticion_t*)p, sizeof(peticion_t));
+
+        // signal data is copied
+        pthread_mutex_lock(&amp;mutex) ;
+        is_copied = 1 ;
+        pthread_cond_signal(&amp;copied) ;
+        pthread_mutex_unlock(&amp;mutex) ;
+
+        // process and response
+        fprintf(stderr, "Iniciando servicio\n");
+        responder_peticion(&amp;pet);
+        fprintf(stderr, "Terminando servicio\n");
+
+        pthread_exit(0);
+        return NULL;
+  }
+
+  void receptor ( void )
+  {
+       int i;
+       peticion_t  p;
+       pthread_t   th_hijo[MAX_PETICIONES];
+
+       // for each request, a new thread...
+       for (i=0; i</unistd.h></pthread.h></sys></string.h></stdlib.h></stdio.h></code></pre>
+<p>Para compilar y ejecutar hay que usar:</p>
+<pre><code class="lang-bash">gcc -Wall -g -o threads_ondemand  threads_ondemand.c -lpthread
+./threads_ondemand
+</code></pre>
+<p><strong>Video suplementario</strong>:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=nDyYrpFYG-4&amp;t=551s" target="_blank">Ejemplo de servidor de peticiones basado en hilos</a></li>
+</ul>
+<h2 id="5--servidor-de-peticiones-basado-en-pool-de-hilos">5.- <ins>Servidor de peticiones basado en pool de hilos</ins></h2>
+<p>Como ejemplo, este programa simula un servidor de peticiones basado en pool de hilos.</p>
+<h3 id="threadspoolc">threads_pool.c</h3>
+<pre><code class="lang-c">  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <sys time.h="">
+  #include <time.h>
+  #include <pthread.h>
+  #include <unistd.h>
+
+  // Peticiones //////////////////////////////
+
+   struct peticion {
+      long id;
+      int tipo;
+      /* ... */
+   };
+   typedef struct peticion peticion_t;
+
+  static long petid = 0;
+
+  void recibir_peticion (peticion_t * p)
+  {
+     fprintf(stderr, "Recibiendo petición\n");
+
+     /* Simulación de tiempo de E/S */
+     int delay = rand() % 10;
+     sleep(delay);
+
+     p-&gt;id = petid++;
+
+     fprintf(stderr,"Petición %ld recibida después de %d segundos\n", p-&gt;id, delay);
+  }
+
+  void responder_peticion (peticion_t * p)
+  {
+    fprintf(stderr, "Enviando petición %ld\n", p-&gt;id);
+
+    /* Simulación de tiempo de procesamiento */
+    int delay1 = rand() % 5;
+    sleep(delay1);
+
+    /* Simulación de tiempo de E/S */
+    int delay2 = rand() % 10;
+    sleep(delay2);
+
+    fprintf(stderr, "Petición %ld enviada después de %d segundos\n",  p-&gt;id, delay1 + delay2);
+  }
+
+
+  // Pool de hilos ///////////////////////////
+
+  #define MAX_BUFFER 128
+  peticion_t  buffer[MAX_BUFFER];
+
+
+  int  n_elementos  = 0;
+  int  ha_arrancado = 0;
+  int  fin = 0;
+
+  pthread_mutex_t  mutex;
+  pthread_cond_t   no_lleno;
+  pthread_cond_t   no_vacio;
+  pthread_cond_t   arrancado;
+  pthread_cond_t   parado;
+
+  const int MAX_PETICIONES = 5;
+  const int MAX_SERVICIO   = 5;
+
+  void * receptor ( void * param )
+  {
+         peticion_t p;
+         int i, pos_receptor = 0;
+
+         for (i=0; i<max_peticiones; 1000="" i++)="" {="" recibir_peticion(&p);="" fprintf(stderr,"receptor:="" recepción="" de="" petición\n");="" lock="" when="" not="" full...="" pthread_mutex_lock(&mutex);="" while="" (n_elementos="=" max_buffer)="" pthread_cond_wait(&no_lleno,="" &mutex);="" }="" inserting="" element="" into="" the="" buffer="" buffer[pos_receptor="" ]="p;" pos_receptor="(pos_receptor" +1)="" %="" max_buffer;="" n_elementos++;="" signal="" empty...="" pthread_cond_signal(&no_vacio);="" pthread_mutex_unlock(&mutex);="" finalizando\n");="" end="" fin="1;" pthread_cond_broadcast(&no_vacio);="" fprintf(stderr,="" "receptor:="" finalizado\n");="" pthread_exit(0);="" return="" null;="" void="" *="" servicio="" (="" param="" )="" peticion_t="" p;="" int="" pos_servicio="0;" initializate...="" ha_arrancado="1;" pthread_cond_signal(&arrancado);="" for="" (;;)="" empty="" and="" ended...="" 0)="" if="" (fin="=1)" fprintf(stderr,"servicio:="" pthread_cond_signal(&parado);="" pthread_cond_wait(&no_vacio,="" removing="" from="" buffer...="" p="buffer[pos_servicio];" +="" 1)="" n_elementos--;="" pthread_cond_signal(&no_lleno);="" process="" response...="" "servicio:="" sirviendo="" posicion="" %d\n",="" pos_servicio);="" responder_peticion(&p);="" main="" argc,="" char="" *argv[]="" struct="" timeval="" timenow;="" long="" t1,="" t2;="" pthread_t="" thr;="" ths[max_servicio];="" initialize="" pthread_mutex_init(&mutex,="" null);="" pthread_cond_init(&no_lleno,="" pthread_cond_init(&no_vacio,="" pthread_cond_init(&arrancado,="" pthread_cond_init(&parado,="" create="" threads="" (int="" i="0;i<MAX_SERVICIO;i++)" pthread_create(&ths[i],="" null,="" servicio,="" wait="" thread="" is="" started="" pthread_mutex_lock(&mutex)="" ;="" (!ha_arrancado)="" pthread_cond_wait(&arrancado,="" &mutex)="" pthread_mutex_unlock(&mutex)="" t1="" gettimeofday(&timenow,="" null)="" (long)timenow.tv_usec="" receptor...="" pthread_create(&thr,="" null,receptor,="" (!fin)="" ||=""> 0) ) {
+                   pthread_cond_wait(¶do, &amp;mutex) ;
+          }
+            pthread_mutex_unlock(&amp;mutex) ;
+
+            // finalizar
+            pthread_join(thr, NULL);
+            for (int i=0; i</max_peticiones;></unistd.h></pthread.h></time.h></sys></string.h></stdlib.h></stdio.h></code></pre>
+<p>Para compilar y ejecutar hay que usar:</p>
+<pre><code class="lang-bash">gcc -Wall -g -o threads_pool  threads_pool.c -lpthread
+./threads_pool
+</code></pre>
+<p><strong>Video suplementario</strong>:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=nDyYrpFYG-4&amp;t=940s" target="_blank">Ejemplo de servidor de peticiones basado en hilos pre-creados</a></li>
+</ul>
+<h2 id="6--información-adicional">6.- Información adicional</h2>
+<ul>
+<li><p><a href="https://github.com/acaldero/uc3m_so/blob/main/ejemplos/README.md" target="_blank">Ejemplos para Sistemas Operativos (github)</a></p>
+<html>
+<small>
+<table>
+<tr><th>Sesión</th><th>Tema</th><th>:notebook: Transparencias</th><th>:clapper: Videos</th></tr>
+<tr><td rowspan="3">2</td>
+  <td>Hilos</td>
+  <td><ul>
+    <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w6-hilos.pdf" target="_blank">hilos.pdf</a></li>
+  </ul></td>
+  <td>
+  <ul type="1">
+    <li><a href="https://youtu.be/n5qrEotEWfI" target="_blank">Introducción a hilos</a></li>
+    <li><a href="https://youtu.be/akf9UG7Z5Go" target="_blank">Principales servicios de hilos</a></li>
+  </ul>
+  </td>
+</tr>
+<tr><td>Repaso de concurrencia</td>
+  <td><ul>
+    <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w9-concurrencia-introduccion.pdf" target="_blank">concurrencia-introduccion.pdf</a> </li>
+    <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w10-concurrencia-servicios.pdf" target="_blank">concurrencia-servicios.pdf</a> </li>
+  </ul></td>
+  <td>
+  <ul type="1">
+    <li><a href="https://youtu.be/PxjgVYgpGkk" target="_blank">Introducción</a></li>
+    <li><a href="https://youtu.be/EupaagvNpR0" target="_blank">Mecanismos sincronización POSIX</a></li>
+    <li><a href="https://youtu.be/8fdum4cvlvI" target="_blank">Ejemplo simple de productor-consumidor con mecanismos POSIX</a></li>
+  </ul>
+  </td>
+</tr>
+<tr><td>Servidores concurrentes</td>
+  <td><ul>
+    <li> <a href="https://acaldero.github.io/uc3m_so/transparencias/clase_w11-concurrencia-servidores.pdf" target="_blank">concurrencia-servidores.pdf</a> </li>
+  </ul></td>
+  <td>
+  <ul type="1">
+    <li><a href="https://youtu.be/nDyYrpFYG-4" target="_blank">Servidores concurrentes</a></li>
+  </ul>
+  </td>
+</tr>
+</table>
+</small>
+</html>
+
+</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../topic-candmake/ssdd_make.html" class="navigation navigation-prev " aria-label="Previous page: Introducción a make">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ssdd_threads_c.html" class="navigation navigation-next " aria-label="Next page: Concurrencia con C11">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Concurrencia con POSIX","level":"2.3","depth":1,"next":{"title":"Concurrencia con C11","level":"2.4","depth":1,"path":"topic-concurrency/ssdd_threads_c.md","ref":"topic-concurrency/ssdd_threads_c.md","articles":[]},"previous":{"title":"Introducción a make","level":"2.2","depth":1,"path":"topic-candmake/ssdd_make.md","ref":"topic-candmake/ssdd_make.md","articles":[]},"dir":"ltr"},"config":{"plugins":["mermaid","highlight","hide-published-with","hints","chapter-fold"],"styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"search":{},"mermaid":{},"hints":{"info":"fa fa-info-circle","tip":"fa fa-mortar-board","danger":"fa fa-exclamation-circle","working":"fa fa-wrench"},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"hide-published-with":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{"exclude":["mermaid"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Felix Garcia-Carballeira y Alejandro Calderon-Mateos","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Sistemas Distribuidos","gitbook":"*","description":"Sistemas Distribuidos (UC3M)"},"file":{"path":"topic-concurrency/ssdd_threads_posix.md","mtime":"2026-02-18T19:45:11.497Z","type":"markdown"},"gitbook":{"version":"6.1.7","time":"2026-04-10T14:15:27.234Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid-load.js"></script>
+        
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-hide-published-with/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

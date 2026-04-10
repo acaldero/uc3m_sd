@@ -1,0 +1,1182 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Colas de mensajes POSIX · Sistemas Distribuidos</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.1.7">
+        <meta name="author" content="Felix Garcia-Carballeira y Alejandro Calderon-Mateos">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/honkit-plugin-mermaid/mermaid.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-hints/plugin-hints.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="mpi.html" />
+    
+    
+    <link rel="prev" href="../topic-concurrency/ssdd_threads_c.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Índice
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../topic-candmake/ssdd_c.html">
+            
+                <a href="../topic-candmake/ssdd_c.html">
+            
+                    
+                    C para distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../topic-candmake/ssdd_make.html">
+            
+                <a href="../topic-candmake/ssdd_make.html">
+            
+                    
+                    Introducción a make
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../topic-concurrency/ssdd_threads_posix.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_posix.html">
+            
+                    
+                    Concurrencia con POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../topic-concurrency/ssdd_threads_c.html">
+            
+                <a href="../topic-concurrency/ssdd_threads_c.html">
+            
+                    
+                    Concurrencia con C11
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter active" data-level="3.1" data-path="ssdd_pq.html">
+            
+                <a href="ssdd_pq.html">
+            
+                    
+                    Colas de mensajes POSIX
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="mpi.html">
+            
+                <a href="mpi.html">
+            
+                    
+                    Introducción a MPI
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.2.1" >
+            
+                <a target="_blank" href="https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb">
+            
+                    
+                    MPI (notebook)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../topic-sockets/ssdd_sockets.html">
+            
+                <a href="../topic-sockets/ssdd_sockets.html">
+            
+                    
+                    Sockets
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../topic-ds/ds.html">
+            
+                <a href="../topic-ds/ds.html">
+            
+                    
+                    Servicios distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../topic-rpc/rpc.html">
+            
+                <a href="../topic-rpc/rpc.html">
+            
+                    
+                    RPC
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../topic-dfs/dfs.html">
+            
+                <a href="../topic-dfs/dfs.html">
+            
+                    
+                    Sistemas de ficheros distribuidos
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../topic-ws/web-services.html">
+            
+                <a href="../topic-ws/web-services.html">
+            
+                    
+                    Servicios web
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" >
+            
+                <a target="_blank" href="https://github.com/acaldero/uc3m_sd/blob/main/materials/topic-ft/t9_tolerancia-a-fallos.pdf">
+            
+                    
+                    Tolerancia a fallos (PDF)
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Colas de mensajes POSIX</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="comunicación-con-colas-de-mensajes-posix">Comunicación con Colas de mensajes POSIX</h1>
+<ul>
+<li><strong>Felix García Carballeira y Alejandro Calderón Mateos</strong> @ arcos.inf.uc3m.es</li>
+<li><a href="https://github.com/acaldero/uc3m_sd/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg" alt="License: CC BY-NC-SA 4.0"></img></a></li>
+</ul>
+<h2 id="contenidos">Contenidos</h2>
+<ul>
+<li>Introducción a colas de mensajes POSIX<ul>
+<li><a href="#colas-de-mensajes-posix">Principales características</a></li>
+</ul>
+</li>
+<li>API para la gestión de colas de mensajes POSIX:<ul>
+<li><a href="#llamadas-posix-para-gestión-de-colas-de-mensajes-13">Crear, abrir, cerrar y borrar</a><ul>
+<li><a href="#ejemplo-en-c-crear-cerrar-y-borrar">Ejemplo en C: crear, cerrar y borrar</a></li>
+<li><a href="#ejemplo-en-c-limpieza-de-colas-no-borradas">Ejemplo en C: limpieza de colas NO borradas</a></li>
+</ul>
+</li>
+<li><a href="#llamadas-posix-para-gestión-de-colas-de-mensajes-23">Enviar y recibir</a><ul>
+<li><a href="#ejemplo-en-c-productor-consumidor-con-colas-de-mensajes">Ejemplo en C: productor-consumidor con colas de mensajes</a></li>
+</ul>
+</li>
+<li><a href="#llamadas-posix-para-gestión-de-colas-de-mensajes-33">Consultar y cambiar atributos</a><ul>
+<li><a href="#ejemplo-en-c-imprimir-los-atributos-de-una-cola-posix">Ejemplo en C: imprimir los atributos de una cola POSIX</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#cliente-servidor-secuencial-con-colas-posix">Cliente-servidor secuencial con colas POSIX</a></li>
+<li>Otros modelos<ul>
+<li><a href="#otros-modelos-de-colas-de-mensajes">Otros modelos de colas de mensajes</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="colas-de-mensajes-posix">Colas de mensajes POSIX</h3>
+<ul>
+<li><strong>Implementación</strong> de paso de mensajes en POSIX</li>
+<li>Mecanismo de comunicación <strong>y</strong> sincronización</li>
+<li>API similar a la usada para ficheros:<ul>
+<li><code>mqd = mq_open("/almacen.txt", O_CREAT | O_WRONLY, 0777, &amp;atributos) ;</code></li>
+<li><code>ret = mq_send    (mqd, (const char *)&amp;dato, sizeof(int), 0) ;</code></li>
+<li><code>ret = mq_receive (mqd, (      char *)&amp;dato, sizeof(int), 0) ;</code></li>
+<li><code>mq_close(mqd);</code></li>
+<li><code>mq_unlink("/almacen.txt");</code></li>
+</ul>
+</li>
+<li>Nombrado:<ul>
+<li><strong>Se asigna nombres de ficheros a las colas</strong> (<code>"/almacen.txt"</code> en los ejemplos anteriores de uso del API)<ul>
+<li><strong>Sólo procesos que comparten un mismo sistema de ficheros pueden utilizar colas de mensajes</strong></li>
+<li>El nombre de la cola permite compartir esta para que múltiples procesos puedan enviar y recibir datos</li>
+</ul>
+</li>
+<li>Nombrado indirecto</li>
+</ul>
+</li>
+<li>Sincronización:<ul>
+<li>Envío asíncrono</li>
+<li>Recepción síncrona o asíncrona</li>
+<li>Semántica bloqueante (por defecto) o no bloqueante (hay que usar <code>O_NONBLOCK</code>)</li>
+</ul>
+</li>
+<li>Comunicación:<ul>
+<li>Flujo de datos <strong>unidireccional</strong> (se precisan dos colas de mensajes para bidireccional)</li>
+<li>Los mensajes se pueden etiquetar con prioridades</li>
+<li>Tamaño del mensaje <em>variable</em></li>
+</ul>
+</li>
+</ul>
+<h3 id="llamadas-posix-para-gestión-de-colas-de-mensajes-13">Llamadas POSIX para gestión de colas de mensajes (1/3)</h3>
+<ul>
+<li><strong>Crear</strong> y <strong>abrir</strong> una cola de mensajes<pre><code class="lang-c"> mqd_t mq_open ( char *name, int flag, mode_t mode, struct mq_attr *attr ) ;
+</code></pre>
+<ul>
+<li>Argumentos de entrada:<ul>
+<li>Primer argumento: nombre de la cola<ul>
+<li>Sigue la convención de nombrado de archivos</li>
+<li><code>man 7 mq_overview</code></li>
+</ul>
+</li>
+<li>Segundo argumento: <strong>flags</strong> de la cola (fnctl.h)<ul>
+<li><code>O_CREAT</code>: crea una cola si no existe</li>
+<li><code>O_RDONLY</code>: crea una cola para recibir</li>
+<li><code>O_WRONLY</code>: crea una cola para enviar</li>
+<li><code>O_RDWR</code>: crea una cola para recibir y enviar</li>
+<li><code>O_NONBLOCK</code>: envío y recepción no bloqueante</li>
+</ul>
+</li>
+<li>Tercer argumento: permisos de acceso a la cola (sys/stat.h)<ul>
+<li><code>S_IRWXU</code>: lectura, escritura y ejecución para propietario/a</li>
+<li><code>S_IRWXU | S_IRWXG</code>: lectura, escritura y ejecución para propietario/a y grupo al que pertenece</li>
+<li><code>S_IRWXU | S_IRWXG | S_IRWXO</code>: lectura, escritura y ejecución para propietario/a, grupo al que pertenece y otras personas en la máquina</li>
+</ul>
+</li>
+<li>Cuarto argumento: atributos de la cola (<code>struct mq_attr attr</code>)<ul>
+<li><code>attr.mq_maxmsg</code>: número máximo de mensajes encolados</li>
+<li><code>attr.mq_msgsize</code>: tamaño máximo del mensaje en bytes que se puede enviar a la cola</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Devuelve:<ul>
+<li>Un número entero que representa el descriptor de cola o <code>(mqd_t) -1</code> si hay error</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Cerrar</strong> una cola de mensajes<pre><code class="lang-c"> int mq_close ( mqd_t mqdes ) ;
+</code></pre>
+</li>
+<li><strong>Borrar</strong> una cola de mensajes<pre><code class="lang-c"> int mq_unlink ( char *name ) ;
+</code></pre>
+<ul>
+<li>Recordar: <strong>Borrar después de cerrar</strong> la cola de mensajes</li>
+</ul>
+</li>
+</ul>
+<h3 id="ejemplo-en-c-crear-cerrar-y-borrar">Ejemplo en C: crear, cerrar y borrar</h3>
+<ul>
+<li><p>Edición de ejemplo de crear una cola de mensajes</p>
+<p> <strong>mq_crear.c</strong></p>
+<pre><code class="lang-c"> #include <stdio.h>
+ #include <mqueue.h>
+ #include <stdlib.h>
+
+ // Tip: el nombre es un path absoluto (empieza por '/')
+ #define NOMBRE_COLA "/almacen.txt"
+
+ int main ( int argc, char *argv[] )
+ {
+     mqd_t mqd;                  /* Descriptor de la cola */
+     struct mq_attr atributos;   /* Atributos de la cola */
+
+     atributos.mq_maxmsg = 10;           /* En Linux suele ser 10 para procesos sin privilegios */
+     atributos.mq_msgsize = sizeof(int); /* Tamaño de cada mensaje en bytes */
+
+     mqd = mq_open(NOMBRE_COLA, O_CREAT | O_WRONLY, 0777, &amp;atributos) ;
+     if (-1 == mqd) {
+         perror("mq_open: ");
+         exit(-1);
+     }
+
+     // ...Usar la cola de mensajes POSIX...
+
+     mq_close(mqd);
+     mq_unlink(NOMBRE_COLA);
+ }
+</stdlib.h></mqueue.h></stdio.h></code></pre>
+</li>
+<li><p>Para compilar, se puede usar:</p>
+<pre><code class="lang-bash">   gcc -Wall -g mq_crear.c -lrt -o mq_crear
+</code></pre>
+<ul>
+<li>Es necesario enlazar con la biblioteca <strong><code>librt</code></strong></li>
+</ul>
+</li>
+<li><p>Para ejecutar, se puede usar:</p>
+<pre><code class="lang-bash">   user$ ./mq_crear
+</code></pre>
+</li>
+</ul>
+<h3 id="ejemplo-en-c-limpieza-de-colas-no-borradas">Ejemplo en C: limpieza de colas NO borradas</h3>
+<ul>
+<li><p>Es posible que un programa que trabaja con colas POSIX falle y deje una cola sin borrar. 
+ Esto puede suponer un problema, por lo que vamos a estudiar cómo solucionarlo con un ejemplo (<code>mq_nounlink.c</code>).</p>
+<p> <strong>mq_nounlink.c</strong></p>
+<pre><code class="lang-c"> #include <stdio.h>
+ #include <mqueue.h>
+ #include <stdlib.h>
+
+ #define NOMBRE_COLA "/almacen.txt"
+
+ int main ( int argc, char *argv[] )
+ {
+     mqd_t mqd;                  /* Descriptor de la cola */
+     struct mq_attr atributos;   /* Atributos de la cola */
+
+     atributos.mq_maxmsg = 10;           
+     atributos.mq_msgsize = sizeof(int); 
+     mqd = mq_open(NOMBRE_COLA, O_CREAT | O_WRONLY, 0777, &amp;atributos) ;
+     if (-1 == mqd) {
+         perror("mq_open: ");
+         exit(-1);
+     }
+
+     // &lt;- ¡ no se borra con unlink(NOMBRE_COLA) !
+ }
+</stdlib.h></mqueue.h></stdio.h></code></pre>
+</li>
+<li><p>Para compilar, se puede usar:</p>
+<pre><code class="lang-bash">   gcc -Wall -g mq_nounlink.c -lrt -o mq_nounlink
+</code></pre>
+<ul>
+<li>Es necesario enlazar con la biblioteca <strong><code>librt</code></strong></li>
+</ul>
+</li>
+<li><p>Para ejecutar, se puede usar:</p>
+<pre><code class="lang-bash">   user$ ./mq_nounlink
+</code></pre>
+<ul>
+<li><p><strong>Importante</strong>: Las colas POSIX pueden ser visibles desde la línea de mandatos:</p>
+<pre><code class="lang-bash">user$ sudo mkdir /dev/mqueue
+user$ sudo mount -t mqueue none /dev/mqueue
+user$ ls -las /dev/mqueue
+
+total 0
+0 drwxrwxrwt  2 root   root     60 Jul  4 11:35 .
+0 drwxr-xr-x 12 root   root   3180 Jul  4 11:39 ..
+0 -rwx------  1 user   user     80 Jul  4 11:33 almacen.txt
+
+user$ cat /dev/mqueue/almacen.txt
+QSIZE:0          NOTIFY:0     SIGNO:0     NOTIFY_PID:0
+</code></pre>
+</li>
+<li><p><strong>Importante</strong>: Hay un máximo de colas POSIX que se pueden crear a la vez (256 en Linux/Ubuntu 24.04):</p>
+<pre><code class="lang-bash">user$ cat /proc/sys/fs/mqueue/queues_max
+256
+</code></pre>
+</li>
+<li><p><strong>Importante</strong>: Si no se borran las colas POSIX que no se usan entonces puede llegar un momento que no se puedan crear más. Para evitar esto, es posible borrar las colas POSIX no usadas desde línea de mandatos:</p>
+<pre><code class="lang-bash">user$ rm /dev/mqueue/*
+user$ ls -las /dev/mqueue/
+
+total 0
+0 drwxrwxrwt  2 root   root     60 Jul  4 11:35 .
+0 drwxr-xr-x 12 root   root   3180 Jul  4 11:39 ..
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="llamadas-posix-para-gestión-de-colas-de-mensajes-23">Llamadas POSIX para gestión de colas de mensajes (2/3)</h3>
+<ul>
+<li><p><strong>Enviar</strong> un mensaje a una cola</p>
+<pre><code class="lang-c"> int mq_send ( mqd_t mqdes, const char *msg, size_t len, unsigned int prio ) ;
+</code></pre>
+<ul>
+<li>El mensaje <code>msg</code> de longitud <code>len</code> bytes se envía por la cola de mensajes <code>mqdes</code> con prioridad <code>prio</code></li>
+<li>Argumentos de entrada:<ul>
+<li><code>mqdes</code>: Descriptor de la cola</li>
+<li><code>msg</code>: Buffer que contiene el mensaje a enviar</li>
+<li><code>len</code>: Longitud del mensaje a enviar</li>
+<li><code>prio</code>: Prioridad del mensaje   Los mensajes se insertan según su prioridad (<code>0 ... MQ_PRIOMAX</code>)</li>
+<li>Devuelve:<ul>
+<li>0 en caso de éxito o -1 en caso de error</li>
+<li>Si la cola está llena Y el envío no es bloqueante (O_NONBLOCK) entonces 
+el proceso no se bloquea pero devuelve -1 (EAGAIN)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Recibir</strong> un mensaje desde una cola</p>
+<pre><code class="lang-c"> int mq_receive ( mqd_t mqdes, char *msg, size_t len, unsigned int *prio ) ;
+</code></pre>
+<ul>
+<li>Recibe el mensaje <code>msg</code> con mayor prioridad en la cola (<code>prio</code>) de longitud <code>len</code> bytes de la cola <code>mqdes</code></li>
+<li>Argumentos de entrada:<ul>
+<li><code>mqdes</code>: Descriptor de la cola</li>
+<li><code>msg</code>: Buffer que contiene el mensaje a recibir</li>
+<li><code>len</code>: Longitud del mensaje a recibir</li>
+<li><code>prio</code>: Prioridad del mensaje recibido</li>
+<li>Devuelve:</li>
+<li>El número de bytes del mensaje recibido o -1 en caso de error.</li>
+<li>Si la cola está vacía Y la recepción es no bloqueante (O_NONBLOCK) entonces 
+el proceso no se bloquea pero devuelve -1 (EAGAIN) </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="ejemplo-en-c-productor-consumidor-con-colas-de-mensajes">Ejemplo en C: productor-consumidor con colas de mensajes</h3>
+<p>Idea general de diseño:</p>
+<ul>
+<li>A nivel de procesos<pre><code class="lang-mermaid"><div class="mermaid"> flowchart LR
+     Productor --&gt; Consumidor
+</div></code></pre>
+</li>
+<li>A nivel de código dentro de cada proceso <html>
+ <table border="1">
+ <tr>
+ <td>
+ <pre>
+ Productor() 
+ {
+     for(;;) {
+          &lt;Producir dato&gt;
+          <b>send</b>(Consumidor, dato);
+      } /* end for */
+ }
+ </pre>
+ </td>
+ <td>
+ <pre>
+ Consumidor()
+ {
+     for(;;) {
+          <b>receive</b>(Productor, dato);
+          &lt;Consumir dato&gt;
+      } /* end for */
+ }
+ </pre>
+ </td>
+ </tr>
+ </table>
+ </html>
+
+
+</li>
+</ul>
+<p><strong>productor.c</strong></p>
+<pre><code class="lang-c">#include <mqueue.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_BUFFER 10
+#define DATOS_A_PRODUCIR 100000
+
+void Productor ( mqd_t cola )
+{
+    int dato;
+    int i, ret;
+
+    for (i = 0; i &lt; DATOS_A_PRODUCIR; i++)
+    {
+        dato = i; /* Producir dato */
+        ret = mq_send(cola, (const char *)&amp;dato, sizeof(int), 0) ;
+        if (ret == -1) {
+            perror("mq_send: ");
+            mq_close(cola);
+            exit(1);
+        }
+    }
+}
+
+int main ( int argc, char *argv[] )
+{
+    /* almacen: cola de mensajes donde dejar los datos producidos y extraer los datos a consumir */
+    mqd_t almacen;
+    struct mq_attr attr;
+    attr.mq_maxmsg = MAX_BUFFER;
+    attr.mq_msgsize = sizeof(int);
+
+    almacen = mq_open("/ALMACEN", O_CREAT | O_WRONLY, 0700, &amp;attr) ;
+    if (almacen == -1) {
+        perror("mq_open: ");
+        exit(-1);
+    }
+
+    Productor(almacen);
+
+    mq_close(almacen);
+    return (0);
+}
+</stdlib.h></stdio.h></mqueue.h></code></pre>
+<p><strong>consumidor.c</strong></p>
+<pre><code class="lang-c">#include <mqueue.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_BUFFER 10
+#define DATOS_A_PRODUCIR 100000
+
+void Consumidor ( mqd_t cola )
+{
+    int dato;
+    int i, ret;
+
+    for (i = 0; i &lt; DATOS_A_PRODUCIR; i++)
+    {
+        ret = mq_receive(cola, (char *)&amp;dato, sizeof(int), 0) ;
+        if (ret == -1) {
+            perror("mq_receive: ");
+            mq_close(cola);
+            exit(1);
+        }
+
+        printf("El dato consumido es: %d\n", dato);
+    }
+}
+
+int main ( int argc, char *argv[] )
+{
+    mqd_t almacen;
+
+    if ((almacen = mq_open("/ALMACEN", O_RDONLY)) == -1) {
+        perror("mq_open: ");
+        exit(-1);
+    }
+
+    Consumidor(almacen);
+
+    mq_close(almacen);
+    return (0);
+}
+</stdlib.h></stdio.h></mqueue.h></code></pre>
+<ul>
+<li><p>Para compilar, se puede usar:</p>
+<pre><code class="lang-bash">   gcc -Wall -g productor.c -lrt -o productor
+   gcc -Wall -g consumidor.c -lrt -o consumidor
+</code></pre>
+</li>
+<li><p>Para ejecutar, se puede usar:</p>
+<pre><code class="lang-bash">   user$ ./productor &amp;
+   user$ ./consumidor
+
+   El dato consumido es: 0
+   El dato consumido es: 1
+   ...
+   El dato consumido es: 99997
+   El dato consumido es: 99998
+   El dato consumido es: 99999
+   [1]+  Done                    ./productor
+</code></pre>
+</li>
+</ul>
+<h3 id="llamadas-posix-para-gestión-de-colas-de-mensajes-33">Llamadas POSIX para gestión de colas de mensajes (3/3)</h3>
+<ul>
+<li><p><strong>Modificar</strong> los atributos de una cola</p>
+<pre><code class="lang-c"> int mq_setattr(mqd_t mqdes, struct mq_attr *qstat, struct mq_attr *oldmqstat) ;
+</code></pre>
+<ul>
+<li>Argumentos de entrada:<ul>
+<li><code>mqdes</code>: Descriptor de la cola</li>
+<li><code>qstat</code>: Nuevos atributos de la cola</li>
+<li><code>oldmqqstat</code>: Si oldmqstat es distinto de NULL entonces se almacenarán en él los antiguos atributos</li>
+</ul>
+</li>
+<li>Devuelve:<ul>
+<li>-1 si hay error</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Obtener</strong> los atributos de una cola</p>
+<pre><code class="lang-c"> int mq_getattr(mqd_t mqdes, struct mq_attr *qstat) ;
+</code></pre>
+<ul>
+<li>Argumentos de entrada:<ul>
+<li><code>mqdes</code>: Descriptor de la cola</li>
+<li><code>qstat</code>: Atributos de la cola</li>
+</ul>
+</li>
+<li>Devuelve:<ul>
+<li>-1 si hay error</li>
+<li><code>qstat</code> modificado con los atributos de la cola:<ul>
+<li><code>mq_maxmsg</code>: Número máximo de mensajes</li>
+<li><code>mq_msgsize</code>: Tamaño máximo del mensaje</li>
+<li><code>mq_curmsgs</code>: Número actual de mensajes de la cola</li>
+<li><code>mq_flags</code>: Flags asociados a la cola</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="ejemplo-en-c-imprimir-los-atributos-de-una-cola-posix">Ejemplo en C: imprimir los atributos de una cola POSIX</h3>
+<p><strong>mq_attr.c</strong></p>
+<pre><code class="lang-c">#include <stdio.h>
+#include <mqueue.h>
+#include <stdlib.h>
+
+int main ( int argc, char *argv[] )
+{
+    mqd_t mqd;
+    struct mq_attr atributos;
+
+    mqd = mq_open("/almacen.txt", O_CREAT | O_WRONLY, 0777, &amp;atributos) ;
+    if (mqd == -1) {
+        printf("Error mq_open\n");
+        exit(-1);
+    }
+
+    if (mq_getattr(mqd, &amp;atributos) == -1) {
+        printf("Error mq_getattr\n");
+        exit(-1);
+    }
+
+    printf("Número máximo de mensajes en la cola: %ld\n",      atributos.mq_maxmsg) ;
+    printf("Longitud máxima del mensaje en la cola: %ld\n",    atributos.mq_msgsize) ;
+    printf("Número de mensajes actualmente en la cola: %ld\n", atributos.mq_curmsgs) ;
+
+    mq_close(mqd);
+    exit(0);
+}
+</stdlib.h></mqueue.h></stdio.h></code></pre>
+<ul>
+<li><p>Para compilar, se puede usar:</p>
+<pre><code class="lang-bash">   gcc -Wall -g mq_attr.c -lrt -o mq_attr
+</code></pre>
+</li>
+<li><p>Para ejecutar, se puede usar:</p>
+<pre><code class="lang-bash">   user$ ./mq_attr
+
+   Número máximo de mensajes en la cola: 10
+   Longitud máxima del mensaje en la cola: 4
+   Número de mensajes actualmente en la cola: 0
+</code></pre>
+</li>
+</ul>
+<h3 id="cliente-servidor-secuencial-con-colas-posix">Cliente-servidor secuencial con colas POSIX</h3>
+<p>Idea general del diseño:</p>
+<ul>
+<li>A nivel de procesos:<pre><code class="lang-mermaid"><div class="mermaid"> flowchart LR
+     Cliente &lt;--struct peticion--&gt; Servidor
+</div></code></pre>
+</li>
+<li>A nivel de código dentro de cada proceso: <html>
+ <table border="1">
+ <tr>
+ <td>
+ <pre>
+Cliente() 
+{
+    peticion.cola_cliente &lt;- nombre unívoco 
+    peticion.operacion  &lt;- valor
+    peticion.argumentos &lt;- valores 
+    ...
+    sq = mq_open(COLA_SERVIDOR, ...)
+    cq = mq_open(peticion.cola_cliente, ...)
+    <b>send</b>(sq, &amp;peticion);
+    <b>receive</b>(cq, &amp;respuesta, ...)
+    mq_close(sq)
+    mq_close(cq)
+    mq_unlink(peticion.cola_cliente)
+    ...
+    trabajar con respuesta...
+}
+ </pre>
+ </td>
+ <td>
+ <pre>
+Servidor()
+{
+   sq = mq_open(COLA_SERVIDOR, ...)
+   while(1) {
+        <b>receive</b>(sq, &amp;peticion, ...)
+        ...
+        respuesta &lt;- procesar petición
+        ...
+        cq = mq_open(peticion.cola_cliente, ...)
+        <b>send</b>(cq, &amp;respuesta, ...)
+        mq_close(cq)
+    } /* end for */
+}
+ </pre>
+ </td>
+ </tr>
+ </table>
+ </html>
+
+
+</li>
+</ul>
+<p><strong>mensaje.h</strong></p>
+<pre><code class="lang-c">#define MAXSIZE 256
+#define SUMA   0
+#define RESTAR 1
+// . . .
+
+struct peticion {
+   int op; /* operación, 0 (+) 1 (-) */
+   int  a; /* operando 1 */
+   int  b; /* operando 2 */
+   char q_name[MAXSIZE]; /* nombre de la cola cliente
+                            donde debe enviar la respuesta el servidor */
+};
+</code></pre>
+<p><strong>servidor.c</strong></p>
+<pre><code class="lang-c">#include "mensaje.h"
+#include <mqueue.h>
+
+int main ( int argc, char *argv[] )
+{
+   mqd_t q_servidor; /* cola de mensajes del servidor */
+   mqd_t q_cliente;  /* cola de mensajes del cliente */
+   struct mq_attr attr;
+   struct peticion pet;
+   int res;
+
+   attr.mq_maxmsg = 10;
+   attr.mq_msgsize = sizeof(struct peticion);
+   q_servidor = mq_open("/SERVIDOR_SUMA", O_CREAT|O_RDONLY, 0700, &amp;attr);
+   while(1)
+   {
+      mq_receive(q_servidor, (char *) &amp;pet, sizeof(pet), 0);
+      if (pet.op ==0) 
+           res = pet.a + pet.b;
+      else res = pet.a - pet.b;
+
+      /* se responde al cliente abriendo previamente su cola */
+      q_cliente = mq_open(pet.q_name, O_WRONLY);
+      mq_send(q_cliente, (const char *)&amp;res, sizeof(int), 0);
+      mq_close(q_cliente);
+   }
+}
+</mqueue.h></code></pre>
+<p><strong>cliente.c</strong></p>
+<pre><code class="lang-c">#include <string.h>
+#include <stdio.h>
+#include <mqueue.h>
+#include <unistd.h>
+#include "mensaje.h"
+
+int main ( int argc, char *argv[] )
+{
+   mqd_t q_servidor; /* cola de mensajes del proceso servidor */
+   mqd_t q_cliente;  /* cola de mensajes para el proceso cliente */
+   struct mq_attr attr;
+   struct peticion pet;
+   int res; 
+   char queuename[MAXSIZE];
+
+   attr.mq_maxmsg = 1;
+   attr.mq_msgsize = sizeof(int);
+   sprintf(queuename, "/CLIENTE-%d", getpid()) ; /* generar un nombre único por cliente */
+   q_cliente  = mq_open(queuename, O_CREAT|O_RDONLY, 0700, &amp;attr);
+   q_servidor = mq_open("/SERVIDOR_SUMA", O_WRONLY);
+
+   /* se rellena la petición y se envía */
+   pet.op = 0;
+   pet.a = 5;
+   pet.b = 2;
+   strcpy(pet.q_name, queuename);
+   mq_send(q_servidor, (const char *)&amp;pet, sizeof(pet), 0);
+
+   /* se recepciona la respuesta y se imprime */
+   mq_receive(q_cliente, (char *) &amp;res, sizeof(int), 0);
+   printf("Resultado = %d\n", res);
+
+   /* se cierra y borra las colas POSIX */
+   mq_close(q_servidor);
+   mq_close(q_cliente);
+   mq_unlink(queuename);
+
+   return 0;
+}
+</unistd.h></mqueue.h></stdio.h></string.h></code></pre>
+<ul>
+<li><p>Para compilar, se puede usar:</p>
+<pre><code class="lang-bash">   gcc -Wall -g servidor.c -lrt -o servidor
+   gcc -Wall -g cliente.c -lrt -o cliente
+</code></pre>
+</li>
+<li><p>Para ejecutar, se puede usar:</p>
+<pre><code class="lang-bash">   user$ ./servidor &amp;
+   user$ ./cliente
+   Resultado = 7
+
+   user$  kill -9 %1
+</code></pre>
+</li>
+</ul>
+<h3 id="otros-modelos-de-colas-de-mensajes">Otros modelos de colas de mensajes</h3>
+<ul>
+<li>Advanced Message Queueing Protocol (AMQP)</li>
+<li>Apache ActiveMQ</li>
+<li>IBM MQ</li>
+<li>Java Message Service</li>
+<li>Microsoft Message Queuing</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../topic-concurrency/ssdd_threads_c.html" class="navigation navigation-prev " aria-label="Previous page: Concurrencia con C11">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="mpi.html" class="navigation navigation-next " aria-label="Next page: Introducción a MPI">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Colas de mensajes POSIX","level":"3.1","depth":1,"next":{"title":"Introducción a MPI","level":"3.2","depth":1,"path":"topic-messagepassing/mpi.md","ref":"topic-messagepassing/mpi.md","articles":[{"title":"MPI (notebook)","level":"3.2.1","depth":2,"url":"https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb","ref":"https://colab.research.google.com/github/acaldero/uc3m_sd/blob/main/materials/topic-messagepassing/mpi.ipynb","articles":[]}]},"previous":{"title":"Concurrencia con C11","level":"2.4","depth":1,"path":"topic-concurrency/ssdd_threads_c.md","ref":"topic-concurrency/ssdd_threads_c.md","articles":[]},"dir":"ltr"},"config":{"plugins":["mermaid","highlight","hide-published-with","hints","chapter-fold"],"styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"search":{},"mermaid":{},"hints":{"info":"fa fa-info-circle","tip":"fa fa-mortar-board","danger":"fa fa-exclamation-circle","working":"fa fa-wrench"},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"hide-published-with":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{"exclude":["mermaid"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Felix Garcia-Carballeira y Alejandro Calderon-Mateos","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Sistemas Distribuidos","gitbook":"*","description":"Sistemas Distribuidos (UC3M)"},"file":{"path":"topic-messagepassing/ssdd_pq.md","mtime":"2026-02-18T19:45:11.498Z","type":"markdown"},"gitbook":{"version":"6.1.7","time":"2026-04-10T14:15:27.234Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid-load.js"></script>
+        
+    
+        
+        <script src="../gitbook/honkit-plugin-mermaid/mermaid.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-hide-published-with/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
