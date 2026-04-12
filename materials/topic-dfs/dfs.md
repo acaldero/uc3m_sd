@@ -10,8 +10,8 @@
   * [Sistema de ficheros](#sistema-de-ficheros)
   * [Funcionamiento básico de un sistema de ficheros](#funcionamiento-básico-de-un-sistema-de-ficheros)
   * [Arquitectura básica de un sistema de ficheros](#arquitectura-básica-de-un-sistema-de-ficheros)
-  * [Posibles opciones para almacenamiento remoto](#posibles-opciones-para-almacenamiento-remoto)
-* Sistemas de almacenamiento distribuidos:
+  * [Posibles opciones para aplicar patrón proxy](#posibles-opciones-para-almacenamiento-remoto)
+* Sistemas de almacenamiento distribuidos y paralelos:
   * [Sistema de ficheros distribuido](#sistema-de-ficheros-distribuido)
   * [Sistema de ficheros paralelo](#sistema-de-ficheros-paralelo)
 
@@ -43,7 +43,7 @@
 * **Problema**:
   * Que cada programador/a tengan que ocuparse de tratar con los bloques de disco para buscar en qué bloque están los datos que precisa su programa, recuperar o guardar datos de un bloque, etc.
 * **Objetivo**:
-  * En lugar de trabajar con bloques trabajar con una abstracción de datos intermedia de alto nivel que internamente se traduzca a bloques de manera que:
+  * Trabajar con una abstracción de datos intermedia de alto nivel que internamente se encargue de la traducción a bloques de disco, de manera que:
     * Sea independiente del dispositivo físico.
     * Ofrezca una visión lógica unificada.
     * Sea lo suficientemente simple pero completa.
@@ -60,19 +60,19 @@
   B --- C("Disco<br>(b1, b2, ...)")
   ```
   * Normalmente con la abstracción de **ficheros y directorios** que tiene el sistema operativo de serie es suficiente para el acceso habitual a los datos
-  * El propio sistema operativo usa dicha abstracción de **ficheros y directorios** para la gestión de sus componentes, lo que ayuda a demostrar su potencial.
+  * El propio sistema operativo usa dicha abstracción de **ficheros y directorios** para la gestión de sus componentes (lo que ayuda a demostrar su potencial).
 * Aunque hay otras abstracciones, como una base de datos donde <u>la abstracción</u> **se basa en el uso de tablas** y hay un componente que es el <u>gestor de dicha abstracción</u> **que es el gestor de base de datos**.
   ```mermaid
   flowchart TD
   A(Proceso)---|"base de datos"|B("gestor BBDD")
   B --- C("Disco<br>(b1, b2, ...)")
   ```
-* A día de hoy se trabajan con distintas abstracciones a la vez:
-   * Se pueden combinar el uso de abstracciones, por ejemplo en un gestor de canciones puede usar una base de datos para la gestión de autores, títulos, etc. y guardar en la base de dato el nombre del fichero donde está la propia canción.
-   * El sistema operativo habitualmente utiliza un sistema de ficheros específico pero ofrece varios sistemas de ficheros adicionales que es posible usar.
-* La *Storage Networking Industry Association* (SNIA) propone el [*The SNIA Shared Storage Model*](https://www.snia.org/education/storage_networking_primer/shared_storage_model):<br>
-     ![SNIA storage model v2](./dfs/snia_model_v2.gif)<br>
-   * Donde una aplicación puede usar un gestor de base de datos, o bien un sistema de ficheros (o bien ambos, por ejemplo un reproductor de canciones con una base de datos con la información de las canciones del usuario y las propias canciones guardadas en archivos).
+* A día de hoy es habitual trabajar con distintas abstracciones a la vez:
+   * Por ejemplo en un gestor de canciones se puede usar una base de datos y un sistema de ficheros: la base de datos para la gestión de autores, títulos, etc. y el nombre del fichero donde está la propia canción.
+   * El sistema operativo ofrece varios sistemas de ficheros que es posible usar (un sistema de ficheros específico/nativo para el sistema operativo, otro para memorias USB a usar en cámaras digitales, etc.)
+* La *Storage Networking Industry Association* (SNIA) propone el [*The SNIA Shared Storage Model*](https://www.snia.org/education/storage_networking_primer/shared_storage_model):<br><br>
+       ![SNIA storage model v2](./dfs/snia_model_v2.gif)<br>
+   * Donde una aplicación puede usar un gestor de base de datos, o bien un sistema de ficheros (o bien ambos, ejemplo anterior de reproductor de canciones con una base de datos con la información de las canciones y las propias canciones guardadas en archivos).
    * Sería posible sistemas gestores de base de datos que usan ficheros por debajo y también sería posible sistemas de ficheros que usan bases de datos por debajo.
    * Este subsistema de ficheros/registros utiliza por debajo un almacenamiento basado en bloques, donde los bloques pueden ser resultado de una agregación en tres niveles: dispositivo, SAN o *host*.
 
@@ -85,25 +85,31 @@
 * **Un sistema de ficheros es un software de sistema que establece una correspondencia lógica entre los ficheros y directorios y los dispositivos de almacenamiento**.
 
 * **Funciones principales**: organización, almacenamiento, recuperación, gestión de nombres, coutilización y protección de los ficheros.
-  * Relativo al almacenamiento y recuperación, ofrece un mecanismo de abstracción que oculta todos los detalles relacionados con el almacenamiento y distribución de la información en los dispositivos, así como el funcionamiento de los mismos.
-  * Relativo a la gestión de nombres, ofrece una traducción transparente entre el nombre de fichero usado por los programas basados en cadenas de caracteres (representación más cómoda para personas) a la representación numérica interna basada en el identificador de i-nodo donde internamente están los detalles del fichero.
+  * Relativo al almacenamiento y recuperación:
+    * Ofrece un mecanismo de abstracción que oculta todos los detalles relacionados con el almacenamiento y distribución de la información en los dispositivos, así como el funcionamiento de los mismos.
+  * Relativo a la gestión de nombres:
+    * Ofrece una traducción transparente entre el nombre de fichero usado por los programas basados en cadenas de caracteres (representación más cómoda para personas) a la representación numérica interna basada en el identificador del registro (i-nodo) donde internamente están los detalles del fichero asociado (campos del i-nodo).
 
 * **Organización básica**:
-   * Un **dispositivo** permite almacenar bloques de datos.
-     * Puede ejecutar  ```lsblk``` para ver todos los dispositivos de bloque.
-   * En dicho dispositivo se pueden tener una o varias **particiones** o **volúmenes**. Las particiones o volúmenes permiten dividir de forma lógica un dispositivo físico en espacios de almacenamientos con los que trabajar.
-     * Puede ejecutar  ```cat /proc/partitions``` para ver todas las particiones reconocidas.
-   * Por cada **partición** o **volumen** se tiene formateado con un **sistema de ficheros en disco**, que son las estructuras de datos que precisa en disco para localizar la información.
-   * Cada **sistema de ficheros en disco** permite trabajar con **ficheros** y **directorios**.
+   * **Dispositivo**: Un dispositivo de bloques permite almacenar bloques de datos.
+   * **Particiones/volúmenes**: En dicho dispositivo se pueden tener una o varias particiones o volúmenes. Las particiones o volúmenes permiten dividir de forma lógica un dispositivo físico en espacios de almacenamientos con los que trabajar.
+   * **Sistema de ficheros en disco**: Por cada partición/volumen se tiene formateado con un *sistema de ficheros en disco*, que son las estructuras de datos que precisa en disco para localizar la información.
+   * **Ficheros** y **directorios**: Cada *sistema de ficheros en disco* permite trabajar con diferentes **ficheros** y en la mayoría de casos organizar usando **directorios**.
      * Un fichero es una abstracción en la que el contenido de un archivo se trabaja como una secuencia de bytes.
      * Un directorio es una colección de ficheros agrupados por algún criterio de el/la usuario/a.
-       * Importante: en UNIX/Linux un directorio permite asociar el número de i-nodo al nombre de un fichero.
-       * Si ejecuta ```ls -i1``` se puede ver tanto los nombres como los número de i-nodos del directorio actual.
+       * Importante: en UNIX/Linux un directorio permite asociar el número de i-nodo al nombre de un fichero:<br> Si ejecuta ```ls -i1``` se puede ver tanto los nombres como los número de i-nodos del directorio actual.
 
 * Operaciones básicas:
-  * **Crear el sistema de ficheros** (```mkfs```): crea en una partición o volumen un sistema de ficheros vacío. Reserva parte del almacenamiento para guardar las estructuras de datos que posteriormente permiten la gestión de la información en disco (metadatos en disco).
-  * **Montar** (```mount```): añade el árbol de directorio contenido en un sistema de ficheros a un directorio de un árbol ya montado.
-  * **Desmontar** (```unmount```): quita el árbol de directorio de un directorio de montaje, volviendo a poder acceder al contenido inicial de ese directorio.
+  * **Dispositivo**:
+    * **Listar**: ```lsblk``` puede mostrar todos los dispositivos de bloques.
+  * **Particiones/volúmenes**: 
+    * **Listar**: ```cat /proc/partitions``` permite ver todas las particiones reconocidas.
+  * **Sistema de ficheros en disco**: 
+    * **Crear el sistema de ficheros**: ```mkfs``` crea en una partición o volumen un sistema de ficheros vacío. Reserva parte del almacenamiento para guardar las estructuras de datos que posteriormente permiten la gestión de la información en disco (metadatos en disco).
+    * **Montar**: ```mount``` añade el árbol de directorio contenido en un sistema de ficheros a un directorio de un árbol ya montado.
+    * **Desmontar**: ```unmount``` quita el árbol de directorio de un directorio de montaje, volviendo a poder acceder al contenido inicial de ese directorio.
+  * **Ficheros** y **directorios**:
+    * Distintas operaciones de tipo **C.R.U.D.** (**Create, Read, Update and Delete**): ```ls```, ```cat```, ```tac```, ```touch```, ```mkdir```, etc.
 
 
 ## Arquitectura básica de un sistema de ficheros
@@ -251,7 +257,7 @@
 * Un sistema de ficheros distribuido busca que para los programas clientes su comportamiento sea similar a un sistema de ficheros local, ofreciendo "transparencia" en una serie de aspectos:
    * **Transparencia de acceso**: los programas cliente no conocen que los ficheros están distribuidos en otras máquinas, trabaja con los ficheros como si fueran locales.
    * **Transparencia de localización**: los programas cliente utilizan nombres de directorios y ficheros que no incluyen la localización explícita de dichos ficheros en el sistema distribuido.
-   * **Heterogeneidad**: los programas cliente y los servidores de ficheros distribuidos pueden ejecutarse en diferentes tipos de hardware y sistemas operativos.
+   * Transparencia de representación (**Heterogeneidad**): los programas cliente y los servidores de ficheros distribuidos pueden ejecutarse en diferentes tipos de hardware y sistemas operativos.
    * **Transparencia de concurrencia**: si varios programas cliente acceden a un mismo fichero del sistema de ficheros distribuido, las modificaciones se han de ver de alguna forma coherente.
    * **Transparencia de fallo**: cualquier programa cliente de un fichero distribuido debería de poder trabajar aún en presencia de fallos en la red o en el servidor.
      * Servidores con estado: cuando se abre un archivo el servidor almacena la información de la sesión de trabajo y devuelve al cliente un identificador único de dicha sesión de trabajo para posteriores operaciones.
