@@ -225,7 +225,7 @@ Las API REST se han popularizado, siendo el método común para conectar compone
 Los [seis principios de diseño (o restricciones arquitectónicas)](https://www.ibm.com/topics/rest-apis) REST son:
 * Interfaz uniforme: Todas las solicitudes de API para el mismo recurso deben tener el mismo aspecto, independientemente de la procedencia de la solicitud.
 * Desacoplamiento cliente-servidor: Las aplicaciones cliente y servidor deben ser completamente independientes entre sí, solo se interactúa con el API.
-* Sin estado: Las API REST son apátridas, lo que significa que cada solicitud debe incluir toda la información necesaria para procesarla.
+* Sin estado: Las API REST son sin estado (*stateless*), lo que significa que cada solicitud debe incluir toda la información necesaria para procesarla.
 * Cacheabilidad: En la medida de lo posible, los recursos deben poder almacenarse en caché en el cliente o en el servidor.
 * Arquitectura en capas: las llamadas y las respuestas pueden pasar por diferentes capas (no asumir que cliente y servidor se conectan directamente entre sí).
 * Código bajo demanda (opcional): Las API REST suelen enviar recursos estáticos, pero en algunos casos las respuestas también pueden contener código ejecutable (como applets de Java). En estos casos, el código solo debe ejecutarse bajo demanda.
