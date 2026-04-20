@@ -34,7 +34,7 @@ Los servicios web (y los servicios de red) son una extensión al paradigma de in
 
    ![Transparencia de localización](/materials/topic-ws/web-services/web-services-drawio_5.svg)
 
-Este servicio de directorio permite *transparencia de localización*, lo que es un nivel de abstracción extra.
+Este servicio de directorio permite tanto la *transparencia de localización* (lo que es un nivel de abstracción extra) como ayuda en la *invocación remota usando la Web*.
 
 #### Transparencia de localización
 
@@ -77,7 +77,7 @@ En la WWW se usa una arquitectura cliente (ejemplo: navegador web) y servidor (e
 Por ejemplo, es posible pedir una página web a mano:
 * Ejecutamos:
   ```
-  $ telnet www.lab.inf.uc3m.es 80
+  telnet www.lab.inf.uc3m.es 80
   ```
   Y la salida es:
   ```
@@ -174,6 +174,7 @@ Hay dos estilos principales:
  * **REST** (*RESTful Architecture Style*)
 
 Inicialmente apareció la idea de Servicio Web y se estandarizó con el uso de **SOAP**, lo que ofrece muchas funcionalidades para *business to business*.
+
 Con el paso del tiempo apareció otra necesidad complementaria: una versión simplificada que permita definir un API Web simple.
 En su tesis doctoral en el año 2000, Roy Fielding introduce la propuesta de REST, que proporciona un nivel relativamente alto de flexibilidad, escalabilidad y eficiencia para los/as desarrolladores/as.
 Las API REST se han popularizado, siendo el método común para conectar componentes y aplicaciones en una arquitectura de microservicios.
@@ -431,9 +432,6 @@ Es incluso posible usar el mandato `curl` como cliente del servicio web anterior
 
    123.5
    ```
-
-
-
 
 
 
@@ -733,7 +731,7 @@ El siguiente ejemplo implementa un cliente de saludar (``Hello + <nombre>``) bas
    python3 -mzeep https://apps.learnwebservices.com/services/hello?WSDL
    ```
 
-2. El siguiente paso habitual es crear el archivo cliente de dicho servicio web (ws-echo.py en nuestro ejemplo):
+2. El siguiente paso habitual es crear el archivo cliente de dicho servicio web (**`ws-echo.py`** en nuestro ejemplo):
    ```python
    import zeep
 
@@ -744,13 +742,17 @@ El siguiente ejemplo implementa un cliente de saludar (``Hello + <nombre>``) bas
 
 3. Para ejecutar:
    ```bash
-   $ python3 ./ws-echo.py
+   python3 ./ws-echo.py
+   ```
+   Y la salida debería ser:
+   ```bash
    Hello Web Services!
    ```
 
 Puede probarse otros servicios WSDL disponibles gratis (al menos en el momento de escribir este tutoría) de la siguiente lista:
 * https://ngrashia.medium.com/compiled-list-of-free-and-working-wsdl-urls-a7a54be6b91
 <br>
+
 
 ## Ejemplo simple de servicio web SOAP (cliente y servidor en Python)
 
@@ -776,7 +778,7 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
    Suele tardar algún tiempo la instalación, hay que esperar.
    Puede usar ```pip3 install spyne zeep --user``` para instalar solo para el usuario actual.
 
-1. El primer paso habitual es crear el archivo servidor de dicho servicio web (ws-calc-servidor.py en nuestro ejemplo):
+1. El primer paso habitual es crear el archivo servidor de dicho servicio web (**`ws-calc-servidor.py`** en nuestro ejemplo):
    ```python
    import time, logging
    from wsgiref.simple_server import make_server
@@ -813,8 +815,10 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
 
 3. El siguiente paso es conocer la información del servicio Web usando ``python -mzeep <URL>``:
    ```bash
-   $ python3 -mzeep http://localhost:8000/?wsdl
-
+   python3 -mzeep http://localhost:8000/?wsdl
+   ```
+   Y la salida sería similar a:
+   ```bash
    ...
    Service: Calculadora
      Port: Application (Soap11Binding: {http://tests.python-zeep.org/}Application)
@@ -823,7 +827,7 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
             sub(a: xsd:integer, b: xsd:integer) -> subResult: xsd:integer
    ```
 
-5. El siguiente paso habitual es crear el archivo cliente de dicho servicio web (ws-calc-cliente.py en nuestro ejemplo):
+5. El siguiente paso habitual es crear el archivo cliente de dicho servicio web (**`ws-calc-cliente.py`** en nuestro ejemplo):
    ```python
    import zeep
 
@@ -839,7 +843,10 @@ El siguiente ejemplo implementa un cliente de echo (repetir lo que se manda) bas
 
 6. Para ejecutar el cliente del servicio:
    ```bash
-   $ python3 ./ws-calc-cliente.py
+   python3 ./ws-calc-cliente.py
+   ```
+   Y la salida similar a:
+   ```bash
     5+2 = 7
     5-3 = 2
    ```
@@ -902,7 +909,10 @@ Los pasos principales a seguir son los siguientes:
     ```
 5. La ejecución del ejemplo sería:
    ```bash
-   $ ./app-d
+   ./app-d
+   ```
+   Y la salida:
+   ```bash
    Sum = 2
    ```
 
@@ -1019,10 +1029,13 @@ En el proceso de creación de un servicio distribuido basado en gSOAP/XML que pe
    ```
 6. Es posible ejecutar por un lado el servidor (lib-server) y por otro el cliente (app-d) de la siguiente manera:
    ```bash
-    $ ./lib-server 12345 &
-    $ env SERVER_IP=localhost:12345 ./app-d
+    ./lib-server 12345 &
+    env SERVER_IP=localhost:12345 ./app-d
+   ```
+   Y la salida:
+   ```bash
     result = 3
-    ```
+   ```
 
 
 ## Otras tecnologías además de REST y SOAP
@@ -1355,10 +1368,13 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
    ```
 5. Es posible ejecutar el servidor y el cliente de la siguiente manera:
    ```bash
-   $ python3 ./server.py &
-   $ python3 ./client.py
+    python3 ./server.py &
+    python3 ./client.py
+   ```
+   Y la salida:
+   ```bash
    Result: 3
-    ```
+   ```
 
 
 ## Ejemplo de JSON-RPC sobre HTTP: servidor MCP de calculadora simple (cliente y servidor, en Python)
