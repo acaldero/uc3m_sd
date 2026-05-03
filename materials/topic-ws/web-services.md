@@ -10,7 +10,7 @@
   * [Estilos de servicios: SOAP vs RESTful](#estilos-de-servicios-soap-vs-rest)
   * Ejemplos REST y SOAP:
     * [Python - REST: Ejemplo simple de servicio web  (servidor y cliente)](#ejemplo-simple-de-servicio-web-rest-servidor-y-cliente-en-python)
-    * [Python - REST: Ejemplo simple con OpenAPI (servidor y cliente)](#openapi)  
+    * [Python - REST: Ejemplo simple con OpenAPI (servidor y cliente)](#openapi)
     * [Python - SOAP: Ejemplo de servicio web  (cliente)](#ejemplo-simple-de-servicio-web-soap-cliente-en-python)
     * [Python - SOAP: Ejemplo simple de servicio web (cliente y servidor)](#ejemplo-simple-de-servicio-web-soap-cliente-y-servidor-en-python)
     * [C - SOAP: Usar un servicio distribuido basado en gSOAP/XML (cliente solo)](#usar-un-servicio-distribuido-basado-en-gsoapxml-cliente-solo-en-c)
@@ -516,11 +516,11 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
    <tr>
    <tr>
    <td>
-   
+
       ```python
-    
-    
-    
+
+
+
 
    # Item asociado a cada clave
    class Item:
@@ -558,10 +558,10 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
 
    </td>
    <td>
-   
+
       ```python
    from pydantic import BaseModel
- 
+
 
 
    # Item asociado a cada clave
@@ -600,7 +600,7 @@ El siguiente ejemplo implementa un pequeño servicio de almacen clave-valor:
 
    </td>
    <td>
-   
+
       ```python
    from fastapi  import FastAPI
    from pydantic import BaseModel
@@ -1019,9 +1019,166 @@ En el proceso de creación de un servicio distribuido basado en gSOAP/XML que pe
    ```
 6. Es posible ejecutar por un lado el servidor (lib-server) y por otro el cliente (app-d) de la siguiente manera:
    ```bash
-    $ ./lib-server 12345 &
-    $ env SERVER_IP=localhost:12345 ./app-d
+    ./lib-server 12345 &
+    env SERVER_IP=localhost:12345 ./app-d
+    ```
+   Y la salida debería ser:
+   ```bash
     result = 3
+    ```
+
+
+##  Ejemplo de calculadora como servidor web REST (cliente y servidor, en C)
+
+El siguiente ejemplo está basado en el ejemplo de calculadora como servidor web REST.
+
+En el proceso de creación de un servicio distribuido los pasos a seguir podrían ser:
+
+1. Hay que crear la parte que implementa el servicio, por ejemplo en el archivo **`calc_server`**:
+   ```c
+   #include <stdio.h>
+   #include <stdlib.h>
+   #include <string.h>
+   #include <unistd.h>
+   #include <netinet/in.h>
+
+   #define PORT 8080
+   #define BUF_SIZE 4096
+
+   double get_param ( const char *request, const char *name )
+   {
+         char pattern[1024];
+         snprintf(pattern, sizeof(pattern), "%s=", name);
+
+         char *pos = strstr(request, pattern);
+         if (!pos) return 0;
+
+         return atof(pos + strlen(pattern));
+   }
+
+   void send_response ( int client, int status, const char *status_text, const char *body )
+   {
+         char response[1024];
+
+         snprintf(response, sizeof(response),
+                  "HTTP/1.1 %d %s\r\n"
+                  "Content-Type: application/json\r\n"
+                  "Content-Length: %zu\r\n"
+                  "Connection: close\r\n"
+                  "\r\n"
+                  "%s",
+                  status, status_text, strlen(body), body);
+
+         write(client, response, strlen(response));
+   }
+
+   void handle_client ( int client )
+   {
+         char buffer[BUF_SIZE] = {0};
+         char body[1024];
+
+         // read request
+         read(client, buffer, sizeof(buffer) - 1);
+         double a = get_param(buffer, "a");
+         double b = get_param(buffer, "b");
+
+         // send reply
+         if (strncmp(buffer, "GET /add", 8) == 0) {
+             snprintf(body, sizeof(body), "{\"result\": %.6f}\n", a + b);
+             send_response(client, 200, "OK", body);
+         }
+         else if (strncmp(buffer, "GET /sub", 8) == 0) {
+             snprintf(body, sizeof(body), "{\"result\": %.6f}\n", a - b);
+             send_response(client, 200, "OK", body);
+         }
+         else if (strncmp(buffer, "GET /mul", 8) == 0) {
+             snprintf(body, sizeof(body), "{\"result\": %.6f}\n", a * b);
+             send_response(client, 200, "OK", body);
+         }
+         else if (strncmp(buffer, "GET /div", 8) == 0) {
+             if (b == 0) {
+                 send_response(client, 400, "Bad Request", "{\"error\":\"division by zero\"}\n");
+             } else {
+                 snprintf(body, sizeof(body), "{\"result\": %.6f}\n", a / b);
+                 send_response(client, 200, "OK", body);
+             }
+         }
+         else {
+             send_response(client, 404, "Not Found", "{\"error\":\"unknown endpoint\"}\n");
+         }
+
+         // close client
+         close(client);
+   }
+
+   int main ( int argc, char *argv[] )
+   {
+         int ret, opt ;
+         int server_fd, client ;
+         struct sockaddr_in address ;
+
+         server_fd = socket(AF_INET, SOCK_STREAM, 0);
+         if (server_fd < 0) {
+             perror("socket");
+             return -1;
+         }
+
+         // reuse socket
+         opt = 1;
+         setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+
+         // bind
+         memset(&address, 0, sizeof(address)) ;
+         address.sin_family      = AF_INET ;
+         address.sin_addr.s_addr = INADDR_ANY ;
+         address.sin_port        = htons(PORT) ;
+
+         ret = bind(server_fd, (struct sockaddr *)&address, sizeof(address)) ;
+         if (ret < 0) {
+             perror("bind") ;
+             close(server_fd) ;
+             return -1 ;
+         }
+
+         // listen
+         ret = listen(server_fd, 10) ;
+         if (ret < 0) {
+             perror("listen") ;
+             close(server_fd) ;
+             return -1 ;
+         }
+
+         printf("Calculator REST service running on http://localhost:%d\n", PORT);
+
+         while (1)
+         {
+             // accept
+             client = accept(server_fd, NULL, NULL);
+             if (client < 0) {
+                 perror("accept");
+                 continue;
+             }
+
+             // do-work
+             handle_client(client);
+         }
+
+         close(server_fd);
+         return 0;
+   }
+   ```
+2. Hay que compilar todo, por ejemplo usando:
+   ```bash
+   gcc -Wall -g -o calc_server calc_server.c 
+   ```
+3. Es posible ejecutar por un lado el servidor (calc_server) y por otro el cliente de la siguiente manera:
+   ```bash
+   ./calc_server &
+   curl "http://localhost:8080/add?a=10&b=5"
+    ```
+   Y la salida podría ser:
+   ```bash
+    {"result": 15.000000}
     ```
 
 
@@ -1048,7 +1205,7 @@ Entre estas tecnologías hay que destacar dos:
 Ambas tecnologías permiten crear software en distintos lenguajes, y usar protocolos eficientes.
 
 
-### Motor de la evolución: servicios con más necesidades 
+### Motor de la evolución: servicios con más necesidades
 
 A día de hoy, el estándar más usado como base de servicios Web es HTTP lo que hace que solo usando HTTP todo se tenga que basar en el modelo de interacción *petición/respuesta* y protocolo basado en mensajes de *texto*.
 En algunos casos puede que no sea el modelo ideal para construir algunos servicios lo que fuerza a adaptar dichos servicios al modelo y protocolo de una forma que complica tanto el diseño y como la eficiencia de ejecución.
@@ -1062,8 +1219,8 @@ Algunos ejemplos de modelos de interacción diferentes al *petición/respuesta* 
 ## Ejemplos de otras tecnologías
 
 Como ejemplos de otras tecnologías se tienen los siguientes:
-* Python - SSE: Ejemplo simple de servicio web basado en SSE 
-* BASH - SSE: Ejemplo simple de servicio web basado en SSE 
+* Python - SSE: Ejemplo simple de servicio web basado en SSE
+* BASH - SSE: Ejemplo simple de servicio web basado en SSE
 * Creación de un servicio distribuido basado en Apache Thrift (cliente y servidor, en Python)
 * Creación de un servicio distribuido basado en gRPC (cliente y servidor, en Python)
 
@@ -1378,91 +1535,69 @@ En el proceso de creación de un servicio distribuido basado en gRPC que permita
 * En [ws-jsonrpc-mcp](/materials/lab-mcp-jsonrpc/README.md) está disponible un ejemplo compuesto de 2 ficheros:
   * El servidor **```mcp_server_calc.py```** en Python de una calculadora simple:
     ```python
-    from fastapi import FastAPI
-    from fastmcp import FastMCP
-    import uvicorn
-  
-    # A. Initialize FastMCP
-    mcp = FastMCP("calculator")
-  
-    ## A.1. Utilidades (*tools*)
-    @mcp.tool()
-    def add(a: int, b: int) -> int:
-        """Add two numbers and return the result."""
-        return a + b
-  
-    @mcp.tool()
-    def sub(a: int, b: int) -> int:
-        """Substract two numbers and return the result."""
-        return a - b
-  
-    @mcp.tool()
-    def mul(a: int, b: int) -> int:
-        """Multiply two numbers and return the result."""
-        return a * b
-  
-    @mcp.tool()
-    def div(a: int, b: int) -> int:
-        """Divide two numbers and return the result."""
-        return a / b
-  
-    # A.2. Entradas (*prompts*)
-    @mcp.prompt()
-    def calculator_prompt(a: float, b: float, operation: str) -> str:
-        if operation == "add":
-            return f"The result of adding {a} and {b} is {add(a, b)}"
-        elif operation == "subtract":
-            return f"The result of subtracting {b} from {a} is {sub(a, b)}"
-        elif operation == "multiply":
-            return f"The result of multiplying {a} and {b} is {mul(a, b)}"
-        elif operation == "divide":
-            try:
-                return f"The result of dividing {a} by {b} is {div(a, b)}"
-            except ValueError as e:
-                return str(e)
-        else:
-            return "Invalid operation. Please choose add, subtract, multiply, or divide."
-  
-    # B. Initialize FastAPI
-    mcp_app = mcp.http_app(path="/")
-    api = FastAPI(lifespan=mcp_app.lifespan)
-  
-    ## B.1. Get status
-    @api.get("/api/status")
-    def status():
-        return {"status": "ok"}
-  
-    # C. Mount MCP on FastAPI at "/mcp"  and run on (IP=ANY, port=8000)
-    api.mount("/mcp", mcp_app)
-  
-    if __name__ == "__main__":
-        uvicorn.run(api, host="0.0.0.0", port=8000)
-    ```
-  * El cliente **```mcp_client_calc.py```** en Python de una la calculadora simple:
-    ```python
-    import asyncio
-    from fastmcp import Client
+     from fastapi import FastAPI
+     from fastmcp import FastMCP
+     import uvicorn
 
-    async def main():
-      # Conectar al servidor MCP vía HTTP
-      client = Client("http://127.0.0.1:8000/mcp/")
+     ## Initialize FastMCP
+     mcp = FastMCP("calculator")
 
-      # Abrir sesión
-      async with client:
-          # Listar herramientas disponibles
-          tools = await client.list_tools()
-          print("Herramientas disponibles:")
-          for tool in tools:
-              print("-", tool.name)
-          print("\n")
+     ## MCP: 1/3 Definie tools
+     @mcp.tool()
+     def add(a: int, b: int) -> int:
+         """Add two numbers (param a and param b) and return the result."""
+         return a + b
 
-          # Llamar a add(1,2)
-          result = await client.call_tool("add", {"a": 1, "b": 2})
-          print("Resultado de add(1,2):")
-          print(result)
+     @mcp.tool()
+     def sub(a: int, b: int) -> int:
+         """Substract two numbers (param a and param b) and return the result."""
+         return a - b
 
-    if __name__ == "__main__":
-       asyncio.run(main())
+     @mcp.tool()
+     def mul(a: int, b: int) -> int:
+         """Multiply two numbers (param a and param b) and return the result."""
+         return a * b
+
+     @mcp.tool()
+     def div(a: int, b: int) -> float:
+         """Divide two numbers (param a and param b) and return the result."""
+         return a / b
+
+     ## MCP: 2/3 Define prompts
+     @mcp.prompt()
+     def use_calculator(action: str, a: float, b: float) -> str:
+         """Provide a template to use the calculator MCP server with two numbers (param a and param b)."""
+         return f"Check that the {action} is add, substract or multiply over two numbers {a} and {b}." \
+                 "It can also be divide {a} by {b} if and only if {b} is no zero." \
+                 "If {b} is zero the result is NaN (not a number)." \
+                 "Use the add, sub, mul div tools to compute the result." \
+                 "If you don't know how to compute the result, instead of making up an answer, say that you don't know."
+
+     ## MCP: 3/3 Define resources
+     @mcp.resource("file://readme")
+     def read_readme() -> str:
+         """Read the readme markdown."""
+         with open('README.md', 'r') as file:
+              content = file.read()
+         return content
+
+
+     ## Initialize FastAPI
+     mcp_app = mcp.http_app(path="/")
+     api = FastAPI(lifespan=mcp_app.lifespan)
+
+     ## FastAPI: 1/2) plugs ok at "/status"
+     @api.get("/api/status")
+     def status():
+         return {"status": "ok"}
+
+     ## FastAPI: 2/2) plugs MCP at "/mcp"
+     api.mount("/mcp", mcp_app)
+
+
+     ## Main
+     if __name__ == "__main__":
+         uvicorn.run(api, host="0.0.0.0", port=8000)
     ```
 
 ### Ejemplo de ejecución:
