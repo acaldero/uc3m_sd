@@ -26,14 +26,14 @@ Se pide diseñar e implementar un servicio de calculadora distribuida fiable que
 <ol type="1" start="1">
 <li>Identificar las partes cliente y servidor
 <ul>
-<li> Cliente: elemento activo, puede haber varios
-<li> Servidor: elemento pasivo
+<li> Cliente: elemento activo, puede haber varios</li>
+<li> Servidor: elemento pasivo</li>
 </ul>
-<li>Indentificar el protocolo de servicio
+<li>Identificar el protocolo de servicio</li>
 <ul>
-<li>Identificar peticiones/respuestas
-<li>Identificar los tipos mensajes
-<li>Identificar la secuencia de intercambio de mensajes
+<li>Identificar peticiones/respuestas</li>
+<li>Identificar los tipos mensajes</li>
+<li>Identificar la secuencia de intercambio de mensajes</li>
 </ul>
 </ol>
 </td>
@@ -50,8 +50,8 @@ Qué
     <li> No orientado a conexión (UDP)
     <li> Orientado a conexión (TCP)
     <ul>
-      <li> Conexión por petición
-      <li> Conexión por sesión
+      <li> Conexión por petición</li>
+      <li> Conexión por sesión</li>
     </ul>
 </ul>
 </ol>
@@ -79,8 +79,14 @@ Diseño inicial
 <tr>
 <td>
 <ol type="1" start="5">
- <li>Diseñar aspectos de concurrencia (secuencial, proceso pesado, proceso ligero bajo demanda o proceso ligero con pool)
- <li>Nombrado (direccionamiento estático o dinámico)
+ <li>Diseñar aspectos de concurrencia:
+     <ul>
+         <li>Secuencial, proceso pesado, proceso ligero bajo demanda o proceso ligero con <u>pool</u></li>
+     </ul>
+ <li>Diseño del nombrado a utilizar:</li>
+     <ul>
+         <li>Direccionamiento estático o dinámico</li>
+     </ul>
 </ol>
 </td>
 <td>
@@ -91,7 +97,7 @@ Cómo (2/2)
 <tr>
 <td>
 <ol type="1" start="7">
-<li> Modificar el formato de los mensajes y modificar la secuencia detallada de paso de mensajes si fuera necesario
+<li> Modificar el formato de los mensajes y modificar la secuencia detallada de paso de mensajes si fuera necesario teniendo en cuenta el nombrado y concurrencia diseñado</li>
 </ol>
 </td>
 <td>
@@ -123,7 +129,7 @@ Diseño final
 
 3. Tipo de servidor: se utiliza orientado a conexión con conexión por petición:
    * **TCP: No se quiere que se pierda los mensajes intercambiados**
-   * **Por petición: No se precisa una sesión con varias peticiones en dicha petición**
+   * **Por petición: No se precisa una sesión con varias peticiones en dicha conexión**
 
 4. Definición del formato de los mensajes (representación de datos) y la secuencia detallada de paso de mensajes:
    ```mermaid
